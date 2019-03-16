@@ -25,13 +25,14 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$project.supportVersion"
 
     //Picture
-    implementation ("com.squareup.picasso:picasso:$project.picassoVersion"){
+    implementation("com.squareup.picasso:picasso:$project.picassoVersion") {
         exclude group: 'com.android.support'
         exclude module: ['exifinterface', 'support-annotations']
     }
 
     //Network
     implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
 
     //Testing
     testImplementation "junit:junit:$project.junitVersion"
