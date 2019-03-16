@@ -33,6 +33,7 @@ dependencies {
     //Network
     implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$project.logInterceptorVersion"
 
     //Testing
     testImplementation "junit:junit:$project.junitVersion"
