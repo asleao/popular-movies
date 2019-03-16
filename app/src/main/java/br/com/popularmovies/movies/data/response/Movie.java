@@ -2,7 +2,9 @@ package br.com.popularmovies.movies.data.response;
 
 import com.squareup.moshi.Json;
 
-public class Movie {
+import java.math.BigDecimal;
+
+class Movie {
 
     @Json(name = "vote_count")
     private int votes;
@@ -11,13 +13,13 @@ public class Movie {
     private int id;
 
     @Json(name = "vote_coverage")
-    private Double voteAverage;
+    private BigDecimal voteAverage;
 
     @Json(name = "original_title")
     private String originalTitle;
 
     @Json(name = "popularity")
-    private Double popularity;
+    private BigDecimal popularity;
 
     @Json(name = "poster_path")
     private String poster;
