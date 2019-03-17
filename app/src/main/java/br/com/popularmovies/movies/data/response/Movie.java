@@ -4,7 +4,7 @@ import com.squareup.moshi.Json;
 
 import java.math.BigDecimal;
 
-class Movie {
+public class Movie {
 
     @Json(name = "vote_count")
     private int votes;
@@ -29,4 +29,8 @@ class Movie {
 
     @Json(name = "release_date")
     private String releaseDate;
+
+    public String getOriginalTitle() {
+        return originalTitle;
+    }
 }
