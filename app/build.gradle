@@ -18,30 +18,35 @@ android {
         debug {
             buildConfigField 'String', "MdbApiKey", MdbApiKey
         }
+        fake {
+            debuggable true
+        }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$project.supportVersion"
     implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
     implementation "com.android.support:recyclerview-v7:$project.supportVersion"
-
+    //LiveData
+    implementation "android.arch.lifecycle:runtime:$project.liveDataVersion"
+    implementation "android.arch.lifecycle:extensions:$project.liveDataVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$project.liveDataVersion"
     //Picture
     implementation("com.squareup.picasso:picasso:$project.picassoVersion") {
         exclude group: 'com.android.support'
         exclude module: ['exifinterface', 'support-annotations']
     }
-
     //Network
     implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$project.logInterceptorVersion"
-
     //Json
     implementation "com.squareup.moshi:moshi:$project.moshiVersion"
-
     //Testing
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
     testImplementation "junit:junit:$project.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$project.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$project.expressoVersion"
