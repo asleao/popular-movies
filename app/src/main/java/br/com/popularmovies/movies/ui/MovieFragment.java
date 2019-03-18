@@ -39,7 +39,7 @@ public class MovieFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         if (container != null) {
             mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
-            mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
         }
         return view;
     }

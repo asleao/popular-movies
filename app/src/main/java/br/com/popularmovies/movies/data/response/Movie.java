@@ -33,4 +33,8 @@ public class Movie {
     public String getOriginalTitle() {
         return originalTitle;
     }
+
+    public String getPoster() {
+        return poster;
+    }
 }

@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import br.com.popularmovies.movies.data.response.Movie;
 public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private List<Movie> mMovies;
+    private final String IMAGE_URL = "http://image.tmdb.org/t/p/w185";
 
     public MovieAdapter(List<Movie> movies) {
         mMovies = movies;
@@ -32,8 +35,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         Movie movie = mMovies.get(position);
-        movieViewHolder.setMovieName(movie.getOriginalTitle());
+        Picasso.get()
+                .load(IMAGE_URL + movie.getPoster())
+                .into(movieViewHolder.getMoviePoster());
     }
+
 
     @Override
     public int getItemCount() {
@@ -42,14 +48,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 }
 
 class MovieViewHolder extends RecyclerView.ViewHolder {
-    private TextView mMovieName;
+    private ImageView mMoviePoster;
 
     public MovieViewHolder(@NonNull View itemView) {
         super(itemView);
-        mMovieName = itemView.findViewById(R.id.tv_movie);
+        mMoviePoster = itemView.findViewById(R.id.iv_movie);
     }
 
-    public void setMovieName(String movieName) {
-        mMovieName.setText(movieName);
+    public ImageView getMoviePoster() {
+        return mMoviePoster;
     }
+
 }
