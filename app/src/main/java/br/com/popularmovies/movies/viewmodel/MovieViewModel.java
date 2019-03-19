@@ -15,14 +15,14 @@ public class MovieViewModel extends ViewModel {
 
     public MovieViewModel() {
         mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
-        mMovies = mMovieRepository.getMovies("popularity.desc");
+        mMovies = getMoviesSortedBy("popularity.desc");
     }
 
     public LiveData<Resource<Movies>> getMovies() {
         return mMovies;
     }
 
-    public void getMoviesSortedBy(String field) {
-        mMovies = mMovieRepository.getMovies(field);
+    public LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
+        return mMovieRepository.getMovies(field);
     }
 }

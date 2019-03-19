@@ -99,10 +99,10 @@ public class MovieFragment extends Fragment {
     private void changeSortOrder(int item) {
         switch (item) {
             case 0:
-                mViewModel.getMoviesSortedBy("popularity.desc");
+                mViewModel.getMoviesSortedBy("popularity.desc").observe(getViewLifecycleOwner(), moviesObserver);
                 break;
             case 1:
-                mViewModel.getMoviesSortedBy("vote_average.desc");
+                mViewModel.getMoviesSortedBy("vote_average.desc").observe(getViewLifecycleOwner(), moviesObserver);
                 break;
         }
     }
