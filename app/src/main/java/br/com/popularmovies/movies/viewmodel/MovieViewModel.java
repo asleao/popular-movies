@@ -1,7 +1,6 @@
 package br.com.popularmovies.movies.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
@@ -15,12 +14,15 @@ public class MovieViewModel extends ViewModel {
 
 
     public MovieViewModel() {
-        mMovies = new MutableLiveData<>();
         mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
         mMovies = mMovieRepository.getMovies("popularity.desc");
     }
 
     public LiveData<Resource<Movies>> getMovies() {
         return mMovies;
+    }
+
+    public void getMoviesSortedBy(String field) {
+        mMovies = mMovieRepository.getMovies(field);
     }
 }
