@@ -11,6 +11,7 @@ import br.com.popularmovies.movies.data.source.remote.MovieRemoteDataSource;
 public class MovieViewModel extends ViewModel {
     private LiveData<Resource<Movies>> mMovies;
     private MovieRepository mMovieRepository;
+    private int selectedFilterIndex = 0;
 
 
     public MovieViewModel() {
@@ -24,6 +25,14 @@ public class MovieViewModel extends ViewModel {
 
     public void setMovies(LiveData<Resource<Movies>> movies) {
         mMovies = movies;
+    }
+
+    public int getSelectedFilterIndex() {
+        return selectedFilterIndex;
+    }
+
+    public void setSelectedFilterIndex(int selectedFilterIndex) {
+        this.selectedFilterIndex = selectedFilterIndex;
     }
 
     public LiveData<Resource<Movies>> getMoviesSortedBy(String field) {

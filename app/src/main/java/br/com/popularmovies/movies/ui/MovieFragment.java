@@ -82,7 +82,7 @@ public class MovieFragment extends Fragment {
             CharSequence[] values = {"Popularity", "Top Rated"};
             final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
                     .setTitle("Sort By:")
-                    .setSingleChoiceItems(values, 0, new DialogInterface.OnClickListener() {
+                    .setSingleChoiceItems(values, mViewModel.getSelectedFilterIndex(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             changeSortOrder(which);
@@ -100,9 +100,11 @@ public class MovieFragment extends Fragment {
         switch (item) {
             case 0:
                 mViewModel.setMovies(mViewModel.getMoviesSortedBy("popularity.desc"));
+                mViewModel.setSelectedFilterIndex(0);
                 break;
             case 1:
                 mViewModel.setMovies(mViewModel.getMoviesSortedBy("vote_average.desc"));
+                mViewModel.setSelectedFilterIndex(1);
                 break;
         }
     }
