@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import br.com.popularmovies.data.ServiceGenerator;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.movies.data.response.Movies;
@@ -16,6 +18,7 @@ import retrofit2.Response;
 public class MovieRemoteDataSource implements MovieDataSource {
     private volatile static MovieRemoteDataSource INSTANCE = null;
     private MovieService mMovieService;
+    private final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
 
     private MovieRemoteDataSource() {
         mMovieService = ServiceGenerator.createService(MovieService.class);
@@ -35,11 +38,10 @@ public class MovieRemoteDataSource implements MovieDataSource {
     @Override
     public LiveData<Resource<Movies>> getMovies(String orderBy) {
         Call<Movies> call = mMovieService.getMovies(orderBy);
-        final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
         movies.setValue(Resource.<Movies>loading());
         call.enqueue(new Callback<Movies>() {
             @Override
-            public void onResponse(Call<Movies> call, Response<Movies> response) {
+            public void onResponse(@NotNull Call<Movies> call, @NotNull Response<Movies> response) {
                 if (response.body() != null) {
                     if (response.isSuccessful()) {
                         movies.setValue(Resource.success(response.body()));
@@ -48,7 +50,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
             }
 
             @Override
-            public void onFailure(Call<Movies> call, Throwable t) {
+            public void onFailure(@NotNull Call<Movies> call, @NotNull Throwable t) {
                 Log.e("getMovies", t.getMessage());
             }
         });

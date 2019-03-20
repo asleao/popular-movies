@@ -22,6 +22,10 @@ public class MovieViewModel extends ViewModel {
         return mMovies;
     }
 
+    public void setMovies(LiveData<Resource<Movies>> movies) {
+        mMovies = movies;
+    }
+
     public LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
         return mMovieRepository.getMovies(field);
     }

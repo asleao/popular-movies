@@ -50,4 +50,5 @@ dependencies {
     testImplementation "junit:junit:$project.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$project.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$project.expressoVersion"
+    implementation 'org.jetbrains:annotations-java5:15.0'
 }
