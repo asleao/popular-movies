@@ -99,11 +99,11 @@ public class MovieFragment extends Fragment {
     private void changeSortOrder(int item) {
         switch (item) {
             case 0:
-                mViewModel.setMovies(mViewModel.getMoviesSortedBy("popularity.desc"));
+                mViewModel.setMovieSortBy("popularity.desc");
                 mViewModel.setSelectedFilterIndex(0);
                 break;
             case 1:
-                mViewModel.setMovies(mViewModel.getMoviesSortedBy("vote_average.desc"));
+                mViewModel.setMovieSortBy("vote_average.desc");
                 mViewModel.setSelectedFilterIndex(1);
                 break;
         }

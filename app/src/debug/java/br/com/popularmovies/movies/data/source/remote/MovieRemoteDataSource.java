@@ -18,7 +18,6 @@ import retrofit2.Response;
 public class MovieRemoteDataSource implements MovieDataSource {
     private volatile static MovieRemoteDataSource INSTANCE = null;
     private MovieService mMovieService;
-    private final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
 
     private MovieRemoteDataSource() {
         mMovieService = ServiceGenerator.createService(MovieService.class);
@@ -38,6 +37,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
     @Override
     public LiveData<Resource<Movies>> getMovies(String orderBy) {
         Call<Movies> call = mMovieService.getMovies(orderBy);
+        final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
         movies.setValue(Resource.<Movies>loading());
         call.enqueue(new Callback<Movies>() {
             @Override
