@@ -55,7 +55,7 @@ public class MovieViewModel extends ViewModel {
         this.selectedFilterIndex = selectedFilterIndex;
     }
 
-    public LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
+    private LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
         return mMovieRepository.getMovies(field);
     }
 
