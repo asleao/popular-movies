@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import br.com.popularmovies.R;
@@ -41,6 +42,7 @@ public class MovieFragment extends Fragment {
     private Group mNoConnectionGroup;
     private Button mTryAgainButton;
     private TextView mNoConnectionText;
+    private ProgressBar mProgressBar;
 
     public static MovieFragment newInstance() {
         return new MovieFragment();
@@ -56,8 +58,10 @@ public class MovieFragment extends Fragment {
                 if (moviesResource != null)
                     switch (moviesResource.status) {
                         case LOADING:
+                            showLoading();
                             break;
                         case SUCCESS:
+                            hideLoading();
                             if (moviesResource.data != null) {
                                 MovieAdapter mMovieAdapter = new MovieAdapter(moviesResource.data.getMovies());
                                 mMoviesRecyclerView.setAdapter(mMovieAdapter);
@@ -65,6 +69,7 @@ public class MovieFragment extends Fragment {
                             }
                             break;
                         case ERROR:
+                            hideLoading();
                             ErrorResponse error = moviesResource.error;
                             if (error != null) {
                                 if (error.getStatusCode() == 503) {
@@ -76,6 +81,16 @@ public class MovieFragment extends Fragment {
                     }
             }
         };
+    }
+
+    private void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    private void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mMoviesRecyclerView.setVisibility(View.GONE);
+        mNoConnectionGroup.setVisibility(View.GONE);
     }
 
     private void showResult() {
@@ -115,6 +130,7 @@ public class MovieFragment extends Fragment {
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mNoConnectionText = view.findViewById(R.id.tv_no_conection);
         mTryAgainButton = view.findViewById(R.id.bt_try_again);
+        mProgressBar = view.findViewById(R.id.pb_movies);
         return view;
     }
 
