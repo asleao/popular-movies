@@ -37,6 +37,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         Movie movie = mMovies.get(position);
         Picasso.get()
                 .load(IMAGE_URL + movie.getPoster())
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.no_photo)
                 .into(movieViewHolder.getMoviePoster());
     }
 
@@ -50,12 +52,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 class MovieViewHolder extends RecyclerView.ViewHolder {
     private ImageView mMoviePoster;
 
-    public MovieViewHolder(@NonNull View itemView) {
+    MovieViewHolder(@NonNull View itemView) {
         super(itemView);
         mMoviePoster = itemView.findViewById(R.id.iv_movie);
     }
 
-    public ImageView getMoviePoster() {
+    ImageView getMoviePoster() {
         return mMoviePoster;
     }
 
