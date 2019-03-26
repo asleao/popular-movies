@@ -11,6 +11,10 @@ import br.com.popularmovies.movies.data.response.Movies;
 import br.com.popularmovies.movies.data.source.MovieRepository;
 import br.com.popularmovies.movies.data.source.remote.MovieRemoteDataSource;
 
+import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
+import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
+
 public class MovieViewModel extends ViewModel {
     private LiveData<Resource<Movies>> mMovies;
     private MutableLiveData<String> mSortBy;
@@ -27,7 +31,7 @@ public class MovieViewModel extends ViewModel {
                 return getMoviesSortedBy(input);
             }
         });
-        setMovieSortBy("popularity.desc");
+        setMovieSortBy(FILTER_MOST_POPULAR);
     }
 
     public LiveData<Resource<Movies>> getMovies() {
@@ -53,5 +57,13 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
         return mMovieRepository.getMovies(field);
+    }
+
+    public void tryAgain() {
+        if (selectedFilterIndex == INDEX_FILTER_MOST_POPULAR) {
+            setMovieSortBy(FILTER_MOST_POPULAR);
+        } else {
+            setMovieSortBy(FILTER_HIGHEST_RATED);
+        }
     }
 }

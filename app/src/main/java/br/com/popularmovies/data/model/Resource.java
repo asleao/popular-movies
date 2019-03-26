@@ -8,25 +8,27 @@ public class Resource<T> {
     public final Status status;
     @Nullable
     public final T data;
-    @Nullable public final String message;
+    @Nullable
+    public final ErrorResponse error;
+
     private Resource(@NonNull Status status, @Nullable T data,
-                     @Nullable String message) {
+                     @Nullable ErrorResponse error) {
         this.status = status;
         this.data = data;
-        this.message = message;
+        this.error = error;
     }
 
     public static <T> Resource<T> success(@NonNull T data) {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 
-    public static <T> Resource<T> error(String msg, @Nullable T data) {
-        return new Resource<>(Status.ERROR, data, msg);
+    public static <T> Resource<T> error(ErrorResponse error) {
+        return new Resource<>(Status.ERROR, null, error);
     }
 
     public static <T> Resource<T> loading() {
         return new Resource<>(Status.LOADING, null, null);
     }
 
-    public enum Status { SUCCESS, ERROR, LOADING }
+    public enum Status {SUCCESS, ERROR, LOADING}
 }

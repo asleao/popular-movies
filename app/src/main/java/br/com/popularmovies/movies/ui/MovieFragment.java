@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.Group;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,18 +17,30 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
 import br.com.popularmovies.movies.data.response.Movies;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
+
+import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
+import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
+import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER;
 
 public class MovieFragment extends Fragment {
 
     private MovieViewModel mViewModel;
     private RecyclerView mMoviesRecyclerView;
     private Observer<Resource<Movies>> moviesObserver;
+    private Group mNoConnectionGroup;
+    private Button mTryAgainButton;
+    private TextView mNoConnectionText;
 
     public static MovieFragment newInstance() {
         return new MovieFragment();
@@ -48,13 +61,45 @@ public class MovieFragment extends Fragment {
                             if (moviesResource.data != null) {
                                 MovieAdapter mMovieAdapter = new MovieAdapter(moviesResource.data.getMovies());
                                 mMoviesRecyclerView.setAdapter(mMovieAdapter);
+                                showResult();
                             }
                             break;
                         case ERROR:
+                            ErrorResponse error = moviesResource.error;
+                            if (error != null) {
+                                if (error.getStatusCode() == 503) {
+                                    showNoConnection(error.getStatusMessage());
+                                    tryAgain();
+                                }
+                            }
                             break;
                     }
             }
         };
+    }
+
+    private void showResult() {
+        changeComponentVisibility(View.GONE, View.VISIBLE);
+    }
+
+    private void showNoConnection(String message) {
+        mNoConnectionText.setText(message);
+        changeComponentVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void changeComponentVisibility(int gone, int visible) {
+        mNoConnectionGroup.setVisibility(gone);
+        mMoviesRecyclerView.setVisibility(visible);
+    }
+
+
+    private void tryAgain() {
+        mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.tryAgain();
+            }
+        });
     }
 
     @Override
@@ -67,6 +112,9 @@ public class MovieFragment extends Fragment {
         }
         mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mViewModel.getMovies().observe(getViewLifecycleOwner(), moviesObserver);
+        mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
+        mNoConnectionText = view.findViewById(R.id.tv_no_conection);
+        mTryAgainButton = view.findViewById(R.id.bt_try_again);
         return view;
     }
 
@@ -81,7 +129,7 @@ public class MovieFragment extends Fragment {
         if (item.getItemId() == R.id.m_sort) {
             CharSequence[] values = {"Popularity", "Top Rated"};
             final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
-                    .setTitle("Sort By:")
+                    .setTitle(TITLE_DIALOG_FILTER)
                     .setSingleChoiceItems(values, mViewModel.getSelectedFilterIndex(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -98,12 +146,12 @@ public class MovieFragment extends Fragment {
 
     private void changeSortOrder(int item) {
         switch (item) {
-            case 0:
-                mViewModel.setMovieSortBy("popularity.desc");
+            case INDEX_FILTER_MOST_POPULAR:
+                mViewModel.setMovieSortBy(FILTER_MOST_POPULAR);
                 mViewModel.setSelectedFilterIndex(0);
                 break;
-            case 1:
-                mViewModel.setMovieSortBy("vote_average.desc");
+            case INDEX_FILTER_HIGHEST_RATED:
+                mViewModel.setMovieSortBy(FILTER_HIGHEST_RATED);
                 mViewModel.setSelectedFilterIndex(1);
                 break;
         }
