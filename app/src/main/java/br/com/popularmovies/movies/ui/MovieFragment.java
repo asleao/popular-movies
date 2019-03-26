@@ -52,6 +52,10 @@ public class MovieFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
+        setupObservers();
+    }
+
+    private void setupObservers() {
         moviesObserver = new Observer<Resource<Movies>>() {
             @Override
             public void onChanged(@Nullable Resource<Movies> moviesResource) {
@@ -121,17 +125,23 @@ public class MovieFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
-        if (container != null) {
-            mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
-            mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
-        }
+        setupFields(view);
+        setupMoviesList(view);
         mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         mViewModel.getMovies().observe(getViewLifecycleOwner(), moviesObserver);
+        return view;
+    }
+
+    private void setupMoviesList(View view) {
+        mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
+        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+    }
+
+    private void setupFields(View view) {
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mNoConnectionText = view.findViewById(R.id.tv_no_conection);
         mTryAgainButton = view.findViewById(R.id.bt_try_again);
         mProgressBar = view.findViewById(R.id.pb_movies);
-        return view;
     }
 
     @Override
