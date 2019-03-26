@@ -9,6 +9,4 @@ public interface MovieService {
 
     @GET("discover/movie/")
     Call<Movies> getMovies(@Query("sort_by") String orderBy);
-
-
 }

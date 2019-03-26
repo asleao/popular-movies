@@ -1,7 +1,10 @@
 package br.com.popularmovies.data;
 
+import com.squareup.moshi.Moshi;
+
 import br.com.popularmovies.BuildConfig;
 import br.com.popularmovies.data.interceptor.AuthorizationInterceptor;
+import br.com.popularmovies.utils.BigDecimalAdapter;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -13,10 +16,14 @@ public class ServiceGenerator {
     private static final String HOST = "api.themoviedb.org";
     private static final String API_VERSION = "3/";
 
+    private static final Moshi moshiFactory = new Moshi.Builder()
+            .add(new BigDecimalAdapter())
+            .build();
+
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(buildUrl())
-                    .addConverterFactory(MoshiConverterFactory.create());
+                    .addConverterFactory(MoshiConverterFactory.create(moshiFactory));
 
     private static Retrofit retrofit = builder.build();
 

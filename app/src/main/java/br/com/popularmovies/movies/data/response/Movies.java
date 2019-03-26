@@ -9,4 +9,8 @@ public class Movies {
 
     @Json(name = "results")
     private List<Movie> movies;
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
 }
