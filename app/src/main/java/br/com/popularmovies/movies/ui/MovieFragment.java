@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,17 +25,24 @@ import android.widget.TextView;
 import br.com.popularmovies.R;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
+import br.com.popularmovies.movies.data.response.Movie;
 import br.com.popularmovies.movies.data.response.Movies;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
+import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
+import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
+import static br.com.popularmovies.movies.Constants.MOVIE_YEAR;
 import static br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER;
 
-public class MovieFragment extends Fragment {
+public class MovieFragment extends Fragment implements MovieAdapter.MovieClickListener {
 
     private MovieViewModel mViewModel;
     private RecyclerView mMoviesRecyclerView;
@@ -67,7 +75,7 @@ public class MovieFragment extends Fragment {
                         case SUCCESS:
                             hideLoading();
                             if (moviesResource.data != null) {
-                                MovieAdapter mMovieAdapter = new MovieAdapter(moviesResource.data.getMovies());
+                                MovieAdapter mMovieAdapter = new MovieAdapter(moviesResource.data.getMovies(), MovieFragment.this);
                                 mMoviesRecyclerView.setAdapter(mMovieAdapter);
                                 showResult();
                             }
@@ -181,5 +189,17 @@ public class MovieFragment extends Fragment {
                 mViewModel.setSelectedFilterIndex(1);
                 break;
         }
+    }
+
+    @Override
+    public void onMovieClick(Movie movie) {
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra(MOVIE_TITLE, movie.getOriginalTitle());
+        intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
+        intent.putExtra(MOVIE_YEAR, movie.getReleaseDate());
+//        intent.putExtra(MOVIE_DURATION,  movie.getReleaseDate());
+//        intent.putExtra(MOVIE_RATING, movie.getVoteAverage().toString());
+        intent.putExtra(MOVIE_OVERVIEW, movie.getOverview());
+        startActivity(intent);
     }
 }

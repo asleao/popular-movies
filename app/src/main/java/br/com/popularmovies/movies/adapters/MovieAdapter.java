@@ -15,13 +15,16 @@ import java.util.List;
 import br.com.popularmovies.R;
 import br.com.popularmovies.movies.data.response.Movie;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
+import static br.com.popularmovies.movies.Constants.IMAGE_URL;
+
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<Movie> mMovies;
-    private final String IMAGE_URL = "http://image.tmdb.org/t/p/w185";
+    final private MovieClickListener mOnMovieClickListener;
 
-    public MovieAdapter(List<Movie> movies) {
-        mMovies = movies;
+    public MovieAdapter(List<Movie> movies, MovieClickListener mOnMovieClickListener) {
+        this.mMovies = movies;
+        this.mOnMovieClickListener = mOnMovieClickListener;
     }
 
     @NonNull
@@ -37,6 +40,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         Movie movie = mMovies.get(position);
         Picasso.get()
                 .load(IMAGE_URL + movie.getPoster())
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.no_photo)
                 .into(movieViewHolder.getMoviePoster());
     }
 
@@ -45,18 +50,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     public int getItemCount() {
         return mMovies.size();
     }
-}
 
-class MovieViewHolder extends RecyclerView.ViewHolder {
-    private ImageView mMoviePoster;
-
-    public MovieViewHolder(@NonNull View itemView) {
-        super(itemView);
-        mMoviePoster = itemView.findViewById(R.id.iv_movie);
+    public interface MovieClickListener {
+        void onMovieClick(Movie movie);
     }
 
-    public ImageView getMoviePoster() {
-        return mMoviePoster;
-    }
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ImageView mMoviePoster;
 
+        MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mMoviePoster = itemView.findViewById(R.id.iv_movie);
+            itemView.setOnClickListener(this);
+        }
+
+        ImageView getMoviePoster() {
+            return mMoviePoster;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mOnMovieClickListener.onMovieClick(mMovies.get(getAdapterPosition()));
+
+        }
+    }
 }
