@@ -12,7 +12,7 @@ public class Movie {
     @Json(name = "id")
     private int id;
 
-    @Json(name = "vote_coverage")
+    @Json(name = "vote_average")
     private BigDecimal voteAverage;
 
     @Json(name = "original_title")

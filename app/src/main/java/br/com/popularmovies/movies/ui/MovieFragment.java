@@ -38,6 +38,7 @@ import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
+import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
 import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_YEAR;
 import static br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER;
@@ -198,7 +199,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
         intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
         intent.putExtra(MOVIE_YEAR, movie.getReleaseDate());
 //        intent.putExtra(MOVIE_DURATION,  movie.getReleaseDate());
-//        intent.putExtra(MOVIE_RATING, movie.getVoteAverage().toString());
+        intent.putExtra(MOVIE_RATING, movie.getVoteAverage().toString());
         intent.putExtra(MOVIE_OVERVIEW, movie.getOverview());
         startActivity(intent);
     }
