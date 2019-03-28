@@ -37,4 +37,24 @@ public class Movie {
     public String getPoster() {
         return poster;
     }
+
+    public int getVotes() {
+        return votes;
+    }
+
+    public BigDecimal getVoteAverage() {
+        return voteAverage;
+    }
+
+    public BigDecimal getPopularity() {
+        return popularity;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
 }
