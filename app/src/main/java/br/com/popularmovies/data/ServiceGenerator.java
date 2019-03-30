@@ -5,6 +5,7 @@ import com.squareup.moshi.Moshi;
 import br.com.popularmovies.BuildConfig;
 import br.com.popularmovies.data.interceptor.AuthorizationInterceptor;
 import br.com.popularmovies.utils.BigDecimalAdapter;
+import br.com.popularmovies.utils.DateTimeAdapter;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -18,6 +19,7 @@ public class ServiceGenerator {
 
     private static final Moshi moshiFactory = new Moshi.Builder()
             .add(new BigDecimalAdapter())
+            .add(new DateTimeAdapter("YYYY-MM-DD"))
             .build();
 
     private static Retrofit.Builder builder =

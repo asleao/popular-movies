@@ -20,8 +20,8 @@ import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
+import static br.com.popularmovies.movies.Constants.MOVIE_RELEASE_DATE;
 import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
-import static br.com.popularmovies.movies.Constants.MOVIE_YEAR;
 
 public class MovieDetailFragment extends Fragment {
 
@@ -64,8 +64,8 @@ public class MovieDetailFragment extends Fragment {
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(mMoviePoster);
-        mMovieReleaseDate.setText(intent.hasExtra(MOVIE_YEAR) ?
-                intent.getStringExtra(MOVIE_YEAR) : "");
+        mMovieReleaseDate.setText(intent.hasExtra(MOVIE_RELEASE_DATE) ?
+                intent.getStringExtra(MOVIE_RELEASE_DATE) : "");
         mMovieRating.setText(intent.hasExtra(MOVIE_RATING) ?
                 intent.getStringExtra(MOVIE_RATING) : "");
         mMovieOverview.setText(intent.hasExtra(MOVIE_OVERVIEW) ?
