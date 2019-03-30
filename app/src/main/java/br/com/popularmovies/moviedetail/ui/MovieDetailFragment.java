@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import br.com.popularmovies.R;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 
-import static br.com.popularmovies.movies.Constants.MOVIE_DURATION;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
@@ -29,8 +28,7 @@ public class MovieDetailFragment extends Fragment {
     private MovieDetailViewModel mViewModel;
     private TextView mMovieTitle;
     private ImageView mMoviePoster;
-    private TextView mMovieYear;
-    private TextView mMovieDuration;
+    private TextView mMovieReleaseDate;
     private TextView mMovieRating;
     private TextView mMovieOverview;
 
@@ -51,8 +49,7 @@ public class MovieDetailFragment extends Fragment {
     private void setupFields(View view) {
         mMovieTitle = view.findViewById(R.id.tv_movie_title);
         mMoviePoster = view.findViewById(R.id.iv_movie_poster);
-        mMovieYear = view.findViewById(R.id.tv_movie_year);
-        mMovieDuration = view.findViewById(R.id.tv_movie_duration);
+        mMovieReleaseDate = view.findViewById(R.id.tv_movie_release_date);
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
     }
@@ -67,10 +64,8 @@ public class MovieDetailFragment extends Fragment {
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(mMoviePoster);
-        mMovieYear.setText(intent.hasExtra(MOVIE_YEAR) ?
+        mMovieReleaseDate.setText(intent.hasExtra(MOVIE_YEAR) ?
                 intent.getStringExtra(MOVIE_YEAR) : "");
-        mMovieDuration.setText(intent.hasExtra(MOVIE_DURATION) ?
-                intent.getStringExtra(MOVIE_DURATION) : "");
         mMovieRating.setText(intent.hasExtra(MOVIE_RATING) ?
                 intent.getStringExtra(MOVIE_RATING) : "");
         mMovieOverview.setText(intent.hasExtra(MOVIE_OVERVIEW) ?
