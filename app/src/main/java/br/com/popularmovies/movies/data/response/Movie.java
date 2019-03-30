@@ -2,6 +2,8 @@ package br.com.popularmovies.movies.data.response;
 
 import com.squareup.moshi.Json;
 
+import org.joda.time.LocalDate;
+
 import java.math.BigDecimal;
 
 public class Movie {
@@ -12,7 +14,7 @@ public class Movie {
     @Json(name = "id")
     private int id;
 
-    @Json(name = "vote_coverage")
+    @Json(name = "vote_average")
     private BigDecimal voteAverage;
 
     @Json(name = "original_title")
@@ -28,7 +30,7 @@ public class Movie {
     private String overview;
 
     @Json(name = "release_date")
-    private String releaseDate;
+    private LocalDate releaseDate;
 
     public String getOriginalTitle() {
         return originalTitle;
@@ -54,7 +56,7 @@ public class Movie {
         return overview;
     }
 
-    public String getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 }
