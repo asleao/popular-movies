@@ -179,7 +179,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.m_sort) {
-            CharSequence[] values = {"Popularity", "Top Rated"};
+            CharSequence[] values = {"Most Popular", "Highest Rated"};
             final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
                     .setTitle(TITLE_DIALOG_FILTER)
                     .setSingleChoiceItems(values, mViewModel.getSelectedFilterIndex(), new DialogInterface.OnClickListener() {
