@@ -59,21 +59,21 @@ public class MovieRemoteDataSource implements MovieDataSource {
                         movies.setValue(Resource.success(response.body()));
                     } else {
                         if (response.errorBody() != null) {
+                            ErrorResponse error = null;
                             if (response.code() >= 400 && response.code() < 500) {
                                 Moshi moshi = new Moshi.Builder().build();
                                 JsonAdapter<ErrorResponse> jsonAdapter = moshi.adapter(ErrorResponse.class);
-                                ErrorResponse error = null;
                                 try {
                                     error = jsonAdapter.fromJson(response.errorBody().string());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                movies.setValue(Resource.<Movies>error(error));
                             } else {
-                                ErrorResponse error = new ErrorResponse(response.code(),
+                                error = new ErrorResponse(response.code(),
                                         SERVER_MSG_ERROR);
-                                movies.setValue(Resource.<Movies>error(error));
                             }
+                            movies.setValue(Resource.<Movies>error(error));
+
                         }
                     }
                 }
