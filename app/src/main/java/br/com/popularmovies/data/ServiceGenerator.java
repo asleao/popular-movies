@@ -12,11 +12,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
+import static br.com.popularmovies.data.Constants.API_DATE_PATTERN;
+import static br.com.popularmovies.data.Constants.API_VERSION;
+import static br.com.popularmovies.data.Constants.HOST;
+import static br.com.popularmovies.data.Constants.SCHEME;
+
 public class ServiceGenerator {
-    private static final String SCHEME = "https";
-    private static final String HOST = "api.themoviedb.org";
-    private static final String API_VERSION = "3/";
-    private static final String API_DATE_PATTERN = "yyyy-mm-dd";
+
 
     private static final Moshi moshiFactory = new Moshi.Builder()
             .add(new BigDecimalAdapter())

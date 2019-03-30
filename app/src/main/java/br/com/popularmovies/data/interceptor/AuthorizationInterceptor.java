@@ -1,5 +1,7 @@
 package br.com.popularmovies.data.interceptor;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 import br.com.popularmovies.BuildConfig;
@@ -8,11 +10,13 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class AuthorizationInterceptor implements Interceptor {
-    private String API_KEY = "api_key";
+import static br.com.popularmovies.data.Constants.API_KEY;
 
+public class AuthorizationInterceptor implements Interceptor {
+
+    @NotNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NotNull Chain chain) throws IOException {
         Request original = chain.request();
         HttpUrl originalHttpUrl = original.url();
 
