@@ -22,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
+import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.SERVER_MSG_ERROR;
 
 public class MovieRemoteDataSource implements MovieDataSource {
@@ -80,8 +81,14 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
             @Override
             public void onFailure(@NotNull Call<Movies> call, @NotNull Throwable t) {
-                ErrorResponse error = new ErrorResponse(503,
-                        CONNECTION_MSG_ERROR);
+                ErrorResponse error;
+                if (t instanceof IOException) {
+                    error = new ErrorResponse(503,
+                            CONNECTION_MSG_ERROR);
+                } else {
+                    error = new ErrorResponse(500,
+                            GENERIC_MSG_ERROR_MESSAGE);
+                }
                 movies.setValue(Resource.<Movies>error(error));
                 Log.e(GET_MOVIES_TAG, t.getMessage());
             }

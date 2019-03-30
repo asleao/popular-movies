@@ -35,6 +35,7 @@ import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
+import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
@@ -91,6 +92,8 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
                                 if (error.getStatusCode() == 503) {
                                     showNoConnection(error.getStatusMessage());
                                     tryAgain();
+                                } else {
+                                    showGenericError(error.getStatusMessage());
                                 }
                             }
                             break;
@@ -98,6 +101,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
             }
         };
     }
+
 
     private void hideLoading() {
         mProgressBar.setVisibility(View.GONE);
@@ -116,6 +120,16 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     private void showNoConnection(String message) {
         mNoConnectionText.setText(message);
         changeComponentVisibility(View.VISIBLE, View.GONE);
+    }
+
+    private void showGenericError(String message) {
+        final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create();
+
+        sortDialog.show();
     }
 
     private void changeComponentVisibility(int gone, int visible) {

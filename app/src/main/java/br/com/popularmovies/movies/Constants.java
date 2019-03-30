@@ -16,4 +16,6 @@ public final class Constants {
     public static final String FILTER_HIGHEST_RATED = "vote_average.desc";
     public static final String SERVER_MSG_ERROR = "Server error ocurred.\n Please, contact the support team at some@email.com.";
     public static final String CONNECTION_MSG_ERROR = "Problems with your connection :(";
+    public static final String GENERIC_MSG_ERROR_TITLE = "Something went wrong :(";
+    public static final String GENERIC_MSG_ERROR_MESSAGE = "Please contact the support team.";
 }
