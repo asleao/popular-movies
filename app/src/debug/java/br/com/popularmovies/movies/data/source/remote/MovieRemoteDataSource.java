@@ -66,7 +66,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
                                 try {
                                     error = jsonAdapter.fromJson(response.errorBody().string());
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Log.e(GET_MOVIES_TAG, e.getMessage());
                                 }
                             } else {
                                 error = new ErrorResponse(response.code(),
