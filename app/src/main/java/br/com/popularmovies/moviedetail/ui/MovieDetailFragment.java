@@ -65,7 +65,7 @@ public class MovieDetailFragment extends Fragment {
                 .error(R.drawable.no_photo)
                 .into(mMoviePoster);
         mMovieReleaseDate.setText(intent.hasExtra(MOVIE_RELEASE_DATE) ?
-                intent.getStringExtra(MOVIE_RELEASE_DATE) : "");
+                intent.getStringExtra(MOVIE_RELEASE_DATE) : "None");
         mMovieRating.setText(intent.hasExtra(MOVIE_RATING) ?
                 intent.getStringExtra(MOVIE_RATING) : "");
         mMovieOverview.setText(intent.hasExtra(MOVIE_OVERVIEW) ?

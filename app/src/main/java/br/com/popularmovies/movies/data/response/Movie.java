@@ -2,7 +2,7 @@ package br.com.popularmovies.movies.data.response;
 
 import com.squareup.moshi.Json;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 
@@ -30,7 +30,7 @@ public class Movie {
     private String overview;
 
     @Json(name = "release_date")
-    private DateTime releaseDate;
+    private LocalDate releaseDate;
 
     public String getOriginalTitle() {
         return originalTitle;
@@ -56,7 +56,7 @@ public class Movie {
         return overview;
     }
 
-    public DateTime getReleaseDate() {
+    public LocalDate getReleaseDate() {
         return releaseDate;
     }
 }

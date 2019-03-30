@@ -200,10 +200,10 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra(MOVIE_TITLE, movie.getOriginalTitle());
         intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
-        intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate()
-                .toLocalDate()
-                .toString(MOVIE_DATE_PATTERN, Locale.getDefault())
-                .toUpperCase());
+        if (movie.getReleaseDate() != null) {
+            intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate()
+                    .toString(MOVIE_DATE_PATTERN, Locale.getDefault()));
+        }
         intent.putExtra(MOVIE_RATING, movie.getVoteAverage().toString());
         intent.putExtra(MOVIE_OVERVIEW, movie.getOverview());
         startActivity(intent);
