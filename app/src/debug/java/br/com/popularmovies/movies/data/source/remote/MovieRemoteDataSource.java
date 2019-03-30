@@ -22,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
+import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.SERVER_MSG_ERROR;
 
 public class MovieRemoteDataSource implements MovieDataSource {
@@ -58,21 +59,21 @@ public class MovieRemoteDataSource implements MovieDataSource {
                         movies.setValue(Resource.success(response.body()));
                     } else {
                         if (response.errorBody() != null) {
+                            ErrorResponse error = null;
                             if (response.code() >= 400 && response.code() < 500) {
                                 Moshi moshi = new Moshi.Builder().build();
                                 JsonAdapter<ErrorResponse> jsonAdapter = moshi.adapter(ErrorResponse.class);
-                                ErrorResponse error = null;
                                 try {
                                     error = jsonAdapter.fromJson(response.errorBody().string());
                                 } catch (IOException e) {
-                                    e.printStackTrace();
+                                    Log.e(GET_MOVIES_TAG, e.getMessage());
                                 }
-                                movies.setValue(Resource.<Movies>error(error));
                             } else {
-                                ErrorResponse error = new ErrorResponse(response.code(),
+                                error = new ErrorResponse(response.code(),
                                         SERVER_MSG_ERROR);
-                                movies.setValue(Resource.<Movies>error(error));
                             }
+                            movies.setValue(Resource.<Movies>error(error));
+
                         }
                     }
                 }
@@ -80,8 +81,14 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
             @Override
             public void onFailure(@NotNull Call<Movies> call, @NotNull Throwable t) {
-                ErrorResponse error = new ErrorResponse(503,
-                        CONNECTION_MSG_ERROR);
+                ErrorResponse error;
+                if (t instanceof IOException) {
+                    error = new ErrorResponse(503,
+                            CONNECTION_MSG_ERROR);
+                } else {
+                    error = new ErrorResponse(500,
+                            GENERIC_MSG_ERROR_MESSAGE);
+                }
                 movies.setValue(Resource.<Movies>error(error));
                 Log.e(GET_MOVIES_TAG, t.getMessage());
             }
