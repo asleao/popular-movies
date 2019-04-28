@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.popularmovies.R;
-import br.com.popularmovies.movies.data.response.Movie;
+import br.com.popularmovies.services.movieService.response.Movie;
 
 import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 

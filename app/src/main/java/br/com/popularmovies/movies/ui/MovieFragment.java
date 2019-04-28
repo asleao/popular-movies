@@ -29,8 +29,8 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
-import br.com.popularmovies.movies.data.response.Movie;
-import br.com.popularmovies.movies.data.response.Movies;
+import br.com.popularmovies.services.movieService.response.Movie;
+import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;

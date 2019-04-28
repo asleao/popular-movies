@@ -7,9 +7,9 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
-import br.com.popularmovies.movies.data.response.Movies;
-import br.com.popularmovies.movies.data.source.MovieRepository;
-import br.com.popularmovies.movies.data.source.remote.MovieRemoteDataSource;
+import br.com.popularmovies.services.movieService.response.Movies;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
