@@ -14,44 +14,64 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
             buildConfigField 'String', "MdbApiKey", MdbApiKey
         }
-        fake {
-            debuggable true
+        debug {
+            minifyEnabled true
+            buildConfigField 'String', "MdbApiKey", MdbApiKey
         }
     }
 }
 
+ext {
+    supportVersion = "28.0.0"
+    liveDataVersion = "1.1.1"
+    javaAnnotations = "15.0"
+    constraintLayoutVersion = "1.1.3"
+    picassoVersion = "2.71828"
+    retrofitVersion = "2.5.0"
+    logInterceptorVersion = "3.8.0"
+    moshiVersion = "1.8.0"
+    jodatimeVersion = "2.10.1"
+    junitVersion = "4.12"
+    runnerVersion = "1.0.2"
+    stethoVersion = "1.5.1"
+    expressoVersion = "3.0.2"
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:$project.supportVersion"
-    implementation "com.android.support.constraint:constraint-layout:$project.constraintLayoutVersion"
-    implementation "com.android.support:recyclerview-v7:$project.supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
+    implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation "org.jetbrains:annotations-java5:$javaAnnotations"
+
     //LiveData
-    implementation "android.arch.lifecycle:runtime:$project.liveDataVersion"
-    implementation "android.arch.lifecycle:extensions:$project.liveDataVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    annotationProcessor "android.arch.lifecycle:compiler:$project.liveDataVersion"
+    implementation "android.arch.lifecycle:runtime:$liveDataVersion"
+    implementation "android.arch.lifecycle:extensions:$liveDataVersion"
+    implementation "android.arch.lifecycle:extensions:$liveDataVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$liveDataVersion"
     //Picture
-    implementation("com.squareup.picasso:picasso:$project.picassoVersion") {
+    implementation("com.squareup.picasso:picasso:$picassoVersion") {
         exclude group: 'com.android.support'
         exclude module: ['exifinterface', 'support-annotations']
     }
     //Network
-    implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-moshi:$project.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$project.logInterceptorVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logInterceptorVersion"
     //Json
-    implementation "com.squareup.moshi:moshi:$project.moshiVersion"
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
     // Date
-    implementation "joda-time:joda-time:$project.jodatimeVersion"
+    implementation "joda-time:joda-time:$jodatimeVersion"
+
+    //Debug
+    debugImplementation "com.facebook.stetho:stetho:$stethoVersion"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
+
     //Testing
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    testImplementation "junit:junit:$project.junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$project.runnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$project.expressoVersion"
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$expressoVersion"
 }

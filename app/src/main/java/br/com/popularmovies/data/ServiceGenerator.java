@@ -1,5 +1,6 @@
 package br.com.popularmovies.data;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.squareup.moshi.Moshi;
 
 import br.com.popularmovies.BuildConfig;
@@ -38,6 +39,7 @@ public class ServiceGenerator {
 
     private static OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder()
+                    .addNetworkInterceptor(new StethoInterceptor())
                     .addInterceptor(new AuthorizationInterceptor());
 
     public static <S> S createService(

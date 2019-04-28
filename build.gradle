@@ -7,7 +7,7 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
 
     }
 }
@@ -20,19 +20,6 @@ allprojects {
     }
 }
 
-ext{
-    supportVersion="28.0.0"
-    liveDataVersion="1.1.1"
-    constraintLayoutVersion="1.1.3"
-    picassoVersion="2.71828"
-    retrofitVersion="2.5.0"
-    logInterceptorVersion="3.8.0"
-    moshiVersion="1.8.0"
-    jodatimeVersion="2.10.1"
-    junitVersion="4.12"
-    runnerVersion="1.0.2"
-    expressoVersion="3.0.2"
-}
 
 task clean(type: Delete) {
     delete rootProject.buildDir
