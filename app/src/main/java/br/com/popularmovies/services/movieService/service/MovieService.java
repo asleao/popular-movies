@@ -1,5 +1,6 @@
 package br.com.popularmovies.services.movieService.service;
 
+import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,5 +13,5 @@ public interface MovieService {
     Call<Movies> getMovies(@Query("sort_by") String orderBy);
 
     @GET("discover/{id}/reviews")
-    Call<Movies> getMovieReviews(@Path("id") int movieId);
+    Call<MovieReviews> getMovieReviews(@Path("id") int movieId);
 }
