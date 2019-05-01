@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
@@ -31,6 +33,8 @@ public class MovieDetailFragment extends Fragment {
     private TextView mMovieReleaseDate;
     private TextView mMovieRating;
     private TextView mMovieOverview;
+    private TextView mReviews;
+
 
     public static MovieDetailFragment newInstance() {
         return new MovieDetailFragment();
@@ -41,6 +45,22 @@ public class MovieDetailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
         setupFields(view);
+        mReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieReviewFragment movieReviewFragment =
+                        (MovieReviewFragment) requireActivity().getSupportFragmentManager()
+                                .findFragmentById(R.id.fg_movie_review);
+                if (movieReviewFragment == null) {
+                    movieReviewFragment = MovieReviewFragment.newInstance();
+                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                    String movieReviewTag = "REVIEW_TAG";
+                    transaction.replace(R.id.fg_moviedetail, movieReviewFragment, movieReviewTag);
+                    transaction.addToBackStack(movieReviewTag);
+                    transaction.commit();
+                }
+            }
+        });
         Intent intent = requireActivity().getIntent();
         setData(intent);
         return view;
@@ -52,6 +72,7 @@ public class MovieDetailFragment extends Fragment {
         mMovieReleaseDate = view.findViewById(R.id.tv_movie_release_date);
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
+        mReviews = view.findViewById(R.id.tv_movie_reviews_label);
     }
 
     private void setData(Intent intent) {
@@ -77,5 +98,4 @@ public class MovieDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
     }
-
 }

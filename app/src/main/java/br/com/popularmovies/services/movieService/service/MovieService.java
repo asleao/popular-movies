@@ -12,6 +12,6 @@ public interface MovieService {
     @GET("discover/movie/")
     Call<Movies> getMovies(@Query("sort_by") String orderBy);
 
-    @GET("discover/{id}/reviews")
+    @GET("movie/{id}/reviews")
     Call<MovieReviews> getMovieReviews(@Path("id") int movieId);
 }

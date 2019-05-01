@@ -12,4 +12,6 @@
     <string name="movie_overview_label">Overview</string>
     <string name="movie_poster_content_description">Movie poster</string>
     <string name="dialog_ok"><b>OK</b></string>
+    <string name="movie_review_label">Reviews</string>
+    <string name="tv_comment_author_label">Author:</string>
 </resources>

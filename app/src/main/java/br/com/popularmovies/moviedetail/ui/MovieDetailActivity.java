@@ -1,8 +1,10 @@
 package br.com.popularmovies.moviedetail.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import br.com.popularmovies.R;
 import br.com.popularmovies.movies.ui.MovieFragment;
@@ -19,8 +21,34 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (movieDetailFragment == null) {
             movieDetailFragment = MovieDetailFragment.newInstance();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fg_moviedetail, movieDetailFragment);
+            String movieDetailTag = "MOVIE_DETAIL";
+            transaction.add(R.id.fg_moviedetail, movieDetailFragment, movieDetailTag);
             transaction.commit();
         }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            finish();
+        }
+        return true;
     }
 }
