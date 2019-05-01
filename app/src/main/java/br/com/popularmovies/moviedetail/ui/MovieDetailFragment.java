@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import br.com.popularmovies.R;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
+import br.com.popularmovies.utils.FragmentUtils;
 
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
@@ -48,17 +49,11 @@ public class MovieDetailFragment extends Fragment {
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MovieReviewFragment movieReviewFragment =
-                        (MovieReviewFragment) requireActivity().getSupportFragmentManager()
-                                .findFragmentById(R.id.fg_movie_review);
-                if (movieReviewFragment == null) {
-                    movieReviewFragment = MovieReviewFragment.newInstance();
-                    FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                    String movieReviewTag = "REVIEW_TAG";
-                    transaction.replace(R.id.fg_moviedetail, movieReviewFragment, movieReviewTag);
-                    transaction.addToBackStack(movieReviewTag);
-                    transaction.commit();
-                }
+                FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
+                        MovieReviewFragment.newInstance(),
+                        R.id.fg_moviedetail,
+                        "REVIEW_TAG",
+                        true);
             }
         });
         Intent intent = requireActivity().getIntent();
