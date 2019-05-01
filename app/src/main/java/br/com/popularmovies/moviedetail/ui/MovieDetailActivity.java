@@ -18,7 +18,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         FragmentUtils.addFragmentInActivity(getSupportFragmentManager(),
                 MovieDetailFragment.newInstance(),
                 R.id.fg_moviedetail,
-                "MOVIE_DETAIL",
+                getResources().getString(R.string.fg_movie_detail_tag),
                 false);
 
         if (getSupportActionBar() != null) {

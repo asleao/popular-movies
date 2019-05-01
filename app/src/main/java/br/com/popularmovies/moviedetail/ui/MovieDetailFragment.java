@@ -52,7 +52,7 @@ public class MovieDetailFragment extends Fragment {
                 FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
                         MovieReviewFragment.newInstance(),
                         R.id.fg_moviedetail,
-                        "REVIEW_TAG",
+                        getResources().getString(R.string.fg_movie_review_tag),
                         true);
             }
         });

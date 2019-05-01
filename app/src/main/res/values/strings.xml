@@ -14,4 +14,10 @@
     <string name="dialog_ok"><b>OK</b></string>
     <string name="movie_review_label">Reviews</string>
     <string name="tv_comment_author_label">Author:</string>
+
+
+
+    <string name="fg_movie_detail_tag">MOVIE_DETAIL_TAG</string>
+    <string name="fg_movie_review_tag">MOVIE_REVIEW_TAG</string>
+
 </resources>
