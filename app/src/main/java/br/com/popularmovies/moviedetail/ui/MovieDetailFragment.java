@@ -20,6 +20,7 @@ import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 import br.com.popularmovies.utils.FragmentUtils;
 
+import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
@@ -29,6 +30,7 @@ import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
 public class MovieDetailFragment extends Fragment {
 
     private MovieDetailViewModel mViewModel;
+    private int mMovieId;
     private TextView mMovieTitle;
     private ImageView mMoviePoster;
     private TextView mMovieReleaseDate;
@@ -50,7 +52,7 @@ public class MovieDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
-                        MovieReviewFragment.newInstance(),
+                        MovieReviewFragment.newInstance(mMovieId),
                         R.id.fg_moviedetail,
                         getResources().getString(R.string.fg_movie_review_tag),
                         true);
@@ -71,6 +73,7 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void setData(Intent intent) {
+        mMovieId = intent.getIntExtra(MOVIE_ID, -1);
         mMovieTitle.setText(intent.hasExtra(MOVIE_TITLE) ?
                 intent.getStringExtra(MOVIE_TITLE) : "");
         String imageUrl = intent.hasExtra(MOVIE_POSTER) ?

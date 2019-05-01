@@ -40,6 +40,7 @@ import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
+import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
@@ -212,6 +213,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     @Override
     public void onMovieClick(Movie movie) {
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra(MOVIE_ID, movie.getId());
         intent.putExtra(MOVIE_TITLE, movie.getOriginalTitle());
         intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
         if (movie.getReleaseDate() != null) {

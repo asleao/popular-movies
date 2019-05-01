@@ -17,8 +17,11 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter;
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel;
+import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory;
 import br.com.popularmovies.services.movieService.response.MovieReview;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
+
+import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
 public class MovieReviewFragment extends Fragment implements ReviewAdapter.ReviewClickListener {
 
@@ -26,8 +29,13 @@ public class MovieReviewFragment extends Fragment implements ReviewAdapter.Revie
     private RecyclerView mReviewsRecyclerView;
     private Observer<Resource<MovieReviews>> reviewsObserver;
 
-    public static MovieReviewFragment newInstance() {
-        return new MovieReviewFragment();
+    public static MovieReviewFragment newInstance(int movieId) {
+        MovieReviewFragment movieReviewFragment = new MovieReviewFragment();
+        Bundle args = new Bundle();
+        args.putInt(MOVIE_ID, movieId);
+        movieReviewFragment.setArguments(args);
+
+        return movieReviewFragment;
     }
 
     @Override
@@ -74,9 +82,14 @@ public class MovieReviewFragment extends Fragment implements ReviewAdapter.Revie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_review_fragment, container, false);
-        mViewModel = ViewModelProviders.of(this).get(MovieReviewViewModel.class);
-        setupReviewsList(view);
-        mViewModel.getmReviews().observe(getViewLifecycleOwner(), reviewsObserver);
+        Bundle args = getArguments();
+        if (args != null) {
+            int movieId = args.getInt(MOVIE_ID, -1);
+            mViewModel = ViewModelProviders.of(this,
+                    new MovieReviewFactory(movieId)).get(MovieReviewViewModel.class);
+            setupReviewsList(view);
+            mViewModel.getReviews().observe(getViewLifecycleOwner(), reviewsObserver);
+        }
         return view;
     }
 

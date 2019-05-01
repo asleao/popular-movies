@@ -9,16 +9,14 @@ import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 public class MovieReviewViewModel extends ViewModel {
-    private MovieRepository mMovieRepository;
-    private LiveData<Resource<MovieReviews>> mReviews;
+    private LiveData<Resource<MovieReviews>> reviews;
 
-
-    public MovieReviewViewModel() {
-        mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
-        mReviews = mMovieRepository.getMovieReviews(299537);
+    public MovieReviewViewModel(int movieId) {
+        MovieRepository mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
+        reviews = mMovieRepository.getMovieReviews(movieId);
     }
 
-    public LiveData<Resource<MovieReviews>> getmReviews() {
-        return mReviews;
+    public LiveData<Resource<MovieReviews>> getReviews() {
+        return reviews;
     }
 }

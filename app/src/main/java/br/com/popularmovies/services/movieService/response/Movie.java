@@ -32,6 +32,10 @@ public class Movie {
     @Json(name = "release_date")
     private LocalDate releaseDate;
 
+    public int getId() {
+        return id;
+    }
+
     public String getOriginalTitle() {
         return originalTitle;
     }
