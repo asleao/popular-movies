@@ -16,11 +16,9 @@ import br.com.popularmovies.services.movieService.response.MovieReview;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private List<MovieReview> mReviews;
-    final private ReviewAdapter.ReviewClickListener mOnReviewClickListener;
 
-    public ReviewAdapter(List<MovieReview> reviews, ReviewAdapter.ReviewClickListener mOnReviewClickListener) {
+    public ReviewAdapter(List<MovieReview> reviews) {
         this.mReviews = reviews;
-        this.mOnReviewClickListener = mOnReviewClickListener;
     }
 
     @NonNull
@@ -44,11 +42,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         return mReviews.size();
     }
 
-    public interface ReviewClickListener {
-        void onReviewClick(MovieReview movieReview);
-    }
-
-    class ReviewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ReviewViewHolder extends RecyclerView.ViewHolder {
         private TextView mAuthor;
         private TextView mContent;
 
@@ -56,13 +50,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             super(itemView);
             mAuthor = itemView.findViewById(R.id.tv_comment_author);
             mContent = itemView.findViewById(R.id.tv_comment_message);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            mOnReviewClickListener.onReviewClick(mReviews.get(getAdapterPosition()));
-
         }
     }
 }

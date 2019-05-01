@@ -18,14 +18,12 @@ import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter;
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel;
 import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory;
-import br.com.popularmovies.services.movieService.response.MovieReview;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
-public class MovieReviewFragment extends Fragment implements ReviewAdapter.ReviewClickListener {
+public class MovieReviewFragment extends Fragment {
 
-    private MovieReviewViewModel mViewModel;
     private RecyclerView mReviewsRecyclerView;
     private Observer<Resource<MovieReviews>> reviewsObserver;
 
@@ -56,7 +54,7 @@ public class MovieReviewFragment extends Fragment implements ReviewAdapter.Revie
                         case SUCCESS:
 //                            hideLoading();
                             if (movieReviewsResource.data != null) {
-                                ReviewAdapter mReviewAdapter = new ReviewAdapter(movieReviewsResource.data.getReviews(), MovieReviewFragment.this);
+                                ReviewAdapter mReviewAdapter = new ReviewAdapter(movieReviewsResource.data.getReviews());
                                 mReviewsRecyclerView.setAdapter(mReviewAdapter);
 //                                showResult();
                             }
@@ -85,7 +83,7 @@ public class MovieReviewFragment extends Fragment implements ReviewAdapter.Revie
         Bundle args = getArguments();
         if (args != null) {
             int movieId = args.getInt(MOVIE_ID, -1);
-            mViewModel = ViewModelProviders.of(this,
+            MovieReviewViewModel mViewModel = ViewModelProviders.of(this,
                     new MovieReviewFactory(movieId)).get(MovieReviewViewModel.class);
             setupReviewsList(view);
             mViewModel.getReviews().observe(getViewLifecycleOwner(), reviewsObserver);
@@ -96,17 +94,5 @@ public class MovieReviewFragment extends Fragment implements ReviewAdapter.Revie
     private void setupReviewsList(View view) {
         mReviewsRecyclerView = view.findViewById(R.id.rv_reviews);
         mReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MovieReviewViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
-    @Override
-    public void onReviewClick(MovieReview movieReview) {
-
     }
 }
