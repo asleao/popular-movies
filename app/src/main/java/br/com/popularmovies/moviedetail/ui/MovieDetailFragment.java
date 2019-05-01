@@ -1,12 +1,12 @@
 package br.com.popularmovies.moviedetail.ui;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +26,8 @@ import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
 import static br.com.popularmovies.movies.Constants.MOVIE_RELEASE_DATE;
 import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
+import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
+import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
 
 public class MovieDetailFragment extends Fragment {
 
@@ -51,16 +53,30 @@ public class MovieDetailFragment extends Fragment {
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
-                        MovieReviewFragment.newInstance(mMovieId),
-                        R.id.fg_moviedetail,
-                        getResources().getString(R.string.fg_movie_review_tag),
-                        true);
+                if (mMovieId != -1) {
+                    FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
+                            MovieReviewFragment.newInstance(mMovieId),
+                            R.id.fg_moviedetail,
+                            getResources().getString(R.string.fg_movie_review_tag),
+                            true);
+                } else {
+                    showNoReviewsDialog();
+                }
             }
         });
         Intent intent = requireActivity().getIntent();
         setData(intent);
         return view;
+    }
+
+    private void showNoReviewsDialog() {
+        final AlertDialog noReviewsDialog = new AlertDialog.Builder(getContext())
+                .setTitle(NO_REVIEWS_MSG_ERROR_TITLE)
+                .setMessage(NO_REVIEWS_MSG_ERROR_MESSAGE)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create();
+
+        noReviewsDialog.show();
     }
 
     private void setupFields(View view) {

@@ -19,4 +19,6 @@ public final class Constants {
     public static final String CONNECTION_MSG_ERROR = "Problems with your connection :(";
     public static final String GENERIC_MSG_ERROR_TITLE = "Something went wrong :(";
     public static final String GENERIC_MSG_ERROR_MESSAGE = "Please contact the support team.";
+    public static final String NO_REVIEWS_MSG_ERROR_TITLE = "Sorry :(";
+    public static final String NO_REVIEWS_MSG_ERROR_MESSAGE = "There are no reviews for this movie yet.";
 }
