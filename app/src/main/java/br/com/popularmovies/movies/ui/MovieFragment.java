@@ -168,7 +168,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mNoConnectionText = view.findViewById(R.id.tv_no_conection);
         mTryAgainButton = view.findViewById(R.id.bt_try_again);
-        mProgressBar = view.findViewById(R.id.pb_movies);
+        mProgressBar = view.findViewById(R.id.pb_base);
     }
 
     @Override
