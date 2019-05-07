@@ -1,7 +1,7 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
