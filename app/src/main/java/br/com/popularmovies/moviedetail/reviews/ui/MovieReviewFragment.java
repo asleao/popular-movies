@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import br.com.popularmovies.R;
-import br.com.popularmovies.base.BaseFragment;
+import br.com.popularmovies.base.interfaces.IConection;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter;
@@ -29,11 +29,15 @@ import br.com.popularmovies.services.movieService.response.MovieReviews;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
-public class MovieReviewFragment extends BaseFragment {
+public class MovieReviewFragment extends Fragment implements IConection {
 
     private MovieReviewViewModel mViewModel;
     private RecyclerView mReviewsRecyclerView;
     private Observer<Resource<MovieReviews>> reviewsObserver;
+    protected Group mNoConnectionGroup;
+    protected Button mTryAgainButton;
+    protected TextView mNoConnectionText;
+    protected ProgressBar mProgressBar;
 
     public static MovieReviewFragment newInstance(int movieId) {
         MovieReviewFragment movieReviewFragment = new MovieReviewFragment();
@@ -70,17 +74,12 @@ public class MovieReviewFragment extends BaseFragment {
                             }
                             break;
                         case ERROR:
-                            mReviewsRecyclerView.setVisibility(View.GONE);
                             ErrorResponse error = movieReviewsResource.error;
                             if (error != null) {
                                 if (error.getStatusCode() == 503) {
+                                    hideLoading();
                                     showNoConnection(error.getStatusMessage());
-//                                    tryAgain(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            mViewModel.tryAgain();
-//                                        }
-//                                    });
+                                    tryAgain();
                                 } else {
                                     showGenericError(error.getStatusMessage());
                                 }
@@ -101,14 +100,62 @@ public class MovieReviewFragment extends BaseFragment {
             int movieId = args.getInt(MOVIE_ID, -1);
             mViewModel = ViewModelProviders.of(this,
                     new MovieReviewFactory(movieId)).get(MovieReviewViewModel.class);
+            setupFields(view);
             setupReviewsList(view);
             mViewModel.getReviews().observe(getViewLifecycleOwner(), reviewsObserver);
         }
         return view;
     }
 
+    private void setupFields(View view) {
+        mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
+        mNoConnectionText = view.findViewById(R.id.tv_no_conection);
+        mTryAgainButton = view.findViewById(R.id.bt_try_again);
+        mProgressBar = view.findViewById(R.id.pb_base);
+    }
+
     private void setupReviewsList(View view) {
         mReviewsRecyclerView = view.findViewById(R.id.rv_reviews);
         mReviewsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mNoConnectionGroup.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showResult() {
+        mNoConnectionGroup.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoConnection(String message) {
+        mReviewsRecyclerView.setVisibility(View.GONE);
+        mNoConnectionText.setText(message);
+        mNoConnectionGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showGenericError(String message) {
+        final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create();
+
+        sortDialog.show();
+    }
+
+    @Override
+    public void tryAgain() {
+
     }
 }
