@@ -79,7 +79,6 @@ public class MovieReviewFragment extends Fragment implements IConection {
                                 if (error.getStatusCode() == 503) {
                                     hideLoading();
                                     showNoConnection(error.getStatusMessage());
-                                    tryAgain();
                                 } else {
                                     showGenericError(error.getStatusMessage());
                                 }
@@ -103,6 +102,12 @@ public class MovieReviewFragment extends Fragment implements IConection {
             setupFields(view);
             setupReviewsList(view);
             mViewModel.getReviews().observe(getViewLifecycleOwner(), reviewsObserver);
+            mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tryAgain();
+                }
+            });
         }
         return view;
     }
@@ -156,6 +161,6 @@ public class MovieReviewFragment extends Fragment implements IConection {
 
     @Override
     public void tryAgain() {
-
+        mViewModel.tryAgain();
     }
 }

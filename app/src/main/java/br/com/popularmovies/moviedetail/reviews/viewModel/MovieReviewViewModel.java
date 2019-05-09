@@ -1,6 +1,9 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
@@ -10,13 +13,24 @@ import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataS
 
 public class MovieReviewViewModel extends ViewModel {
     private LiveData<Resource<MovieReviews>> reviews;
+    private MutableLiveData<Integer> movieId = new MutableLiveData<>();
 
     public MovieReviewViewModel(int movieId) {
-        MovieRepository mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
-        reviews = mMovieRepository.getMovieReviews(movieId);
+        final MovieRepository mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
+        reviews = Transformations.switchMap(this.movieId, new Function<Integer, LiveData<Resource<MovieReviews>>>() {
+            @Override
+            public LiveData<Resource<MovieReviews>> apply(Integer input) {
+                return input != null ? mMovieRepository.getMovieReviews(input) : null;
+            }
+        });
+        this.movieId.setValue(movieId);
     }
 
     public LiveData<Resource<MovieReviews>> getReviews() {
         return reviews;
+    }
+
+    public void tryAgain() {
+        movieId.setValue(movieId.getValue());
     }
 }
