@@ -1,7 +1,7 @@
 package br.com.popularmovies.services.movieService.source;
 
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
