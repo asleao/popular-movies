@@ -1,6 +1,7 @@
 package br.com.popularmovies.movies;
 
 public final class Constants {
+    public static final String MOVIE_ID = "MOVIE_ID";
     public static final String MOVIE_TITLE = "MOVIE_TITLE";
     public static final String MOVIE_POSTER = "MOVIE_POSTER";
     public static final String MOVIE_RELEASE_DATE = "MOVIE_RELEASE_DATE";
@@ -18,4 +19,6 @@ public final class Constants {
     public static final String CONNECTION_MSG_ERROR = "Problems with your connection :(";
     public static final String GENERIC_MSG_ERROR_TITLE = "Something went wrong :(";
     public static final String GENERIC_MSG_ERROR_MESSAGE = "Please contact the support team.";
+    public static final String NO_REVIEWS_MSG_ERROR_TITLE = "Sorry :(";
+    public static final String NO_REVIEWS_MSG_ERROR_MESSAGE = "There are no reviews for this movie yet.";
 }

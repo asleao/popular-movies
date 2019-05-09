@@ -39,12 +39,12 @@ public class ServiceGenerator {
 
     private static OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder()
-                    .addNetworkInterceptor(new StethoInterceptor())
                     .addInterceptor(new AuthorizationInterceptor());
 
     public static <S> S createService(
             Class<S> serviceClass) {
         if (!httpClient.interceptors().contains(logging) && BuildConfig.DEBUG) {
+            httpClient.addNetworkInterceptor(new StethoInterceptor());
             httpClient.addInterceptor(logging);
             builder.client(httpClient.build());
             retrofit = builder.build();

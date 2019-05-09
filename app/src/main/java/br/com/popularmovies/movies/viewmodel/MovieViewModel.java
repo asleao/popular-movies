@@ -1,15 +1,15 @@
 package br.com.popularmovies.movies.viewmodel;
 
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
+import androidx.arch.core.util.Function;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
-import br.com.popularmovies.movies.data.response.Movies;
-import br.com.popularmovies.movies.data.source.MovieRepository;
-import br.com.popularmovies.movies.data.source.remote.MovieRemoteDataSource;
+import br.com.popularmovies.services.movieService.response.Movies;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;

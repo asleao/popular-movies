@@ -1,10 +1,11 @@
-package br.com.popularmovies.movies.data.source;
+package br.com.popularmovies.services.movieService.source;
 
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.annotation.NonNull;
 
 import br.com.popularmovies.data.model.Resource;
-import br.com.popularmovies.movies.data.response.Movies;
+import br.com.popularmovies.services.movieService.response.MovieReviews;
+import br.com.popularmovies.services.movieService.response.Movies;
 
 public class MovieRepository implements MovieDataSource {
 
@@ -30,5 +31,10 @@ public class MovieRepository implements MovieDataSource {
     @Override
     public LiveData<Resource<Movies>> getMovies(String orderBy) {
         return mMovieDataSource.getMovies(orderBy);
+    }
+
+    @Override
+    public LiveData<Resource<MovieReviews>> getMovieReviews(int movieId) {
+        return mMovieDataSource.getMovieReviews(movieId);
     }
 }

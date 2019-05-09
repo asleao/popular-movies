@@ -1,4 +1,4 @@
-package br.com.popularmovies.movies.data.response;
+package br.com.popularmovies.services.movieService.response;
 
 
 import com.squareup.moshi.Json;

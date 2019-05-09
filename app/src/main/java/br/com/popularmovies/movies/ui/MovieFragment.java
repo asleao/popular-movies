@@ -1,17 +1,17 @@
 package br.com.popularmovies.movies.ui;
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.Group;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,8 +29,8 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
-import br.com.popularmovies.movies.data.response.Movie;
-import br.com.popularmovies.movies.data.response.Movies;
+import br.com.popularmovies.services.movieService.response.Movie;
+import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
@@ -40,6 +40,7 @@ import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
+import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
@@ -167,7 +168,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mNoConnectionText = view.findViewById(R.id.tv_no_conection);
         mTryAgainButton = view.findViewById(R.id.bt_try_again);
-        mProgressBar = view.findViewById(R.id.pb_movies);
+        mProgressBar = view.findViewById(R.id.pb_base);
     }
 
     @Override
@@ -212,6 +213,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     @Override
     public void onMovieClick(Movie movie) {
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
+        intent.putExtra(MOVIE_ID, movie.getId());
         intent.putExtra(MOVIE_TITLE, movie.getOriginalTitle());
         intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
         if (movie.getReleaseDate() != null) {

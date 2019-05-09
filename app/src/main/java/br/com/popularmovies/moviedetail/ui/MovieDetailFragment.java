@@ -1,11 +1,12 @@
 package br.com.popularmovies.moviedetail.ui;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.AlertDialog;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,22 +16,30 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
+import br.com.popularmovies.utils.FragmentUtils;
 
+import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
 import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
 import static br.com.popularmovies.movies.Constants.MOVIE_RELEASE_DATE;
 import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
+import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
+import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
 
 public class MovieDetailFragment extends Fragment {
 
     private MovieDetailViewModel mViewModel;
+    private int mMovieId;
     private TextView mMovieTitle;
     private ImageView mMoviePoster;
     private TextView mMovieReleaseDate;
     private TextView mMovieRating;
     private TextView mMovieOverview;
+    private TextView mReviews;
+
 
     public static MovieDetailFragment newInstance() {
         return new MovieDetailFragment();
@@ -41,9 +50,33 @@ public class MovieDetailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
         setupFields(view);
+        mReviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMovieId != -1) {
+                    FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
+                            MovieReviewFragment.newInstance(mMovieId),
+                            R.id.fg_moviedetail,
+                            getResources().getString(R.string.fg_movie_review_tag),
+                            true);
+                } else {
+                    showNoReviewsDialog();
+                }
+            }
+        });
         Intent intent = requireActivity().getIntent();
         setData(intent);
         return view;
+    }
+
+    private void showNoReviewsDialog() {
+        final AlertDialog noReviewsDialog = new AlertDialog.Builder(getContext())
+                .setTitle(NO_REVIEWS_MSG_ERROR_TITLE)
+                .setMessage(NO_REVIEWS_MSG_ERROR_MESSAGE)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create();
+
+        noReviewsDialog.show();
     }
 
     private void setupFields(View view) {
@@ -52,9 +85,11 @@ public class MovieDetailFragment extends Fragment {
         mMovieReleaseDate = view.findViewById(R.id.tv_movie_release_date);
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
+        mReviews = view.findViewById(R.id.tv_movie_reviews_label);
     }
 
     private void setData(Intent intent) {
+        mMovieId = intent.getIntExtra(MOVIE_ID, -1);
         mMovieTitle.setText(intent.hasExtra(MOVIE_TITLE) ?
                 intent.getStringExtra(MOVIE_TITLE) : "");
         String imageUrl = intent.hasExtra(MOVIE_POSTER) ?
@@ -77,5 +112,4 @@ public class MovieDetailFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
     }
-
 }
