@@ -37,6 +37,7 @@ ext {
     runnerVersion = "1.0.2"
     stethoVersion = "1.5.1"
     expressoVersion = "3.0.2"
+    materialVersion = "1.0.0"
 }
 
 dependencies {
@@ -46,6 +47,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "org.jetbrains:annotations-java5:$javaAnnotations"
+
+    //Material Components
+    implementation "com.google.android.material:material:$materialVersion"
 
     //LiveData
     implementation 'androidx.lifecycle:lifecycle-runtime:2.0.0'
