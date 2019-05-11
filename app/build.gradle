@@ -75,6 +75,7 @@ dependencies {
 
     //Room
     implementation "android.arch.persistence.room:runtime:$archRoomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
 
     // Date
     implementation "joda-time:joda-time:$jodatimeVersion"
