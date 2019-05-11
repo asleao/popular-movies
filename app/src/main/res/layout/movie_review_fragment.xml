@@ -19,4 +19,13 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp" />
 
+    <TextView
+        android:id="@+id/tv_no_reviews"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|center_vertical"
+        android:text="@string/no_reviews"
+        android:visibility="gone"/>
+
 </FrameLayout>

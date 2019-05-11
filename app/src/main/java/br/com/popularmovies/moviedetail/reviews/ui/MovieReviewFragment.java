@@ -1,15 +1,19 @@
 package br.com.popularmovies.moviedetail.reviews.ui;
 
 import android.app.AlertDialog;
+
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +38,11 @@ public class MovieReviewFragment extends Fragment implements IConection {
     private MovieReviewViewModel mViewModel;
     private RecyclerView mReviewsRecyclerView;
     private Observer<Resource<MovieReviews>> reviewsObserver;
-    protected Group mNoConnectionGroup;
-    protected Button mTryAgainButton;
-    protected TextView mNoConnectionText;
-    protected ProgressBar mProgressBar;
+    private Group mNoConnectionGroup;
+    private Button mTryAgainButton;
+    private TextView mNoConnectionText;
+    private ProgressBar mProgressBar;
+    private TextView mNoReviews;
 
     public static MovieReviewFragment newInstance(int movieId) {
         MovieReviewFragment movieReviewFragment = new MovieReviewFragment();
@@ -68,9 +73,14 @@ public class MovieReviewFragment extends Fragment implements IConection {
                             hideLoading();
                             mReviewsRecyclerView.setVisibility(View.VISIBLE);
                             if (movieReviewsResource.data != null) {
-                                ReviewAdapter mReviewAdapter = new ReviewAdapter(movieReviewsResource.data.getReviews());
-                                mReviewsRecyclerView.setAdapter(mReviewAdapter);
-                                showResult();
+                                if (movieReviewsResource.data.getReviews().isEmpty()) {
+                                    showNoReviews();
+                                } else {
+                                    ReviewAdapter mReviewAdapter = new ReviewAdapter(movieReviewsResource.data.getReviews());
+                                    mReviewsRecyclerView.setAdapter(mReviewAdapter);
+                                    showResult();
+
+                                }
                             }
                             break;
                         case ERROR:
@@ -87,6 +97,10 @@ public class MovieReviewFragment extends Fragment implements IConection {
                     }
             }
         };
+    }
+
+    private void showNoReviews() {
+        mNoReviews.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -117,6 +131,7 @@ public class MovieReviewFragment extends Fragment implements IConection {
         mNoConnectionText = view.findViewById(R.id.tv_no_conection);
         mTryAgainButton = view.findViewById(R.id.bt_try_again);
         mProgressBar = view.findViewById(R.id.pb_base);
+        mNoReviews = view.findViewById(R.id.tv_no_reviews);
     }
 
     private void setupReviewsList(View view) {
@@ -139,6 +154,7 @@ public class MovieReviewFragment extends Fragment implements IConection {
     @Override
     public void showResult() {
         mNoConnectionGroup.setVisibility(View.GONE);
+        mNoReviews.setVisibility(View.GONE);
     }
 
     @Override
