@@ -15,8 +15,8 @@ import br.com.popularmovies.services.movieService.response.Movie;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM movie")
-    LiveData<List<Movie>> getMovies();
+    @Query("SELECT * FROM movie order by :orderBy desc")
+    LiveData<List<Movie>> getMovies(String orderBy);
 
     @Insert
     void insertMovie(Movie movie);

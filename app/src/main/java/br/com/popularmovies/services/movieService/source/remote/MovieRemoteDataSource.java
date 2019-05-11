@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import br.com.popularmovies.data.ServiceGenerator;
 import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.service.MovieService;
@@ -75,5 +76,10 @@ public class MovieRemoteDataSource implements MovieDataSource {
             }
         });
         return reviews;
+    }
+
+    @Override
+    public LiveData<Resource<Boolean>> saveMovie(Movie movie) {
+        return new MutableLiveData<Resource<Boolean>>();
     }
 }

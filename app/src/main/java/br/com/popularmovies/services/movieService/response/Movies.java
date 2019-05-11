@@ -10,6 +10,10 @@ public class Movies {
     @Json(name = "results")
     private List<Movie> movies;
 
+    public Movies(List<Movie> movies) {
+        this.movies = movies;
+    }
+
     public List<Movie> getMovies() {
         return movies;
     }

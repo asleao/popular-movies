@@ -29,9 +29,13 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
+import br.com.popularmovies.movies.viewmodel.factories.MovieFactory;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
@@ -154,7 +158,10 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
         View view = inflater.inflate(R.layout.fragment_movie, container, false);
         setupFields(view);
         setupMoviesList(view);
-        mViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
+        MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
+                , MovieRemoteDataSource.getInstance());
+        mViewModel = ViewModelProviders.of(this,
+                new MovieFactory(mMovieRepository)).get(MovieViewModel.class);
         mViewModel.getMovies().observe(getViewLifecycleOwner(), moviesObserver);
         return view;
     }
