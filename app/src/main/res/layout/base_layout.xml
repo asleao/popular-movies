@@ -15,10 +15,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:id="@+id/tv_no_conection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

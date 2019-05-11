@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_comment_author"
-        style="@style/LabelTheme"
+        style="@style/Subtitle2Theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorSecondaryDark"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/tv_comment_message"
-        style="@style/DescriptionTheme"
+        style="@style/Body2Theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
