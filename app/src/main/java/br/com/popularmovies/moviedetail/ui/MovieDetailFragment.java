@@ -51,7 +51,6 @@ public class MovieDetailFragment extends Fragment {
     private TextView mReviews;
     private AppCompatImageView mFavorites;
     private Observer<Resource<Boolean>> favorites;
-    private boolean isFavorite;
 
 
     static MovieDetailFragment newInstance() {
@@ -72,8 +71,8 @@ public class MovieDetailFragment extends Fragment {
                     switch (resource.status) {
                         case SUCCESS:
                             if (resource.data != null) {
-                                isFavorite = resource.data;
-                                setFavoritesImage(isFavorite);
+                                mMovie.setFavorite(resource.data);
+                                setFavoritesImage(mMovie.isFavorite());
                             }
                             break;
                     }
@@ -108,7 +107,7 @@ public class MovieDetailFragment extends Fragment {
         mFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.saveFavorites(!isFavorite);
+                mViewModel.saveFavorites(!mMovie.isFavorite());
             }
         });
         return view;
@@ -160,8 +159,7 @@ public class MovieDetailFragment extends Fragment {
                 "" : mMovie.getVoteAverage().toString());
         mMovieOverview.setText(mMovie.getOverview() == null ?
                 "" : mMovie.getOverview());
-        isFavorite = mMovie.isFavorite();
-        setFavoritesImage(isFavorite);
+        setFavoritesImage(mMovie.isFavorite());
     }
 
     private void setFavoritesImage(boolean isFavorite) {

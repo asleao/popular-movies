@@ -103,6 +103,10 @@ public class Movie implements Parcelable {
         return isFavorite;
     }
 
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     @Ignore
     public Movie(Parcel in) {
         this.votes = in.readInt();
