@@ -1,5 +1,8 @@
 package br.com.popularmovies.services.movieService.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -11,7 +14,7 @@ import org.joda.time.LocalDate;
 import java.math.BigDecimal;
 
 @Entity
-public class Movie {
+public class Movie implements Parcelable {
 
     @Json(name = "vote_count")
     private int votes;
@@ -99,4 +102,46 @@ public class Movie {
     public boolean isFavorite() {
         return isFavorite;
     }
+
+    @Ignore
+    public Movie(Parcel in) {
+        this.votes = in.readInt();
+        this.id = in.readInt();
+        this.voteAverage = (BigDecimal) in.readSerializable();
+        this.originalTitle = in.readString();
+        this.popularity = (BigDecimal) in.readSerializable();
+        this.poster = in.readString();
+        this.overview = in.readString();
+        this.releaseDate = (LocalDate) in.readSerializable();
+        this.isFavorite = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.votes);
+        dest.writeInt(this.id);
+        dest.writeSerializable(this.voteAverage);
+        dest.writeString(this.originalTitle);
+        dest.writeSerializable(this.popularity);
+        dest.writeString(this.poster);
+        dest.writeString(this.overview);
+        dest.writeSerializable(this.releaseDate);
+        dest.writeByte((byte) (this.isFavorite ? 1 : 0));
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

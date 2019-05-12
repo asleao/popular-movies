@@ -1,17 +1,9 @@
 package br.com.popularmovies.movies.ui;
 
 import android.app.AlertDialog;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,17 +14,26 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Locale;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import br.com.popularmovies.R;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
+import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 import br.com.popularmovies.movies.viewmodel.factories.MovieFactory;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.Movies;
-import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
@@ -40,16 +41,9 @@ import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataS
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
-import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
-import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
-import static br.com.popularmovies.movies.Constants.MOVIE_ID;
-import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
-import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
-import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
-import static br.com.popularmovies.movies.Constants.MOVIE_RELEASE_DATE;
-import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
+import static br.com.popularmovies.movies.Constants.MOVIE;
 import static br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER;
 
 public class MovieFragment extends Fragment implements MovieAdapter.MovieClickListener {
@@ -179,7 +173,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_sort, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -220,15 +214,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     @Override
     public void onMovieClick(Movie movie) {
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
-        intent.putExtra(MOVIE_ID, movie.getId());
-        intent.putExtra(MOVIE_TITLE, movie.getOriginalTitle());
-        intent.putExtra(MOVIE_POSTER, IMAGE_URL + movie.getPoster());
-        if (movie.getReleaseDate() != null) {
-            intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate()
-                    .toString(MOVIE_DATE_PATTERN, Locale.getDefault()));
-        }
-        intent.putExtra(MOVIE_RATING, movie.getVoteAverage().toString());
-        intent.putExtra(MOVIE_OVERVIEW, movie.getOverview());
+        intent.putExtra(MOVIE, movie);
         startActivity(intent);
     }
 }

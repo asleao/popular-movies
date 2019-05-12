@@ -19,29 +19,29 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 import br.com.popularmovies.R;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory;
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 import br.com.popularmovies.utils.FragmentUtils;
 
-import static br.com.popularmovies.movies.Constants.MOVIE_FAVORITE;
-import static br.com.popularmovies.movies.Constants.MOVIE_ID;
-import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
-import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
-import static br.com.popularmovies.movies.Constants.MOVIE_RATING;
-import static br.com.popularmovies.movies.Constants.MOVIE_RELEASE_DATE;
-import static br.com.popularmovies.movies.Constants.MOVIE_TITLE;
+import static br.com.popularmovies.movies.Constants.IMAGE_URL;
+import static br.com.popularmovies.movies.Constants.MOVIE;
+import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
 
 public class MovieDetailFragment extends Fragment {
 
     private MovieDetailViewModel mViewModel;
+    private Movie mMovie;
     private int mMovieId;
     private TextView mMovieTitle;
     private ImageView mMoviePoster;
@@ -142,29 +142,26 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void setData(Intent intent) {
-        mMovieId = intent.getIntExtra(MOVIE_ID, -1);
-        mMovieTitle.setText(intent.hasExtra(MOVIE_TITLE) ?
-                intent.getStringExtra(MOVIE_TITLE) : "");
-        String imageUrl = intent.hasExtra(MOVIE_POSTER) ?
-                intent.getStringExtra(MOVIE_POSTER) : "";
+        mMovie = intent.getParcelableExtra(MOVIE);
+
+        mMovieId = mMovie.getId();
+        mMovieTitle.setText(mMovie.getOriginalTitle() == null ?
+                "" : mMovie.getOriginalTitle());
+        String imageUrl = mMovie.getPoster() == null ?
+                "" : IMAGE_URL + mMovie.getPoster();
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(mMoviePoster);
-        mMovieReleaseDate.setText(intent.hasExtra(MOVIE_RELEASE_DATE) ?
-                intent.getStringExtra(MOVIE_RELEASE_DATE) : "None");
-        mMovieRating.setText(intent.hasExtra(MOVIE_RATING) ?
-                intent.getStringExtra(MOVIE_RATING) : "");
-        mMovieOverview.setText(intent.hasExtra(MOVIE_OVERVIEW) ?
-                intent.getStringExtra(MOVIE_OVERVIEW) : "");
-
-        if (intent.hasExtra(MOVIE_FAVORITE)) {
-            isFavorite = intent.getBooleanExtra(MOVIE_FAVORITE, false);
-            setFavoritesImage(isFavorite);
-        }
-        //TODO remove this line
-        setFavoritesImage(false);
+        mMovieReleaseDate.setText(mMovie.getReleaseDate() == null ?
+                "None" : mMovie.getReleaseDate().toString(MOVIE_DATE_PATTERN, Locale.getDefault()));
+        mMovieRating.setText(mMovie.getVoteAverage() == null ?
+                "" : mMovie.getVoteAverage().toString());
+        mMovieOverview.setText(mMovie.getOverview() == null ?
+                "" : mMovie.getOverview());
+        isFavorite = mMovie.isFavorite();
+        setFavoritesImage(isFavorite);
     }
 
     private void setFavoritesImage(boolean isFavorite) {
