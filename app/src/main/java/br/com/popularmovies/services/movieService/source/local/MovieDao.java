@@ -26,4 +26,7 @@ public interface MovieDao {
 
     @Delete
     void deleteMovie(Movie movie);
+
+    @Query("UPDATE movie SET isFavorite=:status WHERE movie.id=:movieId")
+    void saveFavorites(int movieId, boolean status);
 }

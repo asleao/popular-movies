@@ -1,25 +1,35 @@
 package br.com.popularmovies.moviedetail.ui;
 
 import android.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.squareup.picasso.Picasso;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
+import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 import br.com.popularmovies.utils.FragmentUtils;
 
+import static br.com.popularmovies.movies.Constants.MOVIE_FAVORITE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 import static br.com.popularmovies.movies.Constants.MOVIE_OVERVIEW;
 import static br.com.popularmovies.movies.Constants.MOVIE_POSTER;
@@ -39,10 +49,37 @@ public class MovieDetailFragment extends Fragment {
     private TextView mMovieRating;
     private TextView mMovieOverview;
     private TextView mReviews;
+    private AppCompatImageView mFavorites;
+    private Observer<Resource<Boolean>> favorites;
+    private boolean isFavorite;
 
 
-    public static MovieDetailFragment newInstance() {
+    static MovieDetailFragment newInstance() {
         return new MovieDetailFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupObservers();
+    }
+
+    private void setupObservers() {
+        favorites = new Observer<Resource<Boolean>>() {
+            @Override
+            public void onChanged(Resource<Boolean> resource) {
+                if (resource != null) {
+                    switch (resource.status) {
+                        case SUCCESS:
+                            if (resource.data != null) {
+                                isFavorite = resource.data;
+                                setFavoritesImage(isFavorite);
+                            }
+                            break;
+                    }
+                }
+            }
+        };
     }
 
     @Override
@@ -50,6 +87,7 @@ public class MovieDetailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
         setupFields(view);
+        setupViewModel();
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +104,21 @@ public class MovieDetailFragment extends Fragment {
         });
         Intent intent = requireActivity().getIntent();
         setData(intent);
+        mViewModel.getIsFavorite().observe(getViewLifecycleOwner(), favorites);
+        mFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.saveFavorites(!isFavorite);
+            }
+        });
         return view;
+    }
+
+    private void setupViewModel() {
+        MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
+                , MovieRemoteDataSource.getInstance());
+        mViewModel = ViewModelProviders.of(this,
+                new MovieDetailFactory(mMovieRepository, mMovieId)).get(MovieDetailViewModel.class);
     }
 
     private void showNoReviewsDialog() {
@@ -86,6 +138,7 @@ public class MovieDetailFragment extends Fragment {
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
         mReviews = view.findViewById(R.id.tv_movie_reviews_label);
+        mFavorites = view.findViewById(R.id.iv_favorite);
     }
 
     private void setData(Intent intent) {
@@ -105,11 +158,20 @@ public class MovieDetailFragment extends Fragment {
                 intent.getStringExtra(MOVIE_RATING) : "");
         mMovieOverview.setText(intent.hasExtra(MOVIE_OVERVIEW) ?
                 intent.getStringExtra(MOVIE_OVERVIEW) : "");
+
+        if (intent.hasExtra(MOVIE_FAVORITE)) {
+            isFavorite = intent.getBooleanExtra(MOVIE_FAVORITE, false);
+            setFavoritesImage(isFavorite);
+        }
+        //TODO remove this line
+        setFavoritesImage(false);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(MovieDetailViewModel.class);
+    private void setFavoritesImage(boolean isFavorite) {
+        if (isFavorite) {
+            mFavorites.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_black_24dp));
+        } else {
+            mFavorites.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_border_black_24dp));
+        }
     }
 }

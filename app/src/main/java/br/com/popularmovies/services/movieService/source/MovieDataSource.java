@@ -13,5 +13,5 @@ public interface MovieDataSource {
 
     LiveData<Resource<MovieReviews>> getMovieReviews(int movieId);
 
-    LiveData<Resource<Boolean>> saveMovie(Movie movie);
+    LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status);
 }

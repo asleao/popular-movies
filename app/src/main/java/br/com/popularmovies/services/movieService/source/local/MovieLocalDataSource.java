@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import br.com.popularmovies.data.local.AppDatabase;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
-import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieDataSource;
@@ -60,19 +59,19 @@ public class MovieLocalDataSource implements MovieDataSource {
     }
 
     @Override
-    public LiveData<Resource<Boolean>> saveMovie(final Movie movie) {
+    public LiveData<Resource<Boolean>> saveToFavorites(final int movieId, final boolean status) {
         final MutableLiveData<Resource<Boolean>> mMovie = new MutableLiveData<>();
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    mMovieDao.updateMovie(movie);
-                    mMovie.setValue(Resource.
-                            success(true));
+                    mMovieDao.saveFavorites(movieId, status);
+                    mMovie.postValue(Resource.
+                            success(status));
                 }
             });
         } catch (Exception e) {
-            mMovie.setValue(Resource.<Boolean>error(new ErrorResponse(500,
+            mMovie.postValue(Resource.<Boolean>error(new ErrorResponse(500,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
