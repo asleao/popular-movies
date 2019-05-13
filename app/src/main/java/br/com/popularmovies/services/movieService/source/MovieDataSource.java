@@ -2,6 +2,8 @@ package br.com.popularmovies.services.movieService.source;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
+
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
@@ -14,6 +16,8 @@ public interface MovieDataSource {
     LiveData<Resource<MovieReviews>> getMovieReviews(int movieId);
 
     LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status);
+
+    LiveData<Resource<Void>> saveMovies(List<Movie> movies);
 
     LiveData<Resource<Void>> saveMovie(Movie movie);
 }

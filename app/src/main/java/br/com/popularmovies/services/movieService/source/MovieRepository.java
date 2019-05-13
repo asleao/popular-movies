@@ -7,6 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
+import java.util.List;
+
 import br.com.popularmovies.data.CacheControl;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
@@ -53,20 +55,29 @@ public class MovieRepository implements MovieDataSource {
         movies.addSource(dbSource, new Observer<Resource<Movies>>() {
             @Override
             public void onChanged(Resource<Movies> moviesResource) {
-                if (moviesResource.data != null &&
-                        moviesResource.data.getMovies() == null
-                        || mCacheControl.shouldFetch(orderBy)) {
-                    movies.removeSource(dbSource);
-                    movies.addSource(networkSource, new Observer<Resource<Movies>>() {
-                        @Override
-                        public void onChanged(Resource<Movies> moviesResource) {
-                            mCacheControl.addRequest(orderBy, SystemClock.uptimeMillis());
-                            //TODO save all movies locally
+                switch (moviesResource.status) {
+                    case SUCCESS:
+                        if ((moviesResource.data.getMovies() == null)
+                                || mCacheControl.shouldFetch(orderBy)) {
+                            movies.removeSource(dbSource);
+                            movies.addSource(networkSource, new Observer<Resource<Movies>>() {
+                                @Override
+                                public void onChanged(Resource<Movies> moviesResource) {
+                                    mCacheControl.addRequest(orderBy, SystemClock.uptimeMillis());
+                                    if (moviesResource.status == Resource.Status.SUCCESS &&
+                                            moviesResource.data != null &&
+                                            moviesResource.data.getMovies() != null) {
+                                        saveMovies(moviesResource.data.getMovies());
+                                    }
+                                    movies.postValue(moviesResource);
+                                }
+                            });
+                        } else {
                             movies.postValue(moviesResource);
                         }
-                    });
-                } else {
-                    movies.postValue(moviesResource);
+                        break;
+                    case ERROR:
+                        break;
                 }
             }
         });
@@ -81,6 +92,11 @@ public class MovieRepository implements MovieDataSource {
     @Override
     public LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status) {
         return mMovieLocalDataSource.saveToFavorites(movieId, status);
+    }
+
+    @Override
+    public LiveData<Resource<Void>> saveMovies(List<Movie> movies) {
+        return mMovieLocalDataSource.saveMovies(movies);
     }
 
     @Override

@@ -15,11 +15,15 @@ import br.com.popularmovies.services.movieService.response.Movie;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM movie order by :orderBy desc")
-    LiveData<List<Movie>> getMovies(String orderBy);
+    //TODO Add sorting
+    @Query("SELECT * FROM Movie")
+    LiveData<List<Movie>> getMovies();
 
     @Insert
     void insertMovie(Movie movie);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllMovies(List<Movie> movies);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateMovie(Movie movie);
@@ -27,6 +31,6 @@ public interface MovieDao {
     @Delete
     void deleteMovie(Movie movie);
 
-    @Query("UPDATE movie SET isFavorite=:status WHERE movie.id=:movieId")
+    @Query("UPDATE Movie SET isFavorite=:status WHERE Movie.id=:movieId")
     void saveFavorites(int movieId, boolean status);
 }

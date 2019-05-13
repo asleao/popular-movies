@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import br.com.popularmovies.data.ServiceGenerator;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
@@ -85,6 +87,11 @@ public class MovieRemoteDataSource implements MovieDataSource {
     @Override
     public LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status) {
         return new MutableLiveData();
+    }
+
+    @Override
+    public LiveData<Resource<Void>> saveMovies(List<Movie> movies) {
+        return null;
     }
 
     @Override

@@ -3,7 +3,11 @@ package br.com.popularmovies.services.movieService.source.local;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import java.util.List;
 
 import br.com.popularmovies.data.local.AppDatabase;
 import br.com.popularmovies.data.model.ErrorResponse;
@@ -41,14 +45,20 @@ public class MovieLocalDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Movies>> getMovies(final String orderBy) {
-        final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
-
+        final MediatorLiveData<Resource<Movies>> movies = new MediatorLiveData<>();
+        movies.postValue(Resource.
+                <Movies>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    movies.postValue(Resource.
-                            success(new Movies(mMovieDao.getMovies(orderBy).getValue())));
+                    //TODO Add sorting
+                    movies.addSource(mMovieDao.getMovies(), new Observer<List<Movie>>() {
+                        @Override
+                        public void onChanged(List<Movie> fetchedMovies) {
+                            movies.postValue(Resource.success(new Movies(fetchedMovies)));
+                        }
+                    });
                 }
             });
         } catch (Exception e) {
@@ -66,6 +76,8 @@ public class MovieLocalDataSource implements MovieDataSource {
     @Override
     public LiveData<Resource<Boolean>> saveToFavorites(final int movieId, final boolean status) {
         final MutableLiveData<Resource<Boolean>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(Resource.
+                <Boolean>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
@@ -83,8 +95,31 @@ public class MovieLocalDataSource implements MovieDataSource {
     }
 
     @Override
+    public LiveData<Resource<Void>> saveMovies(final List<Movie> movies) {
+        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(Resource.
+                <Void>loading());
+        try {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mMovieDao.insertAllMovies(movies);
+                    mMovie.postValue(Resource.<Void>
+                            success(null));
+                }
+            });
+        } catch (Exception e) {
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
+                    ROOM_MSG_ERROR)));
+        }
+        return mMovie;
+    }
+
+    @Override
     public LiveData<Resource<Void>> saveMovie(final Movie movie) {
         final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(Resource.
+                <Void>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
