@@ -13,7 +13,7 @@ import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 
-@Entity
+@Entity(tableName = "movie")
 public class Movie implements Parcelable {
 
     @Json(name = "vote_count")
