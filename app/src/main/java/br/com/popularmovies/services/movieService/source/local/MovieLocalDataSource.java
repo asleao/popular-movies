@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import br.com.popularmovies.data.local.AppDatabase;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieDataSource;
@@ -34,6 +35,10 @@ public class MovieLocalDataSource implements MovieDataSource {
         return INSTANCE;
     }
 
+    public static void destroyInstance() {
+        INSTANCE = null;
+    }
+
     @Override
     public LiveData<Resource<Movies>> getMovies(final String orderBy) {
         final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
@@ -42,12 +47,12 @@ public class MovieLocalDataSource implements MovieDataSource {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    movies.setValue(Resource.
+                    movies.postValue(Resource.
                             success(new Movies(mMovieDao.getMovies(orderBy).getValue())));
                 }
             });
         } catch (Exception e) {
-            movies.setValue(Resource.<Movies>error(new ErrorResponse(500,
+            movies.postValue(Resource.<Movies>error(new ErrorResponse(500,
                     ROOM_MSG_ERROR)));
         }
         return movies;
@@ -72,6 +77,25 @@ public class MovieLocalDataSource implements MovieDataSource {
             });
         } catch (Exception e) {
             mMovie.postValue(Resource.<Boolean>error(new ErrorResponse(500,
+                    ROOM_MSG_ERROR)));
+        }
+        return mMovie;
+    }
+
+    @Override
+    public LiveData<Resource<Void>> saveMovie(final Movie movie) {
+        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
+        try {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mMovieDao.insertMovie(movie);
+                    mMovie.postValue(Resource.<Void>
+                            success(null));
+                }
+            });
+        } catch (Exception e) {
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;

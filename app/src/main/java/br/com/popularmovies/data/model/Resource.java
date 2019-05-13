@@ -18,7 +18,7 @@ public class Resource<T> {
         this.error = error;
     }
 
-    public static <T> Resource<T> success(@NonNull T data) {
+    public static <T> Resource<T> success(T data) {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 
