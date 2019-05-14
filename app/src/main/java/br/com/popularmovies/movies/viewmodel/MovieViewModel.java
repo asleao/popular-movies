@@ -42,7 +42,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void setMovieSortBy(String sortBy) {
-        mSortBy.setValue(sortBy);
+        mSortBy.postValue(sortBy);
     }
 
 

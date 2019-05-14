@@ -7,15 +7,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.com.popularmovies.data.CacheControl;
+import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
+import br.com.popularmovies.utils.AppExecutors;
 
 import static br.com.popularmovies.data.Constants.CACHE_TIMEOUT;
+import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
+import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
 
 public class MovieRepository implements MovieDataSource {
 
@@ -58,7 +67,8 @@ public class MovieRepository implements MovieDataSource {
                 switch (moviesResource.status) {
                     case SUCCESS:
                         if ((moviesResource.data.getMovies() == null)
-                                || mCacheControl.shouldFetch(orderBy)) {
+                                || mCacheControl.shouldFetch(orderBy)
+                                && isOnline()) {
                             movies.removeSource(dbSource);
                             movies.addSource(networkSource, new Observer<Resource<Movies>>() {
                                 @Override
@@ -73,15 +83,37 @@ public class MovieRepository implements MovieDataSource {
                                 }
                             });
                         } else {
-                            movies.postValue(moviesResource);
+                            if (!moviesResource.data.getMovies().isEmpty()) {
+                                movies.postValue(moviesResource);
+                            } else {
+                                ErrorResponse error = new ErrorResponse(503,
+                                        CONNECTION_MSG_ERROR);
+                                movies.postValue(Resource.<Movies>error(error));
+                            }
                         }
                         break;
                     case ERROR:
+                        movies.postValue(moviesResource);
                         break;
                 }
             }
         });
         return movies;
+    }
+
+    public boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override

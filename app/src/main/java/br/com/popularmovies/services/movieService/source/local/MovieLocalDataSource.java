@@ -49,18 +49,14 @@ public class MovieLocalDataSource implements MovieDataSource {
         movies.postValue(Resource.
                 <Movies>loading());
         try {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            //TODO Add sorting
+            movies.addSource(mMovieDao.getMovies(), new Observer<List<Movie>>() {
                 @Override
-                public void run() {
-                    //TODO Add sorting
-                    movies.addSource(mMovieDao.getMovies(), new Observer<List<Movie>>() {
-                        @Override
-                        public void onChanged(List<Movie> fetchedMovies) {
-                            movies.postValue(Resource.success(new Movies(fetchedMovies)));
-                        }
-                    });
+                public void onChanged(List<Movie> fetchedMovies) {
+                    movies.postValue(Resource.success(new Movies(fetchedMovies)));
                 }
             });
+
         } catch (Exception e) {
             movies.postValue(Resource.<Movies>error(new ErrorResponse(500,
                     ROOM_MSG_ERROR)));
