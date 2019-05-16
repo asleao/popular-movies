@@ -20,7 +20,6 @@ public class MovieDetailViewModel extends ViewModel {
                         return status == null ? null : mMovieRepository.saveToFavorites(movieId, status);
                     }
                 }
-
         );
     }
 
