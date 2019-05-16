@@ -17,7 +17,7 @@ android {
             buildConfigField "String", "MdbApiKey", MdbApiKey
         }
         debug {
-            minifyEnabled true
+            minifyEnabled false
             buildConfigField "String", "MdbApiKey", MdbApiKey
         }
     }
