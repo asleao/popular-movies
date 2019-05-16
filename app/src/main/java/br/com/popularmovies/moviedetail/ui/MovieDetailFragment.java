@@ -86,7 +86,6 @@ public class MovieDetailFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
         setupFields(view);
-        setupViewModel();
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +102,7 @@ public class MovieDetailFragment extends Fragment {
         });
         Intent intent = requireActivity().getIntent();
         setData(intent);
+        setupViewModel();
         mViewModel.getIsFavorite().observe(getViewLifecycleOwner(), favorites);
         mFavorites.setOnClickListener(new View.OnClickListener() {
             @Override

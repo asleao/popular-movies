@@ -16,7 +16,7 @@ import br.com.popularmovies.services.movieService.response.Movie;
 public interface MovieDao {
 
     //TODO Add sorting
-    @Query("SELECT * FROM Movie")
+    @Query("SELECT * FROM movie ORDER BY popularity desc")
     LiveData<List<Movie>> getMovies();
 
     @Insert
@@ -31,6 +31,6 @@ public interface MovieDao {
     @Delete
     void deleteMovie(Movie movie);
 
-    @Query("UPDATE Movie SET isFavorite=:status WHERE Movie.id=:movieId")
+    @Query("UPDATE movie SET isFavorite = :status WHERE id = :movieId")
     void saveFavorites(int movieId, boolean status);
 }
