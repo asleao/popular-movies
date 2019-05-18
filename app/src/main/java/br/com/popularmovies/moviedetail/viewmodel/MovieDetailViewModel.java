@@ -51,10 +51,6 @@ public class MovieDetailViewModel extends ViewModel {
         this.movie = movie;
     }
 
-    public void setFavorites(boolean status) {
-        this.movie.setFavorite(status);
-    }
-
     public void saveFavorites(boolean status) {
         this.movieStatus.setValue(status);
     }
