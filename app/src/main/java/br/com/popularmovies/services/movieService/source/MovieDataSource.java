@@ -13,6 +13,8 @@ public interface MovieDataSource {
 
     LiveData<Resource<Movies>> getMovies(String orderBy);
 
+    LiveData<Resource<Movie>> getMovie(int movieId);
+
     LiveData<Resource<MovieReviews>> getMovieReviews(int movieId);
 
     LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status);

@@ -1,5 +1,6 @@
 package br.com.popularmovies.services.movieService.service;
 
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import retrofit2.Call;
@@ -14,4 +15,7 @@ public interface MovieService {
 
     @GET("movie/{id}/reviews")
     Call<MovieReviews> getMovieReviews(@Path("id") int movieId);
+
+    @GET("movie/{id}")
+    Call<Movie> getMovie(@Path("id") int movieId);
 }

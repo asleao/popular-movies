@@ -65,6 +65,26 @@ public class MovieRemoteDataSource implements MovieDataSource {
     }
 
     @Override
+    public LiveData<Resource<Movie>> getMovie(int movieId) {
+        Call<Movie> call = mMovieService.getMovie(movieId);
+        final ApiResponse<Movie> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
+        final MutableLiveData<Resource<Movie>> movie = new MutableLiveData<>();
+        movie.setValue(Resource.<Movie>loading());
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NotNull Call<Movie> call, @NotNull Response<Movie> response) {
+                movie.setValue(apiResponse.getApiOnResponse(response));
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
+                movie.setValue(apiResponse.getApiOnFailure(t));
+            }
+        });
+        return movie;
+    }
+
+    @Override
     public LiveData<Resource<MovieReviews>> getMovieReviews(int movieId) {
         Call<MovieReviews> call = mMovieService.getMovieReviews(movieId);
         final ApiResponse<MovieReviews> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);

@@ -49,7 +49,6 @@ public class MovieLocalDataSource implements MovieDataSource {
         movies.postValue(Resource.
                 <Movies>loading());
         try {
-            //TODO Add sorting
             movies.addSource(mMovieDao.getMovies(), new Observer<List<Movie>>() {
                 @Override
                 public void onChanged(List<Movie> fetchedMovies) {
@@ -62,6 +61,26 @@ public class MovieLocalDataSource implements MovieDataSource {
                     ROOM_MSG_ERROR)));
         }
         return movies;
+    }
+
+    @Override
+    public LiveData<Resource<Movie>> getMovie(final int movieId) {
+        final MediatorLiveData<Resource<Movie>> movie = new MediatorLiveData<>();
+        movie.postValue(Resource.
+                <Movie>loading());
+        try {
+            movie.addSource(mMovieDao.getMovie(movieId), new Observer<Movie>() {
+                @Override
+                public void onChanged(Movie fetchedMovie) {
+                    movie.postValue(Resource.success(fetchedMovie));
+                }
+            });
+
+        } catch (Exception e) {
+            movie.postValue(Resource.<Movie>error(new ErrorResponse(500,
+                    ROOM_MSG_ERROR)));
+        }
+        return movie;
     }
 
     @Override

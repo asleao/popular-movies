@@ -51,6 +51,7 @@ public class MovieDetailFragment extends Fragment {
     private TextView mReviews;
     private AppCompatImageView mFavorites;
     private Observer<Resource<Void>> favorites;
+    private Observer<Resource<Movie>> movie;
 
 
     static MovieDetailFragment newInstance() {
@@ -64,14 +65,26 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void setupObservers() {
+        movie = new Observer<Resource<Movie>>() {
+            @Override
+            public void onChanged(Resource<Movie> movieResource) {
+                switch (movieResource.status) {
+                    case SUCCESS:
+                        if (movieResource.data != null) {
+                            mViewModel.setMovie(movieResource.data);
+                            setFavoritesImage(movieResource.data.isFavorite());
+                        }
+                        break;
+                }
+            }
+        };
         favorites = new Observer<Resource<Void>>() {
             @Override
             public void onChanged(Resource<Void> resource) {
                 if (resource != null) {
                     switch (resource.status) {
                         case SUCCESS:
-                            mMovie.setFavorite(!mMovie.isFavorite());
-                            setFavoritesImage(mMovie.isFavorite());
+                            setFavoritesImage(mViewModel.getMovie().isFavorite());
                             break;
                     }
                 }
@@ -101,11 +114,12 @@ public class MovieDetailFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         setData(intent);
         setupViewModel();
-        mViewModel.getResult().observe(getViewLifecycleOwner(), favorites);
+        mViewModel.getFavorites().observe(getViewLifecycleOwner(), favorites);
+        mViewModel.getmMovie().observe(getViewLifecycleOwner(), movie);
         mFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.saveFavorites(!mMovie.isFavorite());
+                mViewModel.saveFavorites(!mViewModel.getMovie().isFavorite());
             }
         });
         return view;
@@ -115,7 +129,7 @@ public class MovieDetailFragment extends Fragment {
         MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
                 , MovieRemoteDataSource.getInstance());
         mViewModel = ViewModelProviders.of(this,
-                new MovieDetailFactory(mMovieRepository, mMovie)).get(MovieDetailViewModel.class);
+                new MovieDetailFactory(mMovieRepository, mMovie.getId())).get(MovieDetailViewModel.class);
     }
 
     private void showNoReviewsDialog() {
@@ -157,7 +171,6 @@ public class MovieDetailFragment extends Fragment {
                 "" : mMovie.getVoteAverage().toString());
         mMovieOverview.setText(mMovie.getOverview() == null ?
                 "" : mMovie.getOverview());
-        setFavoritesImage(mMovie.isFavorite());
     }
 
     private void setFavoritesImage(boolean isFavorite) {
