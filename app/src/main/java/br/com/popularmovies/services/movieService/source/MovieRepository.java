@@ -63,4 +63,9 @@ public class MovieRepository implements MovieDataSource {
     public LiveData<Resource<Void>> saveMovie(Movie movie) {
         return mMovieLocalDataSource.saveMovie(movie);
     }
+
+    @Override
+    public LiveData<Resource<Void>> removeMovie(Movie movie) {
+        return mMovieLocalDataSource.removeMovie(movie);
+    }
 }

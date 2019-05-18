@@ -50,7 +50,7 @@ public class MovieDetailFragment extends Fragment {
     private TextView mMovieOverview;
     private TextView mReviews;
     private AppCompatImageView mFavorites;
-    private Observer<Resource<Boolean>> favorites;
+    private Observer<Resource<Void>> favorites;
 
 
     static MovieDetailFragment newInstance() {
@@ -64,16 +64,14 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void setupObservers() {
-        favorites = new Observer<Resource<Boolean>>() {
+        favorites = new Observer<Resource<Void>>() {
             @Override
-            public void onChanged(Resource<Boolean> resource) {
+            public void onChanged(Resource<Void> resource) {
                 if (resource != null) {
                     switch (resource.status) {
                         case SUCCESS:
-                            if (resource.data != null) {
-                                mMovie.setFavorite(resource.data);
-                                setFavoritesImage(mMovie.isFavorite());
-                            }
+                            mMovie.setFavorite(!mMovie.isFavorite());
+                            setFavoritesImage(mMovie.isFavorite());
                             break;
                     }
                 }
@@ -103,7 +101,7 @@ public class MovieDetailFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         setData(intent);
         setupViewModel();
-        mViewModel.getIsFavorite().observe(getViewLifecycleOwner(), favorites);
+        mViewModel.getResult().observe(getViewLifecycleOwner(), favorites);
         mFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +115,7 @@ public class MovieDetailFragment extends Fragment {
         MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
                 , MovieRemoteDataSource.getInstance());
         mViewModel = ViewModelProviders.of(this,
-                new MovieDetailFactory(mMovieRepository, mMovieId)).get(MovieDetailViewModel.class);
+                new MovieDetailFactory(mMovieRepository, mMovie)).get(MovieDetailViewModel.class);
     }
 
     private void showNoReviewsDialog() {

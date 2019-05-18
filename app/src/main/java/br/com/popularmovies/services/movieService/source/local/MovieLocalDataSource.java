@@ -132,4 +132,25 @@ public class MovieLocalDataSource implements MovieDataSource {
         return mMovie;
     }
 
+    @Override
+    public LiveData<Resource<Void>> removeMovie(final Movie movie) {
+        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(Resource.
+                <Void>loading());
+        try {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mMovieDao.deleteMovie(movie);
+                    mMovie.postValue(Resource.<Void>
+                            success(null));
+                }
+            });
+        } catch (Exception e) {
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
+                    ROOM_MSG_ERROR)));
+        }
+        return mMovie;
+    }
+
 }

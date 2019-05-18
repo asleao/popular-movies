@@ -98,4 +98,9 @@ public class MovieRemoteDataSource implements MovieDataSource {
     public LiveData<Resource<Void>> saveMovie(Movie movie) {
         return null;
     }
+
+    @Override
+    public LiveData<Resource<Void>> removeMovie(Movie movie) {
+        return null;
+    }
 }

@@ -15,15 +15,17 @@ import br.com.popularmovies.services.movieService.response.Movie;
 @Dao
 public interface MovieDao {
 
-    //TODO Add sorting
-    @Query("SELECT * FROM movie ORDER BY popularity desc")
+    @Query("SELECT * FROM movie")
     LiveData<List<Movie>> getMovies();
 
-    @Insert
-    void insertMovie(Movie movie);
+    @Query("SELECT * FROM movie WHERE id = :movieId")
+    LiveData<Movie> getMovies(int movieId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllMovies(List<Movie> movies);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertMovie(Movie movie);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateMovie(Movie movie);

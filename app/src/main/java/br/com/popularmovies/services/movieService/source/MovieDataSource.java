@@ -20,4 +20,6 @@ public interface MovieDataSource {
     LiveData<Resource<Void>> saveMovies(List<Movie> movies);
 
     LiveData<Resource<Void>> saveMovie(Movie movie);
+
+    LiveData<Resource<Void>> removeMovie(Movie movie);
 }

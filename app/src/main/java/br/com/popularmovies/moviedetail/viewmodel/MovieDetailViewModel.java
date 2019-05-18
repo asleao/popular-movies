@@ -7,24 +7,36 @@ import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 public class MovieDetailViewModel extends ViewModel {
-    private LiveData<Resource<Boolean>> isFavorite;
+    private LiveData<Resource<Void>> result;
     private MutableLiveData<Boolean> movieStatus = new MutableLiveData<>();
 
-    public MovieDetailViewModel(final MovieRepository mMovieRepository, final int movieId) {
-        isFavorite = Transformations.switchMap(movieStatus, new Function<Boolean, LiveData<Resource<Boolean>>>() {
-                    @Override
-                    public LiveData<Resource<Boolean>> apply(Boolean status) {
-                        return status == null ? null : mMovieRepository.saveToFavorites(movieId, status);
+    public MovieDetailViewModel(final MovieRepository mMovieRepository, final Movie movie) {
+        result = Transformations.switchMap(movieStatus, new Function<Boolean, LiveData<Resource<Void>>>() {
+            @Override
+            public LiveData<Resource<Void>> apply(Boolean isFavorite) {
+                if (isFavorite != null) {
+                    if (isFavorite) {
+                        return mMovieRepository.saveMovie(movie);
+                    } else {
+                        return mMovieRepository.removeMovie(movie);
                     }
                 }
-        );
+                return null;
+            }
+        });
     }
 
-    public LiveData<Resource<Boolean>> getIsFavorite() {
-        return isFavorite;
+
+    public LiveData<Resource<Void>> getResult() {
+        return result;
+    }
+
+    public MutableLiveData<Boolean> getMovieStatus() {
+        return movieStatus;
     }
 
     public void saveFavorites(boolean status) {
