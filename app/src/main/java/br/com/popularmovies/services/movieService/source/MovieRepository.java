@@ -1,31 +1,14 @@
 package br.com.popularmovies.services.movieService.source;
 
-import android.os.SystemClock;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import br.com.popularmovies.data.CacheControl;
-import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
-import br.com.popularmovies.utils.AppExecutors;
-
-import static br.com.popularmovies.data.Constants.CACHE_TIMEOUT;
-import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
-import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
-import static br.com.popularmovies.utils.NetworkUtils.isOnline;
 
 public class MovieRepository implements MovieDataSource {
 
@@ -34,7 +17,6 @@ public class MovieRepository implements MovieDataSource {
     private MovieDataSource mMovieLocalDataSource;
     private MovieDataSource mMovieRemoteDataSource;
 
-    private CacheControl mCacheControl = new CacheControl(CACHE_TIMEOUT);
 
     private MovieRepository(@NonNull MovieDataSource mMovieLocalDataSource, @NonNull MovieDataSource mMovieRemoteDataSource) {
         this.mMovieLocalDataSource = mMovieLocalDataSource;
@@ -59,47 +41,7 @@ public class MovieRepository implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Movies>> getMovies(final String orderBy) {
-        final MediatorLiveData<Resource<Movies>> movies = new MediatorLiveData<>();
-        final LiveData<Resource<Movies>> dbSource = mMovieLocalDataSource.getMovies(orderBy);
-        final LiveData<Resource<Movies>> networkSource = mMovieRemoteDataSource.getMovies(orderBy);
-        movies.addSource(dbSource, new Observer<Resource<Movies>>() {
-            @Override
-            public void onChanged(Resource<Movies> moviesResource) {
-                switch (moviesResource.status) {
-                    case SUCCESS:
-                        if ((moviesResource.data.getMovies() == null)
-                                || mCacheControl.shouldFetch(orderBy)
-                                && isOnline()) {
-                            movies.removeSource(dbSource);
-                            movies.addSource(networkSource, new Observer<Resource<Movies>>() {
-                                @Override
-                                public void onChanged(Resource<Movies> moviesResource) {
-                                    mCacheControl.addRequest(orderBy, SystemClock.uptimeMillis());
-                                    if (moviesResource.status == Resource.Status.SUCCESS &&
-                                            moviesResource.data != null &&
-                                            moviesResource.data.getMovies() != null) {
-                                        saveMovies(moviesResource.data.getMovies());
-                                    }
-                                    movies.postValue(moviesResource);
-                                }
-                            });
-                        } else {
-                            if (!moviesResource.data.getMovies().isEmpty()) {
-                                movies.postValue(moviesResource);
-                            } else {
-                                ErrorResponse error = new ErrorResponse(503,
-                                        CONNECTION_MSG_ERROR);
-                                movies.postValue(Resource.<Movies>error(error));
-                            }
-                        }
-                        break;
-                    case ERROR:
-                        movies.postValue(moviesResource);
-                        break;
-                }
-            }
-        });
-        return movies;
+        return mMovieRemoteDataSource.getMovies(orderBy);
     }
 
     @Override
