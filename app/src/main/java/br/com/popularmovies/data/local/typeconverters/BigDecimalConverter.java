@@ -8,7 +8,7 @@ import java.math.RoundingMode;
 public class BigDecimalConverter {
     @TypeConverter
     public static BigDecimal fromLong(Long number) {
-        return number == null ? null : new BigDecimal(number).divide(new BigDecimal(100), RoundingMode.HALF_EVEN);
+        return number == null ? null : new BigDecimal(number).movePointLeft(2).setScale(1, BigDecimal.ROUND_HALF_EVEN);
     }
 
     @TypeConverter
