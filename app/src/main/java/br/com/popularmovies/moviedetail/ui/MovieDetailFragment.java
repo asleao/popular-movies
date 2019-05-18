@@ -69,11 +69,16 @@ public class MovieDetailFragment extends Fragment {
             @Override
             public void onChanged(Resource<Movie> movieResource) {
                 switch (movieResource.status) {
+                    case LOADING:
+                        break;
                     case SUCCESS:
                         if (movieResource.data != null) {
+                            showMovieDetails(movieResource.data);
                             mViewModel.setMovie(movieResource.data);
                             setFavoritesImage(movieResource.data.isFavorite());
                         }
+                        break;
+                    case ERROR:
                         break;
                 }
             }
@@ -83,8 +88,12 @@ public class MovieDetailFragment extends Fragment {
             public void onChanged(Resource<Void> resource) {
                 if (resource != null) {
                     switch (resource.status) {
+                        case LOADING:
+                            break;
                         case SUCCESS:
                             setFavoritesImage(mViewModel.getMovie().isFavorite());
+                            break;
+                        case ERROR:
                             break;
                     }
                 }
@@ -96,7 +105,18 @@ public class MovieDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.movie_detail_fragment, container, false);
+        Intent intent = requireActivity().getIntent();
         setupFields(view);
+        setData(intent);
+        setupViewModel();
+        mViewModel.getFavorites().observe(getViewLifecycleOwner(), favorites);
+        mViewModel.getmMovie().observe(getViewLifecycleOwner(), movie);
+        mFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.saveFavorites(!mViewModel.getMovie().isFavorite());
+            }
+        });
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,17 +129,6 @@ public class MovieDetailFragment extends Fragment {
                 } else {
                     showNoReviewsDialog();
                 }
-            }
-        });
-        Intent intent = requireActivity().getIntent();
-        setData(intent);
-        setupViewModel();
-        mViewModel.getFavorites().observe(getViewLifecycleOwner(), favorites);
-        mViewModel.getmMovie().observe(getViewLifecycleOwner(), movie);
-        mFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.saveFavorites(!mViewModel.getMovie().isFavorite());
             }
         });
         return view;
@@ -154,23 +163,25 @@ public class MovieDetailFragment extends Fragment {
 
     private void setData(Intent intent) {
         mMovie = intent.getParcelableExtra(MOVIE);
-
         mMovieId = mMovie.getId();
-        mMovieTitle.setText(mMovie.getOriginalTitle() == null ?
-                "" : mMovie.getOriginalTitle());
-        String imageUrl = mMovie.getPoster() == null ?
-                "" : IMAGE_URL + mMovie.getPoster();
+    }
+
+    private void showMovieDetails(Movie movie) {
+        mMovieTitle.setText(movie.getOriginalTitle() == null ?
+                "" : movie.getOriginalTitle());
+        String imageUrl = movie.getPoster() == null ?
+                "" : IMAGE_URL + movie.getPoster();
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(mMoviePoster);
-        mMovieReleaseDate.setText(mMovie.getReleaseDate() == null ?
-                "None" : mMovie.getReleaseDate().toString(MOVIE_DATE_PATTERN, Locale.getDefault()));
-        mMovieRating.setText(mMovie.getVoteAverage() == null ?
-                "" : mMovie.getVoteAverage().toString());
-        mMovieOverview.setText(mMovie.getOverview() == null ?
-                "" : mMovie.getOverview());
+        mMovieReleaseDate.setText(movie.getReleaseDate() == null ?
+                "None" : movie.getReleaseDate().toString(MOVIE_DATE_PATTERN, Locale.getDefault()));
+        mMovieRating.setText(movie.getVoteAverage() == null ?
+                "" : movie.getVoteAverage().toString());
+        mMovieOverview.setText(movie.getOverview() == null ?
+                "" : movie.getOverview());
     }
 
     private void setFavoritesImage(boolean isFavorite) {
