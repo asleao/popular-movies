@@ -13,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-import static br.com.popularmovies.data.Constants.API_DATE_PATTERN;
 import static br.com.popularmovies.data.Constants.API_VERSION;
 import static br.com.popularmovies.data.Constants.HOST;
 import static br.com.popularmovies.data.Constants.SCHEME;
@@ -23,7 +22,7 @@ public class ServiceGenerator {
 
     private static final Moshi moshiFactory = new Moshi.Builder()
             .add(new BigDecimalAdapter())
-            .add(new DateAdapter(API_DATE_PATTERN))
+            .add(new DateAdapter())
             .build();
 
     private static Retrofit.Builder builder =

@@ -6,12 +6,6 @@ import com.squareup.moshi.ToJson;
 import org.joda.time.LocalDate;
 
 public class DateAdapter {
-    private String datePattern;
-
-
-    public DateAdapter(String datePattern) {
-        this.datePattern = datePattern;
-    }
 
     @ToJson
     String toJson(LocalDate date) {
