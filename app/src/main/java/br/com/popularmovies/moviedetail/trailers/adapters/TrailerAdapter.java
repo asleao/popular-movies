@@ -15,6 +15,8 @@ import java.util.List;
 import br.com.popularmovies.R;
 import br.com.popularmovies.services.movieService.response.MovieTrailer;
 
+import static br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL;
+
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewViewHolder> {
 
     private List<MovieTrailer> mTrailers;
@@ -46,7 +48,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewVi
         movieViewHolder.mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnTrailerClickListener.onShare("http://www.youtube.com/watch?v=" + movieTrailer.getKey());
+                mOnTrailerClickListener.onShare(YOUTUBE_URL + movieTrailer.getKey());
             }
         });
 

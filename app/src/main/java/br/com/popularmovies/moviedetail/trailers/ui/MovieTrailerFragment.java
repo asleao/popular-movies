@@ -36,6 +36,7 @@ import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSou
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
+import static br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
@@ -189,7 +190,6 @@ public class MovieTrailerFragment extends Fragment implements IConection, Traile
 
     @Override
     public void onPlay(String videoKey) {
-        String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoKey));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(YOUTUBE_URL + videoKey));
