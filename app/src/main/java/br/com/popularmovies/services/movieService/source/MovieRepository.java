@@ -10,6 +10,7 @@ import java.util.List;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
+import br.com.popularmovies.services.movieService.response.MovieTrailers;
 import br.com.popularmovies.services.movieService.response.Movies;
 
 import static br.com.popularmovies.movies.Constants.FILTER_FAVORITES;
@@ -18,8 +19,8 @@ public class MovieRepository implements MovieDataSource {
 
     private volatile static MovieRepository INSTANCE = null;
 
-    private MovieDataSource mMovieLocalDataSource;
-    private MovieDataSource mMovieRemoteDataSource;
+    private final MovieDataSource mMovieLocalDataSource;
+    private final MovieDataSource mMovieRemoteDataSource;
 
 
     private MovieRepository(@NonNull MovieDataSource mMovieLocalDataSource, @NonNull MovieDataSource mMovieRemoteDataSource) {
@@ -106,5 +107,10 @@ public class MovieRepository implements MovieDataSource {
     @Override
     public LiveData<Resource<Void>> removeMovie(Movie movie) {
         return mMovieLocalDataSource.removeMovie(movie);
+    }
+
+    @Override
+    public LiveData<Resource<MovieTrailers>> getMovieTrailers(int movieId) {
+        return mMovieRemoteDataSource.getMovieTrailers(movieId);
     }
 }

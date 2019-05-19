@@ -7,6 +7,7 @@ import java.util.List;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
+import br.com.popularmovies.services.movieService.response.MovieTrailers;
 import br.com.popularmovies.services.movieService.response.Movies;
 
 public interface MovieDataSource {
@@ -24,4 +25,6 @@ public interface MovieDataSource {
     LiveData<Resource<Void>> saveMovie(Movie movie);
 
     LiveData<Resource<Void>> removeMovie(Movie movie);
+
+    LiveData<Resource<MovieTrailers>> getMovieTrailers(int movieId);
 }

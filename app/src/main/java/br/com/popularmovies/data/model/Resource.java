@@ -3,8 +3,6 @@ package br.com.popularmovies.data.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Resource<T> {
     @NonNull
     public final Status status;
@@ -20,7 +18,7 @@ public class Resource<T> {
         this.error = error;
     }
 
-    public static <T> Resource<T> success(@NotNull T data) {
+    public static <T> Resource<T> success(T data) {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 

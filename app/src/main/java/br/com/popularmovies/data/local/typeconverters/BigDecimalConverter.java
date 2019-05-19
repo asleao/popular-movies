@@ -3,7 +3,6 @@ package br.com.popularmovies.data.local.typeconverters;
 import androidx.room.TypeConverter;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 public class BigDecimalConverter {
     @TypeConverter

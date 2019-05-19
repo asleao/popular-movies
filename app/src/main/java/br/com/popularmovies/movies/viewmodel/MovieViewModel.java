@@ -15,9 +15,9 @@ import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 
 public class MovieViewModel extends ViewModel {
-    private LiveData<Resource<Movies>> mMovies;
-    private MutableLiveData<String> mSortBy;
-    private MovieRepository mMovieRepository;
+    private final LiveData<Resource<Movies>> mMovies;
+    private final MutableLiveData<String> mSortBy;
+    private final MovieRepository mMovieRepository;
     private int selectedFilterIndex = 0;
 
 
@@ -35,10 +35,6 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<Resource<Movies>> getMovies() {
         return mMovies;
-    }
-
-    public void setMovies(LiveData<Resource<Movies>> movies) {
-        mMovies = movies;
     }
 
     public void setMovieSortBy(String sortBy) {

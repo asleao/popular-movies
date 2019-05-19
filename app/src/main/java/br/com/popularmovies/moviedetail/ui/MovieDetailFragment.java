@@ -29,6 +29,7 @@ import br.com.popularmovies.base.interfaces.IConection;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
+import br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory;
 import br.com.popularmovies.services.movieService.response.Movie;
@@ -42,8 +43,9 @@ import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.MOVIE;
 import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
+import static br.com.popularmovies.movies.Constants.NO_DATA_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
-import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
+import static br.com.popularmovies.movies.Constants.NO_TRAILER_MSG_ERROR_MESSAGE;
 
 public class MovieDetailFragment extends Fragment implements IConection {
 
@@ -55,6 +57,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
     private TextView mMovieRating;
     private TextView mMovieOverview;
     private TextView mReviews;
+    private TextView mTrailers;
     private AppCompatImageView mFavorites;
     private Observer<Resource<Void>> favorites;
     private Observer<Resource<Movie>> movie;
@@ -158,7 +161,22 @@ public class MovieDetailFragment extends Fragment implements IConection {
                             getResources().getString(R.string.fg_movie_review_tag),
                             true);
                 } else {
-                    showNoReviewsDialog();
+                    showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE);
+                }
+            }
+        });
+
+        mTrailers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMovieFromIntent.getId() != -1) {
+                    FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
+                            MovieTrailerFragment.newInstance(mMovieFromIntent.getId()),
+                            R.id.fg_moviedetail,
+                            getResources().getString(R.string.fg_movie_trailer_tag),
+                            true);
+                } else {
+                    showDialog(NO_DATA_MSG_ERROR_TITLE, NO_TRAILER_MSG_ERROR_MESSAGE);
                 }
             }
         });
@@ -178,10 +196,10 @@ public class MovieDetailFragment extends Fragment implements IConection {
                 new MovieDetailFactory(mMovieRepository, mMovieFromIntent.getId())).get(MovieDetailViewModel.class);
     }
 
-    private void showNoReviewsDialog() {
+    private void showDialog(String title, String message) {
         final AlertDialog noReviewsDialog = new AlertDialog.Builder(getContext())
-                .setTitle(NO_REVIEWS_MSG_ERROR_TITLE)
-                .setMessage(NO_REVIEWS_MSG_ERROR_MESSAGE)
+                .setTitle(title)
+                .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create();
 
@@ -195,6 +213,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
         mReviews = view.findViewById(R.id.tv_movie_reviews_label);
+        mTrailers = view.findViewById(R.id.tv_movie_trailers_label);
         mFavorites = view.findViewById(R.id.iv_favorite);
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mMovieDetailGroup = view.findViewById(R.id.group_movie_detail);

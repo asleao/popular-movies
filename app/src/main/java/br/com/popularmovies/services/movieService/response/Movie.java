@@ -17,29 +17,29 @@ import java.math.BigDecimal;
 public class Movie implements Parcelable {
 
     @Json(name = "vote_count")
-    private int votes;
+    private final int votes;
 
     @PrimaryKey(autoGenerate = true)
     @Json(name = "id")
     private int id;
 
     @Json(name = "vote_average")
-    private BigDecimal voteAverage;
+    private final BigDecimal voteAverage;
 
     @Json(name = "original_title")
-    private String originalTitle;
+    private final String originalTitle;
 
     @Json(name = "popularity")
-    private BigDecimal popularity;
+    private final BigDecimal popularity;
 
     @Json(name = "poster_path")
-    private String poster;
+    private final String poster;
 
     @Json(name = "overview")
-    private String overview;
+    private final String overview;
 
     @Json(name = "release_date")
-    private LocalDate releaseDate;
+    private final LocalDate releaseDate;
 
     private boolean isFavorite;
 

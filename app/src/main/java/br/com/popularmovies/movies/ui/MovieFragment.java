@@ -30,6 +30,7 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.ui.MovieDetailActivity;
 import br.com.popularmovies.movies.adapters.MovieAdapter;
+import br.com.popularmovies.movies.adapters.MovieClickListener;
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
 import br.com.popularmovies.movies.viewmodel.factories.MovieFactory;
 import br.com.popularmovies.services.movieService.response.Movie;
@@ -49,7 +50,7 @@ import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.MOVIE;
 import static br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER;
 
-public class MovieFragment extends Fragment implements MovieAdapter.MovieClickListener {
+public class MovieFragment extends Fragment implements MovieClickListener {
 
     private MovieViewModel mViewModel;
     private RecyclerView mMoviesRecyclerView;
@@ -165,7 +166,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
 
     private void setupMoviesList(View view) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
-        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
     }
 
     private void setupFields(View view) {

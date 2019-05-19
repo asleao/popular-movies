@@ -1,8 +1,10 @@
 package br.com.popularmovies.movies.adapters;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,8 @@ import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private List<Movie> mMovies;
-    final private MovieClickListener mOnMovieClickListener;
+    private final List<Movie> mMovies;
+    private final MovieClickListener mOnMovieClickListener;
 
     public MovieAdapter(List<Movie> movies, MovieClickListener mOnMovieClickListener) {
         this.mMovies = movies;
@@ -51,12 +53,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMovies.size();
     }
 
-    public interface MovieClickListener {
-        void onMovieClick(Movie movie);
-    }
-
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private ImageView mMoviePoster;
+        private final ImageView mMoviePoster;
 
         MovieViewHolder(@NonNull View itemView) {
             super(itemView);
