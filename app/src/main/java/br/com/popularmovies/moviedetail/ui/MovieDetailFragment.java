@@ -43,8 +43,9 @@ import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.MOVIE;
 import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
+import static br.com.popularmovies.movies.Constants.NO_DATA_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
-import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
+import static br.com.popularmovies.movies.Constants.NO_TRAILER_MSG_ERROR_MESSAGE;
 
 public class MovieDetailFragment extends Fragment implements IConection {
 
@@ -160,7 +161,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
                             getResources().getString(R.string.fg_movie_review_tag),
                             true);
                 } else {
-                    showNoReviewsDialog();
+                    showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE);
                 }
             }
         });
@@ -175,7 +176,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
                             getResources().getString(R.string.fg_movie_trailer_tag),
                             true);
                 } else {
-//                    showNoReviewsDialog();
+                    showDialog(NO_DATA_MSG_ERROR_TITLE, NO_TRAILER_MSG_ERROR_MESSAGE);
                 }
             }
         });
@@ -195,10 +196,10 @@ public class MovieDetailFragment extends Fragment implements IConection {
                 new MovieDetailFactory(mMovieRepository, mMovieFromIntent.getId())).get(MovieDetailViewModel.class);
     }
 
-    private void showNoReviewsDialog() {
+    private void showDialog(String title, String message) {
         final AlertDialog noReviewsDialog = new AlertDialog.Builder(getContext())
-                .setTitle(NO_REVIEWS_MSG_ERROR_TITLE)
-                .setMessage(NO_REVIEWS_MSG_ERROR_MESSAGE)
+                .setTitle(title)
+                .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create();
 

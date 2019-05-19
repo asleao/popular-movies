@@ -215,8 +215,8 @@
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_movie_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:constraint_referenced_ids="iv_favorite,tv_movie_release_date,tv_movie_rating,tv_movie_release_date_label,tv_movie_rating_label,tv_movie_reviews_label,iv_movie_poster,tv_movie_overview,tv_movie_overview_label,tv_movie_title,tv_movie_trailers_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
