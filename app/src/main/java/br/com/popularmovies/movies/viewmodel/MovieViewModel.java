@@ -37,10 +37,6 @@ public class MovieViewModel extends ViewModel {
         return mMovies;
     }
 
-    public void setMovies(LiveData<Resource<Movies>> movies) {
-        mMovies = movies;
-    }
-
     public void setMovieSortBy(String sortBy) {
         mSortBy.postValue(sortBy);
     }
