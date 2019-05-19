@@ -40,7 +40,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewVi
         movieViewHolder.mMediaPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnTrailerClickListener.onPlay(movieTrailer.getName());
+                mOnTrailerClickListener.onPlay(movieTrailer.getKey());
             }
         });
         movieViewHolder.mShare.setOnClickListener(new View.OnClickListener() {

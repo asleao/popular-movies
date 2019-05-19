@@ -30,4 +30,8 @@ public class MovieTrailer {
     public String getName() {
         return name;
     }
+
+    public String getKey() {
+        return key;
+    }
 }

@@ -188,10 +188,10 @@ public class MovieTrailerFragment extends Fragment implements IConection, Traile
     }
 
     @Override
-    public void onPlay(String videoId) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+    public void onPlay(String videoKey) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoKey));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+                Uri.parse("http://www.youtube.com/watch?v=" + videoKey));
         try {
             requireContext().startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
