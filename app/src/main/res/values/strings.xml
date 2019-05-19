@@ -1,7 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PopularMovies</string>
     <string name="sort_by">Sort by</string>
-    <string name="ok"><b>OK</b></string>
+    <string name="ok" tools:keep="@string/ok"><b>OK</b></string>
     <string name="try_again">Try again?</string>
     <string name="movie_detail_text">Interstellar</string>
     <string name="movie_release_date_label">Released</string>
@@ -14,7 +14,7 @@
     <string name="dialog_ok"><b>OK</b></string>
     <string name="movie_review_label">Reviews</string>
     <string name="movie_trailer_label">Trailers</string>
-    <string name="tv_comment_author_label">Author:</string>
+    <string name="tv_comment_author_label" tools:keep="@string/tv_comment_author_label">Author:</string>
     <string name="movie_trailer_title">Trailer title</string>
 
 

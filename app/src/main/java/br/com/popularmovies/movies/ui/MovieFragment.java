@@ -166,7 +166,7 @@ public class MovieFragment extends Fragment implements MovieClickListener {
 
     private void setupMoviesList(View view) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
-        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false));
+        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
     }
 
     private void setupFields(View view) {
