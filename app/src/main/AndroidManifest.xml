@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MovieApplication"
         android:allowBackup="true"
         android:configChanges="orientation|screenSize"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +17,6 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".movies.ui.MovieActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +25,8 @@
         </activity>
         <activity
             android:name=".moviedetail.ui.MovieDetailActivity"
-            android:configChanges="orientation|screenSize"
-            android:parentActivityName=".movies.ui.MovieActivity" />
+            android:configChanges="orientation|screenSize"/>
+
     </application>
 
 </manifest>

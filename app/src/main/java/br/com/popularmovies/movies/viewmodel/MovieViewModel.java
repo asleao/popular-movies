@@ -1,29 +1,28 @@
 package br.com.popularmovies.movies.viewmodel;
 
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
+import androidx.arch.core.util.Function;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 
 import br.com.popularmovies.data.model.Resource;
-import br.com.popularmovies.movies.data.response.Movies;
-import br.com.popularmovies.movies.data.source.MovieRepository;
-import br.com.popularmovies.movies.data.source.remote.MovieRemoteDataSource;
+import br.com.popularmovies.services.movieService.response.Movies;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 
 public class MovieViewModel extends ViewModel {
-    private LiveData<Resource<Movies>> mMovies;
-    private MutableLiveData<String> mSortBy;
-    private MovieRepository mMovieRepository;
+    private final LiveData<Resource<Movies>> mMovies;
+    private final MutableLiveData<String> mSortBy;
+    private final MovieRepository mMovieRepository;
     private int selectedFilterIndex = 0;
 
 
-    public MovieViewModel() {
-        mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
+    public MovieViewModel(MovieRepository mMovieRepository) {
+        this.mMovieRepository = mMovieRepository;
         mSortBy = new MutableLiveData<>();
         mMovies = Transformations.switchMap(mSortBy, new Function<String, LiveData<Resource<Movies>>>() {
             @Override
@@ -38,12 +37,8 @@ public class MovieViewModel extends ViewModel {
         return mMovies;
     }
 
-    public void setMovies(LiveData<Resource<Movies>> movies) {
-        mMovies = movies;
-    }
-
     public void setMovieSortBy(String sortBy) {
-        mSortBy.setValue(sortBy);
+        mSortBy.postValue(sortBy);
     }
 
 

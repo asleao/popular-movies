@@ -1,11 +1,16 @@
 package br.com.popularmovies.moviedetail.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import br.com.popularmovies.R;
-import br.com.popularmovies.movies.ui.MovieFragment;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
+import br.com.popularmovies.utils.FragmentUtils;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -13,14 +18,44 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        MovieDetailFragment movieDetailFragment =
-                (MovieDetailFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.fg_movie);
-        if (movieDetailFragment == null) {
-            movieDetailFragment = MovieDetailFragment.newInstance();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.fg_moviedetail, movieDetailFragment);
-            transaction.commit();
+
+        FragmentUtils.addFragmentInActivity(getSupportFragmentManager(),
+                MovieDetailFragment.newInstance(),
+                R.id.fg_moviedetail,
+                getResources().getString(R.string.fg_movie_detail_tag),
+                false);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            finish();
+        }
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MovieRepository.destroyInstance();
+        MovieLocalDataSource.destroyInstance();
+        MovieRemoteDataSource.destroyInstance();
     }
 }

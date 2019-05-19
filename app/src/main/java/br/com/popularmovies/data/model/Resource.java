@@ -1,7 +1,7 @@
 package br.com.popularmovies.data.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class Resource<T> {
     @NonNull
@@ -18,7 +18,7 @@ public class Resource<T> {
         this.error = error;
     }
 
-    public static <T> Resource<T> success(@NonNull T data) {
+    public static <T> Resource<T> success(T data) {
         return new Resource<>(Status.SUCCESS, data, null);
     }
 

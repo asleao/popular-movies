@@ -1,5 +1,6 @@
 package br.com.popularmovies.data;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.squareup.moshi.Moshi;
 
 import br.com.popularmovies.BuildConfig;
@@ -12,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-import static br.com.popularmovies.data.Constants.API_DATE_PATTERN;
 import static br.com.popularmovies.data.Constants.API_VERSION;
 import static br.com.popularmovies.data.Constants.HOST;
 import static br.com.popularmovies.data.Constants.SCHEME;
@@ -22,27 +22,28 @@ public class ServiceGenerator {
 
     private static final Moshi moshiFactory = new Moshi.Builder()
             .add(new BigDecimalAdapter())
-            .add(new DateAdapter(API_DATE_PATTERN))
+            .add(new DateAdapter())
             .build();
 
-    private static Retrofit.Builder builder =
+    private static final Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(buildUrl())
                     .addConverterFactory(MoshiConverterFactory.create(moshiFactory));
 
     private static Retrofit retrofit = builder.build();
 
-    private static HttpLoggingInterceptor logging =
+    private static final HttpLoggingInterceptor logging =
             new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    private static OkHttpClient.Builder httpClient =
+    private static final OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder()
                     .addInterceptor(new AuthorizationInterceptor());
 
     public static <S> S createService(
             Class<S> serviceClass) {
         if (!httpClient.interceptors().contains(logging) && BuildConfig.DEBUG) {
+            httpClient.addNetworkInterceptor(new StethoInterceptor());
             httpClient.addInterceptor(logging);
             builder.client(httpClient.build());
             retrofit = builder.build();
