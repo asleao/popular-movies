@@ -19,7 +19,7 @@ import static br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewViewHolder> {
 
-    private List<MovieTrailer> mTrailers;
+    private final List<MovieTrailer> mTrailers;
     final private TrailerClickListener mOnTrailerClickListener;
 
     public TrailerAdapter(List<MovieTrailer> trailers, TrailerClickListener mOnTrailerClickListener) {
@@ -60,9 +60,9 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewVi
     }
 
     class ReviewViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mMediaPlay;
-        private TextView mTitle;
-        private ImageView mShare;
+        private final ImageView mMediaPlay;
+        private final TextView mTitle;
+        private final ImageView mShare;
 
         ReviewViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -15,7 +15,7 @@ import br.com.popularmovies.services.movieService.response.MovieReview;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
-    private List<MovieReview> mReviews;
+    private final List<MovieReview> mReviews;
 
     public ReviewAdapter(List<MovieReview> reviews) {
         this.mReviews = reviews;
@@ -43,8 +43,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     }
 
     class ReviewViewHolder extends RecyclerView.ViewHolder {
-        private TextView mAuthor;
-        private TextView mContent;
+        private final TextView mAuthor;
+        private final TextView mContent;
 
         ReviewViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -24,7 +24,7 @@ import static br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR;
 
 public class MovieLocalDataSource implements MovieDataSource {
     private volatile static MovieLocalDataSource INSTANCE = null;
-    private MovieDao mMovieDao;
+    private final MovieDao mMovieDao;
 
     private MovieLocalDataSource(Context context) {
         this.mMovieDao = AppDatabase.getInstance(context).movieDao();

@@ -19,8 +19,8 @@ public class MovieRepository implements MovieDataSource {
 
     private volatile static MovieRepository INSTANCE = null;
 
-    private MovieDataSource mMovieLocalDataSource;
-    private MovieDataSource mMovieRemoteDataSource;
+    private final MovieDataSource mMovieLocalDataSource;
+    private final MovieDataSource mMovieRemoteDataSource;
 
 
     private MovieRepository(@NonNull MovieDataSource mMovieLocalDataSource, @NonNull MovieDataSource mMovieRemoteDataSource) {

@@ -8,8 +8,8 @@ import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 public class MovieTrailerFactory implements ViewModelProvider.Factory {
-    private int movieId;
-    private MovieRepository mMovieRepository;
+    private final int movieId;
+    private final MovieRepository mMovieRepository;
 
     public MovieTrailerFactory(MovieRepository mMovieRepository, int movieId) {
         this.mMovieRepository = mMovieRepository;

@@ -25,18 +25,18 @@ public class ServiceGenerator {
             .add(new DateAdapter())
             .build();
 
-    private static Retrofit.Builder builder =
+    private static final Retrofit.Builder builder =
             new Retrofit.Builder()
                     .baseUrl(buildUrl())
                     .addConverterFactory(MoshiConverterFactory.create(moshiFactory));
 
     private static Retrofit retrofit = builder.build();
 
-    private static HttpLoggingInterceptor logging =
+    private static final HttpLoggingInterceptor logging =
             new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    private static OkHttpClient.Builder httpClient =
+    private static final OkHttpClient.Builder httpClient =
             new OkHttpClient.Builder()
                     .addInterceptor(new AuthorizationInterceptor());
 

@@ -8,7 +8,7 @@ import java.util.List;
 public class Movies {
 
     @Json(name = "results")
-    private List<Movie> movies;
+    private final List<Movie> movies;
 
     public Movies(List<Movie> movies) {
         this.movies = movies;

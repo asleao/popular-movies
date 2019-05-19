@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class MovieRemoteDataSource implements MovieDataSource {
     private volatile static MovieRemoteDataSource INSTANCE = null;
-    private MovieService mMovieService;
+    private final MovieService mMovieService;
 
 
 

@@ -1,6 +1,6 @@
 package br.com.popularmovies.moviedetail.trailers;
 
 public class Constants {
-    public static String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
+    public static final String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
 
 }

@@ -18,7 +18,7 @@ import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.SERVER_MSG_ERROR;
 
 public class ApiResponse<T> {
-    private String logTag;
+    private final String logTag;
 
     public ApiResponse(String logTag) {
         this.logTag = logTag;

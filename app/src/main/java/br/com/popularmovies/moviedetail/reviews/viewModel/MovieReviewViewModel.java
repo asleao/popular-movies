@@ -11,8 +11,8 @@ import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 public class MovieReviewViewModel extends ViewModel {
-    private LiveData<Resource<MovieReviews>> reviews;
-    private MutableLiveData<Integer> movieId = new MutableLiveData<>();
+    private final LiveData<Resource<MovieReviews>> reviews;
+    private final MutableLiveData<Integer> movieId = new MutableLiveData<>();
 
     public MovieReviewViewModel(final MovieRepository mMovieRepository, int movieId) {
         reviews = Transformations.switchMap(this.movieId, new Function<Integer, LiveData<Resource<MovieReviews>>>() {

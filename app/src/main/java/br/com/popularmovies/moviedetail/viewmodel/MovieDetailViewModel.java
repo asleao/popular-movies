@@ -11,10 +11,10 @@ import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 public class MovieDetailViewModel extends ViewModel {
-    private LiveData<Resource<Void>> favorites;
-    private LiveData<Resource<Movie>> mMovie;
-    private MutableLiveData<Boolean> movieStatus = new MutableLiveData<>();
-    private MutableLiveData<Integer> _movieId = new MutableLiveData<>();
+    private final LiveData<Resource<Void>> favorites;
+    private final LiveData<Resource<Movie>> mMovie;
+    private final MutableLiveData<Boolean> movieStatus = new MutableLiveData<>();
+    private final MutableLiveData<Integer> _movieId = new MutableLiveData<>();
     private Movie movie;
 
     public MovieDetailViewModel(final MovieRepository mMovieRepository, final int movieId) {
