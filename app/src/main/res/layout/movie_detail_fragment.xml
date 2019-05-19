@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,6 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <include layout="@layout/base_layout" />
 
         <TextView
             android:id="@+id/tv_movie_title"
@@ -112,6 +116,23 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_rating_label"
             tools:text="@string/movie_rating" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_movie_rating"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/iv_movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_rating"
+            app:layout_constraintVertical_bias="0.0"
+            tools:background="@drawable/ic_favorite_border_black_24dp" />
+
         <TextView
             android:id="@+id/tv_movie_overview_label"
             style="@style/Subtitle2Theme"
@@ -169,6 +190,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_overview"
             app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_movie_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="iv_favorite,tv_movie_release_date,tv_movie_rating,tv_movie_release_date_label,tv_movie_rating_label,tv_movie_reviews_label,iv_movie_poster,tv_movie_overview,tv_movie_overview_label,tv_movie_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
@@ -22,8 +21,8 @@ public class MovieViewModel extends ViewModel {
     private int selectedFilterIndex = 0;
 
 
-    public MovieViewModel() {
-        mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
+    public MovieViewModel(MovieRepository mMovieRepository) {
+        this.mMovieRepository = mMovieRepository;
         mSortBy = new MutableLiveData<>();
         mMovies = Transformations.switchMap(mSortBy, new Function<String, LiveData<Resource<Movies>>>() {
             @Override
@@ -43,7 +42,7 @@ public class MovieViewModel extends ViewModel {
     }
 
     public void setMovieSortBy(String sortBy) {
-        mSortBy.setValue(sortBy);
+        mSortBy.postValue(sortBy);
     }
 
 

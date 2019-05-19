@@ -5,6 +5,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -20,5 +23,13 @@ public class MovieActivity extends AppCompatActivity {
             transaction.add(R.id.fg_movie, movieFragment);
             transaction.commit();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MovieRepository.destroyInstance();
+        MovieLocalDataSource.destroyInstance();
+        MovieRemoteDataSource.destroyInstance();
     }
 }

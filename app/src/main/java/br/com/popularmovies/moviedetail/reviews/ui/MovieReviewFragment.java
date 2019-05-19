@@ -1,25 +1,22 @@
 package br.com.popularmovies.moviedetail.reviews.ui;
 
 import android.app.AlertDialog;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.popularmovies.R;
 import br.com.popularmovies.base.interfaces.IConection;
@@ -29,7 +26,11 @@ import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter;
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel;
 import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
+import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
@@ -84,10 +85,10 @@ public class MovieReviewFragment extends Fragment implements IConection {
                             }
                             break;
                         case ERROR:
+                            hideLoading();
                             ErrorResponse error = movieReviewsResource.error;
                             if (error != null) {
-                                if (error.getStatusCode() == 503) {
-                                    hideLoading();
+                                if (error.getStatusCode() == NETWORK_ERROR_CODE) {
                                     showNoConnection(error.getStatusMessage());
                                 } else {
                                     showGenericError(error.getStatusMessage());
@@ -111,8 +112,10 @@ public class MovieReviewFragment extends Fragment implements IConection {
         Bundle args = getArguments();
         if (args != null) {
             int movieId = args.getInt(MOVIE_ID, -1);
+            MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
+                    , MovieRemoteDataSource.getInstance());
             mViewModel = ViewModelProviders.of(this,
-                    new MovieReviewFactory(movieId)).get(MovieReviewViewModel.class);
+                    new MovieReviewFactory(mMovieRepository, movieId)).get(MovieReviewViewModel.class);
             setupFields(view);
             setupReviewsList(view);
             mViewModel.getReviews().observe(getViewLifecycleOwner(), reviewsObserver);

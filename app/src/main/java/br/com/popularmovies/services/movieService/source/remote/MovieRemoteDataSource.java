@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import br.com.popularmovies.data.ServiceGenerator;
 import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.service.MovieService;
@@ -37,6 +40,10 @@ public class MovieRemoteDataSource implements MovieDataSource {
         return INSTANCE;
     }
 
+    public static void destroyInstance() {
+        INSTANCE = null;
+    }
+
     @Override
     public LiveData<Resource<Movies>> getMovies(String orderBy) {
         Call<Movies> call = mMovieService.getMovies(orderBy);
@@ -58,6 +65,26 @@ public class MovieRemoteDataSource implements MovieDataSource {
     }
 
     @Override
+    public LiveData<Resource<Movie>> getMovie(int movieId) {
+        Call<Movie> call = mMovieService.getMovie(movieId);
+        final ApiResponse<Movie> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
+        final MutableLiveData<Resource<Movie>> movie = new MutableLiveData<>();
+        movie.setValue(Resource.<Movie>loading());
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(@NotNull Call<Movie> call, @NotNull Response<Movie> response) {
+                movie.setValue(apiResponse.getApiOnResponse(response));
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<Movie> call, @NotNull Throwable t) {
+                movie.setValue(apiResponse.getApiOnFailure(t));
+            }
+        });
+        return movie;
+    }
+
+    @Override
     public LiveData<Resource<MovieReviews>> getMovieReviews(int movieId) {
         Call<MovieReviews> call = mMovieService.getMovieReviews(movieId);
         final ApiResponse<MovieReviews> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
@@ -75,5 +102,25 @@ public class MovieRemoteDataSource implements MovieDataSource {
             }
         });
         return reviews;
+    }
+
+    @Override
+    public LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status) {
+        return new MutableLiveData();
+    }
+
+    @Override
+    public LiveData<Resource<Void>> saveMovies(List<Movie> movies) {
+        return null;
+    }
+
+    @Override
+    public LiveData<Resource<Void>> saveMovie(Movie movie) {
+        return null;
+    }
+
+    @Override
+    public LiveData<Resource<Void>> removeMovie(Movie movie) {
+        return null;
     }
 }

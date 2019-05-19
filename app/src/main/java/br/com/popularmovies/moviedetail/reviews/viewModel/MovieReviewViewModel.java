@@ -9,14 +9,12 @@ import androidx.lifecycle.ViewModel;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 public class MovieReviewViewModel extends ViewModel {
     private LiveData<Resource<MovieReviews>> reviews;
     private MutableLiveData<Integer> movieId = new MutableLiveData<>();
 
-    public MovieReviewViewModel(int movieId) {
-        final MovieRepository mMovieRepository = MovieRepository.getInstance(MovieRemoteDataSource.getInstance());
+    public MovieReviewViewModel(final MovieRepository mMovieRepository, int movieId) {
         reviews = Transformations.switchMap(this.movieId, new Function<Integer, LiveData<Resource<MovieReviews>>>() {
             @Override
             public LiveData<Resource<MovieReviews>> apply(Integer input) {

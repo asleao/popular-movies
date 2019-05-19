@@ -1,11 +1,15 @@
 package br.com.popularmovies.moviedetail.ui;
 
 import android.os.Bundle;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
 import br.com.popularmovies.R;
+import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 import br.com.popularmovies.utils.FragmentUtils;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -45,5 +49,13 @@ public class MovieDetailActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MovieRepository.destroyInstance();
+        MovieLocalDataSource.destroyInstance();
+        MovieRemoteDataSource.destroyInstance();
     }
 }
