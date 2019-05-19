@@ -51,10 +51,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMovies.size();
     }
 
-    public interface MovieClickListener {
-        void onMovieClick(Movie movie);
-    }
-
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mMoviePoster;
 
