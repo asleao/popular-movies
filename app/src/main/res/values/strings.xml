@@ -20,6 +20,8 @@
 
     <string name="fg_movie_detail_tag">MOVIE_DETAIL_TAG</string>
     <string name="fg_movie_review_tag">MOVIE_REVIEW_TAG</string>
+    <string name="fg_movie_trailer_tag">MOVIE_TRAILER_TAG</string>
     <string name="no_reviews">No reviews available :(</string>
+    <string name="no_trailers">No trailers available :(</string>
 
 </resources>

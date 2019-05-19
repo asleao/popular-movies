@@ -14,6 +14,7 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
+import br.com.popularmovies.services.movieService.response.MovieTrailers;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieDataSource;
 import br.com.popularmovies.utils.AppExecutors;
@@ -171,6 +172,11 @@ public class MovieLocalDataSource implements MovieDataSource {
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
+    }
+
+    @Override
+    public LiveData<Resource<MovieTrailers>> getMovieTrailers(int movieId) {
+        return null;
     }
 
 }

@@ -29,6 +29,7 @@ import br.com.popularmovies.base.interfaces.IConection;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
+import br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory;
 import br.com.popularmovies.services.movieService.response.Movie;
@@ -55,6 +56,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
     private TextView mMovieRating;
     private TextView mMovieOverview;
     private TextView mReviews;
+    private TextView mTrailers;
     private AppCompatImageView mFavorites;
     private Observer<Resource<Void>> favorites;
     private Observer<Resource<Movie>> movie;
@@ -162,6 +164,21 @@ public class MovieDetailFragment extends Fragment implements IConection {
                 }
             }
         });
+
+        mTrailers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMovieFromIntent.getId() != -1) {
+                    FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
+                            MovieTrailerFragment.newInstance(mMovieFromIntent.getId()),
+                            R.id.fg_moviedetail,
+                            getResources().getString(R.string.fg_movie_trailer_tag),
+                            true);
+                } else {
+//                    showNoReviewsDialog();
+                }
+            }
+        });
         mTryAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,6 +212,7 @@ public class MovieDetailFragment extends Fragment implements IConection {
         mMovieRating = view.findViewById(R.id.tv_movie_rating);
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
         mReviews = view.findViewById(R.id.tv_movie_reviews_label);
+        mTrailers = view.findViewById(R.id.tv_movie_trailers_label);
         mFavorites = view.findViewById(R.id.iv_favorite);
         mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
         mMovieDetailGroup = view.findViewById(R.id.group_movie_detail);
