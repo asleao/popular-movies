@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.app.ShareCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -189,9 +189,10 @@ public class MovieTrailerFragment extends Fragment implements IConection, Traile
 
     @Override
     public void onPlay(String videoKey) {
+        String YOUTUBE_URL = "http://www.youtube.com/watch?v=";
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoKey));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + videoKey));
+                Uri.parse(YOUTUBE_URL + videoKey));
         try {
             requireContext().startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
@@ -200,7 +201,16 @@ public class MovieTrailerFragment extends Fragment implements IConection, Traile
     }
 
     @Override
-    public void onShare(String videoSite) {
-        Toast.makeText(requireContext(), "onShare", Toast.LENGTH_SHORT).show();
+    public void onShare(String videoUrl) {
+        String mimeType = "text/plain";
+
+        String title = "Sharing this trailer on";
+
+        ShareCompat.IntentBuilder
+                .from(requireActivity())
+                .setType(mimeType)
+                .setChooserTitle(title)
+                .setText(videoUrl)
+                .startChooser();
     }
 }

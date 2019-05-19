@@ -46,7 +46,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewVi
         movieViewHolder.mShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnTrailerClickListener.onShare(movieTrailer.getName());
+                mOnTrailerClickListener.onShare("http://www.youtube.com/watch?v=" + movieTrailer.getKey());
             }
         });
 
