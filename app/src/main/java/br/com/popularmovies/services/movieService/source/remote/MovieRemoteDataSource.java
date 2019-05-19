@@ -23,8 +23,7 @@ import retrofit2.Response;
 public class MovieRemoteDataSource implements MovieDataSource {
     private volatile static MovieRemoteDataSource INSTANCE = null;
     private MovieService mMovieService;
-    private final String GET_MOVIES_TAG = "getMovies";
-    private final String GET_MOVIES_TRAILER_TAG = "getMovieTrailers";
+
 
 
     private MovieRemoteDataSource() {
@@ -48,6 +47,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Movies>> getMovies(String orderBy) {
+        final String GET_MOVIES_TAG = "getMovies";
         Call<Movies> call = mMovieService.getMovies(orderBy);
         final ApiResponse<Movies> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
         final MutableLiveData<Resource<Movies>> movies = new MutableLiveData<>();
@@ -68,8 +68,9 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Movie>> getMovie(int movieId) {
+        final String GET_MOVIE_TAG = "getMovie";
         Call<Movie> call = mMovieService.getMovie(movieId);
-        final ApiResponse<Movie> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
+        final ApiResponse<Movie> apiResponse = new ApiResponse<>(GET_MOVIE_TAG);
         final MutableLiveData<Resource<Movie>> movie = new MutableLiveData<>();
         movie.setValue(Resource.<Movie>loading());
         call.enqueue(new Callback<Movie>() {
@@ -88,8 +89,9 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<MovieReviews>> getMovieReviews(int movieId) {
+        final String GET_MOVIE_REVIEWS_TAG = "getMovieReviews";
         Call<MovieReviews> call = mMovieService.getMovieReviews(movieId);
-        final ApiResponse<MovieReviews> apiResponse = new ApiResponse<>(GET_MOVIES_TAG);
+        final ApiResponse<MovieReviews> apiResponse = new ApiResponse<>(GET_MOVIE_REVIEWS_TAG);
         final MutableLiveData<Resource<MovieReviews>> reviews = new MutableLiveData<>();
         reviews.setValue(Resource.<MovieReviews>loading());
         call.enqueue(new Callback<MovieReviews>() {
@@ -108,7 +110,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Boolean>> saveToFavorites(int movieId, boolean status) {
-        return new MutableLiveData();
+        return null;
     }
 
     @Override
@@ -128,6 +130,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
     @Override
     public LiveData<Resource<MovieTrailers>> getMovieTrailers(int movieId) {
+        String GET_MOVIES_TRAILER_TAG = "getMovieTrailers";
         Call<MovieTrailers> call = mMovieService.getMovieTrailers(movieId);
         final ApiResponse<MovieTrailers> apiResponse = new ApiResponse<>(GET_MOVIES_TRAILER_TAG);
         final MutableLiveData<Resource<MovieTrailers>> trailers = new MutableLiveData<>();
