@@ -30,6 +30,7 @@ import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
+import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
@@ -87,7 +88,7 @@ public class MovieReviewFragment extends Fragment implements IConection {
                             hideLoading();
                             ErrorResponse error = movieReviewsResource.error;
                             if (error != null) {
-                                if (error.getStatusCode() == 503) {
+                                if (error.getStatusCode() == NETWORK_ERROR_CODE) {
                                     showNoConnection(error.getStatusMessage());
                                 } else {
                                     showGenericError(error.getStatusMessage());

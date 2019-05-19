@@ -18,6 +18,7 @@ import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieDataSource;
 import br.com.popularmovies.utils.AppExecutors;
 
+import static br.com.popularmovies.data.Constants.GENERIC_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR;
 
 public class MovieLocalDataSource implements MovieDataSource {
@@ -57,7 +58,7 @@ public class MovieLocalDataSource implements MovieDataSource {
             });
 
         } catch (Exception e) {
-            movies.postValue(Resource.<Movies>error(new ErrorResponse(500,
+            movies.postValue(Resource.<Movies>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return movies;
@@ -77,7 +78,7 @@ public class MovieLocalDataSource implements MovieDataSource {
             });
 
         } catch (Exception e) {
-            movie.postValue(Resource.<Movie>error(new ErrorResponse(500,
+            movie.postValue(Resource.<Movie>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return movie;
@@ -103,7 +104,7 @@ public class MovieLocalDataSource implements MovieDataSource {
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Boolean>error(new ErrorResponse(500,
+            mMovie.postValue(Resource.<Boolean>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
@@ -124,7 +125,7 @@ public class MovieLocalDataSource implements MovieDataSource {
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
@@ -145,7 +146,7 @@ public class MovieLocalDataSource implements MovieDataSource {
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
@@ -166,7 +167,7 @@ public class MovieLocalDataSource implements MovieDataSource {
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(500,
+            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;

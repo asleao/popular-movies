@@ -38,6 +38,7 @@ import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
+import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
@@ -88,7 +89,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
                             hideLoading();
                             ErrorResponse error = moviesResource.error;
                             if (error != null) {
-                                if (error.getStatusCode() == 503) {
+                                if (error.getStatusCode() == NETWORK_ERROR_CODE) {
                                     showNoConnection(error.getStatusMessage());
                                     tryAgain();
                                 } else {
