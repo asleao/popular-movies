@@ -1,6 +1,9 @@
 package br.com.popularmovies.moviedetail.trailers.ui;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,8 +188,15 @@ public class MovieTrailerFragment extends Fragment implements IConection, Traile
     }
 
     @Override
-    public void onPlay(String videoUrl) {
-        Toast.makeText(requireContext(), "onPlay", Toast.LENGTH_SHORT).show();
+    public void onPlay(String videoId) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + videoId));
+        try {
+            requireContext().startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            requireContext().startActivity(webIntent);
+        }
     }
 
     @Override
