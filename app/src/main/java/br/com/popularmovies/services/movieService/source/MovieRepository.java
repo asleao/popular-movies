@@ -7,14 +7,12 @@ import androidx.lifecycle.Observer;
 
 import java.util.List;
 
-import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.Movies;
 
-import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
-import static br.com.popularmovies.utils.NetworkUtils.isOnline;
+import static br.com.popularmovies.movies.Constants.FILTER_FAVORITES;
 
 public class MovieRepository implements MovieDataSource {
 
@@ -47,7 +45,11 @@ public class MovieRepository implements MovieDataSource {
 
     @Override
     public LiveData<Resource<Movies>> getMovies(final String orderBy) {
-        return mMovieRemoteDataSource.getMovies(orderBy);
+        if (orderBy.equals(FILTER_FAVORITES)) {
+            return mMovieLocalDataSource.getMovies(orderBy);
+        } else {
+            return mMovieRemoteDataSource.getMovies(orderBy);
+        }
     }
 
     @Override

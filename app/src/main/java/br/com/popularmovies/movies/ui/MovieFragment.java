@@ -39,9 +39,11 @@ import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSou
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 
 import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
+import static br.com.popularmovies.movies.Constants.FILTER_FAVORITES;
 import static br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
+import static br.com.popularmovies.movies.Constants.INDEX_FILTER_FAVORITES;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.MOVIE;
@@ -182,7 +184,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.m_sort) {
-            CharSequence[] values = {"Most Popular", "Highest Rated"};
+            CharSequence[] values = {"Most Popular", "Highest Rated", "Favorites"};
             final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
                     .setTitle(TITLE_DIALOG_FILTER)
                     .setSingleChoiceItems(values, mViewModel.getSelectedFilterIndex(), new DialogInterface.OnClickListener() {
@@ -208,6 +210,10 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
             case INDEX_FILTER_HIGHEST_RATED:
                 mViewModel.setMovieSortBy(FILTER_HIGHEST_RATED);
                 mViewModel.setSelectedFilterIndex(1);
+                break;
+            case INDEX_FILTER_FAVORITES:
+                mViewModel.setMovieSortBy(FILTER_FAVORITES);
+                mViewModel.setSelectedFilterIndex(2);
                 break;
         }
     }
