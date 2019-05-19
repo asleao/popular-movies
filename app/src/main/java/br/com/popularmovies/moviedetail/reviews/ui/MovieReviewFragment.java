@@ -84,10 +84,10 @@ public class MovieReviewFragment extends Fragment implements IConection {
                             }
                             break;
                         case ERROR:
+                            hideLoading();
                             ErrorResponse error = movieReviewsResource.error;
                             if (error != null) {
                                 if (error.getStatusCode() == 503) {
-                                    hideLoading();
                                     showNoConnection(error.getStatusMessage());
                                 } else {
                                     showGenericError(error.getStatusMessage());

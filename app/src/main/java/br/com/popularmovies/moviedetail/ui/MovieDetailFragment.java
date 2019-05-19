@@ -85,12 +85,12 @@ public class MovieDetailFragment extends Fragment implements IConection {
                         break;
                     case SUCCESS:
                         hideLoading();
-                        showResult();
                         if (movieResource.data != null) {
                             showMovieDetails(movieResource.data);
                             mViewModel.setMovie(movieResource.data);
                             setFavoritesImage(movieResource.data.isFavorite());
                         }
+                        showResult();
                         break;
                     case ERROR:
                         hideLoading();
@@ -113,12 +113,18 @@ public class MovieDetailFragment extends Fragment implements IConection {
             public void onChanged(Resource<Void> resource) {
                 if (resource != null) {
                     switch (resource.status) {
-                        case LOADING:
-                            break;
                         case SUCCESS:
                             setFavoritesImage(mViewModel.getMovie().isFavorite());
                             break;
                         case ERROR:
+                            ErrorResponse error = resource.error;
+                            if (error != null) {
+                                if (error.getStatusCode() == NETWORK_ERROR_CODE) {
+                                    showNoConnection(error.getStatusMessage());
+                                } else {
+                                    showGenericError(error.getStatusMessage());
+                                }
+                            }
                             break;
                     }
                 }
