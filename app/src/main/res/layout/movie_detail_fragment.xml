@@ -171,7 +171,7 @@
             tools:text="@string/movie_overview" />
 
         <TextView
-            android:id="@+id/tv_movie_reviews_label"
+            android:id="@+id/tv_movie_trailers_label"
             style="@style/Subtitle2Theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
             android:layout_marginBottom="8dp"
             android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
             android:drawableRight="@drawable/ic_keyboard_arrow_right_white_24dp"
-            android:text="@string/movie_review_label"
+            android:text="@string/movie_trailer_label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -191,11 +191,33 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_overview"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/tv_movie_reviews_label"
+            style="@style/Subtitle2Theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:drawableEnd="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:drawableRight="@drawable/ic_keyboard_arrow_right_white_24dp"
+            android:text="@string/movie_review_label"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_movie_trailers_label"
+            app:layout_constraintVertical_bias="0.0" />
+
+
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group_movie_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="iv_favorite,tv_movie_release_date,tv_movie_rating,tv_movie_release_date_label,tv_movie_rating_label,tv_movie_reviews_label,iv_movie_poster,tv_movie_overview,tv_movie_overview_label,tv_movie_title" />
+            app:constraint_referenced_ids="iv_favorite,tv_movie_release_date,tv_movie_rating,tv_movie_release_date_label,tv_movie_rating_label,tv_movie_reviews_label,iv_movie_poster,tv_movie_overview,tv_movie_overview_label,tv_movie_title,tv_movie_trailers_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
