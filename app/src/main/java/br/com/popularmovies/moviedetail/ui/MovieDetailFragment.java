@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -22,6 +25,8 @@ import com.squareup.picasso.Picasso;
 import java.util.Locale;
 
 import br.com.popularmovies.R;
+import br.com.popularmovies.base.interfaces.IConection;
+import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment;
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
@@ -32,17 +37,18 @@ import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSou
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
 import br.com.popularmovies.utils.FragmentUtils;
 
+import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
+import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.IMAGE_URL;
 import static br.com.popularmovies.movies.Constants.MOVIE;
 import static br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_TITLE;
 
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements IConection {
 
     private MovieDetailViewModel mViewModel;
-    private Movie mMovie;
-    private int mMovieId;
+    private Movie mMovieFromIntent;
     private TextView mMovieTitle;
     private ImageView mMoviePoster;
     private TextView mMovieReleaseDate;
@@ -52,6 +58,11 @@ public class MovieDetailFragment extends Fragment {
     private AppCompatImageView mFavorites;
     private Observer<Resource<Void>> favorites;
     private Observer<Resource<Movie>> movie;
+    private Group mNoConnectionGroup;
+    private Group mMovieDetailGroup;
+    private Button mTryAgainButton;
+    private TextView mNoConnectionText;
+    private ProgressBar mProgressBar;
 
 
     static MovieDetailFragment newInstance() {
@@ -70,8 +81,11 @@ public class MovieDetailFragment extends Fragment {
             public void onChanged(Resource<Movie> movieResource) {
                 switch (movieResource.status) {
                     case LOADING:
+                        showLoading();
                         break;
                     case SUCCESS:
+                        hideLoading();
+                        showResult();
                         if (movieResource.data != null) {
                             showMovieDetails(movieResource.data);
                             mViewModel.setMovie(movieResource.data);
@@ -79,6 +93,17 @@ public class MovieDetailFragment extends Fragment {
                         }
                         break;
                     case ERROR:
+                        hideLoading();
+                        ErrorResponse error = movieResource.error;
+                        if (error != null) {
+                            if (error.getStatusCode() == NETWORK_ERROR_CODE) {
+                                mViewModel.setMovie(mMovieFromIntent);
+                                showMovieDetails(mMovieFromIntent);
+                                setFavoritesImage(mMovieFromIntent.isFavorite());
+                            } else {
+                                showGenericError(error.getStatusMessage());
+                            }
+                        }
                         break;
                 }
             }
@@ -120,15 +145,21 @@ public class MovieDetailFragment extends Fragment {
         mReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMovieId != -1) {
+                if (mMovieFromIntent.getId() != -1) {
                     FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
-                            MovieReviewFragment.newInstance(mMovieId),
+                            MovieReviewFragment.newInstance(mMovieFromIntent.getId()),
                             R.id.fg_moviedetail,
                             getResources().getString(R.string.fg_movie_review_tag),
                             true);
                 } else {
                     showNoReviewsDialog();
                 }
+            }
+        });
+        mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tryAgain();
             }
         });
         return view;
@@ -138,7 +169,7 @@ public class MovieDetailFragment extends Fragment {
         MovieRepository mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().getApplicationContext())
                 , MovieRemoteDataSource.getInstance());
         mViewModel = ViewModelProviders.of(this,
-                new MovieDetailFactory(mMovieRepository, mMovie.getId())).get(MovieDetailViewModel.class);
+                new MovieDetailFactory(mMovieRepository, mMovieFromIntent.getId())).get(MovieDetailViewModel.class);
     }
 
     private void showNoReviewsDialog() {
@@ -159,11 +190,15 @@ public class MovieDetailFragment extends Fragment {
         mMovieOverview = view.findViewById(R.id.tv_movie_overview);
         mReviews = view.findViewById(R.id.tv_movie_reviews_label);
         mFavorites = view.findViewById(R.id.iv_favorite);
+        mNoConnectionGroup = view.findViewById(R.id.group_no_connection);
+        mMovieDetailGroup = view.findViewById(R.id.group_movie_detail);
+        mNoConnectionText = view.findViewById(R.id.tv_no_conection);
+        mTryAgainButton = view.findViewById(R.id.bt_try_again);
+        mProgressBar = view.findViewById(R.id.pb_base);
     }
 
     private void setData(Intent intent) {
-        mMovie = intent.getParcelableExtra(MOVIE);
-        mMovieId = mMovie.getId();
+        mMovieFromIntent = intent.getParcelableExtra(MOVIE);
     }
 
     private void showMovieDetails(Movie movie) {
@@ -190,5 +225,46 @@ public class MovieDetailFragment extends Fragment {
         } else {
             mFavorites.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_border_black_24dp));
         }
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mNoConnectionGroup.setVisibility(View.GONE);
+        mMovieDetailGroup.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showResult() {
+        mNoConnectionGroup.setVisibility(View.GONE);
+        mMovieDetailGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showNoConnection(String message) {
+        mMovieDetailGroup.setVisibility(View.GONE);
+        mNoConnectionText.setText(message);
+        mNoConnectionGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showGenericError(String message) {
+        final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create();
+
+        sortDialog.show();
+    }
+
+    @Override
+    public void tryAgain() {
+        mViewModel.tryAgain();
     }
 }

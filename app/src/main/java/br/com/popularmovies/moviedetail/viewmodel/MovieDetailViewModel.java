@@ -14,10 +14,17 @@ public class MovieDetailViewModel extends ViewModel {
     private LiveData<Resource<Void>> favorites;
     private LiveData<Resource<Movie>> mMovie;
     private MutableLiveData<Boolean> movieStatus = new MutableLiveData<>();
+    private MutableLiveData<Integer> _movieId = new MutableLiveData<>();
     private Movie movie;
 
     public MovieDetailViewModel(final MovieRepository mMovieRepository, final int movieId) {
-        mMovie = mMovieRepository.getMovie(movieId);
+        mMovie = Transformations.switchMap(_movieId, new Function<Integer, LiveData<Resource<Movie>>>() {
+            @Override
+            public LiveData<Resource<Movie>> apply(Integer input) {
+                return mMovieRepository.getMovie(movieId);
+            }
+        });
+        _movieId.setValue(movieId);
         favorites = Transformations.switchMap(movieStatus, new Function<Boolean, LiveData<Resource<Void>>>() {
             @Override
             public LiveData<Resource<Void>> apply(Boolean isFavorite) {
@@ -53,5 +60,9 @@ public class MovieDetailViewModel extends ViewModel {
 
     public void saveFavorites(boolean status) {
         this.movieStatus.setValue(status);
+    }
+
+    public void tryAgain() {
+        _movieId.setValue(_movieId.getValue());
     }
 }
