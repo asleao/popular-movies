@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import br.com.popularmovies.base.interfaces.IConection;
 import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.Resource;
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter;
+import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener;
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel;
 import br.com.popularmovies.moviedetail.trailers.viewmodel.factories.MovieTrailerFactory;
 import br.com.popularmovies.services.movieService.response.MovieTrailers;
@@ -34,7 +36,7 @@ import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE;
 import static br.com.popularmovies.movies.Constants.MOVIE_ID;
 
-public class MovieTrailerFragment extends Fragment implements IConection {
+public class MovieTrailerFragment extends Fragment implements IConection, TrailerClickListener {
 
     private MovieTrailerViewModel mViewModel;
     private RecyclerView mTrailersRecyclerView;
@@ -76,7 +78,7 @@ public class MovieTrailerFragment extends Fragment implements IConection {
                                 if (movieReviewsResource.data.getTrailers().isEmpty()) {
                                     showNoTrailers();
                                 } else {
-                                    TrailerAdapter mTrailerAdapter = new TrailerAdapter(movieReviewsResource.data.getTrailers());
+                                    TrailerAdapter mTrailerAdapter = new TrailerAdapter(movieReviewsResource.data.getTrailers(), MovieTrailerFragment.this);
                                     mTrailersRecyclerView.setAdapter(mTrailerAdapter);
                                     showResult();
 
@@ -180,5 +182,15 @@ public class MovieTrailerFragment extends Fragment implements IConection {
     @Override
     public void tryAgain() {
         mViewModel.tryAgain();
+    }
+
+    @Override
+    public void onPlay(String videoUrl) {
+        Toast.makeText(requireContext(), "onPlay", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShare(String videoSite) {
+        Toast.makeText(requireContext(), "onShare", Toast.LENGTH_SHORT).show();
     }
 }

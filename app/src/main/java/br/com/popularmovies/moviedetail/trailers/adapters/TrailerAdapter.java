@@ -18,9 +18,11 @@ import br.com.popularmovies.services.movieService.response.MovieTrailer;
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewViewHolder> {
 
     private List<MovieTrailer> mTrailers;
+    final private TrailerClickListener mOnTrailerClickListener;
 
-    public TrailerAdapter(List<MovieTrailer> trailers) {
+    public TrailerAdapter(List<MovieTrailer> trailers, TrailerClickListener mOnTrailerClickListener) {
         this.mTrailers = trailers;
+        this.mOnTrailerClickListener = mOnTrailerClickListener;
     }
 
     @NonNull
@@ -33,8 +35,20 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ReviewVi
 
     @Override
     public void onBindViewHolder(@NonNull TrailerAdapter.ReviewViewHolder movieViewHolder, int position) {
-        MovieTrailer movieTrailer = mTrailers.get(position);
-        movieViewHolder.mTitle.setText(("Author: ").concat(movieTrailer.getName()));
+        final MovieTrailer movieTrailer = mTrailers.get(position);
+        movieViewHolder.mTitle.setText(movieTrailer.getName());
+        movieViewHolder.mMediaPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnTrailerClickListener.onPlay(movieTrailer.getName());
+            }
+        });
+        movieViewHolder.mShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnTrailerClickListener.onShare(movieTrailer.getName());
+            }
+        });
 
     }
 
