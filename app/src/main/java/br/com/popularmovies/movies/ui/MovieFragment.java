@@ -59,7 +59,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     private TextView mNoConnectionText;
     private ProgressBar mProgressBar;
 
-    public static MovieFragment newInstance() {
+    static MovieFragment newInstance() {
         return new MovieFragment();
     }
 
@@ -182,7 +182,7 @@ public class MovieFragment extends Fragment implements MovieAdapter.MovieClickLi
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         if (item.getItemId() == R.id.m_sort) {
             CharSequence[] values = {"Most Popular", "Highest Rated", "Favorites"};
             final AlertDialog sortDialog = new AlertDialog.Builder(getContext())
