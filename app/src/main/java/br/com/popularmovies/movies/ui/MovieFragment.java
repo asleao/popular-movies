@@ -38,6 +38,7 @@ import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource;
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource;
+import br.com.popularmovies.utils.ViewUtils;
 
 import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.FILTER_FAVORITES;
@@ -166,7 +167,7 @@ public class MovieFragment extends Fragment implements MovieClickListener {
 
     private void setupMoviesList(View view) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies);
-        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
+        mMoviesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), ViewUtils.calculateNoOfColumns(requireContext()), RecyclerView.VERTICAL, false));
     }
 
     private void setupFields(View view) {
