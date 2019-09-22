@@ -1,15 +1,8 @@
 package br.com.popularmovies.movies.ui
 
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -17,13 +10,13 @@ import androidx.constraintlayout.widget.Group
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import br.com.popularmovies.R
-import br.com.popularmovies.data.model.ErrorResponse
+import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.Resource
-import br.com.popularmovies.moviedetail.ui.MovieDetailActivity
+import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
@@ -34,27 +27,15 @@ import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 
-import androidx.navigation.fragment.findNavController
-import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.MOVIE
-import br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER
-
 class MovieFragment : Fragment(), MovieClickListener {
 
-    private var mViewModel: MovieViewModel? = null
-    private var mMoviesRecyclerView: RecyclerView? = null
-    private var moviesObserver: Observer<Resource<Movies>>? = null
-    private var mNoConnectionGroup: Group? = null
-    private var mTryAgainButton: Button? = null
-    private var mNoConnectionText: TextView? = null
-    private var mProgressBar: ProgressBar? = null
+    private lateinit var mViewModel: MovieViewModel
+    private lateinit var mMoviesRecyclerView: RecyclerView
+    private lateinit var moviesObserver: Observer<Resource<Movies>>
+    private lateinit var mNoConnectionGroup: Group
+    private lateinit var mTryAgainButton: Button
+    private lateinit var mNoConnectionText: TextView
+    private lateinit var mProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +52,7 @@ class MovieFragment : Fragment(), MovieClickListener {
                         hideLoading()
                         if (moviesResource.data != null) {
                             val mMovieAdapter = MovieAdapter(moviesResource.data.movies, this@MovieFragment)
-                            mMoviesRecyclerView!!.adapter = mMovieAdapter
+                            mMoviesRecyclerView.adapter = mMovieAdapter
                             showResult()
                         }
                     }
@@ -93,13 +74,13 @@ class MovieFragment : Fragment(), MovieClickListener {
 
 
     private fun hideLoading() {
-        mProgressBar!!.visibility = View.GONE
+        mProgressBar.visibility = View.GONE
     }
 
     private fun showLoading() {
-        mProgressBar!!.visibility = View.VISIBLE
-        mMoviesRecyclerView!!.visibility = View.GONE
-        mNoConnectionGroup!!.visibility = View.GONE
+        mProgressBar.visibility = View.VISIBLE
+        mMoviesRecyclerView.visibility = View.GONE
+        mNoConnectionGroup.visibility = View.GONE
     }
 
     private fun showResult() {
@@ -107,7 +88,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun showNoConnection(message: String) {
-        mNoConnectionText!!.text = message
+        mNoConnectionText.text = message
         changeComponentVisibility(View.VISIBLE, View.GONE)
     }
 
@@ -122,13 +103,13 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun changeComponentVisibility(gone: Int, visible: Int) {
-        mNoConnectionGroup!!.visibility = gone
-        mMoviesRecyclerView!!.visibility = visible
+        mNoConnectionGroup.visibility = gone
+        mMoviesRecyclerView.visibility = visible
     }
 
 
     private fun tryAgain() {
-        mTryAgainButton!!.setOnClickListener { mViewModel!!.tryAgain() }
+        mTryAgainButton.setOnClickListener { mViewModel.tryAgain() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -139,13 +120,13 @@ class MovieFragment : Fragment(), MovieClickListener {
         val mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().applicationContext), MovieRemoteDataSource.getInstance())
         mViewModel = ViewModelProviders.of(this,
                 MovieFactory(mMovieRepository)).get(MovieViewModel::class.java)
-        mViewModel!!.movies.observe(viewLifecycleOwner, moviesObserver!!)
+        mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
         return view
     }
 
     private fun setupMoviesList(view: View) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies)
-        mMoviesRecyclerView!!.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+        mMoviesRecyclerView.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
     }
 
     private fun setupFields(view: View) {
@@ -165,7 +146,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             val values = arrayOf<CharSequence>("Most Popular", "Highest Rated", "Favorites")
             val sortDialog = AlertDialog.Builder(context)
                     .setTitle(TITLE_DIALOG_FILTER)
-                    .setSingleChoiceItems(values, mViewModel!!.selectedFilterIndex) { dialog, which ->
+                    .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
                         changeSortOrder(which)
                         dialog.dismiss()
                     }
@@ -179,16 +160,16 @@ class MovieFragment : Fragment(), MovieClickListener {
     private fun changeSortOrder(item: Int) {
         when (item) {
             INDEX_FILTER_MOST_POPULAR -> {
-                mViewModel!!.setMovieSortBy(FILTER_MOST_POPULAR)
-                mViewModel!!.selectedFilterIndex = 0
+                mViewModel.setMovieSortBy(FILTER_MOST_POPULAR)
+                mViewModel.selectedFilterIndex = 0
             }
             INDEX_FILTER_HIGHEST_RATED -> {
-                mViewModel!!.setMovieSortBy(FILTER_HIGHEST_RATED)
-                mViewModel!!.selectedFilterIndex = 1
+                mViewModel.setMovieSortBy(FILTER_HIGHEST_RATED)
+                mViewModel.selectedFilterIndex = 1
             }
             INDEX_FILTER_FAVORITES -> {
-                mViewModel!!.setMovieSortBy(FILTER_FAVORITES)
-                mViewModel!!.selectedFilterIndex = 2
+                mViewModel.setMovieSortBy(FILTER_FAVORITES)
+                mViewModel.selectedFilterIndex = 2
             }
         }
     }
