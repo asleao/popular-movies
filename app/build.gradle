@@ -15,14 +15,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        def propsFile = rootProject.file('keys.properties')
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            buildConfigField "String", "MdbApiKey", MdbApiKey
+            buildConfigField "String", "MdbApiKey", props["MdbApiKey"]
         }
         debug {
             minifyEnabled false
-            buildConfigField "String", "MdbApiKey", MdbApiKey
+            buildConfigField "String", "MdbApiKey", props["MdbApiKey"]
         }
     }
 }
