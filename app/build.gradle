@@ -15,6 +15,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        multiDexEnabled = true
     }
     buildTypes {
         def propsFile = rootProject.file('keys.properties')
@@ -57,7 +58,7 @@ ext {
     javaAnnotations = "15.0"
     constraintLayoutVersion = "1.1.3"
     picassoVersion = "2.71828"
-    retrofitVersion = "2.5.0"
+    retrofitVersion = "2.6.1"
     logInterceptorVersion = "3.8.0"
     moshiVersion = "1.8.0"
     jodatimeVersion = "2.10.1"
@@ -77,6 +78,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation 'androidx.core:core-ktx:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.3.50"
 
     //Material Components
     implementation "com.google.android.material:material:$materialVersion"
@@ -101,10 +103,13 @@ dependencies {
     //Network
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:4.0.1"
     implementation "com.squareup.okhttp3:logging-interceptor:$logInterceptorVersion"
+
 
     //Json
     implementation "com.squareup.moshi:moshi:$moshiVersion"
+    implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
 
     //Room
     implementation "android.arch.persistence.room:runtime:$archRoomVersion"
