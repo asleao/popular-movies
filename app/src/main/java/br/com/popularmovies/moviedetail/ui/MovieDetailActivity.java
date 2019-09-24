@@ -20,7 +20,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
 
         FragmentUtils.addFragmentInActivity(getSupportFragmentManager(),
-                MovieDetailFragment.newInstance(),
+                MovieDetailFragment.Companion.newInstance(),
                 R.id.fg_moviedetail,
                 getResources().getString(R.string.fg_movie_detail_tag),
                 false);
