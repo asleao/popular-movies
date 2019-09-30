@@ -20,8 +20,6 @@ import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.Resource
-import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment
-import br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
 import br.com.popularmovies.movies.Constants.*
@@ -29,7 +27,6 @@ import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
-import br.com.popularmovies.utils.FragmentUtils
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -130,13 +127,11 @@ class MovieDetailFragment : Fragment(), IConection {
 
         mTrailers.setOnClickListener {
             if (mMovieFromIntent.id != -1) {
-                FragmentUtils.replaceFragmentInActivity(
-                    requireFragmentManager(),
-                    MovieTrailerFragment.newInstance(mMovieFromIntent.id),
-                    R.id.fg_moviedetail,
-                    resources.getString(R.string.fg_movie_trailer_tag),
-                    true
-                )
+                val action =
+                    MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieTrailerFragment(
+                        mMovieFromIntent.id
+                    )
+                findNavController().navigate(action)
             } else {
                 showDialog(NO_DATA_MSG_ERROR_TITLE, NO_TRAILER_MSG_ERROR_MESSAGE)
             }
