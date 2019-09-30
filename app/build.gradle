@@ -42,6 +42,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE*"
+    }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 jacocoAndroidUnitTestReport {
@@ -103,7 +111,7 @@ dependencies {
     //Network
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-    implementation "com.squareup.okhttp3:okhttp:4.0.1"
+    implementation "com.squareup.okhttp3:okhttp:4.2.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$logInterceptorVersion"
 
 
