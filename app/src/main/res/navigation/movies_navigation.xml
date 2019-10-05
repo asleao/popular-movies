@@ -13,6 +13,12 @@
         <argument
             android:name="MOVIE"
             app:argType="br.com.popularmovies.services.movieService.response.Movie" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_movieReviewFragment"
+            app:destination="@id/movieReviewFragment" />
+        <action
+            android:id="@+id/action_movieDetailFragment_to_movieTrailerFragment"
+            app:destination="@id/movieTrailerFragment" />
     </fragment>
 
 
@@ -24,6 +30,24 @@
         <action
             android:id="@+id/action_movieFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieReviewFragment"
+        android:name="br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment"
+        android:label="Movie Review"
+        tools:layout="@layout/movie_review_fragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieTrailerFragment"
+        android:name="br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment"
+        android:label="Movie Trailer"
+        tools:layout="@layout/movie_trailer_fragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
     </fragment>
 </navigation>
 

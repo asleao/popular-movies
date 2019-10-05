@@ -178,11 +178,4 @@ class MovieFragment : Fragment(), MovieClickListener {
         val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie)
         findNavController().navigate(action)
     }
-
-    companion object {
-
-        internal fun newInstance(): MovieFragment {
-            return MovieFragment()
-        }
-    }
 }

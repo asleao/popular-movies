@@ -15,12 +15,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.Resource
-import br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment
-import br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
 import br.com.popularmovies.movies.Constants.*
@@ -28,7 +27,6 @@ import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
-import br.com.popularmovies.utils.FragmentUtils
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -104,8 +102,10 @@ class MovieDetailFragment : Fragment(), IConection {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.movie_detail_fragment, container, false)
         setupFields(view)
         setData()
@@ -114,11 +114,12 @@ class MovieDetailFragment : Fragment(), IConection {
         mFavorites.setOnClickListener { mViewModel.saveFavorites(!mViewModel.movie.isFavorite) }
         mReviews.setOnClickListener {
             if (mMovieFromIntent.id != -1) {
-                FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
-                        MovieReviewFragment.newInstance(mMovieFromIntent.id),
-                        R.id.fg_moviedetail,
-                        resources.getString(R.string.fg_movie_review_tag),
-                        true)
+                val action =
+                    MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieReviewFragment(
+                        mMovieFromIntent.id
+                    )
+                findNavController().navigate(action)
+
             } else {
                 showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE)
             }
@@ -126,11 +127,11 @@ class MovieDetailFragment : Fragment(), IConection {
 
         mTrailers.setOnClickListener {
             if (mMovieFromIntent.id != -1) {
-                FragmentUtils.replaceFragmentInActivity(requireFragmentManager(),
-                        MovieTrailerFragment.newInstance(mMovieFromIntent.id),
-                        R.id.fg_moviedetail,
-                        resources.getString(R.string.fg_movie_trailer_tag),
-                        true)
+                val action =
+                    MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieTrailerFragment(
+                        mMovieFromIntent.id
+                    )
+                findNavController().navigate(action)
             } else {
                 showDialog(NO_DATA_MSG_ERROR_TITLE, NO_TRAILER_MSG_ERROR_MESSAGE)
             }
@@ -140,17 +141,22 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupViewModel() {
-        val mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().applicationContext), MovieRemoteDataSource.getInstance())
-        mViewModel = ViewModelProviders.of(this,
-                MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)).get(MovieDetailViewModel::class.java)
+        val mMovieRepository = MovieRepository.getInstance(
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
+            MovieRemoteDataSource.getInstance()
+        )
+        mViewModel = ViewModelProviders.of(
+            this,
+            MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)
+        ).get(MovieDetailViewModel::class.java)
     }
 
     private fun showDialog(title: String, message: String) {
         val noReviewsDialog = AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
 
         noReviewsDialog.show()
     }
@@ -189,10 +195,10 @@ class MovieDetailFragment : Fragment(), IConection {
         else
             IMAGE_URL + movie.poster
         Picasso.get()
-                .load(imageUrl)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.no_photo)
-                .into(mMoviePoster)
+            .load(imageUrl)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.no_photo)
+            .into(mMoviePoster)
         mMovieReleaseDate.text = if (movie.releaseDate == null)
             "None"
         else
@@ -209,9 +215,19 @@ class MovieDetailFragment : Fragment(), IConection {
 
     private fun setFavoritesImage(isFavorite: Boolean) {
         if (isFavorite) {
-            mFavorites.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_black_24dp))
+            mFavorites.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_black_24dp
+                )
+            )
         } else {
-            mFavorites.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite_border_black_24dp))
+            mFavorites.setBackgroundDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_border_black_24dp
+                )
+            )
         }
     }
 
@@ -238,10 +254,10 @@ class MovieDetailFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
+            .setTitle(GENERIC_MSG_ERROR_TITLE)
+            .setMessage(message)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
 
         sortDialog.show()
     }
