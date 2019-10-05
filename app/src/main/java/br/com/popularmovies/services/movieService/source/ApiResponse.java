@@ -11,8 +11,8 @@ import br.com.popularmovies.data.model.ErrorResponse;
 import br.com.popularmovies.data.model.OldResource;
 import retrofit2.Response;
 
-import static br.com.popularmovies.data.Constants.GENERIC_ERROR_CODE;
-import static br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE;
+import static br.com.popularmovies.core.network.NetworkConstantsKt.GENERIC_ERROR_CODE;
+import static br.com.popularmovies.core.network.NetworkConstantsKt.NETWORK_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.CONNECTION_MSG_ERROR;
 import static br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_MESSAGE;
 import static br.com.popularmovies.movies.Constants.SERVER_MSG_ERROR;

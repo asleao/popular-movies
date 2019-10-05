@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import br.com.popularmovies.data.ServiceGenerator;
+import br.com.popularmovies.core.network.retrofit.ServiceGenerator;
 import br.com.popularmovies.data.model.OldResource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
@@ -27,7 +27,7 @@ public class MovieRemoteDataSource implements MovieDataSource {
 
 
     private MovieRemoteDataSource() {
-        mMovieService = ServiceGenerator.createService(MovieService.class);
+        mMovieService = ServiceGenerator.INSTANCE.createService(MovieService.class);
     }
 
     public static MovieRemoteDataSource getInstance() {

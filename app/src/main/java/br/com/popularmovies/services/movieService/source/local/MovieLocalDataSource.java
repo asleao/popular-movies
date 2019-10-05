@@ -19,7 +19,7 @@ import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieDataSource;
 import br.com.popularmovies.utils.AppExecutors;
 
-import static br.com.popularmovies.data.Constants.GENERIC_ERROR_CODE;
+import static br.com.popularmovies.core.network.NetworkConstantsKt.GENERIC_ERROR_CODE;
 import static br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR;
 
 public class MovieLocalDataSource implements MovieDataSource {

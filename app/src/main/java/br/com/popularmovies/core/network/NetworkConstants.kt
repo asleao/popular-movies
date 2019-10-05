@@ -5,6 +5,8 @@ const val HOST = "api.themoviedb.org"
 const val API_VERSION = "3/"
 const val API_KEY = "api_key"
 
+const val NETWORK_ERROR_CODE = 503
+const val GENERIC_ERROR_CODE = 500
 const val CODE_ERRO_NEGOCIO = 400
 const val CODE_ERRO_PADRAO = 500
 const val TITULO_MSG_ERRO_PADRAO = "Algo deu errado :("

@@ -18,17 +18,23 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.CODE_ERRO_PADRAO
+import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
-import br.com.popularmovies.movies.Constants.*
+import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.movies.Constants.IMAGE_URL
+import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
+import br.com.popularmovies.movies.Constants.NO_DATA_MSG_ERROR_TITLE
+import br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE
+import br.com.popularmovies.movies.Constants.NO_TRAILER_MSG_ERROR_MESSAGE
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import com.squareup.picasso.Picasso
-import java.util.*
+import java.util.Locale
 
 class MovieDetailFragment : Fragment(), IConection {
 
@@ -90,7 +96,7 @@ class MovieDetailFragment : Fragment(), IConection {
                     OldResource.Status.ERROR -> {
                         val error = resource.error
                         if (error != null) {
-                            if (error.statusCode == NETWORK_ERROR_CODE) {
+                            if (error.statusCode == CODE_ERRO_PADRAO) {
                                 showNoConnection(error.statusMessage)
                             } else {
                                 showGenericError(error.statusMessage)
@@ -119,7 +125,6 @@ class MovieDetailFragment : Fragment(), IConection {
                         mMovieFromIntent.id
                     )
                 findNavController().navigate(action)
-
             } else {
                 showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE)
             }
