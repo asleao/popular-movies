@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.com.popularmovies.data.local.AppDatabase;
 import br.com.popularmovies.data.model.ErrorResponse;
-import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.data.model.OldResource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.response.MovieReviews;
 import br.com.popularmovies.services.movieService.response.MovieTrailers;
@@ -46,136 +46,136 @@ public class MovieLocalDataSource implements MovieDataSource {
     }
 
     @Override
-    public LiveData<Resource<Movies>> getMovies(final String orderBy) {
-        final MediatorLiveData<Resource<Movies>> movies = new MediatorLiveData<>();
-        movies.postValue(Resource.
+    public LiveData<OldResource<Movies>> getMovies(final String orderBy) {
+        final MediatorLiveData<OldResource<Movies>> movies = new MediatorLiveData<>();
+        movies.postValue(OldResource.
                 <Movies>loading());
         try {
             movies.addSource(mMovieDao.getMovies(), new Observer<List<Movie>>() {
                 @Override
                 public void onChanged(List<Movie> fetchedMovies) {
-                    movies.postValue(Resource.success(new Movies(fetchedMovies)));
+                    movies.postValue(OldResource.success(new Movies(fetchedMovies)));
                 }
             });
 
         } catch (Exception e) {
-            movies.postValue(Resource.<Movies>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            movies.postValue(OldResource.<Movies>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return movies;
     }
 
     @Override
-    public LiveData<Resource<Movie>> getMovie(final int movieId) {
-        final MediatorLiveData<Resource<Movie>> movie = new MediatorLiveData<>();
-        movie.postValue(Resource.
+    public LiveData<OldResource<Movie>> getMovie(final int movieId) {
+        final MediatorLiveData<OldResource<Movie>> movie = new MediatorLiveData<>();
+        movie.postValue(OldResource.
                 <Movie>loading());
         try {
             movie.addSource(mMovieDao.getMovie(movieId), new Observer<Movie>() {
                 @Override
                 public void onChanged(Movie fetchedMovie) {
-                    movie.postValue(Resource.success(fetchedMovie));
+                    movie.postValue(OldResource.success(fetchedMovie));
                 }
             });
 
         } catch (Exception e) {
-            movie.postValue(Resource.<Movie>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            movie.postValue(OldResource.<Movie>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return movie;
     }
 
     @Override
-    public LiveData<Resource<MovieReviews>> getMovieReviews(int movieId) {
+    public LiveData<OldResource<MovieReviews>> getMovieReviews(int movieId) {
         return null;
     }
 
     @Override
-    public LiveData<Resource<Boolean>> saveToFavorites(final int movieId, final boolean status) {
-        final MutableLiveData<Resource<Boolean>> mMovie = new MutableLiveData<>();
-        mMovie.postValue(Resource.
+    public LiveData<OldResource<Boolean>> saveToFavorites(final int movieId, final boolean status) {
+        final MutableLiveData<OldResource<Boolean>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(OldResource.
                 <Boolean>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     mMovieDao.saveFavorites(movieId, status);
-                    mMovie.postValue(Resource.
+                    mMovie.postValue(OldResource.
                             success(status));
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Boolean>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            mMovie.postValue(OldResource.<Boolean>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
     }
 
     @Override
-    public LiveData<Resource<Void>> saveMovies(final List<Movie> movies) {
-        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
-        mMovie.postValue(Resource.
+    public LiveData<OldResource<Void>> saveMovies(final List<Movie> movies) {
+        final MutableLiveData<OldResource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(OldResource.
                 <Void>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     mMovieDao.insertAllMovies(movies);
-                    mMovie.postValue(Resource.<Void>
+                    mMovie.postValue(OldResource.<Void>
                             success(null));
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            mMovie.postValue(OldResource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
     }
 
     @Override
-    public LiveData<Resource<Void>> saveMovie(final Movie movie) {
-        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
-        mMovie.postValue(Resource.
+    public LiveData<OldResource<Void>> saveMovie(final Movie movie) {
+        final MutableLiveData<OldResource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(OldResource.
                 <Void>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     mMovieDao.insertMovie(movie);
-                    mMovie.postValue(Resource.<Void>
+                    mMovie.postValue(OldResource.<Void>
                             success(null));
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            mMovie.postValue(OldResource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
     }
 
     @Override
-    public LiveData<Resource<Void>> removeMovie(final Movie movie) {
-        final MutableLiveData<Resource<Void>> mMovie = new MutableLiveData<>();
-        mMovie.postValue(Resource.
+    public LiveData<OldResource<Void>> removeMovie(final Movie movie) {
+        final MutableLiveData<OldResource<Void>> mMovie = new MutableLiveData<>();
+        mMovie.postValue(OldResource.
                 <Void>loading());
         try {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     mMovieDao.deleteMovie(movie);
-                    mMovie.postValue(Resource.<Void>
+                    mMovie.postValue(OldResource.<Void>
                             success(null));
                 }
             });
         } catch (Exception e) {
-            mMovie.postValue(Resource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
+            mMovie.postValue(OldResource.<Void>error(new ErrorResponse(GENERIC_ERROR_CODE,
                     ROOM_MSG_ERROR)));
         }
         return mMovie;
     }
 
     @Override
-    public LiveData<Resource<MovieTrailers>> getMovieTrailers(int movieId) {
+    public LiveData<OldResource<MovieTrailers>> getMovieTrailers(int movieId) {
         return null;
     }
 

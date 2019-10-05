@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory
@@ -32,7 +32,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     private lateinit var mViewModel: MovieReviewViewModel
     private lateinit var mReviewsRecyclerView: RecyclerView
-    private lateinit var reviewsObserver: Observer<Resource<MovieReviews>>
+    private lateinit var reviewsObserver: Observer<OldResource<MovieReviews>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
@@ -49,11 +49,11 @@ class MovieReviewFragment : Fragment(), IConection {
         reviewsObserver = Observer { movieReviewsResource ->
             if (movieReviewsResource != null)
                 when (movieReviewsResource.status) {
-                    Resource.Status.LOADING -> {
+                    OldResource.Status.LOADING -> {
                         showLoading()
                         mReviewsRecyclerView.visibility = View.GONE
                     }
-                    Resource.Status.SUCCESS -> {
+                    OldResource.Status.SUCCESS -> {
                         hideLoading()
                         mReviewsRecyclerView.visibility = View.VISIBLE
                         if (movieReviewsResource.data != null) {
@@ -64,11 +64,10 @@ class MovieReviewFragment : Fragment(), IConection {
                                     ReviewAdapter(movieReviewsResource.data.reviews)
                                 mReviewsRecyclerView.adapter = mReviewAdapter
                                 showResult()
-
                             }
                         }
                     }
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.ERROR -> {
                         hideLoading()
                         val error = movieReviewsResource.error
                         if (error != null) {
@@ -98,10 +97,14 @@ class MovieReviewFragment : Fragment(), IConection {
             MovieLocalDataSource.getInstance(requireActivity().applicationContext),
             MovieRemoteDataSource.getInstance()
         )
-        mViewModel = ViewModelProviders.of(
-            this,
-            MovieReviewFactory(mMovieRepository, movieId)
-        ).get(MovieReviewViewModel::class.java)
+
+        mMovieRepository?.let { repository ->
+            mViewModel = ViewModelProviders.of(
+                this,
+                MovieReviewFactory(repository, movieId)
+            ).get(MovieReviewViewModel::class.java)
+        }
+
         setupFields(view)
         setupReviewsList(view)
         mViewModel.reviews.observe(viewLifecycleOwner, reviewsObserver)
@@ -121,7 +124,6 @@ class MovieReviewFragment : Fragment(), IConection {
         mReviewsRecyclerView = view.findViewById(R.id.rv_reviews)
         mReviewsRecyclerView.layoutManager = LinearLayoutManager(context)
     }
-
 
     override fun showLoading() {
         mProgressBar.visibility = View.VISIBLE

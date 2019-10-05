@@ -8,7 +8,7 @@ import com.squareup.moshi.Moshi;
 import java.io.IOException;
 
 import br.com.popularmovies.data.model.ErrorResponse;
-import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.data.model.OldResource;
 import retrofit2.Response;
 
 import static br.com.popularmovies.data.Constants.GENERIC_ERROR_CODE;
@@ -24,10 +24,10 @@ public class ApiResponse<T> {
         this.logTag = logTag;
     }
 
-    public Resource<T> getApiOnResponse(Response<T> response) {
+    public OldResource<T> getApiOnResponse(Response<T> response) {
         if (response.body() != null) {
             if (response.isSuccessful()) {
-                return Resource.success(response.body());
+                return OldResource.success(response.body());
             } else {
                 if (response.errorBody() != null) {
                     ErrorResponse error = null;
@@ -43,16 +43,16 @@ public class ApiResponse<T> {
                         error = new ErrorResponse(response.code(),
                                 SERVER_MSG_ERROR);
                     }
-                    return Resource.error(error);
+                    return OldResource.error(error);
                 }
             }
         }
 
-        return Resource.error(new ErrorResponse(response.code(),
+        return OldResource.error(new ErrorResponse(response.code(),
                 SERVER_MSG_ERROR));
     }
 
-    public Resource<T> getApiOnFailure(Throwable t) {
+    public OldResource<T> getApiOnFailure(Throwable t) {
         ErrorResponse error;
         if (t instanceof IOException) {
             error = new ErrorResponse(NETWORK_ERROR_CODE,
@@ -62,6 +62,6 @@ public class ApiResponse<T> {
                     GENERIC_MSG_ERROR_MESSAGE);
         }
         Log.e(logTag, t.getMessage());
-        return Resource.error(error);
+        return OldResource.error(error);
     }
 }

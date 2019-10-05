@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
@@ -31,7 +31,7 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private lateinit var mViewModel: MovieViewModel
     private lateinit var mMoviesRecyclerView: RecyclerView
-    private lateinit var moviesObserver: Observer<Resource<Movies>>
+    private lateinit var moviesObserver: Observer<OldResource<Movies>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
@@ -47,8 +47,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         moviesObserver = Observer { moviesResource ->
             if (moviesResource != null)
                 when (moviesResource.status) {
-                    Resource.Status.LOADING -> showLoading()
-                    Resource.Status.SUCCESS -> {
+                    OldResource.Status.LOADING -> showLoading()
+                    OldResource.Status.SUCCESS -> {
                         hideLoading()
                         if (moviesResource.data != null) {
                             val mMovieAdapter = MovieAdapter(moviesResource.data.movies, this@MovieFragment)
@@ -56,7 +56,7 @@ class MovieFragment : Fragment(), MovieClickListener {
                             showResult()
                         }
                     }
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.ERROR -> {
                         hideLoading()
                         val error = moviesResource.error
                         if (error != null) {

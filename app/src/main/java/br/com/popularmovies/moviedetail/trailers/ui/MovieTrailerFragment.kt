@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
@@ -39,7 +39,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     private lateinit var mViewModel: MovieTrailerViewModel
     private lateinit var mTrailersRecyclerView: RecyclerView
-    private lateinit var trailersObserver: Observer<Resource<MovieTrailers>>
+    private lateinit var trailersObserver: Observer<OldResource<MovieTrailers>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
@@ -56,11 +56,11 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         trailersObserver = Observer { movieReviewsResource ->
             if (movieReviewsResource != null)
                 when (movieReviewsResource.status) {
-                    Resource.Status.LOADING -> {
+                    OldResource.Status.LOADING -> {
                         showLoading()
                         mTrailersRecyclerView.visibility = View.GONE
                     }
-                    Resource.Status.SUCCESS -> {
+                    OldResource.Status.SUCCESS -> {
                         hideLoading()
                         mTrailersRecyclerView.visibility = View.VISIBLE
                         if (movieReviewsResource.data != null) {
@@ -77,7 +77,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
                             }
                         }
                     }
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.ERROR -> {
                         hideLoading()
                         val error = movieReviewsResource.error
                         if (error != null) {

@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
 import br.com.popularmovies.movies.Constants.*
@@ -42,8 +42,8 @@ class MovieDetailFragment : Fragment(), IConection {
     private lateinit var mReviews: TextView
     private lateinit var mTrailers: TextView
     private lateinit var mFavorites: AppCompatImageView
-    private lateinit var favorites: Observer<Resource<Void>>
-    private lateinit var movie: Observer<Resource<Movie>>
+    private lateinit var favorites: Observer<OldResource<Void>>
+    private lateinit var movie: Observer<OldResource<Movie>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mMovieDetailGroup: Group
     private lateinit var mTryAgainButton: Button
@@ -58,8 +58,8 @@ class MovieDetailFragment : Fragment(), IConection {
     private fun setupObservers() {
         movie = Observer { movieResource ->
             when (movieResource.status) {
-                Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> {
+                OldResource.Status.LOADING -> showLoading()
+                OldResource.Status.SUCCESS -> {
                     hideLoading()
                     if (movieResource.data != null) {
                         showMovieDetails(movieResource.data)
@@ -68,7 +68,7 @@ class MovieDetailFragment : Fragment(), IConection {
                     }
                     showResult()
                 }
-                Resource.Status.ERROR -> {
+                OldResource.Status.ERROR -> {
                     hideLoading()
                     val error = movieResource.error
                     if (error != null) {
@@ -86,8 +86,8 @@ class MovieDetailFragment : Fragment(), IConection {
         favorites = Observer { resource ->
             if (resource != null) {
                 when (resource.status) {
-                    Resource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie.isFavorite)
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie.isFavorite)
+                    OldResource.Status.ERROR -> {
                         val error = resource.error
                         if (error != null) {
                             if (error.statusCode == NETWORK_ERROR_CODE) {

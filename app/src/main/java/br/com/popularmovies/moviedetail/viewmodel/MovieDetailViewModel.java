@@ -6,28 +6,28 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.data.model.OldResource;
 import br.com.popularmovies.services.movieService.response.Movie;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
 public class MovieDetailViewModel extends ViewModel {
-    private final LiveData<Resource<Void>> favorites;
-    private final LiveData<Resource<Movie>> mMovie;
+    private final LiveData<OldResource<Void>> favorites;
+    private final LiveData<OldResource<Movie>> mMovie;
     private final MutableLiveData<Boolean> movieStatus = new MutableLiveData<>();
     private final MutableLiveData<Integer> _movieId = new MutableLiveData<>();
     private Movie movie;
 
     public MovieDetailViewModel(final MovieRepository mMovieRepository, final int movieId) {
-        mMovie = Transformations.switchMap(_movieId, new Function<Integer, LiveData<Resource<Movie>>>() {
+        mMovie = Transformations.switchMap(_movieId, new Function<Integer, LiveData<OldResource<Movie>>>() {
             @Override
-            public LiveData<Resource<Movie>> apply(Integer input) {
+            public LiveData<OldResource<Movie>> apply(Integer input) {
                 return mMovieRepository.getMovie(movieId);
             }
         });
         _movieId.setValue(movieId);
-        favorites = Transformations.switchMap(movieStatus, new Function<Boolean, LiveData<Resource<Void>>>() {
+        favorites = Transformations.switchMap(movieStatus, new Function<Boolean, LiveData<OldResource<Void>>>() {
             @Override
-            public LiveData<Resource<Void>> apply(Boolean isFavorite) {
+            public LiveData<OldResource<Void>> apply(Boolean isFavorite) {
                 if (isFavorite != null) {
                     movie.setFavorite(isFavorite);
                     if (isFavorite) {
@@ -42,11 +42,11 @@ public class MovieDetailViewModel extends ViewModel {
     }
 
 
-    public LiveData<Resource<Void>> getFavorites() {
+    public LiveData<OldResource<Void>> getFavorites() {
         return favorites;
     }
 
-    public LiveData<Resource<Movie>> getmMovie() {
+    public LiveData<OldResource<Movie>> getmMovie() {
         return mMovie;
     }
 
