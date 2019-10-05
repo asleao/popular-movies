@@ -1,12 +1,12 @@
-package br.com.popularmovies.data.local
+package br.com.popularmovies.core.network.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import br.com.popularmovies.data.local.typeconverters.BigDecimalConverter
-import br.com.popularmovies.data.local.typeconverters.LocalDateConverter
+import br.com.popularmovies.core.network.local.typeconverters.BigDecimalConverter
+import br.com.popularmovies.core.network.local.typeconverters.LocalDateConverter
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.local.MovieDao
 

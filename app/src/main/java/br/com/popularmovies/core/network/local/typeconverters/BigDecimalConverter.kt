@@ -1,4 +1,4 @@
-package br.com.popularmovies.data.local.typeconverters
+package br.com.popularmovies.core.network.local.typeconverters
 
 import androidx.room.TypeConverter
 

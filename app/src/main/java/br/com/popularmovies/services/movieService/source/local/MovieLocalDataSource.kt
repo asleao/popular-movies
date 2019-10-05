@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
-import br.com.popularmovies.data.local.AppDatabase
+import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.data.model.ErrorResponse
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
