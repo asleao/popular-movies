@@ -6,6 +6,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.local.AppDatabase
+import br.com.popularmovies.core.network.retrofit.model.Error
+import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.data.model.ErrorResponse
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
@@ -67,8 +69,8 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
         return movie
     }
 
-    override fun getMovieReviews(movieId: Int): LiveData<OldResource<MovieReviews>> {
-        return MutableLiveData()
+    override suspend fun getMovieReviews(movieId: Int): Resource<MovieReviews> {
+        return Resource.error(Error(1, "", ""))
     }
 
     override fun saveToFavorites(movieId: Int, status: Boolean): LiveData<OldResource<Boolean>> {

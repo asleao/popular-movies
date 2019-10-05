@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory
@@ -32,7 +30,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     private lateinit var mViewModel: MovieReviewViewModel
     private lateinit var mReviewsRecyclerView: RecyclerView
-    private lateinit var reviewsObserver: Observer<OldResource<MovieReviews>>
+    private lateinit var reviewsObserver: Observer<MovieReviews>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
@@ -46,39 +44,49 @@ class MovieReviewFragment : Fragment(), IConection {
     }
 
     private fun setupObservers() {
-        reviewsObserver = Observer { movieReviewsResource ->
-            if (movieReviewsResource != null)
-                when (movieReviewsResource.status) {
-                    OldResource.Status.LOADING -> {
-                        showLoading()
-                        mReviewsRecyclerView.visibility = View.GONE
-                    }
-                    OldResource.Status.SUCCESS -> {
-                        hideLoading()
-                        mReviewsRecyclerView.visibility = View.VISIBLE
-                        if (movieReviewsResource.data != null) {
-                            if (movieReviewsResource.data.reviews.isEmpty()) {
-                                showNoReviews()
-                            } else {
-                                val mReviewAdapter =
-                                    ReviewAdapter(movieReviewsResource.data.reviews)
-                                mReviewsRecyclerView.adapter = mReviewAdapter
-                                showResult()
-                            }
-                        }
-                    }
-                    OldResource.Status.ERROR -> {
-                        hideLoading()
-                        val error = movieReviewsResource.error
-                        if (error != null) {
-                            if (error.statusCode == NETWORK_ERROR_CODE) {
-                                showNoConnection(error.statusMessage)
-                            } else {
-                                showGenericError(error.statusMessage)
-                            }
-                        }
-                    }
-                }
+        reviewsObserver = Observer { movieReviews ->
+            hideLoading()
+            mReviewsRecyclerView.visibility = View.VISIBLE
+            if (movieReviews.reviews.isEmpty()) {
+                showNoReviews()
+            } else {
+                val mReviewAdapter =
+                    ReviewAdapter(movieReviews.reviews)
+                mReviewsRecyclerView.adapter = mReviewAdapter
+                showResult()
+            }
+
+            // when (movieReviewsResource.status) {
+            //     OldResource.Status.LOADING -> {
+            //         showLoading()
+            //         mReviewsRecyclerView.visibility = View.GONE
+            //     }
+            //     OldResource.Status.SUCCESS -> {
+            //         hideLoading()
+            //         mReviewsRecyclerView.visibility = View.VISIBLE
+            //         if (movieReviewsResource.data != null) {
+            //             if (movieReviewsResource.data.reviews.isEmpty()) {
+            //                 showNoReviews()
+            //             } else {
+            //                 val mReviewAdapter =
+            //                     ReviewAdapter(movieReviewsResource.data.reviews)
+            //                 mReviewsRecyclerView.adapter = mReviewAdapter
+            //                 showResult()
+            //             }
+            //         }
+            //     }
+            //     OldResource.Status.ERROR -> {
+            //         hideLoading()
+            //         val error = movieReviewsResource.error
+            //         if (error != null) {
+            //             if (error.statusCode == NETWORK_ERROR_CODE) {
+            //                 showNoConnection(error.statusMessage)
+            //             } else {
+            //                 showGenericError(error.statusMessage)
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 
@@ -95,22 +103,25 @@ class MovieReviewFragment : Fragment(), IConection {
         val movieId = args.movieId
         val mMovieLocalDataSource =
             MovieLocalDataSource.getInstance(requireActivity().applicationContext)
-        mMovieLocalDataSource?.let {
-            val mMovieRepository = MovieRepository.getInstance(
-                mMovieLocalDataSource,
-                MovieRemoteDataSource.getInstance()
-            )
-            mMovieRepository?.let { repository ->
-                mViewModel = ViewModelProviders.of(
-                    this,
-                    MovieReviewFactory(repository, movieId)
-                ).get(MovieReviewViewModel::class.java)
-            }
 
-            setupFields(view)
-            setupReviewsList(view)
-            mViewModel.reviews.observe(viewLifecycleOwner, reviewsObserver)
-            mTryAgainButton.setOnClickListener { tryAgain() }
+        mMovieLocalDataSource?.let {
+            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
+                val mMovieRepository = MovieRepository.getInstance(
+                    mMovieLocalDataSource,
+                    mMovieRemoteDataSource
+                )
+                mMovieRepository?.let { repository ->
+                    mViewModel = ViewModelProviders.of(
+                        this,
+                        MovieReviewFactory(repository, movieId)
+                    ).get(MovieReviewViewModel::class.java)
+                }
+
+                setupFields(view)
+                setupReviewsList(view)
+                mViewModel.reviews.observe(viewLifecycleOwner, reviewsObserver)
+                mTryAgainButton.setOnClickListener { tryAgain() }
+            }
         }
 
         return view

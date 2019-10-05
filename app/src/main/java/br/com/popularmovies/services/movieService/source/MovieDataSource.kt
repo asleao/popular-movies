@@ -1,6 +1,7 @@
 package br.com.popularmovies.services.movieService.source
 
 import androidx.lifecycle.LiveData
+import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
@@ -13,7 +14,7 @@ interface MovieDataSource {
 
     fun getMovie(movieId: Int): LiveData<OldResource<Movie>>
 
-    fun getMovieReviews(movieId: Int): LiveData<OldResource<MovieReviews>>
+    suspend fun getMovieReviews(movieId: Int): Resource<MovieReviews>
 
     fun saveToFavorites(movieId: Int, status: Boolean): LiveData<OldResource<Boolean>>
 

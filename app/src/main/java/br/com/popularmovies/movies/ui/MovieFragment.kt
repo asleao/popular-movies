@@ -133,15 +133,17 @@ class MovieFragment : Fragment(), MovieClickListener {
         val mMovieLocalDataSource =
             MovieLocalDataSource.getInstance(requireActivity().applicationContext)
         mMovieLocalDataSource?.let { movieLocalDataSource ->
-            val mMovieRepository = MovieRepository.getInstance(
-                mMovieLocalDataSource,
-                MovieRemoteDataSource.getInstance()
-            )
-            mViewModel = ViewModelProviders.of(
-                this,
-                MovieFactory(mMovieRepository)
-            ).get(MovieViewModel::class.java)
-            mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
+            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
+                val mMovieRepository = MovieRepository.getInstance(
+                    mMovieLocalDataSource,
+                    mMovieRemoteDataSource
+                )
+                mViewModel = ViewModelProviders.of(
+                    this,
+                    MovieFactory(mMovieRepository)
+                ).get(MovieViewModel::class.java)
+                mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
+            }
         }
         return view
     }

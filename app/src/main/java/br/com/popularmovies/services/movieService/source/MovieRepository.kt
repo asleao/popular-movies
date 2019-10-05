@@ -2,6 +2,7 @@ package br.com.popularmovies.services.movieService.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.services.movieService.response.Movie
@@ -40,7 +41,7 @@ class MovieRepository private constructor(
         return movie
     }
 
-    override fun getMovieReviews(movieId: Int): LiveData<OldResource<MovieReviews>> {
+    override suspend fun getMovieReviews(movieId: Int): Resource<MovieReviews> {
         return mMovieRemoteDataSource.getMovieReviews(movieId)
     }
 
