@@ -93,22 +93,26 @@ class MovieReviewFragment : Fragment(), IConection {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.movie_review_fragment, container, false)
         val movieId = args.movieId
-        val mMovieRepository = MovieRepository.getInstance(
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
-            MovieRemoteDataSource.getInstance()
-        )
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let {
+            val mMovieRepository = MovieRepository.getInstance(
+                mMovieLocalDataSource,
+                MovieRemoteDataSource.getInstance()
+            )
+            mMovieRepository?.let { repository ->
+                mViewModel = ViewModelProviders.of(
+                    this,
+                    MovieReviewFactory(repository, movieId)
+                ).get(MovieReviewViewModel::class.java)
+            }
 
-        mMovieRepository?.let { repository ->
-            mViewModel = ViewModelProviders.of(
-                this,
-                MovieReviewFactory(repository, movieId)
-            ).get(MovieReviewViewModel::class.java)
+            setupFields(view)
+            setupReviewsList(view)
+            mViewModel.reviews.observe(viewLifecycleOwner, reviewsObserver)
+            mTryAgainButton.setOnClickListener { tryAgain() }
         }
 
-        setupFields(view)
-        setupReviewsList(view)
-        mViewModel.reviews.observe(viewLifecycleOwner, reviewsObserver)
-        mTryAgainButton.setOnClickListener { tryAgain() }
         return view
     }
 

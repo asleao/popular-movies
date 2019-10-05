@@ -146,14 +146,18 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupViewModel() {
-        val mMovieRepository = MovieRepository.getInstance(
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
-            MovieRemoteDataSource.getInstance()
-        )
-        mViewModel = ViewModelProviders.of(
-            this,
-            MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)
-        ).get(MovieDetailViewModel::class.java)
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let {
+            val mMovieRepository = MovieRepository.getInstance(
+                mMovieLocalDataSource,
+                MovieRemoteDataSource.getInstance()
+            )
+            mViewModel = ViewModelProviders.of(
+                this,
+                MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)
+            ).get(MovieDetailViewModel::class.java)
+        }
     }
 
     private fun showDialog(title: String, message: String) {

@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs"
@@ -105,7 +106,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycleVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleVersion"
 
     //Picture
     implementation("com.squareup.picasso:picasso:$picassoVersion") {
@@ -126,7 +127,7 @@ dependencies {
 
     //Room
     implementation "android.arch.persistence.room:runtime:$archRoomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$archRoomVersion"
+    kapt "android.arch.persistence.room:compiler:$archRoomVersion"
 
     // Date
     implementation "joda-time:joda-time:$jodatimeVersion"

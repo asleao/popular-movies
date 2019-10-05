@@ -63,7 +63,8 @@ class MovieFragment : Fragment(), MovieClickListener {
                     OldResource.Status.SUCCESS -> {
                         hideLoading()
                         if (moviesResource.data != null) {
-                            val mMovieAdapter = MovieAdapter(moviesResource.data.movies, this@MovieFragment)
+                            val mMovieAdapter =
+                                MovieAdapter(moviesResource.data.movies, this@MovieFragment)
                             mMoviesRecyclerView.adapter = mMovieAdapter
                             showResult()
                         }
@@ -83,7 +84,6 @@ class MovieFragment : Fragment(), MovieClickListener {
                 }
         }
     }
-
 
     private fun hideLoading() {
         mProgressBar.visibility = View.GONE
@@ -106,10 +106,10 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
+            .setTitle(GENERIC_MSG_ERROR_TITLE)
+            .setMessage(message)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
 
         sortDialog.show()
     }
@@ -119,26 +119,37 @@ class MovieFragment : Fragment(), MovieClickListener {
         mMoviesRecyclerView.visibility = visible
     }
 
-
     private fun tryAgain() {
         mTryAgainButton.setOnClickListener { mViewModel.tryAgain() }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_movie, container, false)
         setupFields(view)
         setupMoviesList(view)
-        val mMovieRepository = MovieRepository.getInstance(MovieLocalDataSource.getInstance(requireActivity().applicationContext), MovieRemoteDataSource.getInstance())
-        mViewModel = ViewModelProviders.of(this,
-                MovieFactory(mMovieRepository)).get(MovieViewModel::class.java)
-        mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let { movieLocalDataSource ->
+            val mMovieRepository = MovieRepository.getInstance(
+                mMovieLocalDataSource,
+                MovieRemoteDataSource.getInstance()
+            )
+            mViewModel = ViewModelProviders.of(
+                this,
+                MovieFactory(mMovieRepository)
+            ).get(MovieViewModel::class.java)
+            mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
+        }
         return view
     }
 
     private fun setupMoviesList(view: View) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies)
-        mMoviesRecyclerView.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+        mMoviesRecyclerView.layoutManager =
+            GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
     }
 
     private fun setupFields(view: View) {
@@ -157,12 +168,12 @@ class MovieFragment : Fragment(), MovieClickListener {
         if (item.itemId == R.id.m_sort) {
             val values = arrayOf<CharSequence>("Most Popular", "Highest Rated", "Favorites")
             val sortDialog = AlertDialog.Builder(context)
-                    .setTitle(TITLE_DIALOG_FILTER)
-                    .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
-                        changeSortOrder(which)
-                        dialog.dismiss()
-                    }
-                    .create()
+                .setTitle(TITLE_DIALOG_FILTER)
+                .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
+                    changeSortOrder(which)
+                    dialog.dismiss()
+                }
+                .create()
 
             sortDialog.show()
         }

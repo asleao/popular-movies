@@ -102,18 +102,22 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
         val view = inflater.inflate(R.layout.movie_trailer_fragment, container, false)
         val movieId = args.movieId
-        val mMovieRepository = MovieRepository.getInstance(
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
-            MovieRemoteDataSource.getInstance()
-        )
-        mViewModel = ViewModelProviders.of(
-            this,
-            MovieTrailerFactory(mMovieRepository, movieId)
-        ).get(MovieTrailerViewModel::class.java)
-        setupFields(view)
-        setupTrailersList(view)
-        mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
-        mTryAgainButton.setOnClickListener { tryAgain() }
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let {
+            val mMovieRepository = MovieRepository.getInstance(
+                mMovieLocalDataSource,
+                MovieRemoteDataSource.getInstance()
+            )
+            mViewModel = ViewModelProviders.of(
+                this,
+                MovieTrailerFactory(mMovieRepository, movieId)
+            ).get(MovieTrailerViewModel::class.java)
+            setupFields(view)
+            setupTrailersList(view)
+            mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
+            mTryAgainButton.setOnClickListener { tryAgain() }
+        }
 
         return view
     }
