@@ -21,14 +21,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.moviedetail.trailers.viewmodel.factories.MovieTrailerFactory
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.movies.Constants.MOVIE_ID
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.source.MovieRepository
@@ -39,7 +39,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     private lateinit var mViewModel: MovieTrailerViewModel
     private lateinit var mTrailersRecyclerView: RecyclerView
-    private lateinit var trailersObserver: Observer<Resource<MovieTrailers>>
+    private lateinit var trailersObserver: Observer<OldResource<MovieTrailers>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
@@ -56,11 +56,11 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         trailersObserver = Observer { movieReviewsResource ->
             if (movieReviewsResource != null)
                 when (movieReviewsResource.status) {
-                    Resource.Status.LOADING -> {
+                    OldResource.Status.LOADING -> {
                         showLoading()
                         mTrailersRecyclerView.visibility = View.GONE
                     }
-                    Resource.Status.SUCCESS -> {
+                    OldResource.Status.SUCCESS -> {
                         hideLoading()
                         mTrailersRecyclerView.visibility = View.VISIBLE
                         if (movieReviewsResource.data != null) {
@@ -73,11 +73,10 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
                                 )
                                 mTrailersRecyclerView.adapter = mTrailerAdapter
                                 showResult()
-
                             }
                         }
                     }
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.ERROR -> {
                         hideLoading()
                         val error = movieReviewsResource.error
                         if (error != null) {
@@ -103,18 +102,25 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
         val view = inflater.inflate(R.layout.movie_trailer_fragment, container, false)
         val movieId = args.movieId
-        val mMovieRepository = MovieRepository.getInstance(
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
-            MovieRemoteDataSource.getInstance()
-        )
-        mViewModel = ViewModelProviders.of(
-            this,
-            MovieTrailerFactory(mMovieRepository, movieId)
-        ).get(MovieTrailerViewModel::class.java)
-        setupFields(view)
-        setupTrailersList(view)
-        mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
-        mTryAgainButton.setOnClickListener { tryAgain() }
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let {
+            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
+                val mMovieRepository = MovieRepository.getInstance(
+                    mMovieLocalDataSource,
+                    mMovieRemoteDataSource
+                )
+                mViewModel = ViewModelProviders.of(
+                    this,
+                    MovieTrailerFactory(mMovieRepository, movieId)
+                ).get(MovieTrailerViewModel::class.java)
+                setupFields(view)
+                setupTrailersList(view)
+                mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
+                mTryAgainButton.setOnClickListener { tryAgain() }
+            }
+
+        }
 
         return view
     }
@@ -177,7 +183,6 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         } catch (ex: ActivityNotFoundException) {
             requireContext().startActivity(webIntent)
         }
-
     }
 
     override fun onShare(videoUrl: String) {

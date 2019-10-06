@@ -1,6 +1,12 @@
 package br.com.popularmovies.core.network.retrofit.model
 
-import br.com.popularmovies.core.network.*
+import br.com.popularmovies.core.network.BUSINESS_LOGIC_ERROR_CODE
+import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.NETWORK_ERROR_MSG
+import br.com.popularmovies.core.network.NETWORK_ERROR_TITLE
 import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -29,7 +35,7 @@ class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
     }
 
     override fun error(code: Int, errorBody: ResponseBody?): Resource<T> {
-        val error = if (code == CODE_ERRO_NEGOCIO && errorBody != null) {
+        val error = if (code == BUSINESS_LOGIC_ERROR_CODE && errorBody != null) {
             businessLogicError(errorBody)
         } else {
             genericError()
@@ -62,17 +68,17 @@ class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
 
     private fun connectionError(): Error {
         return Error(
-                codErro = CODE_ERRO_PADRAO,
-                title = TITULO_MSG_ERRO_CONEXAO,
-                message = MSG_ERRO_CONEXAO
+                codErro = NETWORK_ERROR_CODE,
+                title = NETWORK_ERROR_TITLE,
+                message = NETWORK_ERROR_MSG
         )
     }
 
     private fun genericError(): Error {
         return Error(
-                codErro = CODE_ERRO_PADRAO,
-                title = TITULO_MSG_ERRO_PADRAO,
-                message = MSG_ERRO_PADRAO
+                codErro = GENERIC_ERROR_CODE,
+                title = GENERIC_MSG_ERROR_TITLE,
+                message = GENERIC_MSG_ERROR_MESSAGE
         )
     }
 }

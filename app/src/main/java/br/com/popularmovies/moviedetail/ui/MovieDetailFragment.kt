@@ -18,17 +18,23 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.data.Constants.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.Resource
+import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
-import br.com.popularmovies.movies.Constants.*
+import br.com.popularmovies.movies.Constants.IMAGE_URL
+import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
+import br.com.popularmovies.movies.Constants.NO_DATA_MSG_ERROR_TITLE
+import br.com.popularmovies.movies.Constants.NO_REVIEWS_MSG_ERROR_MESSAGE
+import br.com.popularmovies.movies.Constants.NO_TRAILER_MSG_ERROR_MESSAGE
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import com.squareup.picasso.Picasso
-import java.util.*
+import java.util.Locale
 
 class MovieDetailFragment : Fragment(), IConection {
 
@@ -42,8 +48,8 @@ class MovieDetailFragment : Fragment(), IConection {
     private lateinit var mReviews: TextView
     private lateinit var mTrailers: TextView
     private lateinit var mFavorites: AppCompatImageView
-    private lateinit var favorites: Observer<Resource<Void>>
-    private lateinit var movie: Observer<Resource<Movie>>
+    private lateinit var favorites: Observer<OldResource<Void>>
+    private lateinit var movie: Observer<OldResource<Movie>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mMovieDetailGroup: Group
     private lateinit var mTryAgainButton: Button
@@ -58,8 +64,8 @@ class MovieDetailFragment : Fragment(), IConection {
     private fun setupObservers() {
         movie = Observer { movieResource ->
             when (movieResource.status) {
-                Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> {
+                OldResource.Status.LOADING -> showLoading()
+                OldResource.Status.SUCCESS -> {
                     hideLoading()
                     if (movieResource.data != null) {
                         showMovieDetails(movieResource.data)
@@ -68,7 +74,7 @@ class MovieDetailFragment : Fragment(), IConection {
                     }
                     showResult()
                 }
-                Resource.Status.ERROR -> {
+                OldResource.Status.ERROR -> {
                     hideLoading()
                     val error = movieResource.error
                     if (error != null) {
@@ -86,11 +92,11 @@ class MovieDetailFragment : Fragment(), IConection {
         favorites = Observer { resource ->
             if (resource != null) {
                 when (resource.status) {
-                    Resource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie.isFavorite)
-                    Resource.Status.ERROR -> {
+                    OldResource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie.isFavorite)
+                    OldResource.Status.ERROR -> {
                         val error = resource.error
                         if (error != null) {
-                            if (error.statusCode == NETWORK_ERROR_CODE) {
+                            if (error.statusCode == GENERIC_ERROR_CODE) {
                                 showNoConnection(error.statusMessage)
                             } else {
                                 showGenericError(error.statusMessage)
@@ -119,7 +125,6 @@ class MovieDetailFragment : Fragment(), IConection {
                         mMovieFromIntent.id
                     )
                 findNavController().navigate(action)
-
             } else {
                 showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE)
             }
@@ -141,14 +146,21 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupViewModel() {
-        val mMovieRepository = MovieRepository.getInstance(
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext),
-            MovieRemoteDataSource.getInstance()
-        )
-        mViewModel = ViewModelProviders.of(
-            this,
-            MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)
-        ).get(MovieDetailViewModel::class.java)
+        val mMovieLocalDataSource =
+            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+        mMovieLocalDataSource?.let {
+            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
+                val mMovieRepository = MovieRepository.getInstance(
+                    mMovieLocalDataSource,
+                    mMovieRemoteDataSource
+                )
+                mViewModel = ViewModelProviders.of(
+                    this,
+                    MovieDetailFactory(mMovieRepository, mMovieFromIntent.id)
+                ).get(MovieDetailViewModel::class.java)
+            }
+
+        }
     }
 
     private fun showDialog(title: String, message: String) {
@@ -264,12 +276,5 @@ class MovieDetailFragment : Fragment(), IConection {
 
     override fun tryAgain() {
         mViewModel.tryAgain()
-    }
-
-    companion object {
-
-        fun newInstance(): MovieDetailFragment {
-            return MovieDetailFragment()
-        }
     }
 }

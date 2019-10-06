@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fg_movie_review"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".moviedetail.reviews.ui.MovieReviewFragment">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/base_layout" />
+    <data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_reviews"
+        <variable
+            name="viewModel"
+            type="br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fg_movie_review"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_no_reviews"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|center_vertical"
-        android:text="@string/no_reviews"
-        android:visibility="gone"/>
+        <include
+            android:id="@+id/i_base_layout"
+            layout="@layout/base_layout_databinding"
+            app:status="@{viewModel.loading}" />
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tv_no_reviews"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|center_vertical"
+            android:text="@string/no_reviews"
+            android:visibility="gone" />
+
+    </FrameLayout>
+</layout>

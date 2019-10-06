@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import br.com.popularmovies.data.model.Resource;
+import br.com.popularmovies.data.model.OldResource;
 import br.com.popularmovies.services.movieService.response.Movies;
 import br.com.popularmovies.services.movieService.source.MovieRepository;
 
@@ -15,7 +15,7 @@ import static br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR;
 import static br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR;
 
 public class MovieViewModel extends ViewModel {
-    private final LiveData<Resource<Movies>> mMovies;
+    private final LiveData<OldResource<Movies>> mMovies;
     private final MutableLiveData<String> mSortBy;
     private final MovieRepository mMovieRepository;
     private int selectedFilterIndex = 0;
@@ -24,16 +24,16 @@ public class MovieViewModel extends ViewModel {
     public MovieViewModel(MovieRepository mMovieRepository) {
         this.mMovieRepository = mMovieRepository;
         mSortBy = new MutableLiveData<>();
-        mMovies = Transformations.switchMap(mSortBy, new Function<String, LiveData<Resource<Movies>>>() {
+        mMovies = Transformations.switchMap(mSortBy, new Function<String, LiveData<OldResource<Movies>>>() {
             @Override
-            public LiveData<Resource<Movies>> apply(String input) {
+            public LiveData<OldResource<Movies>> apply(String input) {
                 return getMoviesSortedBy(input);
             }
         });
         setMovieSortBy(FILTER_MOST_POPULAR);
     }
 
-    public LiveData<Resource<Movies>> getMovies() {
+    public LiveData<OldResource<Movies>> getMovies() {
         return mMovies;
     }
 
@@ -50,7 +50,7 @@ public class MovieViewModel extends ViewModel {
         this.selectedFilterIndex = selectedFilterIndex;
     }
 
-    private LiveData<Resource<Movies>> getMoviesSortedBy(String field) {
+    private LiveData<OldResource<Movies>> getMoviesSortedBy(String field) {
         return mMovieRepository.getMovies(field);
     }
 
