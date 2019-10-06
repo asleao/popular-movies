@@ -277,11 +277,4 @@ class MovieDetailFragment : Fragment(), IConection {
     override fun tryAgain() {
         mViewModel.tryAgain()
     }
-
-    companion object {
-
-        fun newInstance(): MovieDetailFragment {
-            return MovieDetailFragment()
-        }
-    }
 }
