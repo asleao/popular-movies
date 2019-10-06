@@ -64,7 +64,6 @@ class MovieReviewFragment : Fragment(), IConection {
     private fun setupLoadingObserver() {
         mViewModel.loading.observe(this, Observer { status ->
             if (status == true) {
-                showLoading()
                 binding.rvReviews.visibility = View.GONE
             } else {
                 hideLoading()
@@ -74,6 +73,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     private fun setupErrorObserver() {
         mViewModel.error.observe(this, Observer { error ->
+            mViewModel.showLoading(false)
             if (error != null) {
                 if (error.codErro == NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
@@ -86,6 +86,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     private fun setupMovieReviewObserver() {
         mViewModel.reviews.observe(this, Observer { movieReviews ->
+            mViewModel.showLoading(false)
             binding.rvReviews.visibility = View.VISIBLE
             if (movieReviews.reviews.isEmpty()) {
                 showNoReviews()

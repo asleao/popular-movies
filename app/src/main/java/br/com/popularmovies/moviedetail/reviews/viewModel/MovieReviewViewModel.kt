@@ -10,7 +10,10 @@ import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.utils.validateResponse
 import kotlinx.coroutines.launch
 
-class MovieReviewViewModel(mMovieRepository: MovieRepository, movieId: Int) : ViewModel() {
+class MovieReviewViewModel(
+    val mMovieRepository: MovieRepository,
+    val movieId: Int
+) : ViewModel() {
     val loading = MutableLiveData<Boolean>()
 
     private val _error = MutableLiveData<Error>()
@@ -20,10 +23,15 @@ class MovieReviewViewModel(mMovieRepository: MovieRepository, movieId: Int) : Vi
     val reviews: LiveData<MovieReviews>
         get() = _reviews
 
-    private val movieId = MutableLiveData<Int>()
-
     init {
         showLoading(true)
+        getReviews(mMovieRepository, movieId)
+    }
+
+    private fun getReviews(
+        mMovieRepository: MovieRepository,
+        movieId: Int
+    ) {
         viewModelScope.launch {
             val resource = mMovieRepository.getMovieReviews(movieId)
             resource.validateResponse(_reviews, _error)
@@ -35,6 +43,6 @@ class MovieReviewViewModel(mMovieRepository: MovieRepository, movieId: Int) : Vi
     }
 
     fun tryAgain() {
-        movieId.value = movieId.value
+        getReviews(mMovieRepository, movieId)
     }
 }
