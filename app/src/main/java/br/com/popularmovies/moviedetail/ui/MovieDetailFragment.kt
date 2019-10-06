@@ -19,11 +19,11 @@ import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.CODE_ERRO_PADRAO
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
 import br.com.popularmovies.movies.Constants.NO_DATA_MSG_ERROR_TITLE

@@ -19,7 +19,7 @@ class MovieReviewViewModel(
     private val _error = MutableLiveData<Error>()
     val error: LiveData<Error>
         get() = _error
-    val _reviews = MutableLiveData<MovieReviews>()
+    private val _reviews = MutableLiveData<MovieReviews>()
     val reviews: LiveData<MovieReviews>
         get() = _reviews
 

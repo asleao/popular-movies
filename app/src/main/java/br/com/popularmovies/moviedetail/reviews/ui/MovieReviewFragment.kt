@@ -13,12 +13,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
@@ -91,9 +91,7 @@ class MovieReviewFragment : Fragment(), IConection {
             if (movieReviews.reviews.isEmpty()) {
                 showNoReviews()
             } else {
-                val mReviewAdapter =
-                    ReviewAdapter(movieReviews.reviews)
-                binding.rvReviews.adapter = mReviewAdapter
+                binding.rvReviews.adapter = ReviewAdapter(movieReviews.reviews)
                 showResult()
             }
         })

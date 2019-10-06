@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
@@ -28,7 +29,6 @@ import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.moviedetail.trailers.viewmodel.factories.MovieTrailerFactory
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.movies.Constants.MOVIE_ID
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.source.MovieRepository

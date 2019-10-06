@@ -19,12 +19,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED
 import br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.movies.Constants.INDEX_FILTER_FAVORITES
 import br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED
 import br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR
