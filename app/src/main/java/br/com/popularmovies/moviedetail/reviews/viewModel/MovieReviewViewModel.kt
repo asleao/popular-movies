@@ -24,12 +24,12 @@ class MovieReviewViewModel(
         get() = _reviews
 
     init {
-        showLoading(true)
         getReviews()
     }
 
     fun getReviews() {
         viewModelScope.launch {
+            showLoading(true)
             val resource = mMovieRepository.getMovieReviews(movieId)
             resource.validateResponse(_reviews, _error)
         }

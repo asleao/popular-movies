@@ -1,8 +1,8 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel
 
 import br.com.popularmovies.InstantExecutorExtension
-import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.core.network.retrofit.model.Error
+import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import io.mockk.every
@@ -16,7 +16,6 @@ import kotlinx.coroutines.test.setMain
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -57,6 +56,7 @@ internal class MovieReviewViewModelTest {
             setupViewModel()
             viewModel.getReviews()
 
+            assertThat(viewModel.loading.value).isTrue()
             assertThat(viewModel.reviews.value).isNotNull()
             assertThat(viewModel.error.value).isNull()
         }
@@ -69,8 +69,25 @@ internal class MovieReviewViewModelTest {
             setupViewModel()
             viewModel.getReviews()
 
+            assertThat(viewModel.loading.value).isTrue()
             assertThat(viewModel.reviews.value).isNull()
             assertThat(viewModel.error.value).isNotNull()
+        }
+    }
+
+    @Nested
+    inner class TryAgain {
+        @Test
+        fun `when tryAgain is called, then getReviews should be called as well`() {
+            every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
+                Resource.success(MovieReviews(emptyList()))
+            }
+            setupViewModel()
+            viewModel.tryAgain()
+            
+            assertThat(viewModel.loading.value).isTrue()
+            assertThat(viewModel.reviews.value).isNotNull()
+            assertThat(viewModel.error.value).isNull()
         }
     }
 }
