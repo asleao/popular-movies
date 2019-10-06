@@ -166,7 +166,6 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
     }
 
     companion object {
-        @Volatile
         private var INSTANCE: MovieLocalDataSource? = null
 
         fun getInstance(context: Context): MovieLocalDataSource? {

@@ -18,6 +18,7 @@ android {
         testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         multiDexEnabled = true
     }
+
     buildTypes {
         def propsFile = rootProject.file('keys.properties')
         def props = new Properties()
@@ -33,6 +34,11 @@ android {
             testCoverageEnabled = true
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     testOptions {
         unitTests.all {
             jacoco {
