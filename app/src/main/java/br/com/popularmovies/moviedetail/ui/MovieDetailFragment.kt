@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.CODE_ERRO_PADRAO
+import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
@@ -96,7 +96,7 @@ class MovieDetailFragment : Fragment(), IConection {
                     OldResource.Status.ERROR -> {
                         val error = resource.error
                         if (error != null) {
-                            if (error.statusCode == CODE_ERRO_PADRAO) {
+                            if (error.statusCode == GENERIC_ERROR_CODE) {
                                 showNoConnection(error.statusMessage)
                             } else {
                                 showGenericError(error.statusMessage)

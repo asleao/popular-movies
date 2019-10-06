@@ -1,7 +1,7 @@
 package br.com.popularmovies.services.movieService.source
 
 import android.util.Log
-import br.com.popularmovies.core.network.CONNECTION_MSG_ERROR
+import br.com.popularmovies.core.network.NETWORK_ERROR_MSG
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
@@ -53,7 +53,7 @@ class ApiResponse<T>(private val logTag: String) {
         if (t is IOException) {
             error = ErrorResponse(
                 NETWORK_ERROR_CODE,
-                CONNECTION_MSG_ERROR
+                NETWORK_ERROR_MSG
             )
         } else {
             error = ErrorResponse(
