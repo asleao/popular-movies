@@ -19,7 +19,7 @@
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/pb_base"
             style="@style/SpinKitView.Large.ThreeBounce"
-            app:isVisible="@{status}"
+            isVisible="@{status}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
