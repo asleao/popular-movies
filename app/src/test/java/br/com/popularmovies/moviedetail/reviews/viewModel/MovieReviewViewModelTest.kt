@@ -84,7 +84,7 @@ internal class MovieReviewViewModelTest {
             }
             setupViewModel()
             viewModel.tryAgain()
-            
+
             assertThat(viewModel.loading.value).isTrue()
             assertThat(viewModel.reviews.value).isNotNull()
             assertThat(viewModel.error.value).isNull()

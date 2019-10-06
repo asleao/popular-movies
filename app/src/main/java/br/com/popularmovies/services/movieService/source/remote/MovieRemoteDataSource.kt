@@ -23,9 +23,8 @@ class MovieRemoteDataSource private constructor() : MovieDataSource {
         ServiceGenerator.createService(MovieService::class.java)
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
-        val GET_MOVIES_TAG = "getMovies"
         val call = mMovieService.getMovies(orderBy)
-        val apiResponse = ApiResponse<Movies>(GET_MOVIES_TAG)
+        val apiResponse = ApiResponse<Movies>("getMovies")
         val movies = MutableLiveData<OldResource<Movies>>()
         movies.value = OldResource.loading()
         call.enqueue(object : Callback<Movies> {
@@ -41,9 +40,8 @@ class MovieRemoteDataSource private constructor() : MovieDataSource {
     }
 
     override fun getMovie(movieId: Int): LiveData<OldResource<Movie>> {
-        val GET_MOVIE_TAG = "getMovie"
         val call = mMovieService.getMovie(movieId)
-        val apiResponse = ApiResponse<Movie>(GET_MOVIE_TAG)
+        val apiResponse = ApiResponse<Movie>("getMovie")
         val movie = MutableLiveData<OldResource<Movie>>()
         movie.value = OldResource.loading()
         call.enqueue(object : Callback<Movie> {
@@ -79,9 +77,8 @@ class MovieRemoteDataSource private constructor() : MovieDataSource {
     }
 
     override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
-        val GET_MOVIES_TRAILER_TAG = "getMovieTrailers"
         val call = mMovieService.getMovieTrailers(movieId)
-        val apiResponse = ApiResponse<MovieTrailers>(GET_MOVIES_TRAILER_TAG)
+        val apiResponse = ApiResponse<MovieTrailers>("getMovieTrailers")
         val trailers = MutableLiveData<OldResource<MovieTrailers>>()
         trailers.value = OldResource.loading()
         call.enqueue(object : Callback<MovieTrailers> {
