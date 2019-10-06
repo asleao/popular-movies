@@ -25,13 +25,10 @@ class MovieReviewViewModel(
 
     init {
         showLoading(true)
-        getReviews(mMovieRepository, movieId)
+        getReviews()
     }
 
-    private fun getReviews(
-        mMovieRepository: MovieRepository,
-        movieId: Int
-    ) {
+    fun getReviews() {
         viewModelScope.launch {
             val resource = mMovieRepository.getMovieReviews(movieId)
             resource.validateResponse(_reviews, _error)
@@ -43,6 +40,6 @@ class MovieReviewViewModel(
     }
 
     fun tryAgain() {
-        getReviews(mMovieRepository, movieId)
+        getReviews()
     }
 }
