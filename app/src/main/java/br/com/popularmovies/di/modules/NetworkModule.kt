@@ -95,18 +95,4 @@ object NetworkModule {
                 .build()
 
     }
-
-    @Provides
-    @Singleton
-    @MoviesRemoteDataSource
-    fun providesMovieRemoteDataSource(): MovieDataSource {
-        return MovieRemoteDataSource()
-    }
-
-    @Provides
-    @Singleton
-    @MoviesLocalDataSource
-    fun providesMovieLocalDataSource(appDatabase: AppDatabase): MovieDataSource {
-        return MovieLocalDataSource(appDatabase)
-    }
 }

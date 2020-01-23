@@ -2,6 +2,7 @@ package br.com.popularmovies.di
 
 import android.content.Context
 import br.com.popularmovies.di.modules.AssistedInjectModule
+import br.com.popularmovies.di.modules.DataSourceModule
 import br.com.popularmovies.di.modules.NetworkModule
 import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent
@@ -14,7 +15,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [NetworkModule::class, AppSubcomponents::class, AssistedInjectModule::class])
+@Component(modules = [NetworkModule::class, DataSourceModule::class, AppSubcomponents::class, AssistedInjectModule::class])
 interface AppComponent {
 
     @Component.Factory
