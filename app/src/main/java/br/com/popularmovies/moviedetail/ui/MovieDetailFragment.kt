@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
+import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
@@ -31,8 +31,6 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 class MovieDetailFragment : Fragment(), IConection {
-
-    private val appComponent = (requireActivity().application as MovieApplication).appComponent
 
     private val args by navArgs<MovieDetailFragmentArgs>()
 

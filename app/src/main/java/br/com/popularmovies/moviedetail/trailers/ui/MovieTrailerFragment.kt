@@ -19,8 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
+import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
@@ -36,7 +36,6 @@ import javax.inject.Inject
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     private val args by navArgs<MovieTrailerFragmentArgs>()
-    private val appComponent = (requireActivity().application as MovieApplication).appComponent
 
     private val mViewModel: MovieTrailerViewModel by lazy {
         appComponent.movieTrailerViewModelFactory.create(args.movieId)
