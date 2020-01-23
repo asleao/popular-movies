@@ -21,8 +21,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MovieLocalDataSource @Inject constructor(context: Context) : MovieDataSource {
-    private val mMovieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
+class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) : MovieDataSource {
+    private val mMovieDao: MovieDao = appDatabase.movieDao()
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
         val movies = MediatorLiveData<OldResource<Movies>>()
@@ -171,11 +171,11 @@ class MovieLocalDataSource @Inject constructor(context: Context) : MovieDataSour
     companion object {
         private var INSTANCE: MovieLocalDataSource? = null
 
-        fun getInstance(context: Context): MovieLocalDataSource? {
+        fun getInstance(appDatabase: AppDatabase): MovieLocalDataSource? {
             if (INSTANCE == null) {
                 synchronized(MovieLocalDataSource::class.java) {
                     if (INSTANCE == null) {
-                        INSTANCE = MovieLocalDataSource(context)
+                        INSTANCE = MovieLocalDataSource(appDatabase)
                     }
                 }
             }

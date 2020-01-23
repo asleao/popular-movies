@@ -1,6 +1,7 @@
 package br.com.popularmovies.moviedetail.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.moviedetail.viewmodel.factories.MovieDetailFactory
@@ -35,6 +38,7 @@ import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSou
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import com.squareup.picasso.Picasso
 import java.util.Locale
+import javax.inject.Inject
 
 class MovieDetailFragment : Fragment(), IConection {
 
@@ -55,7 +59,14 @@ class MovieDetailFragment : Fragment(), IConection {
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
     private lateinit var mProgressBar: ProgressBar
+    @Inject lateinit var appDatabase: AppDatabase
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        movieDetailComponent.inject(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupObservers()
@@ -147,7 +158,7 @@ class MovieDetailFragment : Fragment(), IConection {
 
     private fun setupViewModel() {
         val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+            MovieLocalDataSource.getInstance(appDatabase)
         mMovieLocalDataSource?.let {
             MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
                 val mMovieRepository = MovieRepository.getInstance(

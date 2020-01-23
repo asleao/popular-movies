@@ -2,6 +2,7 @@ package br.com.popularmovies.moviedetail.trailers.ui
 
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,10 +20,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
@@ -34,6 +37,7 @@ import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
+import javax.inject.Inject
 
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
@@ -46,7 +50,15 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mNoTrailers: TextView
     private val args by navArgs<MovieTrailerFragmentArgs>()
+    @Inject lateinit var appDatabase: AppDatabase
 
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        movieDetailComponent.inject(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupObservers()
@@ -103,7 +115,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         val view = inflater.inflate(R.layout.movie_trailer_fragment, container, false)
         val movieId = args.movieId
         val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+            MovieLocalDataSource.getInstance(appDatabase)
         mMovieLocalDataSource?.let {
             MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
                 val mMovieRepository = MovieRepository.getInstance(

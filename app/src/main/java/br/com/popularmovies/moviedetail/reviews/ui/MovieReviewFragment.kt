@@ -1,6 +1,7 @@
 package br.com.popularmovies.moviedetail.reviews.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
@@ -22,12 +25,23 @@ import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewF
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
+import javax.inject.Inject
 
 class MovieReviewFragment : Fragment(), IConection {
 
     private lateinit var mViewModel: MovieReviewViewModel
     private lateinit var binding: MovieReviewFragmentBinding
     private val args by navArgs<MovieReviewFragmentArgs>()
+
+    @Inject
+    lateinit var appDatabase: AppDatabase
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        movieDetailComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +51,18 @@ class MovieReviewFragment : Fragment(), IConection {
 
     private fun setupViewModel() {
         val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
+                MovieLocalDataSource.getInstance(appDatabase)
 
         mMovieLocalDataSource?.let {
             MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
                 val mMovieRepository = MovieRepository.getInstance(
-                    mMovieLocalDataSource,
-                    mMovieRemoteDataSource
+                        mMovieLocalDataSource,
+                        mMovieRemoteDataSource
                 )
                 mMovieRepository?.let { repository ->
                     mViewModel = ViewModelProviders.of(
-                        this,
-                        MovieReviewFactory(repository, args.movieId)
+                            this,
+                            MovieReviewFactory(repository, args.movieId)
                     ).get(MovieReviewViewModel::class.java)
                 }
             }
@@ -102,12 +116,12 @@ class MovieReviewFragment : Fragment(), IConection {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.movie_review_fragment, container, false)
+                DataBindingUtil.inflate(inflater, R.layout.movie_review_fragment, container, false)
         binding.lifecycleOwner = this
         binding.viewModel = mViewModel
         setupReviewsList()
@@ -142,10 +156,10 @@ class MovieReviewFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-            .setTitle(GENERIC_MSG_ERROR_TITLE)
-            .setMessage(message)
-            .setPositiveButton(R.string.dialog_ok, null)
-            .create()
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create()
 
         sortDialog.show()
     }

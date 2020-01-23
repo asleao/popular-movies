@@ -1,10 +1,12 @@
 package br.com.popularmovies.di.modules
 
 import android.content.Context
+import androidx.room.Room
 import br.com.popularmovies.BuildConfig
 import br.com.popularmovies.core.network.API_VERSION
 import br.com.popularmovies.core.network.HOST
 import br.com.popularmovies.core.network.SCHEME
+import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.core.network.retrofit.interceptor.AuthorizationInterceptor
 import br.com.popularmovies.di.qualifiers.MoviesLocalDataSource
 import br.com.popularmovies.di.qualifiers.MoviesRemoteDataSource
@@ -25,6 +27,14 @@ import javax.inject.Singleton
 
 @Module
 object NetworkModule {
+
+    @Provides
+    fun providesDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(
+                context.applicationContext,
+                AppDatabase::class.java, "popularmovies"
+        ).build()
+    }
 
     @Provides
     @Singleton
@@ -95,7 +105,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @MoviesLocalDataSource
-    fun providesMovieLocalDataSource(context: Context): MovieDataSource {
-        return MovieLocalDataSource(context)
+    fun providesMovieLocalDataSource(appDatabase: AppDatabase): MovieDataSource {
+        return MovieLocalDataSource(appDatabase)
     }
 }
