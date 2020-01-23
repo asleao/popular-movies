@@ -22,16 +22,18 @@ import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 
 class MovieReviewFragment : Fragment(), IConection {
 
+    private val appComponent = (requireActivity().application as MovieApplication).appComponent
+
     private val args by navArgs<MovieReviewFragmentArgs>()
     private val mViewModel: MovieReviewViewModel by lazy {
-        (requireActivity().application as MovieApplication).appComponent.movieReviewViewModelFactory.create(args.movieId)
+        appComponent.movieReviewViewModelFactory.create(args.movieId)
     }
     private lateinit var binding: MovieReviewFragmentBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        val movieDetailComponent = appComponent.movieDetailComponent().create()
         movieDetailComponent.inject(this)
     }
 

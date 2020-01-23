@@ -16,7 +16,6 @@ import androidx.constraintlayout.widget.Group
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,19 +30,16 @@ import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
-import br.com.popularmovies.moviedetail.trailers.viewmodel.factories.MovieTrailerFactory
-import br.com.popularmovies.movies.Constants.MOVIE_ID
 import br.com.popularmovies.services.movieService.response.MovieTrailers
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import javax.inject.Inject
 
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     private val args by navArgs<MovieTrailerFragmentArgs>()
+    private val appComponent = (requireActivity().application as MovieApplication).appComponent
+
     private val mViewModel: MovieTrailerViewModel by lazy {
-        (requireActivity().application as MovieApplication).appComponent.movieTrailerViewModelFactory.create(args.movieId)
+        appComponent.movieTrailerViewModelFactory.create(args.movieId)
     }
     private lateinit var mTrailersRecyclerView: RecyclerView
     private lateinit var trailersObserver: Observer<OldResource<MovieTrailers>>
@@ -59,7 +55,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        val movieDetailComponent = appComponent.movieDetailComponent().create()
         movieDetailComponent.inject(this)
     }
 

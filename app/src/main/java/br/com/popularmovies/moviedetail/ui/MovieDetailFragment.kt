@@ -32,10 +32,12 @@ import java.util.*
 
 class MovieDetailFragment : Fragment(), IConection {
 
+    private val appComponent = (requireActivity().application as MovieApplication).appComponent
+
     private val args by navArgs<MovieDetailFragmentArgs>()
 
     private val mViewModel: MovieDetailViewModel by lazy {
-        (requireActivity().application as MovieApplication).appComponent.movieDetailViewModelFactory.create(args.movie.id)
+        appComponent.movieDetailViewModelFactory.create(args.movie.id)
     }
     private lateinit var mMovieFromIntent: Movie
     private lateinit var mMovieTitle: TextView
@@ -57,7 +59,7 @@ class MovieDetailFragment : Fragment(), IConection {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
+        val movieDetailComponent = appComponent.movieDetailComponent().create()
         movieDetailComponent.inject(this)
     }
 
