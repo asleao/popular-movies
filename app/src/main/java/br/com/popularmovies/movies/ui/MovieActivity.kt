@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
@@ -20,6 +21,7 @@ class MovieActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MovieApplication).appComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
         val host: NavHostFragment = supportFragmentManager

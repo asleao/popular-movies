@@ -17,8 +17,9 @@ import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.MovieDataSource
 import br.com.popularmovies.utils.AppExecutors
+import javax.inject.Inject
 
-class MovieLocalDataSource private constructor(context: Context) : MovieDataSource {
+class MovieLocalDataSource @Inject constructor(context: Context) : MovieDataSource {
     private val mMovieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
@@ -27,19 +28,19 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
         try {
             movies.addSource(mMovieDao.movies) { fetchedMovies ->
                 movies.postValue(
-                    OldResource.success(
-                        Movies(fetchedMovies)
-                    )
+                        OldResource.success(
+                                Movies(fetchedMovies)
+                        )
                 )
             }
         } catch (e: Exception) {
             movies.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -52,17 +53,17 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
         try {
             movie.addSource(mMovieDao.getMovie(movieId)) { fetchedMovie ->
                 movie.postValue(
-                    OldResource.success(fetchedMovie)
+                        OldResource.success(fetchedMovie)
                 )
             }
         } catch (e: Exception) {
             movie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -83,12 +84,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -105,12 +106,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -127,12 +128,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -149,12 +150,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 

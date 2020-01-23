@@ -31,7 +31,6 @@ class NetworkModule {
     fun providesOkHttpClientBuilder(log: HttpLoggingInterceptor): OkHttpClient.Builder {
         val interceptors = OkHttpClient.Builder()
                 .addInterceptor(AuthorizationInterceptor())
-
         return if (BuildConfig.DEBUG) {
             interceptors
                     .addInterceptor(log)

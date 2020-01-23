@@ -9,10 +9,13 @@ import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
+import javax.inject.Inject
 
-class MovieRepository private constructor(
-    private val mMovieLocalDataSource: MovieDataSource,
-    private val mMovieRemoteDataSource: MovieDataSource
+class MovieRepository @Inject constructor(
+    private val mMovieLocalDataSource: MovieLocalDataSource,
+    private val mMovieRemoteDataSource: MovieRemoteDataSource
 ) : MovieDataSource {
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
@@ -71,8 +74,8 @@ class MovieRepository private constructor(
         private var INSTANCE: MovieRepository? = null
 
         fun getInstance(
-            mMovieLocalDataSource: MovieDataSource,
-            mMovieRemoteDataSource: MovieDataSource
+            mMovieLocalDataSource: MovieLocalDataSource,
+            mMovieRemoteDataSource: MovieRemoteDataSource
         ): MovieRepository? {
             if (INSTANCE == null) {
                 synchronized(MovieRepository::class.java) {

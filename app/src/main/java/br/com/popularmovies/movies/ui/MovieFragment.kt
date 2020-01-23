@@ -1,6 +1,7 @@
 package br.com.popularmovies.movies.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
@@ -38,16 +40,23 @@ import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
+import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
 
-    private lateinit var mViewModel: MovieViewModel
+    @Inject
+    lateinit var mViewModel: MovieViewModel
     private lateinit var mMoviesRecyclerView: RecyclerView
     private lateinit var moviesObserver: Observer<OldResource<Movies>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
     private lateinit var mProgressBar: ProgressBar
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MovieApplication).appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +73,7 @@ class MovieFragment : Fragment(), MovieClickListener {
                         hideLoading()
                         if (moviesResource.data != null) {
                             val mMovieAdapter =
-                                MovieAdapter(moviesResource.data.movies, this@MovieFragment)
+                                    MovieAdapter(moviesResource.data.movies, this@MovieFragment)
                             mMoviesRecyclerView.adapter = mMovieAdapter
                             showResult()
                         }
@@ -106,10 +115,10 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-            .setTitle(GENERIC_MSG_ERROR_TITLE)
-            .setMessage(message)
-            .setPositiveButton(R.string.dialog_ok, null)
-            .create()
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create()
 
         sortDialog.show()
     }
@@ -124,34 +133,21 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movie, container, false)
         setupFields(view)
         setupMoviesList(view)
-        val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
-        mMovieLocalDataSource?.let { movieLocalDataSource ->
-            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
-                val mMovieRepository = MovieRepository.getInstance(
-                    mMovieLocalDataSource,
-                    mMovieRemoteDataSource
-                )
-                mViewModel = ViewModelProviders.of(
-                    this,
-                    MovieFactory(mMovieRepository)
-                ).get(MovieViewModel::class.java)
-                mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
-            }
-        }
+        mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
+
         return view
     }
 
     private fun setupMoviesList(view: View) {
         mMoviesRecyclerView = view.findViewById(R.id.rv_movies)
         mMoviesRecyclerView.layoutManager =
-            GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
+                GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
     }
 
     private fun setupFields(view: View) {
@@ -170,12 +166,12 @@ class MovieFragment : Fragment(), MovieClickListener {
         if (item.itemId == R.id.m_sort) {
             val values = arrayOf<CharSequence>("Most Popular", "Highest Rated", "Favorites")
             val sortDialog = AlertDialog.Builder(context)
-                .setTitle(TITLE_DIALOG_FILTER)
-                .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
-                    changeSortOrder(which)
-                    dialog.dismiss()
-                }
-                .create()
+                    .setTitle(TITLE_DIALOG_FILTER)
+                    .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
+                        changeSortOrder(which)
+                        dialog.dismiss()
+                    }
+                    .create()
 
             sortDialog.show()
         }
