@@ -14,7 +14,9 @@ import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MovieRepository @Inject constructor(
         @MoviesLocalDataSource private val mMovieLocalDataSource: MovieDataSource,
         @MoviesRemoteDataSource private val mMovieRemoteDataSource: MovieDataSource

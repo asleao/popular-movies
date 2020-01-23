@@ -18,7 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MovieRemoteDataSource @Inject constructor() : MovieDataSource {
     private val mMovieService: MovieService =
         ServiceGenerator.createService(MovieService::class.java)

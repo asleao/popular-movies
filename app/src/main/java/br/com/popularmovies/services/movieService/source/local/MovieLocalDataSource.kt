@@ -18,7 +18,9 @@ import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.MovieDataSource
 import br.com.popularmovies.utils.AppExecutors
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class MovieLocalDataSource @Inject constructor(context: Context) : MovieDataSource {
     private val mMovieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
 

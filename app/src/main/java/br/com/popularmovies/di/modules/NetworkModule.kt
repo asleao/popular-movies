@@ -21,11 +21,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 @Module
 object NetworkModule {
 
     @Provides
+    @Singleton
     fun providesMoshi(): Moshi {
         return Moshi.Builder()
                 .add(BigDecimalAdapter())
@@ -34,6 +36,7 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun providesOkHttpClientBuilder(log: HttpLoggingInterceptor): OkHttpClient.Builder {
         val interceptors = OkHttpClient.Builder()
                 .addInterceptor(AuthorizationInterceptor())
@@ -46,12 +49,14 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun providesOhHttpClient(okHttpClientBuilder: OkHttpClient.Builder): OkHttpClient {
         return okHttpClientBuilder.build()
 
     }
 
     @Provides
+    @Singleton
     fun providesLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -67,6 +72,7 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient,
                          baseUrl: HttpUrl,
                          moshi: Moshi): Retrofit {
@@ -80,12 +86,14 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     @MoviesRemoteDataSource
     fun providesMovieRemoteDataSource(): MovieDataSource {
         return MovieRemoteDataSource()
     }
 
     @Provides
+    @Singleton
     @MoviesLocalDataSource
     fun providesMovieLocalDataSource(context: Context): MovieDataSource {
         return MovieLocalDataSource(context)
