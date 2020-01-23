@@ -41,7 +41,10 @@ import javax.inject.Inject
 
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
-    private lateinit var mViewModel: MovieTrailerViewModel
+    private val args by navArgs<MovieTrailerFragmentArgs>()
+    private val mViewModel: MovieTrailerViewModel by lazy {
+        (requireActivity().application as MovieApplication).appComponent.movieTrailerViewModelFactory.create(args.movieId)
+    }
     private lateinit var mTrailersRecyclerView: RecyclerView
     private lateinit var trailersObserver: Observer<OldResource<MovieTrailers>>
     private lateinit var mNoConnectionGroup: Group
@@ -49,8 +52,8 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     private lateinit var mNoConnectionText: TextView
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mNoTrailers: TextView
-    private val args by navArgs<MovieTrailerFragmentArgs>()
-    @Inject lateinit var appDatabase: AppDatabase
+    @Inject
+    lateinit var appDatabase: AppDatabase
 
 
     override fun onAttach(context: Context) {
@@ -59,6 +62,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         val movieDetailComponent = (requireActivity().application as MovieApplication).appComponent.movieDetailComponent().create()
         movieDetailComponent.inject(this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupObservers()
@@ -80,8 +84,8 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
                                 showNoTrailers()
                             } else {
                                 val mTrailerAdapter = TrailerAdapter(
-                                    movieReviewsResource.data.trailers,
-                                    this@MovieTrailerFragment
+                                        movieReviewsResource.data.trailers,
+                                        this@MovieTrailerFragment
                                 )
                                 mTrailersRecyclerView.adapter = mTrailerAdapter
                                 showResult()
@@ -108,32 +112,15 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         val view = inflater.inflate(R.layout.movie_trailer_fragment, container, false)
-        val movieId = args.movieId
-        val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(appDatabase)
-        mMovieLocalDataSource?.let {
-            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
-                val mMovieRepository = MovieRepository.getInstance(
-                    mMovieLocalDataSource,
-                    mMovieRemoteDataSource
-                )
-                mViewModel = ViewModelProviders.of(
-                    this,
-                    MovieTrailerFactory(mMovieRepository, movieId)
-                ).get(MovieTrailerViewModel::class.java)
-                setupFields(view)
-                setupTrailersList(view)
-                mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
-                mTryAgainButton.setOnClickListener { tryAgain() }
-            }
-
-        }
-
+        setupFields(view)
+        setupTrailersList(view)
+        mViewModel.trailers.observe(viewLifecycleOwner, trailersObserver)
+        mTryAgainButton.setOnClickListener { tryAgain() }
         return view
     }
 
@@ -172,10 +159,10 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-            .setTitle(GENERIC_MSG_ERROR_TITLE)
-            .setMessage(message)
-            .setPositiveButton(R.string.dialog_ok, null)
-            .create()
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create()
 
         sortDialog.show()
     }
@@ -187,8 +174,8 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     override fun onPlay(videoKey: String) {
         val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$videoKey"))
         val webIntent = Intent(
-            Intent.ACTION_VIEW,
-            Uri.parse(YOUTUBE_URL + videoKey)
+                Intent.ACTION_VIEW,
+                Uri.parse(YOUTUBE_URL + videoKey)
         )
         try {
             requireContext().startActivity(appIntent)
@@ -203,21 +190,10 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         val title = "Sharing this trailer on"
 
         ShareCompat.IntentBuilder
-            .from(requireActivity())
-            .setType(mimeType)
-            .setChooserTitle(title)
-            .setText(videoUrl)
-            .startChooser()
-    }
-
-    companion object {
-
-        fun newInstance(movieId: Int): MovieTrailerFragment {
-            val movieTrailerFragment = MovieTrailerFragment()
-            val args = Bundle()
-            args.putInt(MOVIE_ID, movieId)
-            movieTrailerFragment.arguments = args
-            return movieTrailerFragment
-        }
+                .from(requireActivity())
+                .setType(mimeType)
+                .setChooserTitle(title)
+                .setText(videoUrl)
+                .startChooser()
     }
 }
