@@ -92,7 +92,7 @@ class MovieDetailFragment : Fragment(), IConection {
         favorites = Observer { resource ->
             if (resource != null) {
                 when (resource.status) {
-                    OldResource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie.isFavorite)
+                    OldResource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie?.isFavorite!!)
                     OldResource.Status.ERROR -> {
                         val error = resource.error
                         if (error != null) {
@@ -117,7 +117,7 @@ class MovieDetailFragment : Fragment(), IConection {
         setData()
         mViewModel.favorites.observe(viewLifecycleOwner, favorites)
         mViewModel.getmMovie().observe(viewLifecycleOwner, movie)
-        mFavorites.setOnClickListener { mViewModel.saveFavorites(!mViewModel.movie.isFavorite) }
+        mFavorites.setOnClickListener { mViewModel.saveFavorites(!mViewModel.movie?.isFavorite!!) }
         mReviews.setOnClickListener {
             if (mMovieFromIntent.id != -1) {
                 val action =

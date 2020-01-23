@@ -1,4 +1,4 @@
-package br.com.popularmovies.di
+package br.com.popularmovies.di.modules
 
 import br.com.popularmovies.BuildConfig
 import br.com.popularmovies.core.network.API_VERSION
