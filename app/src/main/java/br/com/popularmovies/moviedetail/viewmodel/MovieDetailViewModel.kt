@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModel
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
-import javax.inject.Inject
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 
-class MovieDetailViewModel (private val mMovieRepository: MovieRepository, private val movieId: Int) : ViewModel() {
+class MovieDetailViewModel @AssistedInject constructor(private val mMovieRepository: MovieRepository, @Assisted private val movieId: Int) : ViewModel() {
     val favorites: LiveData<OldResource<Void>>
     private val mMovie: LiveData<OldResource<Movie>>
     private val movieStatus = MutableLiveData<Boolean>()
@@ -43,5 +44,10 @@ class MovieDetailViewModel (private val mMovieRepository: MovieRepository, priva
             }
             null
         })
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(movieId: Int): MovieDetailViewModel
     }
 }
