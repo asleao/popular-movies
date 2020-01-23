@@ -49,11 +49,4 @@ class MovieActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(findNavController(R.id.fg_movie_navhost))
                 || super.onOptionsItemSelected(item)
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        MovieRepository.destroyInstance()
-        MovieLocalDataSource.destroyInstance()
-        MovieRemoteDataSource.destroyInstance()
-    }
 }

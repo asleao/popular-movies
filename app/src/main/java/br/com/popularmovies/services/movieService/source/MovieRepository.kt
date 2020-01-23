@@ -71,28 +71,4 @@ class MovieRepository @Inject constructor(
     override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
         return mMovieRemoteDataSource.getMovieTrailers(movieId)
     }
-
-    companion object {
-
-        @Volatile
-        private var INSTANCE: MovieRepository? = null
-
-        fun getInstance(
-                mMovieLocalDataSource: MovieDataSource,
-                mMovieRemoteDataSource: MovieDataSource
-        ): MovieRepository? {
-            if (INSTANCE == null) {
-                synchronized(MovieRepository::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = MovieRepository(mMovieLocalDataSource, mMovieRemoteDataSource)
-                    }
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
-    }
 }

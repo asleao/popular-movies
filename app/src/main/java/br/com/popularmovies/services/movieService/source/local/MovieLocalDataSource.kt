@@ -167,23 +167,4 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) : Movie
     override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
         return MutableLiveData()
     }
-
-    companion object {
-        private var INSTANCE: MovieLocalDataSource? = null
-
-        fun getInstance(appDatabase: AppDatabase): MovieLocalDataSource? {
-            if (INSTANCE == null) {
-                synchronized(MovieLocalDataSource::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = MovieLocalDataSource(appDatabase)
-                    }
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
-    }
 }

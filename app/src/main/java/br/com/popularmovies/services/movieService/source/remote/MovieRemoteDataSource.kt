@@ -23,7 +23,7 @@ import javax.inject.Singleton
 @Singleton
 class MovieRemoteDataSource @Inject constructor() : MovieDataSource {
     private val mMovieService: MovieService =
-        ServiceGenerator.createService(MovieService::class.java)
+            ServiceGenerator.createService(MovieService::class.java)
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
         val call = mMovieService.getMovies(orderBy)
@@ -94,26 +94,5 @@ class MovieRemoteDataSource @Inject constructor() : MovieDataSource {
             }
         })
         return trailers
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: MovieRemoteDataSource? = null
-
-        val instance: MovieRemoteDataSource?
-            get() {
-                if (INSTANCE == null) {
-                    synchronized(MovieRemoteDataSource::class.java) {
-                        if (INSTANCE == null) {
-                            INSTANCE = MovieRemoteDataSource()
-                        }
-                    }
-                }
-                return INSTANCE
-            }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 }
