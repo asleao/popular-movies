@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.popularmovies.MovieApplication
@@ -21,17 +20,15 @@ import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
-import br.com.popularmovies.moviedetail.reviews.viewModel.factories.MovieReviewFactory
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import javax.inject.Inject
 
 class MovieReviewFragment : Fragment(), IConection {
 
-    private lateinit var mViewModel: MovieReviewViewModel
-    private lateinit var binding: MovieReviewFragmentBinding
     private val args by navArgs<MovieReviewFragmentArgs>()
+    private val mViewModel: MovieReviewViewModel by lazy {
+        (requireActivity().application as MovieApplication).appComponent.movieReviewViewModelFactory.create(args.movieId)
+    }
+    private lateinit var binding: MovieReviewFragmentBinding
 
     @Inject
     lateinit var appDatabase: AppDatabase
@@ -45,28 +42,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupViewModel()
         setupObservers()
-    }
-
-    private fun setupViewModel() {
-        val mMovieLocalDataSource =
-                MovieLocalDataSource.getInstance(appDatabase)
-
-        mMovieLocalDataSource?.let {
-            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
-                val mMovieRepository = MovieRepository.getInstance(
-                        mMovieLocalDataSource,
-                        mMovieRemoteDataSource
-                )
-                mMovieRepository?.let { repository ->
-                    mViewModel = ViewModelProviders.of(
-                            this,
-                            MovieReviewFactory(repository, args.movieId)
-                    ).get(MovieReviewViewModel::class.java)
-                }
-            }
-        }
     }
 
     private fun setupObservers() {

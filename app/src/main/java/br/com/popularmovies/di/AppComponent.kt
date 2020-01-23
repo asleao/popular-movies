@@ -5,6 +5,7 @@ import br.com.popularmovies.di.modules.AssistedInjectModule
 import br.com.popularmovies.di.modules.NetworkModule
 import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent
+import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.ui.MovieActivity
 import dagger.BindsInstance
@@ -21,6 +22,7 @@ interface AppComponent {
     }
 
     val movieDetailViewModelFactory: MovieDetailViewModel.Factory
+    val movieReviewViewModelFactory: MovieReviewViewModel.Factory
 
     fun movieComponent(): MovieComponent.Factory
     fun movieDetailComponent(): MovieDetailComponent.Factory
