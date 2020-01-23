@@ -1,10 +1,16 @@
 package br.com.popularmovies.di.modules
 
+import android.content.Context
 import br.com.popularmovies.BuildConfig
 import br.com.popularmovies.core.network.API_VERSION
 import br.com.popularmovies.core.network.HOST
 import br.com.popularmovies.core.network.SCHEME
 import br.com.popularmovies.core.network.retrofit.interceptor.AuthorizationInterceptor
+import br.com.popularmovies.di.qualifiers.MoviesLocalDataSource
+import br.com.popularmovies.di.qualifiers.MoviesRemoteDataSource
+import br.com.popularmovies.services.movieService.source.MovieDataSource
+import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
+import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import br.com.popularmovies.utils.BigDecimalAdapter
 import br.com.popularmovies.utils.DateAdapter
 import com.squareup.moshi.Moshi
@@ -17,7 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
     @Provides
     fun providesMoshi(): Moshi {
@@ -71,5 +77,17 @@ class NetworkModule {
                 .client(okHttpClient)
                 .build()
 
+    }
+
+    @Provides
+    @MoviesRemoteDataSource
+    fun providesMovieRemoteDataSource(): MovieDataSource {
+        return MovieRemoteDataSource()
+    }
+
+    @Provides
+    @MoviesLocalDataSource
+    fun providesMovieLocalDataSource(context: Context): MovieDataSource {
+        return MovieLocalDataSource(context)
     }
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.data.model.OldResource
+import br.com.popularmovies.di.qualifiers.MoviesLocalDataSource
+import br.com.popularmovies.di.qualifiers.MoviesRemoteDataSource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
@@ -14,8 +16,8 @@ import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataS
 import javax.inject.Inject
 
 class MovieRepository @Inject constructor(
-    private val mMovieLocalDataSource: MovieLocalDataSource,
-    private val mMovieRemoteDataSource: MovieRemoteDataSource
+        @MoviesLocalDataSource private val mMovieLocalDataSource: MovieDataSource,
+        @MoviesRemoteDataSource private val mMovieRemoteDataSource: MovieDataSource
 ) : MovieDataSource {
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
@@ -74,8 +76,8 @@ class MovieRepository @Inject constructor(
         private var INSTANCE: MovieRepository? = null
 
         fun getInstance(
-            mMovieLocalDataSource: MovieLocalDataSource,
-            mMovieRemoteDataSource: MovieRemoteDataSource
+                mMovieLocalDataSource: MovieDataSource,
+                mMovieRemoteDataSource: MovieDataSource
         ): MovieRepository? {
             if (INSTANCE == null) {
                 synchronized(MovieRepository::class.java) {
