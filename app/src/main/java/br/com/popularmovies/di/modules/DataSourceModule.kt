@@ -8,6 +8,7 @@ import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSou
 import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -16,8 +17,8 @@ class DataSourceModule {
     @Provides
     @Singleton
     @MoviesRemoteDataSource
-    fun providesMovieRemoteDataSource(): MovieDataSource {
-        return MovieRemoteDataSource()
+    fun providesMovieRemoteDataSource(retrofit: Retrofit): MovieDataSource {
+        return MovieRemoteDataSource(retrofit)
     }
 
     @Provides

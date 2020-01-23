@@ -2,8 +2,6 @@ package br.com.popularmovies.services.movieService.source.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-
-import br.com.popularmovies.core.network.retrofit.ServiceGenerator
 import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.core.network.retrofit.model.RetrofitResponse
 import br.com.popularmovies.data.model.OldResource
@@ -17,13 +15,13 @@ import br.com.popularmovies.services.movieService.source.MovieDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MovieRemoteDataSource @Inject constructor() : MovieDataSource {
-    private val mMovieService: MovieService =
-            ServiceGenerator.createService(MovieService::class.java)
+class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) : MovieDataSource {
+    private val mMovieService: MovieService = retrofit.create(MovieService::class.java)
 
     override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
         val call = mMovieService.getMovies(orderBy)
