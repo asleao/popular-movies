@@ -1,12 +1,12 @@
 package br.com.popularmovies.di
 
 import android.content.Context
+import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.movies.ui.MovieActivity
-import br.com.popularmovies.movies.ui.MovieFragment
 import dagger.BindsInstance
 import dagger.Component
 
-@Component(modules = [NetworkModule::class])
+@Component(modules = [NetworkModule::class, AppSubcomponents::class])
 interface AppComponent {
 
     @Component.Factory
@@ -14,6 +14,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
+    fun movieComponent(): MovieComponent.Factory
     fun inject(movieActivity: MovieActivity)
-    fun inject(movieFragment: MovieFragment)
+
 }

@@ -55,7 +55,8 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (requireActivity().application as MovieApplication).appComponent.inject(this)
+        val movieComponent = (requireActivity().application as MovieApplication).appComponent.movieComponent().create()
+        movieComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
