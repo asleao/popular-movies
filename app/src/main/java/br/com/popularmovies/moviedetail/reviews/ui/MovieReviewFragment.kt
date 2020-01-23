@@ -16,11 +16,9 @@ import br.com.popularmovies.R
 import br.com.popularmovies.base.interfaces.IConection
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
-import javax.inject.Inject
 
 class MovieReviewFragment : Fragment(), IConection {
 
@@ -29,9 +27,6 @@ class MovieReviewFragment : Fragment(), IConection {
         (requireActivity().application as MovieApplication).appComponent.movieReviewViewModelFactory.create(args.movieId)
     }
     private lateinit var binding: MovieReviewFragmentBinding
-
-    @Inject
-    lateinit var appDatabase: AppDatabase
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
