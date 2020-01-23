@@ -29,6 +29,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
+    @Singleton
     fun providesDatabase(context: Context): AppDatabase {
         return Room.databaseBuilder(
                 context.applicationContext,
