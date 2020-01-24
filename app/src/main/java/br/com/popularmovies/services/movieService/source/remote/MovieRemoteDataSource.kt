@@ -23,21 +23,8 @@ import javax.inject.Singleton
 class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) : MovieDataSource {
     private val mMovieService: MovieService = retrofit.create(MovieService::class.java)
 
-    override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
-        val call = mMovieService.getMovies(orderBy)
-        val apiResponse = ApiResponse<Movies>("getMovies")
-        val movies = MutableLiveData<OldResource<Movies>>()
-        movies.value = OldResource.loading()
-        call.enqueue(object : Callback<Movies> {
-            override fun onResponse(call: Call<Movies>, response: Response<Movies>) {
-                movies.value = apiResponse.getApiOnResponse(response)
-            }
-
-            override fun onFailure(call: Call<Movies>, t: Throwable) {
-                movies.value = apiResponse.getApiOnFailure(t)
-            }
-        })
-        return movies
+    override suspend fun getMovies(orderBy: String): Resource<Movies> {
+        return RetrofitResponse { mMovieService.getMovies(orderBy) }.result()
     }
 
     override fun getMovie(movieId: Int): LiveData<OldResource<Movie>> {

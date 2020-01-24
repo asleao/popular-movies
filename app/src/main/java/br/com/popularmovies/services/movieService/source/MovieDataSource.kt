@@ -10,7 +10,7 @@ import br.com.popularmovies.services.movieService.response.Movies
 
 interface MovieDataSource {
 
-    fun getMovies(orderBy: String): LiveData<OldResource<Movies>>
+    suspend fun getMovies(orderBy: String): Resource<Movies>
 
     fun getMovie(movieId: Int): LiveData<OldResource<Movie>>
 

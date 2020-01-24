@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -24,6 +25,8 @@ import br.com.popularmovies.R
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.data.model.OldResource
+import br.com.popularmovies.databinding.FragmentMovieBinding
+import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED
 import br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR
@@ -47,11 +50,11 @@ class MovieFragment : Fragment(), MovieClickListener {
     @Inject
     lateinit var mViewModel: MovieViewModel
     private lateinit var mMoviesRecyclerView: RecyclerView
-    private lateinit var moviesObserver: Observer<OldResource<Movies>>
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
     private lateinit var mNoConnectionText: TextView
     private lateinit var mProgressBar: ProgressBar
+    private lateinit var binding: FragmentMovieBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,34 +68,50 @@ class MovieFragment : Fragment(), MovieClickListener {
         setupObservers()
     }
 
-    private fun setupObservers() {
-        moviesObserver = Observer { moviesResource ->
-            if (moviesResource != null)
-                when (moviesResource.status) {
-                    OldResource.Status.LOADING -> showLoading()
-                    OldResource.Status.SUCCESS -> {
-                        hideLoading()
-                        if (moviesResource.data != null) {
-                            val mMovieAdapter =
-                                    MovieAdapter(moviesResource.data.movies, this@MovieFragment)
-                            mMoviesRecyclerView.adapter = mMovieAdapter
-                            showResult()
-                        }
-                    }
-                    OldResource.Status.ERROR -> {
-                        hideLoading()
-                        val error = moviesResource.error
-                        if (error != null) {
-                            if (error.statusCode == NETWORK_ERROR_CODE) {
-                                showNoConnection(error.statusMessage)
-                                tryAgain()
-                            } else {
-                                showGenericError(error.statusMessage)
-                            }
-                        }
-                    }
-                }
+    override fun onResume() {
+        super.onResume()
+        if(::mViewModel.isInitialized){
+            changeSortOrder(mViewModel.selectedFilterIndex)
         }
+    }
+    private fun setupObservers() {
+        setupMoviesObserver()
+        setupLoadingObserver()
+        setupErrorObserver()
+    }
+
+    private fun setupMoviesObserver() {
+        mViewModel.movies.observe(this, Observer { moviesResource ->
+            mViewModel.showLoading(false)
+            val mMovieAdapter =
+                    MovieAdapter(moviesResource.movies, this)
+            mMoviesRecyclerView.adapter = mMovieAdapter
+            showResult()
+        })
+    }
+
+    private fun setupLoadingObserver() {
+        mViewModel.loading.observe(this, Observer { status ->
+            if (status == true) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        })
+    }
+
+    private fun setupErrorObserver() {
+        mViewModel.error.observe(this, Observer { error ->
+            mViewModel.showLoading(false)
+            if (error != null) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
+                    showNoConnection(error.message)
+                    tryAgain()
+                } else {
+                    showGenericError(error.message)
+                }
+            }
+        })
     }
 
     private fun hideLoading() {
@@ -137,12 +156,13 @@ class MovieFragment : Fragment(), MovieClickListener {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movie, container, false)
-        setupFields(view)
-        setupMoviesList(view)
-        mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
-
-        return view
+        binding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = mViewModel
+        setupFields(binding.root)
+        setupMoviesList(binding.root)
+        return binding.root
     }
 
     private fun setupMoviesList(view: View) {

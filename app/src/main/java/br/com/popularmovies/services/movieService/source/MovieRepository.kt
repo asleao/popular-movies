@@ -11,8 +11,6 @@ import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +20,7 @@ class MovieRepository @Inject constructor(
         @MoviesRemoteDataSource private val mMovieRemoteDataSource: MovieDataSource
 ) : MovieDataSource {
 
-    override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
+    override suspend fun getMovies(orderBy: String): Resource<Movies> {
         return if (orderBy == FILTER_FAVORITES) {
             mMovieLocalDataSource.getMovies(orderBy)
         } else {

@@ -1,17 +1,27 @@
 package br.com.popularmovies.movies.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import br.com.popularmovies.data.model.OldResource
+import androidx.lifecycle.*
+import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.MovieRepository
+import br.com.popularmovies.utils.validateResponse
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepository) : ViewModel() {
-    val movies: LiveData<OldResource<Movies>>
+
+    val loading = MutableLiveData<Boolean>()
+
+    private val _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
+        get() = _error
+
+    private val _movies: MediatorLiveData<Movies> = MediatorLiveData()
+    val movies: LiveData<Movies>
+        get() = _movies
+
     private val mSortBy: MutableLiveData<String> = MutableLiveData()
     var selectedFilterIndex = 0
 
@@ -19,20 +29,30 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
         mSortBy.postValue(sortBy)
     }
 
-    private fun getMoviesSortedBy(field: String): LiveData<OldResource<Movies>> {
-        return mMovieRepository.getMovies(field)
+    private fun getMoviesSortedBy(field: String) {
+        viewModelScope.launch {
+            showLoading(true)
+            val resource = mMovieRepository.getMovies(field)
+            resource.validateResponse(_movies, _error)
+        }
     }
 
     fun tryAgain() {
         if (selectedFilterIndex == Constants.INDEX_FILTER_MOST_POPULAR) {
-            setMovieSortBy(Constants.FILTER_MOST_POPULAR)
+            getMoviesSortedBy(Constants.FILTER_MOST_POPULAR)
         } else {
-            setMovieSortBy(Constants.FILTER_HIGHEST_RATED)
+            getMoviesSortedBy(Constants.FILTER_HIGHEST_RATED)
         }
     }
 
+    fun showLoading(value: Boolean) {
+        loading.value = value
+    }
+
     init {
-        movies = Transformations.switchMap(mSortBy) { input -> getMoviesSortedBy(input) }
-        setMovieSortBy(Constants.FILTER_MOST_POPULAR)
+        _movies.addSource(mSortBy) { sortQuery ->
+            getMoviesSortedBy(sortQuery)
+        }
+        getMoviesSortedBy(Constants.FILTER_MOST_POPULAR)
     }
 }

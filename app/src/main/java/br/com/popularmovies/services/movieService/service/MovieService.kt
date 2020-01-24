@@ -12,7 +12,7 @@ import retrofit2.http.Path
 interface MovieService {
 
     @GET("movie/{sort_by}")
-    fun getMovies(@Path("sort_by") orderBy: String): Call<Movies>
+    suspend fun getMovies(@Path("sort_by") orderBy: String): Response<Movies>
 
     @GET("movie/{id}/reviews")
     suspend fun getMovieReviews(@Path("id") movieId: Int): Response<MovieReviews>

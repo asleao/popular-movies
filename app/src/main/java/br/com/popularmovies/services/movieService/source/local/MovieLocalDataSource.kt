@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.core.network.retrofit.model.Resource
@@ -23,29 +25,18 @@ import javax.inject.Singleton
 class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) : MovieDataSource {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
-    override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
-        val movies = MediatorLiveData<OldResource<Movies>>()
-        movies.postValue(OldResource.loading())
-        try {
-            movies.addSource(mMovieDao.movies) { fetchedMovies ->
-                movies.postValue(
-                        OldResource.success(
-                                Movies(fetchedMovies)
-                        )
-                )
-            }
-        } catch (e: Exception) {
-            movies.postValue(
-                    OldResource.error(
-                            ErrorResponse(
-                                    GENERIC_ERROR_CODE,
-                                    ROOM_MSG_ERROR
-                            )
-                    )
-            )
-        }
+    private val error = Error(
+            codErro = GENERIC_ERROR_CODE,
+            title = GENERIC_MSG_ERROR_TITLE,
+            message = GENERIC_MSG_ERROR_MESSAGE
+    )
 
-        return movies
+    override suspend fun getMovies(orderBy: String): Resource<Movies> {
+        return try {
+            Resource.success(Movies(mMovieDao.movies()))
+        } catch (exception: Exception) {
+            Resource.error(error)
+        }
     }
 
     override fun getMovie(movieId: Int): LiveData<OldResource<Movie>> {
