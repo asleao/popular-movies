@@ -36,11 +36,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     private val mViewModel: MovieViewModel by viewModels {
         viewModelFactory
     }
-    private lateinit var mMoviesRecyclerView: RecyclerView
-    private lateinit var mNoConnectionGroup: Group
-    private lateinit var mTryAgainButton: Button
-    private lateinit var mNoConnectionText: TextView
-    private lateinit var mProgressBar: ProgressBar
     private lateinit var binding: FragmentMovieBinding
 
     override fun onAttach(context: Context) {
@@ -60,7 +55,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.movies.value?.movies?.let { movies ->
             val mMovieAdapter =
                     MovieAdapter(movies, this)
-            mMoviesRecyclerView.adapter = mMovieAdapter
+            binding.rvMovies.adapter = mMovieAdapter
             showResult()
         }
     }
@@ -76,7 +71,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             mViewModel.showLoading(false)
             val mMovieAdapter =
                     MovieAdapter(moviesResource.movies, this)
-            mMoviesRecyclerView.adapter = mMovieAdapter
+            binding.rvMovies.adapter = mMovieAdapter
             showResult()
         })
     }
@@ -106,13 +101,13 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun hideLoading() {
-        mProgressBar.visibility = View.GONE
+        binding.iBaseLayout.pbBase.visibility = View.GONE
     }
 
     private fun showLoading() {
-        mProgressBar.visibility = View.VISIBLE
-        mMoviesRecyclerView.visibility = View.GONE
-        mNoConnectionGroup.visibility = View.GONE
+        binding.iBaseLayout.pbBase.visibility = View.VISIBLE
+        binding.rvMovies.visibility = View.GONE
+        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
     }
 
     private fun showResult() {
@@ -120,7 +115,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun showNoConnection(message: String) {
-        mNoConnectionText.text = message
+        binding.iBaseLayout.tvNoConection.text = message
         changeComponentVisibility(View.VISIBLE, View.GONE)
     }
 
@@ -135,12 +130,12 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun changeComponentVisibility(gone: Int, visible: Int) {
-        mNoConnectionGroup.visibility = gone
-        mMoviesRecyclerView.visibility = visible
+        binding.iBaseLayout.groupNoConnection.visibility = gone
+        binding.rvMovies.visibility = visible
     }
 
     private fun tryAgain() {
-        mTryAgainButton.setOnClickListener { mViewModel.tryAgain() }
+        binding.iBaseLayout.btTryAgain.setOnClickListener { mViewModel.tryAgain() }
     }
 
     override fun onCreateView(
@@ -149,25 +144,11 @@ class MovieFragment : Fragment(), MovieClickListener {
     ): View? {
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
-        setupFields(binding.root)
-        setupMoviesList(binding.root)
         return binding.root
     }
 
-    private fun setupMoviesList(view: View) {
-        mMoviesRecyclerView = view.findViewById(R.id.rv_movies)
-        mMoviesRecyclerView.layoutManager =
-                GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
-    }
-
-    private fun setupFields(view: View) {
-        mNoConnectionGroup = view.findViewById(R.id.group_no_connection)
-        mNoConnectionText = view.findViewById(R.id.tv_no_conection)
-        mTryAgainButton = view.findViewById(R.id.bt_try_again)
-        mProgressBar = view.findViewById(R.id.pb_base)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_sort, menu)

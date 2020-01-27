@@ -14,6 +14,7 @@
         android:layout_height="match_parent">
 
         <include
+            android:id="@+id/i_base_layout"
             layout="@layout/base_layout_databinding"
             app:status="@{viewModel.loading}" />
 
@@ -22,7 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            tools:context=".movies.ui.MovieFragment" />
+            tools:context=".movies.ui.MovieFragment"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            android:orientation="vertical"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
