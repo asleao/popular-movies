@@ -49,6 +49,10 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
         loading.value = value
     }
 
+    fun cleanError() {
+        _error.value = null
+    }
+
     init {
         _movies.addSource(mSortBy) { sortQuery ->
             getMoviesSortedBy(sortQuery)

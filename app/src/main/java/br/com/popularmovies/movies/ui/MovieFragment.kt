@@ -43,23 +43,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         val movieComponent = (requireActivity().application as MovieApplication).appComponent.movieComponent().create()
         movieComponent.inject(this)
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.setHasOptionsMenu(true)
-        setupObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mViewModel.movies.value?.movies?.let { movies ->
-            val mMovieAdapter =
-                    MovieAdapter(movies, this)
-            binding.rvMovies.adapter = mMovieAdapter
-            showResult()
-        }
-    }
-
+    
     private fun setupObservers() {
         setupMoviesObserver()
         setupLoadingObserver()
@@ -67,19 +51,20 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupMoviesObserver() {
-        mViewModel.movies.observe(this, Observer { moviesResource ->
+        mViewModel.movies.observe(viewLifecycleOwner, Observer { moviesResource ->
             mViewModel.showLoading(false)
             val mMovieAdapter =
                     MovieAdapter(moviesResource.movies, this)
             binding.rvMovies.adapter = mMovieAdapter
             showResult()
+            mViewModel.cleanError()
         })
     }
 
     private fun setupLoadingObserver() {
-        mViewModel.loading.observe(this, Observer { status ->
+        mViewModel.loading.observe(viewLifecycleOwner, Observer { status ->
             if (status == true) {
-                showLoading()
+                binding.rvMovies.visibility = View.GONE
             } else {
                 hideLoading()
             }
@@ -87,7 +72,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupErrorObserver() {
-        mViewModel.error.observe(this, Observer { error ->
+        mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
                 if (error.codErro == NETWORK_ERROR_CODE) {
@@ -104,19 +89,15 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.iBaseLayout.pbBase.visibility = View.GONE
     }
 
-    private fun showLoading() {
-        binding.iBaseLayout.pbBase.visibility = View.VISIBLE
-        binding.rvMovies.visibility = View.GONE
-        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
-    }
-
     private fun showResult() {
-        changeComponentVisibility(View.GONE, View.VISIBLE)
+        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
+        binding.rvMovies.visibility = View.VISIBLE
     }
 
     private fun showNoConnection(message: String) {
+        binding.rvMovies.visibility = View.GONE
         binding.iBaseLayout.tvNoConection.text = message
-        changeComponentVisibility(View.VISIBLE, View.GONE)
+        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
     }
 
     private fun showGenericError(message: String) {
@@ -129,11 +110,6 @@ class MovieFragment : Fragment(), MovieClickListener {
         sortDialog.show()
     }
 
-    private fun changeComponentVisibility(gone: Int, visible: Int) {
-        binding.iBaseLayout.groupNoConnection.visibility = gone
-        binding.rvMovies.visibility = visible
-    }
-
     private fun tryAgain() {
         binding.iBaseLayout.btTryAgain.setOnClickListener { mViewModel.tryAgain() }
     }
@@ -144,8 +120,10 @@ class MovieFragment : Fragment(), MovieClickListener {
     ): View? {
         binding =
                 DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
+        setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
+        setupObservers()
         return binding.root
     }
 
