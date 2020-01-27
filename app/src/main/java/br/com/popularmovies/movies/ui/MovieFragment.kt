@@ -57,14 +57,12 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     override fun onResume() {
         super.onResume()
-//        if (::mViewModel.isInitialized) {
-            mViewModel.movies.value?.movies?.let { movies ->
-                val mMovieAdapter =
-                        MovieAdapter(movies, this)
-                mMoviesRecyclerView.adapter = mMovieAdapter
-                showResult()
-            }
-//        }
+        mViewModel.movies.value?.movies?.let { movies ->
+            val mMovieAdapter =
+                    MovieAdapter(movies, this)
+            mMoviesRecyclerView.adapter = mMovieAdapter
+            showResult()
+        }
     }
 
     private fun setupObservers() {
