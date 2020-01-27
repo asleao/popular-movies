@@ -3,20 +3,16 @@ package br.com.popularmovies.movies.ui
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,31 +20,22 @@ import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.databinding.FragmentMovieBinding
-import br.com.popularmovies.databinding.MovieReviewFragmentBinding
-import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER
+import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
-import br.com.popularmovies.movies.viewmodel.factories.MovieFactory
 import br.com.popularmovies.services.movieService.response.Movie
-import br.com.popularmovies.services.movieService.response.Movies
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
 
     @Inject
-    lateinit var mViewModel: MovieViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val mViewModel: MovieViewModel by viewModels {
+        viewModelFactory
+    }
     private lateinit var mMoviesRecyclerView: RecyclerView
     private lateinit var mNoConnectionGroup: Group
     private lateinit var mTryAgainButton: Button
@@ -70,14 +57,14 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (::mViewModel.isInitialized) {
+//        if (::mViewModel.isInitialized) {
             mViewModel.movies.value?.movies?.let { movies ->
                 val mMovieAdapter =
                         MovieAdapter(movies, this)
                 mMoviesRecyclerView.adapter = mMovieAdapter
                 showResult()
             }
-        }
+//        }
     }
 
     private fun setupObservers() {
