@@ -43,7 +43,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         val movieComponent = (requireActivity().application as MovieApplication).appComponent.movieComponent().create()
         movieComponent.inject(this)
     }
-    
+
     private fun setupObservers() {
         setupMoviesObserver()
         setupLoadingObserver()
@@ -54,8 +54,10 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.movies.observe(viewLifecycleOwner, Observer { moviesResource ->
             mViewModel.showLoading(false)
             val mMovieAdapter =
-                    MovieAdapter(moviesResource.movies, this)
+                    MovieAdapter(this)
+            mMovieAdapter.swapData(moviesResource.movies)
             binding.rvMovies.adapter = mMovieAdapter
+
             showResult()
             mViewModel.cleanError()
         })
