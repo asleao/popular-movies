@@ -8,11 +8,13 @@ import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.utils.validateResponse
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
-class MovieReviewViewModel(
-    val mMovieRepository: MovieRepository,
-    val movieId: Int
+class MovieReviewViewModel @AssistedInject constructor(
+        val mMovieRepository: MovieRepository,
+        @Assisted val movieId: Int
 ) : ViewModel() {
     val loading = MutableLiveData<Boolean>()
 
@@ -41,5 +43,10 @@ class MovieReviewViewModel(
 
     fun tryAgain() {
         getReviews()
+    }
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(movieId: Int): MovieReviewViewModel
     }
 }

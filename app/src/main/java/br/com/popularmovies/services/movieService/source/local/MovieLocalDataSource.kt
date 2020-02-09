@@ -1,10 +1,11 @@
 package br.com.popularmovies.services.movieService.source.local
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.core.network.retrofit.model.Resource
@@ -17,33 +18,25 @@ import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
 import br.com.popularmovies.services.movieService.source.MovieDataSource
 import br.com.popularmovies.utils.AppExecutors
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieLocalDataSource private constructor(context: Context) : MovieDataSource {
-    private val mMovieDao: MovieDao = AppDatabase.getInstance(context).movieDao()
+@Singleton
+class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) : MovieDataSource {
+    private val mMovieDao: MovieDao = appDatabase.movieDao()
 
-    override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
-        val movies = MediatorLiveData<OldResource<Movies>>()
-        movies.postValue(OldResource.loading())
-        try {
-            movies.addSource(mMovieDao.movies) { fetchedMovies ->
-                movies.postValue(
-                    OldResource.success(
-                        Movies(fetchedMovies)
-                    )
-                )
-            }
-        } catch (e: Exception) {
-            movies.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
-                    )
-                )
-            )
+    private val error = Error(
+            codErro = GENERIC_ERROR_CODE,
+            title = GENERIC_MSG_ERROR_TITLE,
+            message = GENERIC_MSG_ERROR_MESSAGE
+    )
+
+    override suspend fun getMovies(orderBy: String): Resource<Movies> {
+        return try {
+            Resource.success(Movies(mMovieDao.movies()))
+        } catch (exception: Exception) {
+            Resource.error(error)
         }
-
-        return movies
     }
 
     override fun getMovie(movieId: Int): LiveData<OldResource<Movie>> {
@@ -52,17 +45,17 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
         try {
             movie.addSource(mMovieDao.getMovie(movieId)) { fetchedMovie ->
                 movie.postValue(
-                    OldResource.success(fetchedMovie)
+                        OldResource.success(fetchedMovie)
                 )
             }
         } catch (e: Exception) {
             movie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -83,12 +76,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -105,12 +98,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -127,12 +120,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -149,12 +142,12 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
             }
         } catch (e: Exception) {
             mMovie.postValue(
-                OldResource.error(
-                    ErrorResponse(
-                        GENERIC_ERROR_CODE,
-                        ROOM_MSG_ERROR
+                    OldResource.error(
+                            ErrorResponse(
+                                    GENERIC_ERROR_CODE,
+                                    ROOM_MSG_ERROR
+                            )
                     )
-                )
             )
         }
 
@@ -163,24 +156,5 @@ class MovieLocalDataSource private constructor(context: Context) : MovieDataSour
 
     override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
         return MutableLiveData()
-    }
-
-    companion object {
-        private var INSTANCE: MovieLocalDataSource? = null
-
-        fun getInstance(context: Context): MovieLocalDataSource? {
-            if (INSTANCE == null) {
-                synchronized(MovieLocalDataSource::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = MovieLocalDataSource(context)
-                    }
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 }

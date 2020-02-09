@@ -4,18 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.data.model.OldResource
+import br.com.popularmovies.di.qualifiers.MoviesLocalDataSource
+import br.com.popularmovies.di.qualifiers.MoviesRemoteDataSource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieRepository private constructor(
-    private val mMovieLocalDataSource: MovieDataSource,
-    private val mMovieRemoteDataSource: MovieDataSource
+@Singleton
+class MovieRepository @Inject constructor(
+        @MoviesLocalDataSource private val mMovieLocalDataSource: MovieDataSource,
+        @MoviesRemoteDataSource private val mMovieRemoteDataSource: MovieDataSource
 ) : MovieDataSource {
 
-    override fun getMovies(orderBy: String): LiveData<OldResource<Movies>> {
+    override suspend fun getMovies(orderBy: String): Resource<Movies> {
         return if (orderBy == FILTER_FAVORITES) {
             mMovieLocalDataSource.getMovies(orderBy)
         } else {
@@ -63,29 +68,5 @@ class MovieRepository private constructor(
 
     override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
         return mMovieRemoteDataSource.getMovieTrailers(movieId)
-    }
-
-    companion object {
-
-        @Volatile
-        private var INSTANCE: MovieRepository? = null
-
-        fun getInstance(
-            mMovieLocalDataSource: MovieDataSource,
-            mMovieRemoteDataSource: MovieDataSource
-        ): MovieRepository? {
-            if (INSTANCE == null) {
-                synchronized(MovieRepository::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = MovieRepository(mMovieLocalDataSource, mMovieRemoteDataSource)
-                    }
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 }

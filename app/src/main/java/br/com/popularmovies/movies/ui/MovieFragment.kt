@@ -1,165 +1,134 @@
 package br.com.popularmovies.movies.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.OldResource
-import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_FAVORITES
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_HIGHEST_RATED
-import br.com.popularmovies.movies.Constants.INDEX_FILTER_MOST_POPULAR
-import br.com.popularmovies.movies.Constants.TITLE_DIALOG_FILTER
+import br.com.popularmovies.databinding.FragmentMovieBinding
+import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
-import br.com.popularmovies.movies.viewmodel.factories.MovieFactory
 import br.com.popularmovies.services.movieService.response.Movie
-import br.com.popularmovies.services.movieService.response.Movies
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
+import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
 
-    private lateinit var mViewModel: MovieViewModel
-    private lateinit var mMoviesRecyclerView: RecyclerView
-    private lateinit var moviesObserver: Observer<OldResource<Movies>>
-    private lateinit var mNoConnectionGroup: Group
-    private lateinit var mTryAgainButton: Button
-    private lateinit var mNoConnectionText: TextView
-    private lateinit var mProgressBar: ProgressBar
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        this.setHasOptionsMenu(true)
-        setupObservers()
+    private val mViewModel: MovieViewModel by viewModels {
+        viewModelFactory
+    }
+    private lateinit var binding: FragmentMovieBinding
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val movieComponent = (requireActivity().application as MovieApplication).appComponent.movieComponent().create()
+        movieComponent.inject(this)
     }
 
     private fun setupObservers() {
-        moviesObserver = Observer { moviesResource ->
-            if (moviesResource != null)
-                when (moviesResource.status) {
-                    OldResource.Status.LOADING -> showLoading()
-                    OldResource.Status.SUCCESS -> {
-                        hideLoading()
-                        if (moviesResource.data != null) {
-                            val mMovieAdapter =
-                                MovieAdapter(moviesResource.data.movies, this@MovieFragment)
-                            mMoviesRecyclerView.adapter = mMovieAdapter
-                            showResult()
-                        }
-                    }
-                    OldResource.Status.ERROR -> {
-                        hideLoading()
-                        val error = moviesResource.error
-                        if (error != null) {
-                            if (error.statusCode == NETWORK_ERROR_CODE) {
-                                showNoConnection(error.statusMessage)
-                                tryAgain()
-                            } else {
-                                showGenericError(error.statusMessage)
-                            }
-                        }
-                    }
+        setupMoviesObserver()
+        setupLoadingObserver()
+        setupErrorObserver()
+    }
+
+    private fun setupMoviesObserver() {
+        mViewModel.movies.observe(viewLifecycleOwner, Observer { moviesResource ->
+            mViewModel.showLoading(false)
+            val mMovieAdapter =
+                    MovieAdapter(this)
+            mMovieAdapter.swapData(moviesResource.movies)
+            binding.rvMovies.adapter = mMovieAdapter
+
+            showResult()
+            mViewModel.cleanError()
+        })
+    }
+
+    private fun setupLoadingObserver() {
+        mViewModel.loading.observe(viewLifecycleOwner, Observer { status ->
+            if (status == true) {
+                binding.rvMovies.visibility = View.GONE
+            } else {
+                hideLoading()
+            }
+        })
+    }
+
+    private fun setupErrorObserver() {
+        mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
+            mViewModel.showLoading(false)
+            if (error != null) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
+                    showNoConnection(error.message)
+                    tryAgain()
+                } else {
+                    showGenericError(error.message)
                 }
-        }
+            }
+        })
     }
 
     private fun hideLoading() {
-        mProgressBar.visibility = View.GONE
-    }
-
-    private fun showLoading() {
-        mProgressBar.visibility = View.VISIBLE
-        mMoviesRecyclerView.visibility = View.GONE
-        mNoConnectionGroup.visibility = View.GONE
+        binding.iBaseLayout.pbBase.visibility = View.GONE
     }
 
     private fun showResult() {
-        changeComponentVisibility(View.GONE, View.VISIBLE)
+        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
+        binding.rvMovies.visibility = View.VISIBLE
     }
 
     private fun showNoConnection(message: String) {
-        mNoConnectionText.text = message
-        changeComponentVisibility(View.VISIBLE, View.GONE)
+        binding.rvMovies.visibility = View.GONE
+        binding.iBaseLayout.tvNoConection.text = message
+        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
     }
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-            .setTitle(GENERIC_MSG_ERROR_TITLE)
-            .setMessage(message)
-            .setPositiveButton(R.string.dialog_ok, null)
-            .create()
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setMessage(message)
+                .setPositiveButton(R.string.dialog_ok, null)
+                .create()
 
         sortDialog.show()
     }
 
-    private fun changeComponentVisibility(gone: Int, visible: Int) {
-        mNoConnectionGroup.visibility = gone
-        mMoviesRecyclerView.visibility = visible
-    }
-
     private fun tryAgain() {
-        mTryAgainButton.setOnClickListener { mViewModel.tryAgain() }
+        binding.iBaseLayout.btTryAgain.setOnClickListener { mViewModel.tryAgain() }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movie, container, false)
-        setupFields(view)
-        setupMoviesList(view)
-        val mMovieLocalDataSource =
-            MovieLocalDataSource.getInstance(requireActivity().applicationContext)
-        mMovieLocalDataSource?.let { movieLocalDataSource ->
-            MovieRemoteDataSource.instance?.let { mMovieRemoteDataSource ->
-                val mMovieRepository = MovieRepository.getInstance(
-                    mMovieLocalDataSource,
-                    mMovieRemoteDataSource
-                )
-                mViewModel = ViewModelProviders.of(
-                    this,
-                    MovieFactory(mMovieRepository)
-                ).get(MovieViewModel::class.java)
-                mViewModel.movies.observe(viewLifecycleOwner, moviesObserver)
-            }
-        }
-        return view
+        binding =
+                DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
+        setHasOptionsMenu(true)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = mViewModel
+        setupObservers()
+        return binding.root
     }
 
-    private fun setupMoviesList(view: View) {
-        mMoviesRecyclerView = view.findViewById(R.id.rv_movies)
-        mMoviesRecyclerView.layoutManager =
-            GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
-    }
-
-    private fun setupFields(view: View) {
-        mNoConnectionGroup = view.findViewById(R.id.group_no_connection)
-        mNoConnectionText = view.findViewById(R.id.tv_no_conection)
-        mTryAgainButton = view.findViewById(R.id.bt_try_again)
-        mProgressBar = view.findViewById(R.id.pb_base)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_sort, menu)
@@ -170,12 +139,12 @@ class MovieFragment : Fragment(), MovieClickListener {
         if (item.itemId == R.id.m_sort) {
             val values = arrayOf<CharSequence>("Most Popular", "Highest Rated", "Favorites")
             val sortDialog = AlertDialog.Builder(context)
-                .setTitle(TITLE_DIALOG_FILTER)
-                .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
-                    changeSortOrder(which)
-                    dialog.dismiss()
-                }
-                .create()
+                    .setTitle(TITLE_DIALOG_FILTER)
+                    .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
+                        changeSortOrder(which)
+                        dialog.dismiss()
+                    }
+                    .create()
 
             sortDialog.show()
         }
