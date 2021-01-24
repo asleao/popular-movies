@@ -154,7 +154,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) : Movie
         return mMovie
     }
 
-    override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
-        return MutableLiveData()
+    override suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
+        return Resource.success(MovieTrailers())
     }
 }

@@ -66,7 +66,7 @@ class MovieRepository @Inject constructor(
         return mMovieLocalDataSource.removeMovie(movie)
     }
 
-    override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
+    override suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
         return mMovieRemoteDataSource.getMovieTrailers(movieId)
     }
 }

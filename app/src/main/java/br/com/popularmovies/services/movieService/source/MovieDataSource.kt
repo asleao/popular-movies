@@ -24,5 +24,5 @@ interface MovieDataSource {
 
     fun removeMovie(movie: Movie): LiveData<OldResource<Void>>
 
-    fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>>
+    suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers>
 }

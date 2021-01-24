@@ -21,5 +21,5 @@ interface MovieService {
     fun getMovie(@Path("id") movieId: Int): Call<Movie>
 
     @GET("movie/{id}/videos")
-    fun getMovieTrailers(@Path("id") movieId: Int): Call<MovieTrailers>
+    suspend fun getMovieTrailers(@Path("id") movieId: Int): Response<MovieTrailers>
 }

@@ -64,20 +64,7 @@ class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) : MovieDataS
         return MutableLiveData()
     }
 
-    override fun getMovieTrailers(movieId: Int): LiveData<OldResource<MovieTrailers>> {
-        val call = mMovieService.getMovieTrailers(movieId)
-        val apiResponse = ApiResponse<MovieTrailers>("getMovieTrailers")
-        val trailers = MutableLiveData<OldResource<MovieTrailers>>()
-        trailers.value = OldResource.loading()
-        call.enqueue(object : Callback<MovieTrailers> {
-            override fun onResponse(call: Call<MovieTrailers>, response: Response<MovieTrailers>) {
-                trailers.value = apiResponse.getApiOnResponse(response)
-            }
-
-            override fun onFailure(call: Call<MovieTrailers>, t: Throwable) {
-                trailers.value = apiResponse.getApiOnFailure(t)
-            }
-        })
-        return trailers
+    override suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
+        return RetrofitResponse { mMovieService.getMovieTrailers(movieId) }.result()
     }
 }
