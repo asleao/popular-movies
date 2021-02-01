@@ -8,11 +8,6 @@ import br.com.popularmovies.core.network.HOST
 import br.com.popularmovies.core.network.SCHEME
 import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.core.network.retrofit.interceptor.AuthorizationInterceptor
-import br.com.popularmovies.di.qualifiers.MoviesLocalDataSource
-import br.com.popularmovies.di.qualifiers.MoviesRemoteDataSource
-import br.com.popularmovies.services.movieService.source.MovieDataSource
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 import br.com.popularmovies.utils.BigDecimalAdapter
 import br.com.popularmovies.utils.DateAdapter
 import com.squareup.moshi.Moshi

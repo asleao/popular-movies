@@ -12,17 +12,13 @@ interface MovieDataSource {
 
     suspend fun getMovies(orderBy: String): Resource<Movies>
 
-    fun getMovie(movieId: Int): LiveData<OldResource<Movie>>
+    suspend fun getMovie(movieId: Int): Resource<Movie>
 
     suspend fun getMovieReviews(movieId: Int): Resource<MovieReviews>
 
-    fun saveToFavorites(movieId: Int, status: Boolean): LiveData<OldResource<Boolean>>
+    suspend fun saveToFavorites(movie: Movie): Resource<Boolean>
 
-    fun saveMovies(movies: List<Movie>): LiveData<OldResource<Void>>
-
-    fun saveMovie(movie: Movie): LiveData<OldResource<Void>>
-
-    fun removeMovie(movie: Movie): LiveData<OldResource<Void>>
+    fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>>
 
     suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers>
 }

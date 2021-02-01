@@ -4,18 +4,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.constraintlayout.widget.Group
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
@@ -119,9 +113,8 @@ class MovieFragment : Fragment(), MovieClickListener {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        binding =
-                DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
         setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel

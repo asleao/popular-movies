@@ -4,7 +4,6 @@ import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -18,7 +17,7 @@ interface MovieService {
     suspend fun getMovieReviews(@Path("id") movieId: Int): Response<MovieReviews>
 
     @GET("movie/{id}")
-    fun getMovie(@Path("id") movieId: Int): Call<Movie>
+    suspend fun getMovie(@Path("id") movieId: Int): Response<Movie>
 
     @GET("movie/{id}/videos")
     suspend fun getMovieTrailers(@Path("id") movieId: Int): Response<MovieTrailers>

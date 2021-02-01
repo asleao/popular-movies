@@ -6,13 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,12 +15,12 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.data.model.OldResource
+import br.com.popularmovies.databinding.MovieDetailFragmentBinding
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
-import br.com.popularmovies.movies.Constants.*
+import br.com.popularmovies.movies.Constants.IMAGE_URL
+import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
 import br.com.popularmovies.services.movieService.response.Movie
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -37,22 +32,8 @@ class MovieDetailFragment : Fragment(), IConection {
     private val mViewModel: MovieDetailViewModel by lazy {
         appComponent.movieDetailViewModelFactory.create(args.movie.id)
     }
-    private lateinit var mMovieFromIntent: Movie
-    private lateinit var mMovieTitle: TextView
-    private lateinit var mMoviePoster: ImageView
-    private lateinit var mMovieReleaseDate: TextView
-    private lateinit var mMovieRating: TextView
-    private lateinit var mMovieOverview: TextView
-    private lateinit var mReviews: TextView
-    private lateinit var mTrailers: TextView
-    private lateinit var mFavorites: AppCompatImageView
-    private lateinit var favorites: Observer<OldResource<Void>>
-    private lateinit var movie: Observer<OldResource<Movie>>
-    private lateinit var mNoConnectionGroup: Group
-    private lateinit var mMovieDetailGroup: Group
-    private lateinit var mTryAgainButton: Button
-    private lateinit var mNoConnectionText: TextView
-    private lateinit var mProgressBar: ProgressBar
+
+    private lateinit var binding: MovieDetailFragmentBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,167 +42,101 @@ class MovieDetailFragment : Fragment(), IConection {
         movieDetailComponent.inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupObservers()
+    private fun setupLoadingObserver() {
+        mViewModel.loading.observe(this, Observer { status ->
+            if (status == true) {
+                binding.groupMovieDetail.visibility = View.GONE
+            } else {
+                hideLoading()
+            }
+        })
+    }
+
+    private fun setupErrorObserver() {
+        mViewModel.error.observe(this, Observer { error ->
+            mViewModel.showLoading(false)
+            if (error != null) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
+                    showMovieDetails(args.movie)
+                    setFavoritesImage(args.movie.isFavorite)
+                } else {
+                    showGenericError(error.message)
+                }
+            }
+        })
     }
 
     private fun setupObservers() {
-        movie = Observer { movieResource ->
-            when (movieResource.status) {
-                OldResource.Status.LOADING -> showLoading()
-                OldResource.Status.SUCCESS -> {
-                    hideLoading()
-                    if (movieResource.data != null) {
-                        showMovieDetails(movieResource.data)
-                        mViewModel.movie = movieResource.data
-                        setFavoritesImage(movieResource.data.isFavorite)
-                    }
-                    showResult()
-                }
-                OldResource.Status.ERROR -> {
-                    hideLoading()
-                    val error = movieResource.error
-                    if (error != null) {
-                        if (error.statusCode == NETWORK_ERROR_CODE) {
-                            mViewModel.movie = mMovieFromIntent
-                            showMovieDetails(mMovieFromIntent)
-                            setFavoritesImage(mMovieFromIntent.isFavorite)
-                        } else {
-                            showGenericError(error.statusMessage)
-                        }
-                    }
-                }
-            }
-        }
-        favorites = Observer { resource ->
-            if (resource != null) {
-                when (resource.status) {
-                    OldResource.Status.SUCCESS -> setFavoritesImage(mViewModel.movie?.isFavorite!!)
-                    OldResource.Status.ERROR -> {
-                        val error = resource.error
-                        if (error != null) {
-                            if (error.statusCode == GENERIC_ERROR_CODE) {
-                                showNoConnection(error.statusMessage)
-                            } else {
-                                showGenericError(error.statusMessage)
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        setupLoadingObserver()
+        setupErrorObserver()
+        setupMovieObserver()
+        setupIsMovieFavoriteObserver()
+    }
+
+    private fun setupMovieObserver() {
+        mViewModel.movie.observe(this, Observer { movie ->
+            mViewModel.showLoading(false)
+            showMovieDetails(movie)
+            setFavoritesImage(movie.isFavorite)
+            showResult()
+        })
+    }
+
+    private fun setupIsMovieFavoriteObserver() {
+        mViewModel.isMovieFavorite.observe(this, Observer { isFavorite ->
+            mViewModel.showLoading(false)
+            setFavoritesImage(isFavorite)
+        })
     }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.movie_detail_fragment, container, false)
-        setupFields(view)
-        setData()
-        mViewModel.favorites.observe(viewLifecycleOwner, favorites)
-        mViewModel.getmMovie().observe(viewLifecycleOwner, movie)
-        mFavorites.setOnClickListener { mViewModel.saveFavorites(!mViewModel.movie?.isFavorite!!) }
-        mReviews.setOnClickListener {
-            if (mMovieFromIntent.id != -1) {
-                val action =
-                        MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieReviewFragment(
-                                mMovieFromIntent.id
-                        )
-                findNavController().navigate(action)
-            } else {
-                showDialog(NO_DATA_MSG_ERROR_TITLE, NO_REVIEWS_MSG_ERROR_MESSAGE)
-            }
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.movie_detail_fragment, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = mViewModel
+        binding.iBaseLayout.btTryAgain.setOnClickListener { tryAgain() }
+        binding.ivFavorite.setOnClickListener {
+            mViewModel.updateMovie()
         }
-
-        mTrailers.setOnClickListener {
-            if (mMovieFromIntent.id != -1) {
-                val action =
-                        MovieDetailFragmentDirections.actionMovieDetailFragmentToMovieTrailerFragment(
-                                mMovieFromIntent.id
-                        )
-                findNavController().navigate(action)
-            } else {
-                showDialog(NO_DATA_MSG_ERROR_TITLE, NO_TRAILER_MSG_ERROR_MESSAGE)
-            }
+        binding.tvMovieReviewsLabel.setOnClickListener {
+            val action = MovieDetailFragmentDirections
+                    .actionMovieDetailFragmentToMovieReviewFragment(args.movie.id)
+            findNavController().navigate(action)
         }
-        mTryAgainButton.setOnClickListener { tryAgain() }
-        return view
-    }
-
-    private fun showDialog(title: String, message: String) {
-        val noReviewsDialog = AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
-
-        noReviewsDialog.show()
-    }
-
-    private fun setupFields(view: View) {
-        mMovieTitle = view.findViewById(R.id.tv_movie_title)
-        mMoviePoster = view.findViewById(R.id.iv_movie_poster)
-        mMovieReleaseDate = view.findViewById(R.id.tv_movie_release_date)
-        mMovieRating = view.findViewById(R.id.tv_movie_rating)
-        mMovieOverview = view.findViewById(R.id.tv_movie_overview)
-        mReviews = view.findViewById(R.id.tv_movie_reviews_label)
-        mTrailers = view.findViewById(R.id.tv_movie_trailers_label)
-        mFavorites = view.findViewById(R.id.iv_favorite)
-        mNoConnectionGroup = view.findViewById(R.id.group_no_connection)
-        mMovieDetailGroup = view.findViewById(R.id.group_movie_detail)
-        mNoConnectionText = view.findViewById(R.id.tv_no_conection)
-        mTryAgainButton = view.findViewById(R.id.bt_try_again)
-        mProgressBar = view.findViewById(R.id.pb_base)
-    }
-
-    private fun setData() {
-        arguments?.let {
-            val args = MovieDetailFragmentArgs.fromBundle(it)
-            mMovieFromIntent = args.movie
-//            setupViewModel()
+        binding.tvMovieTrailersLabel.setOnClickListener {
+            val action = MovieDetailFragmentDirections
+                    .actionMovieDetailFragmentToMovieTrailerFragment(args.movie.id)
+            findNavController().navigate(action)
         }
+        setupObservers()
+        return binding.root
     }
 
     private fun showMovieDetails(movie: Movie) {
-        mMovieTitle.text = if (movie.originalTitle == null)
-            ""
-        else
-            movie.originalTitle
-        val imageUrl = if (movie.poster == null)
-            ""
-        else
-            IMAGE_URL + movie.poster
+        binding.tvMovieTitle.text = movie.originalTitle
+        val imageUrl = IMAGE_URL + movie.poster
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
-                .into(mMoviePoster)
-        mMovieReleaseDate.text = if (movie.releaseDate == null)
-            "None"
-        else
-            movie.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
-        mMovieRating.text = if (movie.voteAverage == null)
-            ""
-        else
-            movie.voteAverage.toString()
-        mMovieOverview.text = if (movie.overview == null)
-            ""
-        else
-            movie.overview
+                .into(binding.ivMoviePoster)
+        binding.tvMovieReleaseDate.text = movie.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
+        binding.tvMovieRating.text = movie.voteAverage.toString()
+        binding.tvMovieOverview.text = movie.overview
     }
 
     private fun setFavoritesImage(isFavorite: Boolean) {
         if (isFavorite) {
-            mFavorites.setBackgroundDrawable(
+            binding.ivFavorite.setBackgroundDrawable(
                     ContextCompat.getDrawable(
                             requireContext(),
                             R.drawable.ic_favorite_black_24dp
                     )
             )
         } else {
-            mFavorites.setBackgroundDrawable(
+            binding.ivFavorite.setBackgroundDrawable(
                     ContextCompat.getDrawable(
                             requireContext(),
                             R.drawable.ic_favorite_border_black_24dp
@@ -231,24 +146,24 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     override fun showLoading() {
-        mProgressBar.visibility = View.VISIBLE
-        mNoConnectionGroup.visibility = View.GONE
-        mMovieDetailGroup.visibility = View.GONE
+        binding.iBaseLayout.pbBase.visibility = View.VISIBLE
+        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
+        binding.groupMovieDetail.visibility = View.GONE
     }
 
     override fun hideLoading() {
-        mProgressBar.visibility = View.GONE
+        binding.iBaseLayout.pbBase.visibility = View.GONE
     }
 
     override fun showResult() {
-        mNoConnectionGroup.visibility = View.GONE
-        mMovieDetailGroup.visibility = View.VISIBLE
+        binding.iBaseLayout.groupNoConnection.visibility = View.GONE
+        binding.groupMovieDetail.visibility = View.VISIBLE
     }
 
     override fun showNoConnection(message: String) {
-        mMovieDetailGroup.visibility = View.GONE
-        mNoConnectionText.text = message
-        mNoConnectionGroup.visibility = View.VISIBLE
+        binding.groupMovieDetail.visibility = View.GONE
+        binding.iBaseLayout.tvNoConection.text = message
+        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
     }
 
     override fun showGenericError(message: String) {

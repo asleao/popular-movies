@@ -1,53 +1,72 @@
 package br.com.popularmovies.moviedetail.viewmodel
 
-import androidx.arch.core.util.Function
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import br.com.popularmovies.data.model.OldResource
+import androidx.lifecycle.viewModelScope
+import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.source.MovieRepository
+import br.com.popularmovies.utils.validateResponse
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import kotlinx.coroutines.launch
 
-class MovieDetailViewModel @AssistedInject constructor(private val mMovieRepository: MovieRepository, @Assisted private val movieId: Int) : ViewModel() {
-    val favorites: LiveData<OldResource<Void>>
-    private val mMovie: LiveData<OldResource<Movie>>
-    private val movieStatus = MutableLiveData<Boolean>()
-    private val _movieId = MutableLiveData<Int>()
-    var movie: Movie? = null
-
-    fun getmMovie(): LiveData<OldResource<Movie>> {
-        return mMovie
-    }
-
-    fun saveFavorites(status: Boolean) {
-        movieStatus.value = status
-    }
-
-    fun tryAgain() {
-        _movieId.value = _movieId.value
-    }
-
-    init {
-        mMovie = Transformations.switchMap(_movieId) { mMovieRepository.getMovie(movieId) }
-        _movieId.value = movieId
-        favorites = Transformations.switchMap(movieStatus, Function { isFavorite ->
-            if (isFavorite != null) {
-                movie?.isFavorite = isFavorite
-                return@Function if (isFavorite) {
-                    mMovieRepository.saveMovie(movie!!)
-                } else {
-                    mMovieRepository.removeMovie(movie!!)
-                }
-            }
-            null
-        })
-    }
+class MovieDetailViewModel @AssistedInject constructor(
+        private val mMovieRepository: MovieRepository,
+        @Assisted private val movieId: Int
+) : ViewModel() {
 
     @AssistedInject.Factory
     interface Factory {
         fun create(movieId: Int): MovieDetailViewModel
     }
+
+    val loading = MutableLiveData<Boolean>()
+
+    private val _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
+        get() = _error
+
+    private val _movie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie>
+        get() = _movie
+
+    private val _isMovieFavorite = MutableLiveData<Boolean>()
+    val isMovieFavorite: LiveData<Boolean>
+        get() = _isMovieFavorite
+
+    init {
+        getMovie()
+    }
+
+    private fun getMovie() {
+        viewModelScope.launch {
+            showLoading(true)
+            val resource = mMovieRepository.getMovie(movieId)
+            resource.validateResponse(_movie, _error)
+        }
+    }
+
+    fun updateMovie() {
+        movie.value?.let { movie ->
+            viewModelScope.launch {
+                //TODO Refactor
+                val resource = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))
+                resource.validateResponse(_isMovieFavorite, _error)
+                _isMovieFavorite.value?.let {
+                    _movie.value = movie.copy(isFavorite = it)
+                }
+            }
+        }
+    }
+
+    fun showLoading(value: Boolean) {
+        loading.value = value
+    }
+
+    fun tryAgain() {
+        getMovie()
+    }
+
 }

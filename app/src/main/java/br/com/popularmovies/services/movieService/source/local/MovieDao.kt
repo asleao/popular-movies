@@ -1,12 +1,6 @@
 package br.com.popularmovies.services.movieService.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-
+import androidx.room.*
 import br.com.popularmovies.services.movieService.response.Movie
 
 @Dao
@@ -16,7 +10,13 @@ interface MovieDao {
     suspend fun movies(): List<Movie>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    fun getMovie(movieId: Int): LiveData<Movie>
+    suspend fun getMovie(movieId: Int): Movie
+
+    @Query("SELECT * FROM movie where isFavorite=:isFavorite")
+    suspend fun getFavoriteMovies(isFavorite: Boolean): List<Movie>
+
+    @Query("SELECT EXISTS(SELECT * FROM movie WHERE id = :movieId)")
+    fun isMovieExists(movieId: Int): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllMovies(movies: List<Movie>)
@@ -28,5 +28,5 @@ interface MovieDao {
     fun deleteMovie(movie: Movie)
 
     @Query("UPDATE movie SET isFavorite = :status WHERE id = :movieId")
-    fun saveFavorites(movieId: Int, status: Boolean)
+    suspend fun saveFavorites(movieId: Int, status: Boolean)
 }
