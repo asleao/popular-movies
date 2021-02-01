@@ -43,7 +43,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupLoadingObserver() {
-        mViewModel.loading.observe(this, Observer { status ->
+        mViewModel.loading.observe(viewLifecycleOwner, Observer { status ->
             if (status == true) {
                 binding.groupMovieDetail.visibility = View.GONE
             } else {
@@ -53,7 +53,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupErrorObserver() {
-        mViewModel.error.observe(this, Observer { error ->
+        mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
                 if (error.codErro == NETWORK_ERROR_CODE) {
@@ -74,7 +74,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupMovieObserver() {
-        mViewModel.movie.observe(this, Observer { movie ->
+        mViewModel.movie.observe(viewLifecycleOwner, Observer { movie ->
             mViewModel.showLoading(false)
             showMovieDetails(movie)
             setFavoritesImage(movie.isFavorite)
@@ -83,7 +83,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupIsMovieFavoriteObserver() {
-        mViewModel.isMovieFavorite.observe(this, Observer { isFavorite ->
+        mViewModel.isMovieFavorite.observe(viewLifecycleOwner, Observer { isFavorite ->
             mViewModel.showLoading(false)
             setFavoritesImage(isFavorite)
         })
@@ -94,7 +94,7 @@ class MovieDetailFragment : Fragment(), IConection {
             savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.movie_detail_fragment, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
         binding.iBaseLayout.btTryAgain.setOnClickListener { tryAgain() }
         binding.ivFavorite.setOnClickListener {
