@@ -28,7 +28,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
             message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    suspend fun getMovies(): Resource<Movies> {
+    fun getMovies(): Resource<Movies> {
         return try {
             Resource.success(Movies(mMovieDao.movies()))
         } catch (exception: Exception) {
@@ -36,7 +36,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    suspend fun getFavoriteMovies(isFavorite: Boolean): Resource<Movies> {
+    fun getFavoriteMovies(isFavorite: Boolean): Resource<Movies> {
         return try {
             Resource.success(Movies(mMovieDao.getFavoriteMovies(isFavorite)))
         } catch (exception: Exception) {
@@ -44,7 +44,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    suspend fun getMovie(movieId: Int): Resource<Movie> {
+    fun getMovie(movieId: Int): Resource<Movie> {
         return try {
             Resource.success(mMovieDao.getMovie(movieId))
         } catch (e: Exception) {
@@ -53,7 +53,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
     }
 
 
-    suspend fun saveToFavorites(movie: Movie): Resource<Boolean> {
+    fun saveToFavorites(movie: Movie): Resource<Boolean> {
         return try {
             mMovieDao
                     .saveFavorites(movie.id, movie.isFavorite)
@@ -87,7 +87,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         return mMovie
     }
 
-    suspend fun insertMovie(movie: Movie): Resource<Unit> {
+    fun insertMovie(movie: Movie): Resource<Unit> {
         return try {
             Resource.success(mMovieDao.insertMovie(movie))
         } catch (e: Exception) {
@@ -95,7 +95,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    suspend fun isMovieExists(movieId: Int): Resource<Boolean> {
+    fun isMovieExists(movieId: Int): Resource<Boolean> {
         return try {
             Resource.success(mMovieDao.isMovieExists(movieId))
         } catch (e: Exception) {
@@ -103,7 +103,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
-        return Resource.success(MovieTrailers())
+    fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
+        return Resource.success(MovieTrailers(emptyList()))
     }
 }

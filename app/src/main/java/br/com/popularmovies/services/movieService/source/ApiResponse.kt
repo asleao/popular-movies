@@ -1,10 +1,10 @@
 package br.com.popularmovies.services.movieService.source
 
 import android.util.Log
-import br.com.popularmovies.core.network.NETWORK_ERROR_MSG
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
 import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.core.network.NETWORK_ERROR_MSG
 import br.com.popularmovies.data.model.ErrorResponse
 import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.SERVER_MSG_ERROR
@@ -31,8 +31,8 @@ class ApiResponse<T>(private val logTag: String) {
                         }
                     } else {
                         error = ErrorResponse(
-                            response.code(),
-                            SERVER_MSG_ERROR
+                                response.code(),
+                                SERVER_MSG_ERROR
                         )
                     }
                     return OldResource.error(error)
@@ -41,10 +41,10 @@ class ApiResponse<T>(private val logTag: String) {
         }
 
         return OldResource.error(
-            ErrorResponse(
-                response.code(),
-                SERVER_MSG_ERROR
-            )
+                ErrorResponse(
+                        response.code(),
+                        SERVER_MSG_ERROR
+                )
         )
     }
 
@@ -52,13 +52,13 @@ class ApiResponse<T>(private val logTag: String) {
         val error: ErrorResponse
         if (t is IOException) {
             error = ErrorResponse(
-                NETWORK_ERROR_CODE,
-                NETWORK_ERROR_MSG
+                    NETWORK_ERROR_CODE,
+                    NETWORK_ERROR_MSG
             )
         } else {
             error = ErrorResponse(
-                GENERIC_ERROR_CODE,
-                GENERIC_MSG_ERROR_MESSAGE
+                    GENERIC_ERROR_CODE,
+                    GENERIC_MSG_ERROR_MESSAGE
             )
         }
         Log.e(logTag, t.message)

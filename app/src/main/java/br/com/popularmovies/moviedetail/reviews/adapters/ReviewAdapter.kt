@@ -9,7 +9,7 @@ import br.com.popularmovies.R
 import br.com.popularmovies.services.movieService.response.MovieReview
 
 class ReviewAdapter(private val mReviews: List<MovieReview>) :
-    RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
+        RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ReviewViewHolder {
         val context = viewGroup.context

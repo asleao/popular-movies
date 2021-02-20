@@ -7,13 +7,13 @@ import br.com.popularmovies.services.movieService.response.Movie
 interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    suspend fun movies(): List<Movie>
+    fun movies(): List<Movie>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    suspend fun getMovie(movieId: Int): Movie
+    fun getMovie(movieId: Int): Movie
 
     @Query("SELECT * FROM movie where isFavorite=:isFavorite")
-    suspend fun getFavoriteMovies(isFavorite: Boolean): List<Movie>
+    fun getFavoriteMovies(isFavorite: Boolean): List<Movie>
 
     @Query("SELECT EXISTS(SELECT * FROM movie WHERE id = :movieId)")
     fun isMovieExists(movieId: Int): Boolean
@@ -28,5 +28,5 @@ interface MovieDao {
     fun deleteMovie(movie: Movie)
 
     @Query("UPDATE movie SET isFavorite = :status WHERE id = :movieId")
-    suspend fun saveFavorites(movieId: Int, status: Boolean)
+    fun saveFavorites(movieId: Int, status: Boolean)
 }
