@@ -49,7 +49,7 @@ ext {
 
             //Data
             'database'   : [
-                    'room' : '2.2.6'
+                    'room': '2.3.0-beta02'
             ],
             'network'    : [
                     'retrofit': '2.9.0',
@@ -139,8 +139,10 @@ ext {
             //Data
             'database': [
                     'room': [
-                            'runtime' : "androidx.room:room-runtime:${versions.database.room}",
-                            'compiler': "androidx.room:room-compiler:${versions.database.room}"
+                            'runtime'       : "androidx.room:room-runtime:${versions.database.room}",
+                            'compiler'      : "androidx.room:room-compiler:${versions.database.room}",
+                            'ktxcoroutines': "androidx.room:room-ktx:${versions.database.room}"
+
                     ]
             ],
 

@@ -107,6 +107,7 @@ dependencies {
 
     //DB
     implementation dependency.database.room.runtime
+    implementation dependency.database.room.ktxcoroutines
     kapt dependency.database.room.compiler
 
     // Date

@@ -28,7 +28,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
             message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    fun getMovies(): Resource<Movies> {
+    suspend fun getMovies(): Resource<Movies> {
         return try {
             Resource.success(Movies(mMovieDao.movies()))
         } catch (exception: Exception) {
@@ -36,7 +36,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    fun getFavoriteMovies(isFavorite: Boolean): Resource<Movies> {
+    suspend fun getFavoriteMovies(isFavorite: Boolean): Resource<Movies> {
         return try {
             Resource.success(Movies(mMovieDao.getFavoriteMovies(isFavorite)))
         } catch (exception: Exception) {
@@ -44,7 +44,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    fun getMovie(movieId: Int): Resource<Movie> {
+    suspend fun getMovie(movieId: Int): Resource<Movie> {
         return try {
             Resource.success(mMovieDao.getMovie(movieId))
         } catch (e: Exception) {
@@ -53,7 +53,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
     }
 
 
-    fun saveToFavorites(movie: Movie): Resource<Boolean> {
+    suspend fun saveToFavorites(movie: Movie): Resource<Boolean> {
         return try {
             mMovieDao
                     .saveFavorites(movie.id, movie.isFavorite)
