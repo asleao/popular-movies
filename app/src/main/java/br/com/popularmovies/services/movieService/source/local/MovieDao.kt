@@ -16,16 +16,16 @@ interface MovieDao {
     suspend fun getFavoriteMovies(isFavorite: Boolean): List<Movie>
 
     @Query("SELECT EXISTS(SELECT * FROM movie WHERE id = :movieId)")
-    fun isMovieExists(movieId: Int): Boolean
+    suspend fun isMovieExists(movieId: Int): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllMovies(movies: List<Movie>)
+    suspend fun insertAllMovies(movies: List<Movie>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovie(movie: Movie)
+    suspend fun insertMovie(movie: Movie)
 
     @Delete
-    fun deleteMovie(movie: Movie)
+    suspend fun deleteMovie(movie: Movie)
 
     @Query("UPDATE movie SET isFavorite = :status WHERE id = :movieId")
     suspend fun saveFavorites(movieId: Int, status: Boolean)

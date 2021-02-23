@@ -18,7 +18,7 @@ interface MovieDataSource {
 
     suspend fun saveToFavorites(movie: Movie): Resource<Boolean>
 
-    fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>>
+    suspend fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>>
 
     suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers>
 }

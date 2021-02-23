@@ -14,7 +14,6 @@ import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
-import br.com.popularmovies.utils.AppExecutors
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -65,14 +64,12 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
+    suspend fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
         val mMovie = MutableLiveData<OldResource<Void>>()
         mMovie.postValue(OldResource.loading())
         try {
-            AppExecutors.getInstance().diskIO().execute {
-                mMovieDao.insertAllMovies(movies)
-                mMovie.postValue(OldResource.success(null))
-            }
+            mMovieDao.insertAllMovies(movies)
+            mMovie.postValue(OldResource.success(null))
         } catch (e: Exception) {
             mMovie.postValue(
                     OldResource.error(
@@ -87,7 +84,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         return mMovie
     }
 
-    fun insertMovie(movie: Movie): Resource<Unit> {
+    suspend fun insertMovie(movie: Movie): Resource<Unit> {
         return try {
             Resource.success(mMovieDao.insertMovie(movie))
         } catch (e: Exception) {
@@ -95,7 +92,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    fun isMovieExists(movieId: Int): Resource<Boolean> {
+    suspend fun isMovieExists(movieId: Int): Resource<Boolean> {
         return try {
             Resource.success(mMovieDao.isMovieExists(movieId))
         } catch (e: Exception) {
@@ -103,7 +100,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         }
     }
 
-    fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
+    suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
         return Resource.success(MovieTrailers(emptyList()))
     }
 }

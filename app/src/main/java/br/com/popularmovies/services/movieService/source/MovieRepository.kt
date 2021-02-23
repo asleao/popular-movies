@@ -45,7 +45,7 @@ class MovieRepository @Inject constructor(
         return mMovieLocalDataSource.saveToFavorites(movie)
     }
 
-    override fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
+    override suspend fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
         return mMovieLocalDataSource.insertMovies(movies)
     }
 
