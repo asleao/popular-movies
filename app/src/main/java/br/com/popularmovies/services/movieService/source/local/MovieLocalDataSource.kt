@@ -1,15 +1,11 @@
 package br.com.popularmovies.services.movieService.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
 import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.core.network.retrofit.model.Resource
-import br.com.popularmovies.data.model.ErrorResponse
-import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieTrailers
@@ -52,36 +48,14 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
     }
 
 
-    suspend fun saveToFavorites(movie: Movie): Resource<Boolean> {
+    suspend fun saveToFavorites(movie: Movie): Resource<Unit> {
         return try {
-            mMovieDao
-                    .saveFavorites(movie.id, movie.isFavorite)
-                    .run {
-                        Resource.success(movie.isFavorite)
-                    }
+            val updatedRowsCount = mMovieDao.saveFavorites(movie.id, movie.isFavorite)
+            Resource.success(updatedRowsCount)
+
         } catch (e: Exception) {
             Resource.error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
-    }
-
-    suspend fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
-        val mMovie = MutableLiveData<OldResource<Void>>()
-        mMovie.postValue(OldResource.loading())
-        try {
-            mMovieDao.insertAllMovies(movies)
-            mMovie.postValue(OldResource.success(null))
-        } catch (e: Exception) {
-            mMovie.postValue(
-                    OldResource.error(
-                            ErrorResponse(
-                                    GENERIC_ERROR_CODE,
-                                    ROOM_MSG_ERROR
-                            )
-                    )
-            )
-        }
-
-        return mMovie
     }
 
     suspend fun insertMovie(movie: Movie): Resource<Unit> {

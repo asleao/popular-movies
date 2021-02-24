@@ -1,8 +1,6 @@
 package br.com.popularmovies.services.movieService.source
 
-import androidx.lifecycle.LiveData
 import br.com.popularmovies.core.network.retrofit.model.Resource
-import br.com.popularmovies.data.model.OldResource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
 import br.com.popularmovies.services.movieService.response.Movie
 import br.com.popularmovies.services.movieService.response.MovieReviews
@@ -41,12 +39,13 @@ class MovieRepository @Inject constructor(
         return mMovieRemoteDataSource.getMovieReviews(movieId)
     }
 
-    override suspend fun saveToFavorites(movie: Movie): Resource<Boolean> {
-        return mMovieLocalDataSource.saveToFavorites(movie)
-    }
-
-    override suspend fun insertMovies(movies: List<Movie>): LiveData<OldResource<Void>> {
-        return mMovieLocalDataSource.insertMovies(movies)
+    override suspend fun saveToFavorites(movie: Movie): Resource<Unit> {
+        val isMovieExists = mMovieLocalDataSource.isMovieExists(movie.id)
+        return if (isMovieExists.data == true) {
+            mMovieLocalDataSource.saveToFavorites(movie)
+        } else {
+            mMovieLocalDataSource.insertMovie(movie)
+        }
     }
 
     override suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
