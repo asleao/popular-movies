@@ -12,7 +12,7 @@ import java.math.BigDecimal
 @Entity(tableName = "movie")
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class Movie(
+data class MovieDto(
         @Json(name = "vote_count")
         val votes: Int ,
         @PrimaryKey(autoGenerate = true)

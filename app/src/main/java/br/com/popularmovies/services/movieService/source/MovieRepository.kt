@@ -2,7 +2,7 @@ package br.com.popularmovies.services.movieService.source
 
 import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.services.movieService.response.Movie
+import br.com.popularmovies.services.movieService.response.MovieDto
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
@@ -25,7 +25,7 @@ class MovieRepository @Inject constructor(
         }
     }
 
-    override suspend fun getMovie(movieId: Int): Resource<Movie> {
+    override suspend fun getMovie(movieId: Int): Resource<MovieDto> {
         val dbSource = mMovieLocalDataSource.getMovie(movieId)
         val networkSource = mMovieRemoteDataSource.getMovie(movieId)
         return if (dbSource.data == null) {
@@ -39,13 +39,13 @@ class MovieRepository @Inject constructor(
         return mMovieRemoteDataSource.getMovieReviews(movieId)
     }
 
-    override suspend fun saveToFavorites(movie: Movie): Resource<Unit> {
+    override suspend fun saveToFavorites(movieDto: MovieDto): Resource<Unit> {
         // when caching is implemented this will only saveToFavorites
-        val isMovieExists = mMovieLocalDataSource.isMovieExists(movie.id)
+        val isMovieExists = mMovieLocalDataSource.isMovieExists(movieDto.id)
         return if (isMovieExists.data == true) {
-            mMovieLocalDataSource.saveToFavorites(movie)
+            mMovieLocalDataSource.saveToFavorites(movieDto)
         } else {
-            mMovieLocalDataSource.insertMovie(movie)
+            mMovieLocalDataSource.insertMovie(movieDto)
         }
     }
 

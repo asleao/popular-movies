@@ -19,7 +19,7 @@ import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
-import br.com.popularmovies.services.movieService.response.Movie
+import br.com.popularmovies.services.movieService.response.MovieDto
 import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
@@ -49,7 +49,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             mViewModel.showLoading(false)
             val mMovieAdapter =
                     MovieAdapter(this)
-            mMovieAdapter.swapData(moviesResource.movies)
+            mMovieAdapter.swapData(moviesResource.movieDtos)
             binding.rvMovies.adapter = mMovieAdapter
 
             showResult()
@@ -161,8 +161,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    override fun onMovieClick(movie: Movie) {
-        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie)
+    override fun onMovieClick(movieDto: MovieDto) {
+        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movieDto)
         findNavController().navigate(action)
     }
 }

@@ -1,6 +1,6 @@
 package br.com.popularmovies.services.movieService.service
 
-import br.com.popularmovies.services.movieService.response.Movie
+import br.com.popularmovies.services.movieService.response.MovieDto
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
@@ -17,7 +17,7 @@ interface MovieService {
     suspend fun getMovieReviews(@Path("id") movieId: Int): Response<MovieReviews>
 
     @GET("movie/{id}")
-    suspend fun getMovie(@Path("id") movieId: Int): Response<Movie>
+    suspend fun getMovie(@Path("id") movieId: Int): Response<MovieDto>
 
     @GET("movie/{id}/videos")
     suspend fun getMovieTrailers(@Path("id") movieId: Int): Response<MovieTrailers>

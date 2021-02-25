@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.core.network.retrofit.model.Error
 import br.com.popularmovies.core.network.retrofit.model.Resource
-import br.com.popularmovies.services.movieService.response.Movie
+import br.com.popularmovies.services.movieService.response.MovieDto
 import br.com.popularmovies.services.movieService.source.MovieRepository
 import br.com.popularmovies.utils.validateResponse
 import com.squareup.inject.assisted.Assisted
@@ -29,8 +29,8 @@ class MovieDetailViewModel @AssistedInject constructor(
     val error: LiveData<Error>
         get() = _error
 
-    private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie>
+    private val _movie = MutableLiveData<MovieDto>()
+    val movieDto: LiveData<MovieDto>
         get() = _movie
 
     private val _isMovieFavorite = MutableLiveData<Boolean>()
@@ -50,7 +50,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     }
 
     fun updateMovie() {
-        movie.value?.let { movie ->
+        movieDto.value?.let { movie ->
             viewModelScope.launch {
                 //TODO Refactor
                 val result = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))
