@@ -11,7 +11,7 @@ import br.com.popularmovies.R
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieAdapter.MovieViewHolder
 import br.com.popularmovies.services.movieService.response.MovieDto
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 
 class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback()) {
 
@@ -23,7 +23,7 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
 
     override fun onBindViewHolder(movieViewHolder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
-        Picasso.get()
+        Glide.with(movieViewHolder.itemView.context)
                 .load(Constants.IMAGE_URL + movie.poster)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)

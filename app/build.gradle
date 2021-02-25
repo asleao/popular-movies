@@ -84,10 +84,6 @@ dependencies {
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide
-    implementation(dependency.ui.picasso) {
-        exclude group: "com.android.support"
-        exclude module: ["exifinterface", "support-annotations"]
-    }
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler

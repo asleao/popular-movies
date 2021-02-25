@@ -22,7 +22,7 @@ import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
 import br.com.popularmovies.services.movieService.response.MovieDto
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import java.util.*
 
 class MovieDetailFragment : Fragment(), IConection {
@@ -117,7 +117,7 @@ class MovieDetailFragment : Fragment(), IConection {
     private fun showMovieDetails(movieDto: MovieDto) {
         binding.tvMovieTitle.text = movieDto.originalTitle
         val imageUrl = IMAGE_URL + movieDto.poster
-        Picasso.get()
+        Glide.with(requireContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)

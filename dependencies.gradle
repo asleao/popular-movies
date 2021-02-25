@@ -32,7 +32,6 @@ ext {
                             'spinKit': '1.4.0'
                     ],
                     'glide'           : '4.11.0',
-                    'picasso'         : '2.71828',
                     'recyclerView'    : '1.1.0',
                     'navigation'      : [
                             'core': '2.3.3'
@@ -115,7 +114,6 @@ ext {
                             'spinKit': "com.github.ybq:Android-SpinKit:${versions.ui.progressbar.spinKit}"
                     ],
                     'glide'           : "com.github.bumptech.glide:glide:${versions.ui.glide}",
-                    'picasso'         : "com.squareup.picasso:picasso:${versions.ui.picasso}",
                     'recyclerView'    : "androidx.recyclerview:recyclerview:${versions.ui.recyclerView}",
                     'navigation'      : [
                             'fragment': "androidx.navigation:navigation-fragment-ktx:${versions.ui.navigation.core}",
@@ -139,8 +137,8 @@ ext {
             //Data
             'database': [
                     'room': [
-                            'runtime'       : "androidx.room:room-runtime:${versions.database.room}",
-                            'compiler'      : "androidx.room:room-compiler:${versions.database.room}",
+                            'runtime'      : "androidx.room:room-runtime:${versions.database.room}",
+                            'compiler'     : "androidx.room:room-compiler:${versions.database.room}",
                             'ktxcoroutines': "androidx.room:room-ktx:${versions.database.room}"
 
                     ]
