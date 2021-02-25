@@ -11,8 +11,6 @@ android {
 }
 
 dependencies {
-    implementation dependency.di.dagger.core
-
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions
 }

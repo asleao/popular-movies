@@ -86,11 +86,11 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     private fun setupMovieTrailersObserver() {
         mViewModel.trailers.observe(this, Observer { movieTrailers ->
             mViewModel.showLoading(false)
-            if (movieTrailers.trailers.isEmpty()) {
+            if (movieTrailers.trailerDtos.isEmpty()) {
                 showNoTrailers()
             } else {
                 binding.rvTrailers.adapter = TrailerAdapter(
-                        movieTrailers.trailers,
+                        movieTrailers.trailerDtos,
                         this@MovieTrailerFragment
                 )
                 showResult()

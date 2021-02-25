@@ -7,20 +7,20 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 @Parcelize
-data class MovieTrailer(@Json(name = "id")
+data class MovieTrailerDto(@Json(name = "id")
                         val id: String,
-                        @Json(name = "iso_639_1")
+                           @Json(name = "iso_639_1")
                         val iso6391: String,
-                        @Json(name = "iso_3166_1")
+                           @Json(name = "iso_3166_1")
                         val iso31661: String,
-                        @Json(name = "key")
+                           @Json(name = "key")
                         val key: String,
-                        @Json(name = "name")
+                           @Json(name = "name")
                         val name: String,
-                        @Json(name = "site")
+                           @Json(name = "site")
                         val site: String,
-                        @Json(name = "size")
+                           @Json(name = "size")
                         val size: String,
-                        @Json(name = "type")
+                           @Json(name = "type")
                         val type: String) : Parcelable
 

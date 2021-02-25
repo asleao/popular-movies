@@ -40,6 +40,7 @@ class MovieRepository @Inject constructor(
     }
 
     override suspend fun saveToFavorites(movie: Movie): Resource<Unit> {
+        // when caching is implemented this will only saveToFavorites
         val isMovieExists = mMovieLocalDataSource.isMovieExists(movie.id)
         return if (isMovieExists.data == true) {
             mMovieLocalDataSource.saveToFavorites(movie)
