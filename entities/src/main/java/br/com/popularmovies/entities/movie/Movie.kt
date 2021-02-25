@@ -8,12 +8,12 @@ import java.time.LocalDate
 @Parcelize
 data class Movie(
         val votes: Int,
-        var id: Int = -1,
+        var id: Int,
         val voteAverage: BigDecimal,
         val originalTitle: String,
         val popularity: BigDecimal,
         val poster: String,
         val overview: String,
         val releaseDate: LocalDate,
-        var isFavorite: Boolean = false
+        var isFavorite: Boolean
 ) : Parcelable

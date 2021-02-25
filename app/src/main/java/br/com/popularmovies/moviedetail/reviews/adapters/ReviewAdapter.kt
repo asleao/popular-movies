@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
-import br.com.popularmovies.services.movieService.response.MovieReview
+import br.com.popularmovies.services.movieService.response.MovieReviewDto
 
-class ReviewAdapter(private val mReviews: List<MovieReview>) :
+class ReviewAdapter(private val mReviewDtos: List<MovieReviewDto>) :
         RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ReviewViewHolder {
@@ -18,14 +18,14 @@ class ReviewAdapter(private val mReviews: List<MovieReview>) :
     }
 
     override fun onBindViewHolder(movieViewHolder: ReviewViewHolder, position: Int) {
-        val movieReview = mReviews[position]
+        val movieReview = mReviewDtos[position]
         movieViewHolder.mAuthor.text = "Author: ${movieReview.author}"
         movieViewHolder.mContent.text = movieReview.content
 
     }
 
     override fun getItemCount(): Int {
-        return mReviews.size
+        return mReviewDtos.size
     }
 
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
