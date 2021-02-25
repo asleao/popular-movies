@@ -11,9 +11,6 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
-import br.com.popularmovies.services.movieService.source.remote.MovieRemoteDataSource
 
 
 class MovieActivity : AppCompatActivity() {

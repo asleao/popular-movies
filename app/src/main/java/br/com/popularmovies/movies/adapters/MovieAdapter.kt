@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieAdapter.MovieViewHolder
-import br.com.popularmovies.services.movieService.response.Movie
-import com.squareup.picasso.Picasso
+import br.com.popularmovies.services.movieService.response.MovieDto
+import com.bumptech.glide.Glide
 
-class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
+class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MovieViewHolder {
         val context = viewGroup.context
@@ -23,14 +23,14 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
 
     override fun onBindViewHolder(movieViewHolder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
-        Picasso.get()
+        Glide.with(movieViewHolder.itemView.context)
                 .load(Constants.IMAGE_URL + movie.poster)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(movieViewHolder.moviePoster)
     }
 
-    fun swapData(data: List<Movie>) {
+    fun swapData(data: List<MovieDto>) {
         submitList(data.toMutableList())
     }
 
@@ -47,15 +47,15 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
         }
     }
 
-    private class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    private class MovieDiffCallback : DiffUtil.ItemCallback<MovieDto>() {
         override fun areItemsTheSame(
-                oldItem: Movie,
-                newItem: Movie
+                oldItem: MovieDto,
+                newItem: MovieDto
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-                oldItem: Movie,
-                newItem: Movie
+                oldItem: MovieDto,
+                newItem: MovieDto
         ) = oldItem == newItem
     }
 

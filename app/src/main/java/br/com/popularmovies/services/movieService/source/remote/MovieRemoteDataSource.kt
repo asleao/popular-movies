@@ -2,7 +2,7 @@ package br.com.popularmovies.services.movieService.source.remote
 
 import br.com.popularmovies.core.network.retrofit.model.Resource
 import br.com.popularmovies.core.network.retrofit.model.RetrofitResponse
-import br.com.popularmovies.services.movieService.response.Movie
+import br.com.popularmovies.services.movieService.response.MovieDto
 import br.com.popularmovies.services.movieService.response.MovieReviews
 import br.com.popularmovies.services.movieService.response.MovieTrailers
 import br.com.popularmovies.services.movieService.response.Movies
@@ -19,7 +19,7 @@ class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) {
         return RetrofitResponse { mMovieService.getMovies(orderBy) }.result()
     }
 
-    suspend fun getMovie(movieId: Int): Resource<Movie> {
+    suspend fun getMovie(movieId: Int): Resource<MovieDto> {
         return RetrofitResponse { mMovieService.getMovie(movieId) }.result()
     }
 

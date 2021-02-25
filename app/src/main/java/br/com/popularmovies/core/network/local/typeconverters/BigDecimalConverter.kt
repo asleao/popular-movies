@@ -8,10 +8,7 @@ class BigDecimalConverter {
     @TypeConverter
     fun fromLong(number: Long?): BigDecimal? {
         return number?.let {
-            BigDecimal(it).movePointLeft(2).setScale(
-                1,
-                BigDecimal.ROUND_HALF_EVEN
-            )
+            BigDecimal(it).movePointLeft(2).setScale(1, BigDecimal.ROUND_HALF_EVEN)
         } ?: run { null }
     }
 

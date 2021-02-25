@@ -7,4 +7,4 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class MovieReviews(@Json(name = "results") val reviewDtos: List<MovieReviewDto>) : Parcelable
+data class MovieTrailers(@Json(name = "results") val trailerDtos: List<MovieTrailerDto>) : Parcelable

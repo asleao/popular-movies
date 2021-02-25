@@ -1,12 +1,6 @@
 package br.com.popularmovies.core.network.retrofit.model
 
-import br.com.popularmovies.core.network.BUSINESS_LOGIC_ERROR_CODE
-import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
-import br.com.popularmovies.core.network.NETWORK_ERROR_MSG
-import br.com.popularmovies.core.network.NETWORK_ERROR_TITLE
+import br.com.popularmovies.core.network.*
 import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.Response

@@ -1,0 +1,202 @@
+ext {
+    versions = [
+            //Core
+            'kotlin'     : '1.4.30',
+            'gradle'     : '4.0.1',
+
+            //Sdk
+            'sdk'        : [
+                    'compile': 29,
+                    'min'    : 24,
+                    'target' : 29
+            ],
+
+            'versionCode': 1,
+            'versionName': '1.0',
+            'buildTools' : '29.0.3',
+
+
+            //Android
+            'android'    : [
+                    'core'     : '1.3.0',
+                    'appcompat': '1.1.0',
+                    'fragment' : '1.2.5',
+                    'lifecycle': '2.2.0',
+            ],
+
+            //UI
+            'ui'         : [
+                    'constraintlayout': '1.1.3',
+                    'material'        : '1.2.0',
+                    'progressbar'     : [
+                            'spinKit': '1.4.0'
+                    ],
+                    'glide'           : '4.11.0',
+                    'recyclerView'    : '1.1.0',
+                    'navigation'      : [
+                            'core': '2.3.3'
+                    ]
+            ],
+
+            //DI
+            'di'         : [
+                    'dagger': [
+                            'core'          : '2.32',
+                            'assistedInject': '0.6.0'
+                    ]
+            ],
+
+            //Data
+            'database'   : [
+                    'room': '2.3.0-beta02'
+            ],
+            'network'    : [
+                    'retrofit': '2.9.0',
+                    'okhttp3' : '3.12.13',
+                    'paging'  : '2.1.2'
+            ],
+
+            'moshi'      : [
+                    'core'   : '1.9.3',
+                    'kotlin' : '1.9.2',
+                    'codegen': '1.9.3'
+            ],
+
+            'jodatime'   : '2.10.1',
+            'tests'      : [
+                    'android'   : [
+                            'core': "1.3.0"
+                    ],
+                    'junit'     : [
+                            'plugin'     : '1.5.1.0',
+                            'core'       : '4.13',
+                            'extensions' : '1.1.2',
+                            'runner'     : '1.2.0',
+                            'rules'      : '1.2.0',
+                            'jupiter'    : [
+                                    'core': '5.5.2'
+                            ],
+                            'androidtest': '1.1.0'
+                    ],
+                    'assertJ'   : '3.14.0',
+                    'expresso'  : '3.3.0',
+                    'coroutines': '1.3.3',
+                    'mockk'     : '1.9.3'
+            ]
+    ]
+
+    dependency = [
+            //Core
+            'gradle'  : "com.android.tools.build:gradle:${versions.gradle}",
+            'kotlin'  : [
+                    'gradle' : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+                    'stdlib' : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+                    'reflect': "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
+            ],
+
+            //Android
+            'android' : [
+                    'core'     : "androidx.core:core-ktx:${versions.android.core}",
+                    'appcompat': "androidx.appcompat:appcompat:${versions.android.appcompat}",
+                    'fragment' : "androidx.fragment:fragment-ktx:${versions.android.fragment}",
+                    'lifecycle': [
+                            'runtime'   : "androidx.lifecycle:lifecycle-runtime:${versions.android.lifecycle}",
+                            'extensions': "androidx.lifecycle:lifecycle-extensions:${versions.android.lifecycle}",
+                            'viewModel' : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.android.lifecycle}"
+                    ],
+            ],
+
+            //UI
+            'ui'      : [
+                    'constraintlayout': "androidx.constraintlayout:constraintlayout:${versions.ui.constraintlayout}",
+                    'material'        : "com.google.android.material:material:${versions.ui.material}",
+                    'progressbar'     : [
+                            'spinKit': "com.github.ybq:Android-SpinKit:${versions.ui.progressbar.spinKit}"
+                    ],
+                    'glide'           : "com.github.bumptech.glide:glide:${versions.ui.glide}",
+                    'recyclerView'    : "androidx.recyclerview:recyclerview:${versions.ui.recyclerView}",
+                    'navigation'      : [
+                            'fragment': "androidx.navigation:navigation-fragment-ktx:${versions.ui.navigation.core}",
+                            'ui'      : "androidx.navigation:navigation-ui-ktx:${versions.ui.navigation.core}"
+                    ]
+            ],
+
+
+            //DI
+            'di'      : [
+                    'dagger': [
+                            'core'          : "com.google.dagger:dagger:${versions.di.dagger.core}",
+                            'compiler'      : "com.google.dagger:dagger-compiler:${versions.di.dagger.core}",
+                            'assistedInject': [
+                                    'annotations': "com.squareup.inject:assisted-inject-annotations-dagger2:${versions.di.dagger.assistedInject}",
+                                    'processor'  : "com.squareup.inject:assisted-inject-processor-dagger2:${versions.di.dagger.assistedInject}"
+                            ]
+                    ]
+            ],
+
+            //Data
+            'database': [
+                    'room': [
+                            'runtime'      : "androidx.room:room-runtime:${versions.database.room}",
+                            'compiler'     : "androidx.room:room-compiler:${versions.database.room}",
+                            'ktxcoroutines': "androidx.room:room-ktx:${versions.database.room}"
+
+                    ]
+            ],
+
+            'network' : [
+                    'retrofit': [
+                            'core'      : "com.squareup.retrofit2:retrofit:${versions.network.retrofit}",
+                            'converters': [
+                                    'moshi': "com.squareup.retrofit2:converter-moshi:${versions.network.retrofit}"
+                            ]
+                    ],
+                    'okhttp3' : [
+                            'core'        : "com.squareup.okhttp3:okhttp:${versions.network.okhttp3}",
+                            'interceptors': [
+                                    'logging': "com.squareup.okhttp3:logging-interceptor:${versions.network.okhttp3}"
+                            ]
+                    ],
+                    'paging'  : "androidx.paging:paging-rxjava2-ktx:${versions.network.paging}"
+            ],
+
+            'moshi'   : [
+                    'core'   : "com.squareup.moshi:moshi:${versions.moshi.core}",
+                    'kotlin' : "com.squareup.moshi:moshi-kotlin:${versions.moshi.kotlin}",
+                    'codegen': "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi.codegen}"
+            ],
+
+            'jodatime': "joda-time:joda-time:${versions.jodatime}",
+
+            'tests'   : [
+                    'android'   : [
+                            'core'    : "androidx.test:core:${versions.tests.android.core}",
+                            'fragment': "androidx.fragment:fragment-testing:${versions.tests.android.core}"
+                    ],
+                    'junit'     : [
+                            'core'       : "junit:junit:${versions.tests.junit.core}",
+                            'extensions' : "androidx.test.ext:junit:${versions.tests.junit.extensions}",
+                            'runner'     : "androidx.test:runner:${versions.tests.junit.runner}",
+                            'rules'      : "androidx.test:rules:${versions.tests.junit.rules}",
+                            'jupiter'    : [
+                                    'api'   : "org.junit.jupiter:junit-jupiter-api:${versions.tests.junit.jupiter.core}",
+                                    'engine': "org.junit.jupiter:junit-jupiter-engine:${versions.tests.junit.jupiter.core}"
+                            ],
+                            'androidtest': [
+                                    'core'  : "de.mannodermaus.junit5:android-test-core:${versions.tests.junit.androidtest}",
+                                    'runner': "de.mannodermaus.junit5:android-test-runner:${versions.tests.junit.androidtest}"
+                            ]
+                    ],
+                    'assertJ'   : "org.assertj:assertj-core:${versions.tests.assertJ}",
+                    'expresso'  : [
+                            'core'   : "androidx.test.espresso:espresso-core:${versions.tests.expresso}",
+                            'intents': "androidx.test.espresso:espresso-intents:${versions.tests.expresso}"
+                    ],
+                    'coroutines': "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.tests.coroutines}",
+                    'mockk'     : [
+                            'core'   : "io.mockk:mockk:${versions.tests.mockk}",
+                            'android': "io.mockk:mockk-android:${versions.tests.mockk}"
+                    ]
+            ]
+    ]
+}

@@ -73,10 +73,10 @@ class MovieReviewFragment : Fragment(), IConection {
         mViewModel.reviews.observe(this, Observer { movieReviews ->
             mViewModel.showLoading(false)
             binding.rvReviews.visibility = View.VISIBLE
-            if (movieReviews.reviews.isEmpty()) {
+            if (movieReviews.reviewDtos.isEmpty()) {
                 showNoReviews()
             } else {
-                binding.rvReviews.adapter = ReviewAdapter(movieReviews.reviews)
+                binding.rvReviews.adapter = ReviewAdapter(movieReviews.reviewDtos)
                 showResult()
             }
         })

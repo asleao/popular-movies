@@ -1,0 +1,16 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion versions.sdk.compile
+
+    defaultConfig {
+        minSdkVersion versions.sdk.min
+    }
+}
+
+dependencies {
+    testImplementation dependency.tests.junit.core
+    androidTestImplementation dependency.tests.junit.extensions
+}

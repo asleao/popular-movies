@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-internal class MovieReviewViewModelTest {
+internal class MovieDtoReviewViewModelTest {
 
     @ExperimentalCoroutinesApi
     private val testDispatcher = TestCoroutineDispatcher()

@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.moviedetail.trailers.Constants
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter.TrailerViewHolder
-import br.com.popularmovies.services.movieService.response.MovieTrailer
+import br.com.popularmovies.services.movieService.response.MovieTrailerDto
 
-class TrailerAdapter(private val mTrailers: List<MovieTrailer>,
+class TrailerAdapter(private val mTrailerDtos: List<MovieTrailerDto>,
                      private val mOnTrailerClickListener: TrailerClickListener) :
         RecyclerView.Adapter<TrailerViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): TrailerViewHolder {
@@ -21,14 +21,14 @@ class TrailerAdapter(private val mTrailers: List<MovieTrailer>,
     }
 
     override fun onBindViewHolder(movieViewHolder: TrailerViewHolder, position: Int) {
-        val movieTrailer = mTrailers[position]
+        val movieTrailer = mTrailerDtos[position]
         movieViewHolder.mTitle.text = movieTrailer.name
         movieViewHolder.mMediaPlay.setOnClickListener { mOnTrailerClickListener.onPlay(movieTrailer.key) }
         movieViewHolder.mShare.setOnClickListener { mOnTrailerClickListener.onShare(Constants.YOUTUBE_URL + movieTrailer.key) }
     }
 
     override fun getItemCount(): Int {
-        return mTrailers.size
+        return mTrailerDtos.size
     }
 
     inner class TrailerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

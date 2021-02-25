@@ -21,8 +21,8 @@ import br.com.popularmovies.databinding.MovieDetailFragmentBinding
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
-import br.com.popularmovies.services.movieService.response.Movie
-import com.squareup.picasso.Picasso
+import br.com.popularmovies.services.movieService.response.MovieDto
+import com.bumptech.glide.Glide
 import java.util.*
 
 class MovieDetailFragment : Fragment(), IConection {
@@ -74,7 +74,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupMovieObserver() {
-        mViewModel.movie.observe(viewLifecycleOwner, Observer { movie ->
+        mViewModel.movieDto.observe(viewLifecycleOwner, Observer { movie ->
             mViewModel.showLoading(false)
             showMovieDetails(movie)
             setFavoritesImage(movie.isFavorite)
@@ -114,17 +114,17 @@ class MovieDetailFragment : Fragment(), IConection {
         return binding.root
     }
 
-    private fun showMovieDetails(movie: Movie) {
-        binding.tvMovieTitle.text = movie.originalTitle
-        val imageUrl = IMAGE_URL + movie.poster
-        Picasso.get()
+    private fun showMovieDetails(movieDto: MovieDto) {
+        binding.tvMovieTitle.text = movieDto.originalTitle
+        val imageUrl = IMAGE_URL + movieDto.poster
+        Glide.with(requireContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.loading)
                 .error(R.drawable.no_photo)
                 .into(binding.ivMoviePoster)
-        binding.tvMovieReleaseDate.text = movie.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
-        binding.tvMovieRating.text = movie.voteAverage.toString()
-        binding.tvMovieOverview.text = movie.overview
+        binding.tvMovieReleaseDate.text = movieDto.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
+        binding.tvMovieRating.text = movieDto.voteAverage.toString()
+        binding.tvMovieOverview.text = movieDto.overview
     }
 
     private fun setFavoritesImage(isFavorite: Boolean) {

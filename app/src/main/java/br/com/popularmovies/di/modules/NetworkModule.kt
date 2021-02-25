@@ -11,6 +11,7 @@ import br.com.popularmovies.core.network.retrofit.interceptor.AuthorizationInter
 import br.com.popularmovies.utils.BigDecimalAdapter
 import br.com.popularmovies.utils.DateAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.HttpUrl
@@ -38,6 +39,7 @@ object NetworkModule {
         return Moshi.Builder()
                 .add(BigDecimalAdapter())
                 .add(DateAdapter())
+                .add(KotlinJsonAdapterFactory())
                 .build()
     }
 
@@ -84,8 +86,7 @@ object NetworkModule {
                          moshi: Moshi): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(MoshiConverterFactory
-                        .create(moshi))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .client(okHttpClient)
                 .build()
 

@@ -7,7 +7,7 @@ import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.services.movieService.source.MovieRepository
 
 class MovieReviewFactory(private val mMovieRepository: MovieRepository, private val movieId: Int) :
-    ViewModelProvider.Factory {
+        ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MovieReviewViewModel(mMovieRepository, this.movieId) as T

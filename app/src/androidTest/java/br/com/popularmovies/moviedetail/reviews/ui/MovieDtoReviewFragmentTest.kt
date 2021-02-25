@@ -13,7 +13,7 @@ import org.hamcrest.CoreMatchers.not
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class MovieReviewFragmentTest {
+internal class MovieDtoReviewFragmentTest {
     private val navController = mockk<NavController>(relaxed = true)
 
 
