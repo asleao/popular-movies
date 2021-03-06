@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.services.movieService.MovieRepository
@@ -18,8 +18,8 @@ class MovieReviewViewModel @AssistedInject constructor(
 ) : ViewModel() {
     val loading = MutableLiveData<Boolean>()
 
-    private val _error = MutableLiveData<AppError>()
-    val error: LiveData<AppError>
+    private val _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
         get() = _error
     private val _reviews = MutableLiveData<List<MovieReview>>()
     val reviews: LiveData<List<MovieReview>>
@@ -34,7 +34,7 @@ class MovieReviewViewModel @AssistedInject constructor(
             showLoading(true)
             when (val result = mMovieRepository.getMovieReviews(movieId)) {
                 is Result.Success -> _reviews.value = result.data
-                is Result.Error -> _error.value = result.appError
+                is Result.Error -> _error.value = result.error
             }
         }
     }

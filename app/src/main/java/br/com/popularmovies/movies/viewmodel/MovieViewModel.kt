@@ -1,7 +1,7 @@
 package br.com.popularmovies.movies.viewmodel
 
 import androidx.lifecycle.*
-import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
@@ -14,8 +14,8 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
 
     val loading = MutableLiveData<Boolean>()
 
-    private val _error = MutableLiveData<AppError>()
-    val error: LiveData<AppError>
+    private val _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
         get() = _error
 
     private val _movies: MediatorLiveData<List<Movie>> = MediatorLiveData()
@@ -34,7 +34,7 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
             showLoading(true)
             when (val result = mMovieRepository.getMovies(field)) {
                 is Result.Success -> _movies.value = result.data
-                is Result.Error -> _error.value = result.appError
+                is Result.Error -> _error.value = result.error
             }
         }
     }

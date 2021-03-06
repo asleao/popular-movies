@@ -1,10 +1,10 @@
 package br.com.popularmovies.utils
 
 import androidx.lifecycle.MutableLiveData
-import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 
-fun <T> Result<T>.validateResponse(success: MutableLiveData<T>, error: MutableLiveData<AppError>) {
+fun <T> Result<T>.validateResponse(success: MutableLiveData<T>, error: MutableLiveData<Error>) {
     when (this) {
         is Result.Success -> {
             this.data?.let {
@@ -12,6 +12,6 @@ fun <T> Result<T>.validateResponse(success: MutableLiveData<T>, error: MutableLi
             }
         }
         is Result.Error ->
-            error.value = this.appError
+            error.value = this.error
     }
 }

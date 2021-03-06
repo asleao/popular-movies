@@ -23,12 +23,12 @@ class MovieRepository @Inject constructor(
         return if (orderBy == FILTER_FAVORITES) {
             when (val result = mMovieLocalDataSource.getFavoriteMovies(true)) {
                 is Result.Success -> Result.Success(result.data.map { it.toDomain() })
-                is Result.Error -> Result.Error(result.appError)
+                is Result.Error -> Result.Error(result.error)
             }
         } else {
             when (val result = mMovieRemoteDataSource.getMovies(orderBy)) {
                 is Result.Success -> Result.Success(result.data.movieDtos.map { it.toDomain() })
-                is Result.Error -> Result.Error(result.appError)
+                is Result.Error -> Result.Error(result.error)
             }
         }
     }
@@ -36,14 +36,14 @@ class MovieRepository @Inject constructor(
     override suspend fun getMovie(movieId: Int): Result<Movie> {
         return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
             is Result.Success -> Result.Success(result.data.toDomain())
-            is Result.Error -> Result.Error(result.appError)
+            is Result.Error -> Result.Error(result.error)
         }
     }
 
     override suspend fun getMovieReviews(movieId: Int): Result<List<MovieReview>> {
         return when (val result = mMovieRemoteDataSource.getMovieReviews(movieId)) {
             is Result.Success -> Result.Success(result.data.reviewDtos.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.appError)
+            is Result.Error -> Result.Error(result.error)
         }
     }
 
@@ -55,23 +55,23 @@ class MovieRepository @Inject constructor(
                 if (isMovieExists) {
                     when (val result = mMovieLocalDataSource.saveToFavorites(movie.toTable())) {
                         is Result.Success -> Result.Success(Unit)
-                        is Result.Error -> Result.Error(result.appError)
+                        is Result.Error -> Result.Error(result.error)
                     }
                 } else {
                     when (val result = mMovieLocalDataSource.insertMovie(movie.toTable())) {
                         is Result.Success -> Result.Success(Unit)
-                        is Result.Error -> Result.Error(result.appError)
+                        is Result.Error -> Result.Error(result.error)
                     }
                 }
             }
-            is Result.Error -> Result.Error(result.appError)
+            is Result.Error -> Result.Error(result.error)
         }
     }
 
     override suspend fun getMovieTrailers(movieId: Int): Result<List<MovieTrailer>> {
         return when (val result = mMovieRemoteDataSource.getMovieTrailers(movieId)) {
             is Result.Success -> Result.Success(result.data.trailerDtos.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.appError)
+            is Result.Error -> Result.Error(result.error)
         }
     }
 }

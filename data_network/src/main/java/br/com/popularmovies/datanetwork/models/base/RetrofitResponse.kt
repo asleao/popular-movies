@@ -45,14 +45,14 @@ class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
         }
     }
 
-    private fun businessLogicError(errorBody: ResponseBody): AppError {
+    private fun businessLogicError(errorBody: ResponseBody): Error {
         val moshi = Moshi.Builder().build()
-        val jsonAdapter = moshi.adapter(AppError::class.java)
+        val jsonAdapter = moshi.adapter(Error::class.java)
         val errorObject = jsonAdapter.fromJson(errorBody.string())
         return if (errorObject == null || !errorObject.isValid()) {
             genericError()
         } else {
-            AppError(
+            Error(
                     codErro = errorObject.codErro,
                     title = errorObject.title,
                     message = errorObject.message
@@ -60,16 +60,16 @@ class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
         }
     }
 
-    private fun connectionError(): AppError {
-        return AppError(
+    private fun connectionError(): Error {
+        return Error(
                 codErro = NETWORK_ERROR_CODE,
                 title = NETWORK_ERROR_TITLE,
                 message = NETWORK_ERROR_MSG
         )
     }
 
-    private fun genericError(): AppError {
-        return AppError(
+    private fun genericError(): Error {
+        return Error(
                 codErro = GENERIC_ERROR_CODE,
                 title = GENERIC_MSG_ERROR_TITLE,
                 message = GENERIC_MSG_ERROR_MESSAGE

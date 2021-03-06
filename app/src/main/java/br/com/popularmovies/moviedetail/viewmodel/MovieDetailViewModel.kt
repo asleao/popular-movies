@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.services.movieService.MovieRepository
@@ -24,8 +24,8 @@ class MovieDetailViewModel @AssistedInject constructor(
 
     val loading = MutableLiveData<Boolean>()
 
-    private val _error = MutableLiveData<AppError>()
-    val error: LiveData<AppError>
+    private val _error = MutableLiveData<Error>()
+    val error: LiveData<Error>
         get() = _error
 
     private val _movie = MutableLiveData<Movie>()
@@ -45,7 +45,7 @@ class MovieDetailViewModel @AssistedInject constructor(
             showLoading(true)
             when (val result = mMovieRepository.getMovie(movieId)) {
                 is Result.Success -> _movie.value = result.data
-                is Result.Error -> _error.value = result.appError
+                is Result.Error -> _error.value = result.error
             }
         }
     }
@@ -60,7 +60,7 @@ class MovieDetailViewModel @AssistedInject constructor(
                         _movie.value = movie.copy(isFavorite = !movie.isFavorite)
                     }
                     is Result.Error -> {
-                        _error.value = result.appError
+                        _error.value = result.error
                     }
                 }
             }

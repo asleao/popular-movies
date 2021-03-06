@@ -4,7 +4,7 @@ import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE
 import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE
 import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
 import br.com.popularmovies.services.movieService.response.MovieTable
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
-    private val error = AppError(
+    private val error = Error(
             codErro = GENERIC_ERROR_CODE,
             title = GENERIC_MSG_ERROR_TITLE,
             message = GENERIC_MSG_ERROR_MESSAGE
@@ -41,7 +41,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         return try {
             Result.Success(mMovieDao.getMovie(movieId))
         } catch (e: Exception) {
-            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
@@ -52,7 +52,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
             Result.Success(updatedRowsCount)
 
         } catch (e: Exception) {
-            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
@@ -60,7 +60,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         return try {
             Result.Success(mMovieDao.insertMovie(movieTable))
         } catch (e: Exception) {
-            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
@@ -68,7 +68,7 @@ class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
         return try {
             Result.Success(mMovieDao.isMovieExists(movieId))
         } catch (e: Exception) {
-            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 }
