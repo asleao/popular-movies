@@ -5,12 +5,12 @@ import br.com.popularmovies.datanetwork.models.base.Error
 import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
-import br.com.popularmovies.services.movieService.MovieRepository
+import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepository) : ViewModel() {
+class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepositoryImpl) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
 
