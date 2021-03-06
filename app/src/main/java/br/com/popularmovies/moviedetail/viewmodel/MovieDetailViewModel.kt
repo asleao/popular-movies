@@ -29,7 +29,7 @@ class MovieDetailViewModel @AssistedInject constructor(
         get() = _error
 
     private val _movie = MutableLiveData<Movie>()
-    val movieTable: LiveData<Movie>
+    val movie: LiveData<Movie>
         get() = _movie
 
     private val _isMovieFavorite = MutableLiveData<Boolean>()
@@ -51,7 +51,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     }
 
     fun updateMovie() {
-        movieTable.value?.let { movie ->
+        movie.value?.let { movie ->
             viewModelScope.launch {
                 //TODO Refactor
                 when (val result = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))) {

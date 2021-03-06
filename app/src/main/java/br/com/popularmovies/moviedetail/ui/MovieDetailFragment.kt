@@ -72,7 +72,7 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     private fun setupMovieObserver() {
-        mViewModel.movieTable.observe(viewLifecycleOwner, Observer { movie ->
+        mViewModel.movie.observe(viewLifecycleOwner, Observer { movie ->
             mViewModel.showLoading(false)
             showMovieDetails(movie)
             setFavoritesImage(movie.isFavorite)
