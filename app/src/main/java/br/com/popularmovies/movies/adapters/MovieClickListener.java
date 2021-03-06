@@ -1,7 +1,7 @@
 package br.com.popularmovies.movies.adapters;
 
-import br.com.popularmovies.services.movieService.response.MovieDto;
+import br.com.popularmovies.entities.movie.Movie;
 
 public interface MovieClickListener {
-    void onMovieClick(MovieDto movie);
+    void onMovieClick(Movie movie);
 }

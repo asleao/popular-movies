@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel;
-import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.MovieRepository;
 
 public class MovieDetailFactory implements ViewModelProvider.Factory {
     private final int movieId;

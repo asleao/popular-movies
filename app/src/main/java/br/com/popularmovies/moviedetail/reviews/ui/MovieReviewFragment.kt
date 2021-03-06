@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
@@ -60,7 +58,7 @@ class MovieReviewFragment : Fragment(), IConection {
         mViewModel.error.observe(this, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == NETWORK_ERROR_CODE) {
+                if (error.codErro == br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                 } else {
                     showGenericError(error.message)
@@ -70,13 +68,13 @@ class MovieReviewFragment : Fragment(), IConection {
     }
 
     private fun setupMovieReviewObserver() {
-        mViewModel.reviews.observe(this, Observer { movieReviews ->
+        mViewModel.reviews.observe(this, { movieReviews ->
             mViewModel.showLoading(false)
             binding.rvReviews.visibility = View.VISIBLE
-            if (movieReviews.reviewDtos.isEmpty()) {
+            if (movieReviews.isEmpty()) {
                 showNoReviews()
             } else {
-                binding.rvReviews.adapter = ReviewAdapter(movieReviews.reviewDtos)
+                binding.rvReviews.adapter = ReviewAdapter(movieReviews)
                 showResult()
             }
         })
@@ -127,7 +125,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setTitle(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()

@@ -12,14 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
 import br.com.popularmovies.databinding.FragmentMovieBinding
+import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
-import br.com.popularmovies.services.movieService.response.MovieDto
 import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
@@ -45,11 +43,11 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupMoviesObserver() {
-        mViewModel.movies.observe(viewLifecycleOwner, Observer { moviesResource ->
+        mViewModel.movies.observe(viewLifecycleOwner, Observer { movies ->
             mViewModel.showLoading(false)
             val mMovieAdapter =
                     MovieAdapter(this)
-            mMovieAdapter.swapData(moviesResource.movieDtos)
+            mMovieAdapter.swapData(movies)
             binding.rvMovies.adapter = mMovieAdapter
 
             showResult()
@@ -71,7 +69,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == NETWORK_ERROR_CODE) {
+                if (error.codErro == br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                     tryAgain()
                 } else {
@@ -98,7 +96,7 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setTitle(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()
@@ -161,8 +159,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    override fun onMovieClick(movieDto: MovieDto) {
-        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movieDto)
+    override fun onMovieClick(movie: Movie) {
+        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie)
         findNavController().navigate(action)
     }
 }

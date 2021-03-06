@@ -17,8 +17,8 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.core.network.NETWORK_ERROR_CODE
+import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE
 import br.com.popularmovies.core.network.local.AppDatabase
 import br.com.popularmovies.databinding.MovieTrailerFragmentBinding
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
@@ -74,7 +74,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         mViewModel.error.observe(this, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == NETWORK_ERROR_CODE) {
+                if (error.codErro == br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                 } else {
                     showGenericError(error.message)
@@ -86,11 +86,11 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     private fun setupMovieTrailersObserver() {
         mViewModel.trailers.observe(this, Observer { movieTrailers ->
             mViewModel.showLoading(false)
-            if (movieTrailers.trailerDtos.isEmpty()) {
+            if (movieTrailers.isEmpty()) {
                 showNoTrailers()
             } else {
                 binding.rvTrailers.adapter = TrailerAdapter(
-                        movieTrailers.trailerDtos,
+                        movieTrailers,
                         this@MovieTrailerFragment
                 )
                 showResult()
@@ -137,7 +137,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
+                .setTitle(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()

@@ -1,15 +1,13 @@
 package br.com.popularmovies.services.movieService.source.local
 
-import br.com.popularmovies.core.network.GENERIC_ERROR_CODE
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_MESSAGE
-import br.com.popularmovies.core.network.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.core.network.local.AppDatabase
-import br.com.popularmovies.core.network.retrofit.model.Error
-import br.com.popularmovies.core.network.retrofit.model.Resource
+import br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE
+import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.datanetwork.models.base.AppError
+import br.com.popularmovies.datanetwork.models.base.Result
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
-import br.com.popularmovies.services.movieService.response.MovieDto
-import br.com.popularmovies.services.movieService.response.MovieTrailers
-import br.com.popularmovies.services.movieService.response.Movies
+import br.com.popularmovies.services.movieService.response.MovieTable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,64 +15,60 @@ import javax.inject.Singleton
 class MovieLocalDataSource @Inject constructor(appDatabase: AppDatabase) {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
-    private val error = Error(
+    private val error = AppError(
             codErro = GENERIC_ERROR_CODE,
             title = GENERIC_MSG_ERROR_TITLE,
             message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    suspend fun getMovies(): Resource<Movies> {
+    suspend fun getMovies(): Result<List<MovieTable>> {
         return try {
-            Resource.success(Movies(mMovieDao.movies()))
+            Result.Success(mMovieDao.movies())
         } catch (exception: Exception) {
-            Resource.error(error)
+            Result.Error(error)
         }
     }
 
-    suspend fun getFavoriteMovies(isFavorite: Boolean): Resource<Movies> {
+    suspend fun getFavoriteMovies(isFavorite: Boolean): Result<List<MovieTable>> {
         return try {
-            Resource.success(Movies(mMovieDao.getFavoriteMovies(isFavorite)))
+            Result.Success(mMovieDao.getFavoriteMovies(isFavorite))
         } catch (exception: Exception) {
-            Resource.error(error)
+            Result.Error(error)
         }
     }
 
-    suspend fun getMovie(movieId: Int): Resource<MovieDto> {
+    suspend fun getMovie(movieId: Int): Result<MovieTable> {
         return try {
-            Resource.success(mMovieDao.getMovie(movieId))
+            Result.Success(mMovieDao.getMovie(movieId))
         } catch (e: Exception) {
-            Resource.error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
 
-    suspend fun saveToFavorites(movieDto: MovieDto): Resource<Unit> {
+    suspend fun saveToFavorites(movieTable: MovieTable): Result<Unit> {
         return try {
-            val updatedRowsCount = mMovieDao.saveFavorites(movieDto.id, movieDto.isFavorite)
-            Resource.success(updatedRowsCount)
+            val updatedRowsCount = mMovieDao.saveFavorites(movieTable.id, movieTable.isFavorite)
+            Result.Success(updatedRowsCount)
 
         } catch (e: Exception) {
-            Resource.error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
-    suspend fun insertMovie(movieDto: MovieDto): Resource<Unit> {
+    suspend fun insertMovie(movieTable: MovieTable): Result<Unit> {
         return try {
-            Resource.success(mMovieDao.insertMovie(movieDto))
+            Result.Success(mMovieDao.insertMovie(movieTable))
         } catch (e: Exception) {
-            Resource.error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
-    suspend fun isMovieExists(movieId: Int): Resource<Boolean> {
+    suspend fun isMovieExists(movieId: Int): Result<Boolean> {
         return try {
-            Resource.success(mMovieDao.isMovieExists(movieId))
+            Result.Success(mMovieDao.isMovieExists(movieId))
         } catch (e: Exception) {
-            Resource.error(Error(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
+            Result.Error(AppError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
-    }
-
-    suspend fun getMovieTrailers(movieId: Int): Resource<MovieTrailers> {
-        return Resource.success(MovieTrailers(emptyList()))
     }
 }
