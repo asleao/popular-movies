@@ -3,6 +3,9 @@ package br.com.popularmovies.datasourceremote.di
 import br.com.popularmovies.datasourceremote.BuildConfig
 import br.com.popularmovies.datasourceremote.adapters.BigDecimalAdapter
 import br.com.popularmovies.datasourceremote.adapters.DateAdapter
+import br.com.popularmovies.datasourceremote.config.NetworkConstants.API_VERSION
+import br.com.popularmovies.datasourceremote.config.NetworkConstants.HOST
+import br.com.popularmovies.datasourceremote.config.NetworkConstants.SCHEME
 import br.com.popularmovies.datasourceremote.interceptors.AuthorizationInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -58,9 +61,9 @@ object NetworkModule {
     @Provides
     fun providesBaseUrl(): HttpUrl {
         return HttpUrl.Builder()
-                .scheme(br.com.popularmovies.datasourceremote.config.SCHEME)
-                .host(br.com.popularmovies.datasourceremote.config.HOST)
-                .addPathSegments(br.com.popularmovies.datasourceremote.config.API_VERSION)
+                .scheme(SCHEME)
+                .host(HOST)
+                .addPathSegments(API_VERSION)
                 .build()
     }
 

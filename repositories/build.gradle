@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versions.sdk.compile
+
+    defaultConfig {
+        minSdkVersion versions.sdk.min
+    }
+}
+
+dependencies {
+    implementation project(':common')
+    api project(':datasource_db') // TODO check if it is possible to use implementation
+    api project(':datasource_remote')
+    implementation project(':entities')
+
+    implementation dependency.di.dagger.core
+    kapt dependency.di.dagger.compiler
+}

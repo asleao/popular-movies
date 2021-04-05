@@ -1,6 +1,6 @@
 package br.com.popularmovies.datasourceremote.repositories.movie
 
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto

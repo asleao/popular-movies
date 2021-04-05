@@ -23,6 +23,8 @@ android {
 }
 
 dependencies {
+    implementation project(':common')
+
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
 
@@ -36,8 +38,6 @@ dependencies {
     api dependency.network.okhttp3.interceptors.logging
     api dependency.network.paging
 
-    implementation dependency.jodatime
-    
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions
 }

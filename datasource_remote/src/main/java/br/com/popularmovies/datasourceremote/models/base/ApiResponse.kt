@@ -1,5 +1,6 @@
 package br.com.popularmovies.datasourceremote.models.base
 
+import br.com.popularmovies.common.models.base.Result
 import okhttp3.ResponseBody
 
 

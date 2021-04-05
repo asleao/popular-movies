@@ -1,16 +1,18 @@
 package br.com.popularmovies.movies.viewmodel
 
 import androidx.lifecycle.*
-import br.com.popularmovies.datasourceremote.models.base.Error
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
-import br.com.popularmovies.services.movieService.MovieRepositoryImpl
+import br.com.popularmovies.repositories.movie.MovieRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepositoryImpl) : ViewModel() {
+class MovieViewModel @Inject constructor(
+        private val mMovieRepository: MovieRepository
+) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
 

@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.datasourceremote.models.base.Error
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieReview
-import br.com.popularmovies.services.movieService.MovieRepositoryImpl
+import br.com.popularmovies.repositories.movie.MovieRepository
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieReviewViewModel @AssistedInject constructor(
-        val mMovieRepository: MovieRepositoryImpl,
+        val mMovieRepository: MovieRepository,
         @Assisted val movieId: Int
 ) : ViewModel() {
     val loading = MutableLiveData<Boolean>()

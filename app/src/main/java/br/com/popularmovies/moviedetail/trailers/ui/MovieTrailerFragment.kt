@@ -17,14 +17,14 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
-import br.com.popularmovies.core.network.local.AppDatabase
+import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.MovieTrailerFragmentBinding
 import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import kotlinx.android.synthetic.main.movie_trailer_fragment.*
-import javax.inject.Inject
 
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
@@ -35,10 +35,6 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
     }
 
     private lateinit var binding: MovieTrailerFragmentBinding
-
-    @Inject
-    lateinit var appDatabase: AppDatabase
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -72,7 +68,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
         mViewModel.error.observe(this, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                 } else {
                     showGenericError(error.message)
@@ -135,7 +131,7 @@ class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()
