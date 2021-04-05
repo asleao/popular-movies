@@ -1,7 +1,7 @@
 package br.com.popularmovies.services.movieService
 
-import br.com.popularmovies.datanetwork.models.base.Result
-import br.com.popularmovies.datanetwork.repositories.movie.MovieRemoteDataSource
+import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
@@ -34,7 +34,6 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovie(movieId: Int): Result<Movie> {
-        //TODO movie favorites is not showing because for now is always getting from remote
         return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
             is Result.Success -> Result.Success(result.data.toDomain())
             is Result.Error -> Result.Error(result.error)

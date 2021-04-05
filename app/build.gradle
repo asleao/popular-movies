@@ -69,7 +69,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':entities')
-    implementation project(':data_network')
+    implementation project(':datasource_remote')
 
     implementation dependency.kotlin.stdlib
     implementation dependency.kotlin.reflect

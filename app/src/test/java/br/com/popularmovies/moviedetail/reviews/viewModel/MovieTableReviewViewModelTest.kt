@@ -1,9 +1,9 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel
 
 import br.com.popularmovies.InstantExecutorExtension
-import br.com.popularmovies.datanetwork.config.Error
-import br.com.popularmovies.datanetwork.config.Resource
-import br.com.popularmovies.datanetwork.models.movie.MovieReviews
+import br.com.popularmovies.datasourceremote.config.Error
+import br.com.popularmovies.datasourceremote.config.Resource
+import br.com.popularmovies.datasourceremote.models.movie.MovieReviews
 import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import io.mockk.every
 import io.mockk.mockk
@@ -51,7 +51,7 @@ internal class MovieTableReviewViewModelTest {
         @Test
         fun `when request is sucessfull, then reviews should be filled`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datanetwork.config.Resource.success(MovieReviews(emptyList()))
+                br.com.popularmovies.datasourceremote.config.Resource.success(MovieReviews(emptyList()))
             }
             setupViewModel()
             viewModel.getReviews()
@@ -64,7 +64,7 @@ internal class MovieTableReviewViewModelTest {
         @Test
         fun `when request is not sucessfull, then error should be filled`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datanetwork.config.Resource.error(br.com.popularmovies.datanetwork.config.Error(5, "Error", "Something went wrong"))
+                br.com.popularmovies.datasourceremote.config.Resource.error(br.com.popularmovies.datasourceremote.config.Error(5, "Error", "Something went wrong"))
             }
             setupViewModel()
             viewModel.getReviews()
@@ -80,7 +80,7 @@ internal class MovieTableReviewViewModelTest {
         @Test
         fun `when tryAgain is called, then getReviews should be called as well`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datanetwork.config.Resource.success(MovieReviews(emptyList()))
+                br.com.popularmovies.datasourceremote.config.Resource.success(MovieReviews(emptyList()))
             }
             setupViewModel()
             viewModel.tryAgain()

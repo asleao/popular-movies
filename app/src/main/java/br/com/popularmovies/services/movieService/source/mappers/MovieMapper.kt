@@ -1,6 +1,6 @@
 package br.com.popularmovies.services.movieService.source.mappers
 
-import br.com.popularmovies.datanetwork.models.movie.MovieDto
+import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.services.movieService.response.MovieTable
 

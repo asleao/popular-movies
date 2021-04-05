@@ -1,8 +1,8 @@
 package br.com.popularmovies.utils
 
 import androidx.lifecycle.MutableLiveData
-import br.com.popularmovies.datanetwork.models.base.Error
-import br.com.popularmovies.datanetwork.models.base.Result
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
 
 fun <T> Result<T>.validateResponse(success: MutableLiveData<T>, error: MutableLiveData<Error>) {
     when (this) {

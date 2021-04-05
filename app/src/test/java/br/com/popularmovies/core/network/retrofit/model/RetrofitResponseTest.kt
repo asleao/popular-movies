@@ -1,12 +1,5 @@
 package br.com.popularmovies.core.network.retrofit.model
 
-import br.com.popularmovies.datanetwork.config.BUSINESS_LOGIC_ERROR_CODE
-import br.com.popularmovies.datanetwork.config.NETWORK_ERROR_TITLE
-import br.com.popularmovies.datanetwork.config.NETWORK_ERROR_MSG
-import br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE
-import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE
-import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -36,7 +29,7 @@ internal class RetrofitResponseTest {
             every { response.body() } answers { true }
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
@@ -49,54 +42,54 @@ internal class RetrofitResponseTest {
             every { response.body() } answers { null }
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
             assertThat(retrofitResponse.error).isNotNull
-            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE)
-            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
-            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE)
+            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_ERROR_CODE)
+            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_MESSAGE)
         }
 
         @Test
         fun `when is a business logic error with a empty body in a request, then result should return a genericError`() {
             every { response.isSuccessful } answers { false }
-            every { response.code() } answers { br.com.popularmovies.datanetwork.config.BUSINESS_LOGIC_ERROR_CODE }
+            every { response.code() } answers { br.com.popularmovies.datasourceremote.config.BUSINESS_LOGIC_ERROR_CODE }
             every { response.body() } answers { null }
             every { response.errorBody() } answers {
                 "{}".toResponseBody("application/json".toMediaType())
             }
-            val retrofitResponse = runBlocking { br.com.popularmovies.datanetwork.config.RetrofitResponse { response }.result() }
+            val retrofitResponse = runBlocking { br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }.result() }
 
             assertThat(retrofitResponse.error).isNotNull
-            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE)
-            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
-            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE)
+            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_ERROR_CODE)
+            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_MESSAGE)
         }
 
         @Test
         fun `when is a business logic error with a null body in a request, then result should return a genericError`() {
             every { response.isSuccessful } answers { false }
-            every { response.code() } answers { br.com.popularmovies.datanetwork.config.BUSINESS_LOGIC_ERROR_CODE }
+            every { response.code() } answers { br.com.popularmovies.datasourceremote.config.BUSINESS_LOGIC_ERROR_CODE }
             every { response.body() } answers { null }
             every { response.errorBody() } answers { null }
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
             assertThat(retrofitResponse.error).isNotNull
-            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE)
-            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
-            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE)
+            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_ERROR_CODE)
+            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_MESSAGE)
         }
 
         @Test
         fun `when is a business logic error with a body in a request, then result should return a businessLogicError`() {
             every { response.isSuccessful } answers { false }
-            every { response.code() } answers { br.com.popularmovies.datanetwork.config.BUSINESS_LOGIC_ERROR_CODE }
+            every { response.code() } answers { br.com.popularmovies.datasourceremote.config.BUSINESS_LOGIC_ERROR_CODE }
             every { response.body() } answers { null }
             every { response.errorBody() } answers {
                 val content = "{\n" +
@@ -108,7 +101,7 @@ internal class RetrofitResponseTest {
             }
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
@@ -121,21 +114,21 @@ internal class RetrofitResponseTest {
         @Test
         fun `when is a generic error with a response in plain text, then result should return onFailure with a genericError`() {
             every { response.isSuccessful } answers { false }
-            every { response.code() } answers { br.com.popularmovies.datanetwork.config.BUSINESS_LOGIC_ERROR_CODE }
+            every { response.code() } answers { br.com.popularmovies.datasourceremote.config.BUSINESS_LOGIC_ERROR_CODE }
             every { response.body() } answers { null }
             every { response.errorBody() } answers {
                 "".toResponseBody("application/json".toMediaType())
             }
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
             assertThat(retrofitResponse.error).isNotNull
-            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE)
-            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
-            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE)
+            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_ERROR_CODE)
+            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_MESSAGE)
         }
 
         @Test
@@ -144,14 +137,14 @@ internal class RetrofitResponseTest {
             every { response.body() } throws IOException()
 
             val retrofitResponse = runBlocking {
-                br.com.popularmovies.datanetwork.config.RetrofitResponse { response }
+                br.com.popularmovies.datasourceremote.config.RetrofitResponse { response }
                     .result()
             }
 
             assertThat(retrofitResponse.error).isNotNull
-            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE)
-            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datanetwork.config.NETWORK_ERROR_TITLE)
-            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datanetwork.config.NETWORK_ERROR_MSG)
+            assertThat(retrofitResponse.error?.codErro).isEqualTo(br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE)
+            assertThat(retrofitResponse.error?.title).isEqualTo(br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_TITLE)
+            assertThat(retrofitResponse.error?.message).isEqualTo(br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_MSG)
         }
     }
 }

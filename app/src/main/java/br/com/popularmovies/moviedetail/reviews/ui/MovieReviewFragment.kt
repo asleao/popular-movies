@@ -58,7 +58,7 @@ class MovieReviewFragment : Fragment(), IConection {
         mViewModel.error.observe(this, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == br.com.popularmovies.datanetwork.config.NETWORK_ERROR_CODE) {
+                if (error.codErro == br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                 } else {
                     showGenericError(error.message)
@@ -125,7 +125,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE)
+                .setTitle(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()

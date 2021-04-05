@@ -2,8 +2,8 @@ package br.com.popularmovies.utils
 
 import androidx.lifecycle.MutableLiveData
 import br.com.popularmovies.InstantExecutorExtension
-import br.com.popularmovies.datanetwork.config.Resource
-import br.com.popularmovies.datanetwork.config.Error
+import br.com.popularmovies.datasourceremote.config.Resource
+import br.com.popularmovies.datasourceremote.config.Error
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class ResourceExtensionsTest {
 
     lateinit var success: MutableLiveData<Boolean>
-    lateinit var error: MutableLiveData<br.com.popularmovies.datanetwork.config.Error>
+    lateinit var error: MutableLiveData<br.com.popularmovies.datasourceremote.config.Error>
     @BeforeEach
     fun setupBeforeEach() {
         success = MutableLiveData()
@@ -27,7 +27,7 @@ internal class ResourceExtensionsTest {
     inner class ValidateResponse {
         @Test
         fun `em caso de sucesso, success deve ser preenchido`() {
-            val resource = br.com.popularmovies.datanetwork.config.Resource.success(true)
+            val resource = br.com.popularmovies.datasourceremote.config.Resource.success(true)
             resource.validateResponse(success, error)
             assertThat(success.value).isTrue()
             assertThat(error.value).isNull()
@@ -35,7 +35,7 @@ internal class ResourceExtensionsTest {
 
         @Test
         fun `em caso de erro, error deve ser preenchido`() {
-            val resource = br.com.popularmovies.datanetwork.config.Resource.error<Boolean>(br.com.popularmovies.datanetwork.config.Error(-1, "", ""))
+            val resource = br.com.popularmovies.datasourceremote.config.Resource.error<Boolean>(br.com.popularmovies.datasourceremote.config.Error(-1, "", ""))
             resource.validateResponse(success, error)
             assertThat(success.value).isNull()
             assertThat(error.value).isNotNull()
@@ -43,8 +43,8 @@ internal class ResourceExtensionsTest {
 
         @Test
         fun `caso de sucesso e o data estiver nulo, o livedata de sucesso nao deve ser alimentado`() {
-            val resource = mockk<br.com.popularmovies.datanetwork.config.Resource<Boolean>>()
-            every { resource.status } answers { br.com.popularmovies.datanetwork.config.Resource.Status.SUCCESS }
+            val resource = mockk<br.com.popularmovies.datasourceremote.config.Resource<Boolean>>()
+            every { resource.status } answers { br.com.popularmovies.datasourceremote.config.Resource.Status.SUCCESS }
             every { resource.data } answers { null }
 
             resource.validateResponse(success, error)
@@ -55,8 +55,8 @@ internal class ResourceExtensionsTest {
 
         @Test
         fun `caso de erro e o error estiver nulo,o livedata de erro nao deve ser alimentado`() {
-            val resource = mockk<br.com.popularmovies.datanetwork.config.Resource<Boolean>>()
-            every { resource.status } answers { br.com.popularmovies.datanetwork.config.Resource.Status.ERROR }
+            val resource = mockk<br.com.popularmovies.datasourceremote.config.Resource<Boolean>>()
+            every { resource.status } answers { br.com.popularmovies.datasourceremote.config.Resource.Status.ERROR }
             every { resource.error } answers { null }
 
             resource.validateResponse(success, error)

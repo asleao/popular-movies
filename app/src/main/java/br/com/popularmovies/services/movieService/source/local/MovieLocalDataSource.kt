@@ -1,11 +1,11 @@
 package br.com.popularmovies.services.movieService.source.local
 
 import br.com.popularmovies.core.network.local.AppDatabase
-import br.com.popularmovies.datanetwork.config.GENERIC_ERROR_CODE
-import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_MESSAGE
-import br.com.popularmovies.datanetwork.config.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.datanetwork.models.base.Error
-import br.com.popularmovies.datanetwork.models.base.Result
+import br.com.popularmovies.datasourceremote.config.GENERIC_ERROR_CODE
+import br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
 import br.com.popularmovies.movies.Constants.ROOM_MSG_ERROR
 import br.com.popularmovies.services.movieService.response.MovieTable
 import javax.inject.Inject
