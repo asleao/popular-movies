@@ -26,7 +26,7 @@ class MovieRepositoryImpl @Inject constructor(
             }
         } else {
             when (val result = mMovieRemoteDataSource.getMovies(orderBy)) {
-                is Result.Success -> Result.Success(result.data.movieDtos.map { it.toDomain() })
+                is Result.Success -> Result.Success(result.data.map { it.toDomain() })
                 is Result.Error -> Result.Error(result.error)
             }
         }
@@ -36,7 +36,7 @@ class MovieRepositoryImpl @Inject constructor(
         return when (val result = mMovieLocalDataSource.getMovie(movieId)) {
             is Result.Success -> {
                 if (result.data == null) {
-                     when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
+                    when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
                         is Result.Success -> Result.Success(result.data.toDomain())
                         is Result.Error -> Result.Error(result.error)
                     }

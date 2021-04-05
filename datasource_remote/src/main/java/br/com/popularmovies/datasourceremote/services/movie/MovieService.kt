@@ -1,9 +1,9 @@
 package br.com.popularmovies.datasourceremote.services.movie
 
+import br.com.popularmovies.datasourceremote.models.base.BaseDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviews
 import br.com.popularmovies.datasourceremote.models.movie.MovieTrailers
-import br.com.popularmovies.datasourceremote.models.movie.Movies
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface MovieService {
 
     @GET("movie/{sort_by}")
-    suspend fun getMovies(@Path("sort_by") orderBy: String): Response<Movies>
+    suspend fun getMovies(@Path("sort_by") orderBy: String): Response<BaseDto<MovieDto>>
 
     @GET("movie/{id}/reviews")
     suspend fun getMovieReviews(@Path("id") movieId: Int): Response<MovieReviews>

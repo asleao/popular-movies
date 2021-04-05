@@ -1,7 +1,7 @@
 ext {
     versions = [
             //Core
-            'kotlin'     : '1.4.30',
+            'kotlin'     : '1.4.32',
             'gradle'     : '4.0.1',
 
             //Sdk
