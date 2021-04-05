@@ -3,7 +3,6 @@ package br.com.popularmovies.moviedetail.reviews.viewModel
 import br.com.popularmovies.InstantExecutorExtension
 import br.com.popularmovies.datasourceremote.config.Error
 import br.com.popularmovies.datasourceremote.config.Resource
-import br.com.popularmovies.datasourceremote.models.movie.MovieReviews
 import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import io.mockk.every
 import io.mockk.mockk

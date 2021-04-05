@@ -4,7 +4,7 @@ import br.com.popularmovies.datasourceremote.models.base.Result
 import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieTrailers
+import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -40,7 +40,14 @@ class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) {
         }
     }
 
-    suspend fun getMovieTrailers(movieId: Int): Result<MovieTrailers> {
-        return RetrofitResponse { mMovieService.getMovieTrailers(movieId) }.result()
+    suspend fun getMovieTrailers(movieId: Int): Result<List<MovieTrailerDto>> {
+        return when (val result = RetrofitResponse { mMovieService.getMovieTrailers(movieId) }.result()) {
+            is Result.Success -> {
+                Result.Success(result.data.results)
+            }
+            is Result.Error -> {
+                Result.Error(result.error)
+            }
+        }
     }
 }
