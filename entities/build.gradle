@@ -11,6 +11,8 @@ android {
 }
 
 dependencies {
+    implementation dependency.jodatime
+
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions
 }

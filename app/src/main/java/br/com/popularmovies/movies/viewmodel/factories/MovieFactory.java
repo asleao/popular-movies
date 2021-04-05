@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import br.com.popularmovies.movies.viewmodel.MovieViewModel;
-import br.com.popularmovies.services.movieService.source.MovieRepository;
+import br.com.popularmovies.services.movieService.MovieRepositoryImpl;
 
 public class MovieFactory implements ViewModelProvider.Factory {
-    private final MovieRepository mMovieRepository;
+    private final MovieRepositoryImpl mMovieRepository;
 
-    public MovieFactory(MovieRepository mMovieRepository) {
+    public MovieFactory(MovieRepositoryImpl mMovieRepository) {
         this.mMovieRepository = mMovieRepository;
     }
 

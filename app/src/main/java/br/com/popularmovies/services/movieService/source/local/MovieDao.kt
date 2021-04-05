@@ -1,31 +1,31 @@
 package br.com.popularmovies.services.movieService.source.local
 
 import androidx.room.*
-import br.com.popularmovies.services.movieService.response.MovieDto
+import br.com.popularmovies.services.movieService.response.MovieTable
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT * FROM movie")
-    suspend fun movies(): List<MovieDto>
+    suspend fun movies(): List<MovieTable>
 
     @Query("SELECT * FROM movie WHERE id = :movieId")
-    suspend fun getMovie(movieId: Int): MovieDto
+    suspend fun getMovie(movieId: Int): MovieTable
 
     @Query("SELECT * FROM movie where isFavorite=:isFavorite")
-    suspend fun getFavoriteMovies(isFavorite: Boolean): List<MovieDto>
+    suspend fun getFavoriteMovies(isFavorite: Boolean): List<MovieTable>
 
     @Query("SELECT EXISTS(SELECT * FROM movie WHERE id = :movieId)")
     suspend fun isMovieExists(movieId: Int): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllMovies(movieDtos: List<MovieDto>)
+    suspend fun insertAllMovies(movieTables: List<MovieTable>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movieDto: MovieDto)
+    suspend fun insertMovie(movieTable: MovieTable)
 
     @Delete
-    suspend fun deleteMovie(movieDto: MovieDto)
+    suspend fun deleteMovie(movieTable: MovieTable)
 
     @Query("UPDATE movie SET isFavorite = :status WHERE id = :movieId")
     suspend fun saveFavorites(movieId: Int, status: Boolean)

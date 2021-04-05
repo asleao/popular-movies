@@ -4,17 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.core.network.retrofit.model.Error
-import br.com.popularmovies.core.network.retrofit.model.Resource
-import br.com.popularmovies.services.movieService.response.MovieDto
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.utils.validateResponse
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
-        private val mMovieRepository: MovieRepository,
+        private val mMovieRepository: MovieRepositoryImpl,
         @Assisted private val movieId: Int
 ) : ViewModel() {
 
@@ -29,8 +28,8 @@ class MovieDetailViewModel @AssistedInject constructor(
     val error: LiveData<Error>
         get() = _error
 
-    private val _movie = MutableLiveData<MovieDto>()
-    val movieDto: LiveData<MovieDto>
+    private val _movie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie>
         get() = _movie
 
     private val _isMovieFavorite = MutableLiveData<Boolean>()
@@ -44,25 +43,24 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getMovie() {
         viewModelScope.launch {
             showLoading(true)
-            val resource = mMovieRepository.getMovie(movieId)
-            resource.validateResponse(_movie, _error)
+            when (val result = mMovieRepository.getMovie(movieId)) {
+                is Result.Success -> _movie.value = result.data
+                is Result.Error -> _error.value = result.error
+            }
         }
     }
 
     fun updateMovie() {
-        movieDto.value?.let { movie ->
+        movie.value?.let { movie ->
             viewModelScope.launch {
                 //TODO Refactor
-                val result = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))
-                when (result.status) {
-                    Resource.Status.SUCCESS -> {
+                when (val result = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))) {
+                    is Result.Success -> {
                         _isMovieFavorite.value = !movie.isFavorite
                         _movie.value = movie.copy(isFavorite = !movie.isFavorite)
                     }
-                    else -> {
-                        result.error.let {
-                            _error.value = it
-                        }
+                    is Result.Error -> {
+                        _error.value = result.error
                     }
                 }
             }

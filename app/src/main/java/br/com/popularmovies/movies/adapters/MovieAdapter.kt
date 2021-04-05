@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
+import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieAdapter.MovieViewHolder
-import br.com.popularmovies.services.movieService.response.MovieDto
 import com.bumptech.glide.Glide
 
-class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<MovieDto, MovieViewHolder>(MovieDiffCallback()) {
+class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): MovieViewHolder {
         val context = viewGroup.context
@@ -30,7 +30,7 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
                 .into(movieViewHolder.moviePoster)
     }
 
-    fun swapData(data: List<MovieDto>) {
+    fun swapData(data: List<Movie>) {
         submitList(data.toMutableList())
     }
 
@@ -47,15 +47,15 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
         }
     }
 
-    private class MovieDiffCallback : DiffUtil.ItemCallback<MovieDto>() {
+    private class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(
-                oldItem: MovieDto,
-                newItem: MovieDto
+                oldItem: Movie,
+                newItem: Movie
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-                oldItem: MovieDto,
-                newItem: MovieDto
+                oldItem: Movie,
+                newItem: Movie
         ) = oldItem == newItem
     }
 

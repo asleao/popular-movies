@@ -2,8 +2,8 @@ package br.com.popularmovies.entities.movie
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import org.joda.time.LocalDate
 import java.math.BigDecimal
-import java.time.LocalDate
 
 @Parcelize
 data class Movie(

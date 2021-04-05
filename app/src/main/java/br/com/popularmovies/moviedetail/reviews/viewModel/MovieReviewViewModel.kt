@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.core.network.retrofit.model.Error
-import br.com.popularmovies.services.movieService.response.MovieReviews
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.utils.validateResponse
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieReviewViewModel @AssistedInject constructor(
-        val mMovieRepository: MovieRepository,
+        val mMovieRepository: MovieRepositoryImpl,
         @Assisted val movieId: Int
 ) : ViewModel() {
     val loading = MutableLiveData<Boolean>()
@@ -21,8 +21,8 @@ class MovieReviewViewModel @AssistedInject constructor(
     private val _error = MutableLiveData<Error>()
     val error: LiveData<Error>
         get() = _error
-    private val _reviews = MutableLiveData<MovieReviews>()
-    val reviews: LiveData<MovieReviews>
+    private val _reviews = MutableLiveData<List<MovieReview>>()
+    val reviews: LiveData<List<MovieReview>>
         get() = _reviews
 
     init {
@@ -32,8 +32,10 @@ class MovieReviewViewModel @AssistedInject constructor(
     fun getReviews() {
         viewModelScope.launch {
             showLoading(true)
-            val resource = mMovieRepository.getMovieReviews(movieId)
-            resource.validateResponse(_reviews, _error)
+            when (val result = mMovieRepository.getMovieReviews(movieId)) {
+                is Result.Success -> _reviews.value = result.data
+                is Result.Error -> _error.value = result.error
+            }
         }
     }
 

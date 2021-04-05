@@ -67,6 +67,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation project(':entities')
+    implementation project(':datasource_remote')
+
     implementation dependency.kotlin.stdlib
     implementation dependency.kotlin.reflect
 
@@ -89,17 +93,6 @@ dependencies {
     kapt dependency.di.dagger.compiler
     compileOnly dependency.di.dagger.assistedInject.annotations
     kapt dependency.di.dagger.assistedInject.processor
-
-    //Network
-    implementation dependency.moshi.core
-    implementation dependency.moshi.kotlin
-    kapt dependency.moshi.codegen
-
-    api dependency.network.retrofit.core
-    api dependency.network.retrofit.converters.moshi
-    api dependency.network.okhttp3.core
-    api dependency.network.okhttp3.interceptors.logging
-    api dependency.network.paging
 
     //DB
     implementation dependency.database.room.runtime

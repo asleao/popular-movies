@@ -1,0 +1,43 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versions.sdk.compile
+
+    defaultConfig {
+        minSdkVersion versions.sdk.min
+    }
+    buildTypes {
+        def propsFile = rootProject.file('keys.properties')
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        release {
+            buildConfigField "String", "MdbApiKey", props["MdbApiKey"]
+        }
+        debug {
+            buildConfigField "String", "MdbApiKey", props["MdbApiKey"]
+        }
+    }
+}
+
+dependencies {
+    implementation dependency.di.dagger.core
+    kapt dependency.di.dagger.compiler
+
+    implementation dependency.moshi.core
+    implementation dependency.moshi.kotlin
+    kapt dependency.moshi.codegen
+
+    api dependency.network.retrofit.core
+    api dependency.network.retrofit.converters.moshi
+    api dependency.network.okhttp3.core
+    api dependency.network.okhttp3.interceptors.logging
+    api dependency.network.paging
+
+    implementation dependency.jodatime
+    
+    testImplementation dependency.tests.junit.core
+    androidTestImplementation dependency.tests.junit.extensions
+}

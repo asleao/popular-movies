@@ -1,18 +1,17 @@
 package br.com.popularmovies.utils
 
 import androidx.lifecycle.MutableLiveData
-import br.com.popularmovies.core.network.retrofit.model.Error
-import br.com.popularmovies.core.network.retrofit.model.Resource
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
 
-fun <T> Resource<T>.validateResponse(success: MutableLiveData<T>, error: MutableLiveData<Error>) {
-    when (this.status) {
-        Resource.Status.SUCCESS -> {
+fun <T> Result<T>.validateResponse(success: MutableLiveData<T>, error: MutableLiveData<Error>) {
+    when (this) {
+        is Result.Success -> {
             this.data?.let {
                 success.value = it
             }
         }
-        else -> this.error?.let {
-            error.value = it
-        }
+        is Result.Error ->
+            error.value = this.error
     }
 }

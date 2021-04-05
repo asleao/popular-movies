@@ -1,16 +1,16 @@
 package br.com.popularmovies.movies.viewmodel
 
 import androidx.lifecycle.*
-import br.com.popularmovies.core.network.retrofit.model.Error
+import br.com.popularmovies.datasourceremote.models.base.Error
+import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
-import br.com.popularmovies.services.movieService.response.Movies
-import br.com.popularmovies.services.movieService.source.MovieRepository
-import br.com.popularmovies.utils.validateResponse
+import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepository) : ViewModel() {
+class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepositoryImpl) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
 
@@ -18,8 +18,8 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
     val error: LiveData<Error>
         get() = _error
 
-    private val _movies: MediatorLiveData<Movies> = MediatorLiveData()
-    val movies: LiveData<Movies>
+    private val _movies: MediatorLiveData<List<Movie>> = MediatorLiveData()
+    val movies: LiveData<List<Movie>>
         get() = _movies
 
     private val mSortBy: MutableLiveData<String> = MutableLiveData()
@@ -32,8 +32,10 @@ class MovieViewModel @Inject constructor(private val mMovieRepository: MovieRepo
     private fun getMoviesSortedBy(field: String) {
         viewModelScope.launch {
             showLoading(true)
-            val resource = mMovieRepository.getMovies(field)
-            resource.validateResponse(_movies, _error)
+            when (val result = mMovieRepository.getMovies(field)) {
+                is Result.Success -> _movies.value = result.data
+                is Result.Error -> _error.value = result.error
+            }
         }
     }
 

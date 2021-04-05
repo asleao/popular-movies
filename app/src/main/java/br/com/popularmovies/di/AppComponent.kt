@@ -1,8 +1,10 @@
 package br.com.popularmovies.di
 
 import android.content.Context
+import br.com.popularmovies.datasourceremote.di.NetworkModule
 import br.com.popularmovies.di.modules.AssistedInjectModule
-import br.com.popularmovies.di.modules.NetworkModule
+import br.com.popularmovies.di.modules.DatabaseModule
+import br.com.popularmovies.di.modules.ViewModelModule
 import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
@@ -16,7 +18,9 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     NetworkModule::class,
+    DatabaseModule::class,
     AppSubcomponents::class,
+    ViewModelModule::class,
     AssistedInjectModule::class])
 interface AppComponent {
 
