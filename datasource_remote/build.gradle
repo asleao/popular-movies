@@ -38,8 +38,6 @@ dependencies {
     api dependency.network.okhttp3.interceptors.logging
     api dependency.network.paging
 
-    implementation dependency.jodatime
-    
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions
 }

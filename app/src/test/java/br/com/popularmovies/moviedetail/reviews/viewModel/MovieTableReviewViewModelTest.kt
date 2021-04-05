@@ -3,7 +3,7 @@ package br.com.popularmovies.moviedetail.reviews.viewModel
 import br.com.popularmovies.InstantExecutorExtension
 import br.com.popularmovies.datasourceremote.config.Error
 import br.com.popularmovies.datasourceremote.config.Resource
-import br.com.popularmovies.services.movieService.MovieRepositoryImpl
+import br.com.popularmovies.repositories.movie.MovieRepositoryImpl
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ internal class MovieTableReviewViewModelTest {
     private val testDispatcher = TestCoroutineDispatcher()
 
     lateinit var viewModel: MovieReviewViewModel
-    private val movieRepository = mockk<MovieRepositoryImpl>()
+    private val movieRepository = mockk<br.com.popularmovies.repositories.movie.MovieRepositoryImpl>()
 
     @BeforeAll
     @ExperimentalCoroutinesApi

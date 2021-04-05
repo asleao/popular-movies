@@ -1,4 +1,4 @@
-package br.com.popularmovies.services.movieService
+package br.com.popularmovies.repositories.movie
 
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
@@ -6,9 +6,9 @@ import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataS
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
-import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.services.movieService.source.mappers.toDomain
-import br.com.popularmovies.services.movieService.source.mappers.toTable
+
+import br.com.popularmovies.repositories.mappers.toDomain
+import br.com.popularmovies.repositories.mappers.toTable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,7 +19,7 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
 
     override suspend fun getMovies(orderBy: String): Result<List<Movie>> {
-        return if (orderBy == FILTER_FAVORITES) {
+        return if (orderBy == "favorites") { //TODO Create enum for the orderBy types
             when (val result = mMovieLocalDataSource.getFavoriteMovies(true)) {
                 is Result.Success -> Result.Success(result.data.map { it.toDomain() })
                 is Result.Error -> Result.Error(result.error)

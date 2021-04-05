@@ -1,6 +1,5 @@
 package br.com.popularmovies.datasourceremote.repositories.movie
 
-import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
@@ -18,7 +17,7 @@ class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) {
     suspend fun getMovies(orderBy: String): Result<List<MovieDto>> {
         return when (val result = RetrofitResponse { mMovieService.getMovies(orderBy) }.result()) {
             is Result.Success -> {
-               Result.Success(result.data.results)
+                Result.Success(result.data.results)
             }
             is Result.Error -> {
                 Result.Error(result.error)

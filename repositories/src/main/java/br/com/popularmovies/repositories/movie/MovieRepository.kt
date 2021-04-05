@@ -1,4 +1,4 @@
-package br.com.popularmovies.services.movieService
+package br.com.popularmovies.repositories.movie
 
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie

@@ -1,4 +1,4 @@
-package br.com.popularmovies.services.movieService.source.mappers
+package br.com.popularmovies.repositories.mappers
 
 import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
 import br.com.popularmovies.entities.movie.MovieTrailer
