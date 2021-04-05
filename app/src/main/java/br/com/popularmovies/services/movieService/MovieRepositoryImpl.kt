@@ -50,7 +50,7 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun getMovieReviews(movieId: Int): Result<List<MovieReview>> {
         return when (val result = mMovieRemoteDataSource.getMovieReviews(movieId)) {
-            is Result.Success -> Result.Success(result.data.reviewDtos.map { it.toDomain() })
+            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
             is Result.Error -> Result.Error(result.error)
         }
     }
