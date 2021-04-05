@@ -23,6 +23,8 @@ android {
 }
 
 dependencies {
+    implementation project(':common')
+
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
 

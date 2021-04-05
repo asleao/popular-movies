@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.datasourceremote.models.base.Error
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.services.movieService.MovieRepositoryImpl
 import com.squareup.inject.assisted.Assisted

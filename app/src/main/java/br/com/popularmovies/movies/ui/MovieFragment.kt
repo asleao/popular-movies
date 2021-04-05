@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
+import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants.*
@@ -69,7 +71,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                     tryAgain()
                 } else {
@@ -96,7 +98,7 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()

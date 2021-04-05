@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
+import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
@@ -58,7 +60,7 @@ class MovieReviewFragment : Fragment(), IConection {
         mViewModel.error.observe(this, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                 } else {
                     showGenericError(error.message)
@@ -125,7 +127,7 @@ class MovieReviewFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()

@@ -1,12 +1,12 @@
 package br.com.popularmovies.services.movieService
 
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.movies.Constants.FILTER_FAVORITES
-import br.com.popularmovies.services.movieService.source.local.MovieLocalDataSource
 import br.com.popularmovies.services.movieService.source.mappers.toDomain
 import br.com.popularmovies.services.movieService.source.mappers.toTable
 import javax.inject.Inject

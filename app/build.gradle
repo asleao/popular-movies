@@ -68,8 +68,10 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation project(':entities')
+    implementation project(':datasource_db')
     implementation project(':datasource_remote')
+    implementation project(':entities')
+    implementation project(':common') // TODO remove this
 
     implementation dependency.kotlin.stdlib
     implementation dependency.kotlin.reflect
@@ -94,12 +96,6 @@ dependencies {
     compileOnly dependency.di.dagger.assistedInject.annotations
     kapt dependency.di.dagger.assistedInject.processor
 
-    //DB
-    implementation dependency.database.room.runtime
-    implementation dependency.database.room.ktxcoroutines
-    kapt dependency.database.room.compiler
-
-    // Date
     implementation dependency.jodatime
 
     //Testing

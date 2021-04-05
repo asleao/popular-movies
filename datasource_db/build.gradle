@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.sdk.compile
@@ -11,6 +12,16 @@ android {
 }
 
 dependencies {
+    implementation project(':common')
+
+    implementation dependency.di.dagger.core
+    kapt dependency.di.dagger.compiler
+
+    api dependency.database.room.runtime // TODO check this api visibility
+    implementation dependency.database.room.ktxcoroutines
+    kapt dependency.database.room.compiler
+
+    implementation dependency.jodatime
 
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions

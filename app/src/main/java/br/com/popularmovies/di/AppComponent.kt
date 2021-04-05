@@ -1,9 +1,9 @@
 package br.com.popularmovies.di
 
 import android.content.Context
+import br.com.popularmovies.datasourcedb.di.DatabaseModule
 import br.com.popularmovies.datasourceremote.di.NetworkModule
 import br.com.popularmovies.di.modules.AssistedInjectModule
-import br.com.popularmovies.di.modules.DatabaseModule
 import br.com.popularmovies.di.modules.ViewModelModule
 import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent

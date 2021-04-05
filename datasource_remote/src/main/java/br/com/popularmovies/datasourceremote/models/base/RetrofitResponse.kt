@@ -1,6 +1,14 @@
 package br.com.popularmovies.datasourceremote.models.base
 
-import br.com.popularmovies.datasourceremote.config.*
+import br.com.popularmovies.common.configs.ErrorCodes.BUSINESS_LOGIC_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorCodes.GENERIC_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_MESSAGE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
+import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.datasourceremote.config.NetworkConstants.NETWORK_ERROR_MSG
+import br.com.popularmovies.datasourceremote.config.NetworkConstants.NETWORK_ERROR_TITLE
 import com.squareup.moshi.Moshi
 import okhttp3.ResponseBody
 import retrofit2.Response

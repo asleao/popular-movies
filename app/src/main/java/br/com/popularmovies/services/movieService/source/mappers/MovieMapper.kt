@@ -2,7 +2,7 @@ package br.com.popularmovies.services.movieService.source.mappers
 
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.services.movieService.response.MovieTable
+import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 
 fun MovieTable.toDomain(): Movie {
     return Movie(

@@ -1,8 +1,8 @@
 package br.com.popularmovies.movies.viewmodel
 
 import androidx.lifecycle.*
-import br.com.popularmovies.datasourceremote.models.base.Error
-import br.com.popularmovies.datasourceremote.models.base.Result
+import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.services.movieService.MovieRepositoryImpl

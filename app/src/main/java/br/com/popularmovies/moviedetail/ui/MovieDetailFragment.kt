@@ -15,6 +15,8 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.R
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.base.interfaces.IConection
+import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
+import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.MovieDetailFragmentBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
@@ -54,7 +56,7 @@ class MovieDetailFragment : Fragment(), IConection {
         mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == br.com.popularmovies.datasourceremote.config.NETWORK_ERROR_CODE) {
+                if (error.codErro == NETWORK_ERROR_CODE) {
                     showMovieDetails(args.movie)
                     setFavoritesImage(args.movie.isFavorite)
                 } else {
@@ -166,7 +168,7 @@ class MovieDetailFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(br.com.popularmovies.datasourceremote.config.GENERIC_MSG_ERROR_TITLE)
+                .setTitle(GENERIC_MSG_ERROR_TITLE)
                 .setMessage(message)
                 .setPositiveButton(R.string.dialog_ok, null)
                 .create()
