@@ -19,7 +19,6 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
 
     override suspend fun getMovies(orderBy: String): Result<List<Movie>> {
-
         return if (orderBy == FILTER_FAVORITES) {
             when (val result = mMovieLocalDataSource.getFavoriteMovies(true)) {
                 is Result.Success -> Result.Success(result.data.map { it.toDomain() })
@@ -34,8 +33,17 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovie(movieId: Int): Result<Movie> {
-        return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
-            is Result.Success -> Result.Success(result.data.toDomain())
+        return when (val result = mMovieLocalDataSource.getMovie(movieId)) {
+            is Result.Success -> {
+                if (result.data == null) {
+                     when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
+                        is Result.Success -> Result.Success(result.data.toDomain())
+                        is Result.Error -> Result.Error(result.error)
+                    }
+                } else {
+                    Result.Success(result.data.toDomain())
+                }
+            }
             is Result.Error -> Result.Error(result.error)
         }
     }
