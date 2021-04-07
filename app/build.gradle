@@ -1,9 +1,10 @@
-apply plugin: "com.android.application"
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs"
-apply plugin: "de.mannodermaus.android-junit5"
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions' // TODO Change to kotlin-parcelize
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
+}
 
 android {
     compileSdkVersion versions.sdk.compile
@@ -36,11 +37,9 @@ android {
     }
 
     buildFeatures {
-
         dataBinding true
+        compose true
 
-        // for view binding:
-        // viewBinding true
     }
 
     compileOptions {
@@ -51,6 +50,11 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion ":${versions.ui.compose.core}"
+    }
+
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
 
     packagingOptions {
@@ -89,6 +93,16 @@ dependencies {
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide
+    implementation dependency.ui.compose.ui
+    implementation dependency.ui.compose.uitooling
+    implementation dependency.ui.compose.foundation
+    implementation dependency.ui.compose.activity
+    implementation dependency.ui.compose.viewModel
+    implementation dependency.ui.compose.runtime
+    implementation dependency.ui.compose.compiler
+    implementation dependency.ui.compose.material.core
+    implementation dependency.ui.compose.material.icons.core
+    implementation dependency.ui.compose.material.icons.extended
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
