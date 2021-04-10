@@ -52,7 +52,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion ":${versions.ui.compose.core}"
+        kotlinCompilerExtensionVersion versions.ui.compose.core
     }
 
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
