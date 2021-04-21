@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.movies.Constants.MOVIE_DATE_PATTERN
+import br.com.popularmovies.ui.theme.AppTheme
 import com.bumptech.glide.Glide
 import java.util.*
 
@@ -90,10 +92,11 @@ class MovieDetailFragment : Fragment(), IConection {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.movie_detail_fragment, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.movie_detail_fragment, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
         binding.iBaseLayout.btTryAgain.setOnClickListener { tryAgain() }
@@ -102,27 +105,34 @@ class MovieDetailFragment : Fragment(), IConection {
         }
         binding.tvMovieReviewsLabel.setOnClickListener {
             val action = MovieDetailFragmentDirections
-                    .actionMovieDetailFragmentToMovieReviewFragment(args.movie.id)
+                .actionMovieDetailFragmentToMovieReviewFragment(args.movie.id)
             findNavController().navigate(action)
         }
         binding.tvMovieTrailersLabel.setOnClickListener {
             val action = MovieDetailFragmentDirections
-                    .actionMovieDetailFragmentToMovieTrailerFragment(args.movie.id)
+                .actionMovieDetailFragmentToMovieTrailerFragment(args.movie.id)
             findNavController().navigate(action)
         }
         setupObservers()
-        return binding.root
+        return ComposeView(requireContext()).apply {
+            setContent {
+                AppTheme {
+                    MovieScreen(args.movie, mViewModel)
+                }
+            }
+        }
     }
 
     private fun showMovieDetails(movie: Movie) {
         binding.tvMovieTitle.text = movie.originalTitle
         val imageUrl = IMAGE_URL + movie.poster
         Glide.with(requireContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.no_photo)
-                .into(binding.ivMoviePoster)
-        binding.tvMovieReleaseDate.text = movie.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
+            .load(imageUrl)
+            .placeholder(R.drawable.loading)
+            .error(R.drawable.no_photo)
+            .into(binding.ivMoviePoster)
+        binding.tvMovieReleaseDate.text =
+            movie.releaseDate.toString(MOVIE_DATE_PATTERN, Locale.getDefault())
         binding.tvMovieRating.text = movie.voteAverage.toString()
         binding.tvMovieOverview.text = movie.overview
     }
@@ -130,17 +140,17 @@ class MovieDetailFragment : Fragment(), IConection {
     private fun setFavoritesImage(isFavorite: Boolean) {
         if (isFavorite) {
             binding.ivFavorite.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_favorite_black_24dp
-                    )
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_black_24dp
+                )
             )
         } else {
             binding.ivFavorite.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_favorite_border_black_24dp
-                    )
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_favorite_border_black_24dp
+                )
             )
         }
     }
@@ -168,10 +178,10 @@ class MovieDetailFragment : Fragment(), IConection {
 
     override fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
+            .setTitle(GENERIC_MSG_ERROR_TITLE)
+            .setMessage(message)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
 
         sortDialog.show()
     }

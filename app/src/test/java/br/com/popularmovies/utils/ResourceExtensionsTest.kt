@@ -1,3 +1,4 @@
+/*
 package br.com.popularmovies.utils
 
 import androidx.lifecycle.MutableLiveData
@@ -65,4 +66,4 @@ internal class ResourceExtensionsTest {
             assertThat(error.value).isNull()
         }
     }
-}
+}*/

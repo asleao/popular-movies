@@ -92,7 +92,8 @@ dependencies {
     implementation dependency.ui.navigation.ui
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
-    implementation dependency.ui.glide
+    implementation dependency.ui.glide.core
+    implementation dependency.ui.glide.accompanist
     implementation dependency.ui.compose.ui
     implementation dependency.ui.compose.uitooling
     implementation dependency.ui.compose.foundation
