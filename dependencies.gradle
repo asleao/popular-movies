@@ -19,7 +19,7 @@ ext {
             //Android
             'android'    : [
                     'core'     : '1.3.0',
-                    'appcompat': '1.1.0',
+                    'appcompat': '1.3.0-rc01',
                     'fragment' : '1.2.5',
                     'lifecycle': '2.2.0'
             ],
@@ -38,12 +38,13 @@ ext {
                     ],
                     'recyclerView'    : '1.1.0',
                     'navigation'      : [
-                            'core': '2.3.3'
+                            'core': '2.3.5',
                     ],
                     'compose'         : [
-                            'core'     : '1.0.0-beta03',
-                            'activity' : '1.3.0-alpha05',
-                            'viewModel': '1.0.0-alpha03'
+                            'core'      : '1.0.0-beta03',
+                            'activity'  : '1.3.0-alpha05',
+                            'viewModel' : '1.0.0-alpha03',
+                            'navigation': '1.0.0-alpha10'
                     ]
             ],
 
@@ -145,6 +146,7 @@ ext {
                             'foundation': "androidx.compose.foundation:foundation:${versions.ui.compose.core}",
                             'activity'  : "androidx.activity:activity-compose:${versions.ui.compose.activity}",
                             'viewModel' : "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.ui.compose.viewModel}",
+                            'navigation': "androidx.navigation:navigation-compose:${versions.ui.compose.navigation}",
                             'runtime'   : "androidx.compose.runtime:runtime-livedata:${versions.ui.compose.core}",
                             'compiler'  : "androidx.compose.compiler:compiler:${versions.ui.compose.core}"
                     ]

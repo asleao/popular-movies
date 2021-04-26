@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-android-extensions' // TODO Change to kotlin-parcelize
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -99,6 +99,7 @@ dependencies {
     implementation dependency.ui.compose.foundation
     implementation dependency.ui.compose.activity
     implementation dependency.ui.compose.viewModel
+    implementation dependency.ui.compose.navigation
     implementation dependency.ui.compose.runtime
     implementation dependency.ui.compose.compiler
     implementation dependency.ui.compose.material.core
