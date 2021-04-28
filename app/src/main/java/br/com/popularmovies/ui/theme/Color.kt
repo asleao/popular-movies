@@ -18,10 +18,17 @@ package br.com.popularmovies.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val grey = Color(0xFF212121)
-val greyLight = Color(0xFF484848)
-val greyDark = Color(0xFF000000)
-val orange = Color(0xFFff9100)
-val orangeLight = Color(0xFFffc246)
-val orangeDark = Color(0xFFC56200)
-val white = Color(0xFFFFFFFF)
+
+val orange500 = Color(0xFFffc20a)
+val orange600 = Color(0xFFffb402)
+val orange700 = Color(0xFFffa101)
+val orange800 = Color(0xFFff9100)
+val orange900 = Color(0xFFf48334)
+
+val grey700 = Color(0xFF616161)
+val grey800 = Color(0xFF424242)
+val grey900 = Color(0xFF212121)
+
+val white50= Color(0xFFFFFFFF)
+val white100= Color(0xFFf5f5f5)
+val black= Color(0xFF000000)

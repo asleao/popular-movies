@@ -17,7 +17,7 @@ import org.joda.time.LocalDate
 import java.math.BigDecimal
 
 @Composable
-fun MovieDetail( movie: Movie) {
+fun MovieDetail(movie: Movie) {
     Column(
         modifier = Modifier
             .padding(16.dp)

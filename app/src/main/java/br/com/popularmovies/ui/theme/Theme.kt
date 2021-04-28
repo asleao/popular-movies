@@ -22,26 +22,29 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val DarkColorPalette = darkColors(
-    primary = grey,
-    primaryVariant = greyDark,
-    secondary = orange,
-    secondaryVariant = orangeDark,
-    surface = orangeLight,
-    onPrimary = white
-)
 
 private val LightColorPalette = lightColors(
-    primary = greyLight,
-    primaryVariant = grey,
-    secondary = orange,
-    secondaryVariant = orangeDark,
-    surface = orangeDark,
-    onPrimary = white
+    primary = orange700,
+    primaryVariant = orange900,
+    onPrimary = grey900,
+    background = white100,
+    onBackground = black,
+    surface = white100,
+    onSurface = black
+)
+
+private val DarkColorPalette = darkColors(
+    primary = orange800,
+    primaryVariant = orange700,
+    onPrimary = white100,
+    background = black,
+    onBackground = white50,
+    surface = grey900,
+    onSurface = white50
 )
 
 @Composable
-fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
