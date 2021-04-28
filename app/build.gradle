@@ -93,6 +93,7 @@ dependencies {
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide.core
+    kapt dependency.ui.glide.compiler
     implementation dependency.ui.glide.accompanist
     implementation dependency.ui.compose.ui
     implementation dependency.ui.compose.uitooling

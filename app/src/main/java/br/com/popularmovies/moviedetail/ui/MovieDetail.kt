@@ -26,18 +26,18 @@ fun MovieDetail(movie: Movie) {
             .fillMaxHeight()
             .background(color = MaterialTheme.colors.background)
     ) {
-//        Image(
-//            painter = rememberGlidePainter(
-//                request = movie.poster,
-////                previewPlaceholder = R.drawable.loading,
-//                fadeIn = true
-//            ),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .height(180.dp)
-//                .fillMaxWidth(),
-//            contentScale = ContentScale.Crop
-//        )
+        Image(
+            painter = rememberGlidePainter(
+                request = movie.poster,
+                fadeIn = true
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .height(250.dp)
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            contentScale = ContentScale.Crop
+        )
         Text(
             movie.originalTitle,
             modifier = Modifier

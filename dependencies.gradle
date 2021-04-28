@@ -129,6 +129,7 @@ ext {
                     ],
                     'glide'           : [
                             'core'       : "com.github.bumptech.glide:glide:${versions.ui.glide.core}",
+                            'compiler'   : "com.github.bumptech.glide:compiler:${versions.ui.glide.core}",
                             'accompanist': "com.google.accompanist:accompanist-glide:${versions.ui.glide.accompanist}"
                     ],
                     'recyclerView'    : "androidx.recyclerview:recyclerview:${versions.ui.recyclerView}",

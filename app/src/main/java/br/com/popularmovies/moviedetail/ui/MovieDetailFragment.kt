@@ -117,7 +117,7 @@ class MovieDetailFragment : Fragment(), IConection {
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    MovieScreen(args.movie, mViewModel)
+                    MovieScreen(args.movie.copy(poster = IMAGE_URL + args.movie.poster), mViewModel)
                 }
             }
         }
