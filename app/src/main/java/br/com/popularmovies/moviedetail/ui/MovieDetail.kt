@@ -1,7 +1,9 @@
 package br.com.popularmovies.moviedetail.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,29 +22,37 @@ import java.math.BigDecimal
 fun MovieDetail(movie: Movie) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
             .fillMaxWidth()
             .fillMaxHeight()
+            .background(color = MaterialTheme.colors.background)
     ) {
-        Image(
-            painter = rememberGlidePainter(
-                request = movie.poster,
-//                previewPlaceholder = R.drawable.loading,
-                fadeIn = true
-            ),
-            contentDescription = null,
+//        Image(
+//            painter = rememberGlidePainter(
+//                request = movie.poster,
+////                previewPlaceholder = R.drawable.loading,
+//                fadeIn = true
+//            ),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .height(180.dp)
+//                .fillMaxWidth(),
+//            contentScale = ContentScale.Crop
+//        )
+        Text(
+            movie.originalTitle,
             modifier = Modifier
-                .height(180.dp)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Crop
+                .padding(start = 16.dp, top = 16.dp),
+            style = typography.h6,
+            color = MaterialTheme.colors.onPrimary
         )
-        Text(movie.originalTitle, style = typography.h6)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             movie.overview,
             style = typography.body2,
             modifier = Modifier
-                .fillMaxWidth()
+                .padding(16.dp)
+                .fillMaxWidth(),
+            color = MaterialTheme.colors.onPrimary
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
@@ -51,14 +61,18 @@ fun MovieDetail(movie: Movie) {
         ) {
             Text(
                 movie.releaseDate.year.toString(),
+                modifier = Modifier
+                    .padding(start = 16.dp),
                 fontWeight = FontWeight.Bold,
-                style = typography.caption
+                style = typography.caption,
+                color = MaterialTheme.colors.onPrimary
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 "TMDb ${movie.voteAverage}",
                 fontWeight = FontWeight.Bold,
-                style = typography.caption
+                style = typography.caption,
+                color = MaterialTheme.colors.onPrimary
             )
         }
     }
