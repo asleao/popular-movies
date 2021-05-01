@@ -17,6 +17,7 @@ import br.com.popularmovies.ui.theme.typography
 import com.google.accompanist.glide.rememberGlidePainter
 import org.joda.time.LocalDate
 import java.math.BigDecimal
+import br.com.popularmovies.R
 
 @Composable
 fun MovieDetail(movie: Movie) {
@@ -29,6 +30,7 @@ fun MovieDetail(movie: Movie) {
         Image(
             painter = rememberGlidePainter(
                 request = movie.poster,
+                previewPlaceholder = R.drawable.loading,
                 fadeIn = true
             ),
             contentDescription = null,
