@@ -13,12 +13,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.ui.theme.AppTheme
-import br.com.popularmovies.ui.theme.typography
 import com.google.accompanist.glide.rememberGlidePainter
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 import br.com.popularmovies.R
 import br.com.popularmovies.movies.Constants.IMAGE_URL
+import br.com.popularmovies.ui.theme.OpensSansTypography
 
 @Composable
 fun MovieDetail(movie: Movie) {
@@ -45,13 +45,13 @@ fun MovieDetail(movie: Movie) {
             movie.originalTitle,
             modifier = Modifier
                 .padding(start = 16.dp, top = 16.dp),
-            style = typography.h6,
+            style = OpensSansTypography.h2,
             color = MaterialTheme.colors.onPrimary
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             movie.overview,
-            style = typography.body2,
+            style = MaterialTheme.typography.body1,
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
@@ -67,14 +67,14 @@ fun MovieDetail(movie: Movie) {
                 modifier = Modifier
                     .padding(start = 16.dp),
                 fontWeight = FontWeight.Bold,
-                style = typography.caption,
+                style = MaterialTheme.typography.caption,
                 color = MaterialTheme.colors.onPrimary
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 "TMDb ${movie.voteAverage}",
                 fontWeight = FontWeight.Bold,
-                style = typography.caption,
+                style = MaterialTheme.typography.caption,
                 color = MaterialTheme.colors.onPrimary
             )
         }
