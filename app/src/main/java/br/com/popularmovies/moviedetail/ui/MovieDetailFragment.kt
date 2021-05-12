@@ -16,13 +16,12 @@ class MovieDetailFragment : Fragment() {
 
     private val args by navArgs<MovieDetailFragmentArgs>()
 
-    private val mViewModel: MovieDetailViewModel by lazy {
+    private val viewModel: MovieDetailViewModel by lazy {
         appComponent.movieDetailViewModelFactory.create(args.movie.id)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         val movieDetailComponent = appComponent.movieDetailComponent().create()
         movieDetailComponent.inject(this)
     }
@@ -35,7 +34,7 @@ class MovieDetailFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    MovieScreen(args.movie, mViewModel)
+                    MovieScreen(viewModel = viewModel)
                 }
             }
         }
