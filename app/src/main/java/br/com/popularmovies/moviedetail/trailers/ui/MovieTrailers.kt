@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.R
@@ -30,14 +31,14 @@ fun MovieTrailers(movieTrailers: List<MovieTrailer>) {
             contentPadding = PaddingValues(end = 16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(movieTrailers) { movieTrailers ->
+            items(movieTrailers) { movieTrailer ->
                 MovieTrailer(
-                    movieTrailers,
+                    movieTrailer,
                     modifier = Modifier
                         .width(200.dp)
                         .height(200.dp)
                         .align(Alignment.Center)
-                        .background(color = MaterialTheme.colors.background)
+                        .background(color = MaterialTheme.colors.surface)
                 )
             }
         }
@@ -53,8 +54,9 @@ fun MovieTrailer(movieTrailer: MovieTrailer, modifier: Modifier) {
             painter = painterResource(R.drawable.ic_play_circle_outline),
             contentDescription = null,
             modifier = Modifier
-                .height(50.dp)
-                .width(50.dp)
+                .height(75.dp)
+                .width(75.dp)
+                .padding(top = 16.dp)
                 .align(Alignment.CenterHorizontally)
         )
         Text(
@@ -62,6 +64,7 @@ fun MovieTrailer(movieTrailer: MovieTrailer, modifier: Modifier) {
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(16.dp),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onPrimary
         )
