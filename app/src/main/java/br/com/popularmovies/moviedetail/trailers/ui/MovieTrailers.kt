@@ -1,5 +1,6 @@
 package br.com.popularmovies.moviedetail.trailers.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -10,20 +11,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.ui.theme.AppTheme
-import br.com.popularmovies.ui.theme.OpensSansTypography
 
 
 @Composable
 fun MovieTrailers(movieTrailers: List<MovieTrailer>) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(color = MaterialTheme.colors.background)
+        modifier = Modifier.wrapContentSize()
     ) {
         val listState = rememberLazyListState()
 
@@ -38,6 +36,7 @@ fun MovieTrailers(movieTrailers: List<MovieTrailer>) {
                     modifier = Modifier
                         .width(200.dp)
                         .height(200.dp)
+                        .align(Alignment.Center)
                         .background(color = MaterialTheme.colors.background)
                 )
             }
@@ -50,12 +49,20 @@ fun MovieTrailer(movieTrailer: MovieTrailer, modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
+        Image(
+            painter = painterResource(android.R.drawable.ic_media_play),
+            contentDescription = null,
+            modifier = Modifier
+                .height(50.dp)
+                .width(50.dp)
+                .align(Alignment.CenterHorizontally)
+        )
         Text(
             movieTrailer.name,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(start = 16.dp, top = 16.dp),
-            style = OpensSansTypography.subtitle1,
+                .padding(16.dp),
+            style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onPrimary
         )
     }
@@ -63,7 +70,7 @@ fun MovieTrailer(movieTrailer: MovieTrailer, modifier: Modifier) {
 
 @Preview
 @Composable
-private fun MockMovieReview() {
+private fun MockMovieTrailers() {
     AppTheme {
         MovieTrailers(
             movieTrailers = listOf(

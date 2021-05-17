@@ -1,7 +1,6 @@
 package br.com.popularmovies.moviedetail.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -11,23 +10,18 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.ui.theme.AppTheme
+import br.com.popularmovies.ui.theme.OpensSansTypography
 import com.google.accompanist.glide.rememberGlidePainter
 import org.joda.time.LocalDate
 import java.math.BigDecimal
-import br.com.popularmovies.R
-import br.com.popularmovies.movies.Constants.IMAGE_URL
-import br.com.popularmovies.ui.theme.OpensSansTypography
 
 @Composable
 fun MovieDetail(movie: Movie) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(color = MaterialTheme.colors.background)
-    ) {
+    Column {
         Image(
             painter = rememberGlidePainter(
                 request = IMAGE_URL + movie.poster,
