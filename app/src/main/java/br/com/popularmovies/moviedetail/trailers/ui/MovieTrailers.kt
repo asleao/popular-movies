@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.ui.theme.AppTheme
-
 
 @Composable
 fun MovieTrailers(movieTrailers: List<MovieTrailer>) {
@@ -50,7 +50,7 @@ fun MovieTrailer(movieTrailer: MovieTrailer, modifier: Modifier) {
         modifier = modifier
     ) {
         Image(
-            painter = painterResource(android.R.drawable.ic_media_play),
+            painter = painterResource(R.drawable.ic_play_circle_outline),
             contentDescription = null,
             modifier = Modifier
                 .height(50.dp)
