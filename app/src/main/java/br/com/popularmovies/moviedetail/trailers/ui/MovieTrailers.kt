@@ -27,7 +27,6 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
         shape = MaterialTheme.shapes.small,
         elevation = 2.dp,
         modifier = Modifier
-            .padding(12.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick)
 
