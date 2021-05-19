@@ -30,10 +30,9 @@ fun MovieDetail(movie: Movie) {
             ),
             contentDescription = null,
             modifier = Modifier
-                .height(250.dp)
-                .fillMaxHeight()
+                .height(370.dp)
                 .fillMaxWidth(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.FillBounds,
         )
         Text(
             movie.originalTitle,
