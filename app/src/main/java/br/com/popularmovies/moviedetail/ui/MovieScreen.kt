@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -33,10 +34,18 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
         trailers?.let { trailers ->
             val listState = rememberLazyListState()
 
+            Text(
+                "Trailers",
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 24.dp),
+                style = MaterialTheme.typography.h3,
+                color = MaterialTheme.colors.onPrimary
+            )
+
             LazyRow(
                 state = listState,
                 contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(trailers) { movieTrailer ->

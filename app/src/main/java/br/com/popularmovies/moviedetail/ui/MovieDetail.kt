@@ -38,7 +38,7 @@ fun MovieDetail(movie: Movie) {
             movie.originalTitle,
             modifier = Modifier
                 .padding(start = 16.dp, top = 16.dp),
-            style = OpensSansTypography.h2,
+            style = MaterialTheme.typography.h2,
             color = MaterialTheme.colors.onPrimary
         )
         Spacer(modifier = Modifier.height(8.dp))
