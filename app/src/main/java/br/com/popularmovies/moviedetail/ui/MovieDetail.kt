@@ -32,7 +32,7 @@ fun MovieDetail(movie: Movie) {
             modifier = Modifier
                 .height(370.dp)
                 .fillMaxWidth(),
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Crop,
         )
         Text(
             movie.originalTitle,

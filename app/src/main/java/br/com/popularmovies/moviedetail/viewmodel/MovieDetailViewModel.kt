@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.repositories.movie.MovieRepository
 import com.squareup.inject.assisted.Assisted
@@ -36,6 +37,9 @@ class MovieDetailViewModel @AssistedInject constructor(
     private val _trailers = MutableLiveData<List<MovieTrailer>>()
     val trailers: LiveData<List<MovieTrailer>> = _trailers
 
+    private val _reviews = MutableLiveData<List<MovieReview>>()
+    val reviews: LiveData<List<MovieReview>> = _reviews
+
     private val _isMovieFavorite = MutableLiveData<Boolean>()
     val isMovieFavorite: LiveData<Boolean>
         get() = _isMovieFavorite
@@ -43,6 +47,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     init {
         getMovie()
         getTrailers()
+        getReviews()
     }
 
     private fun getMovie() {
@@ -60,6 +65,16 @@ class MovieDetailViewModel @AssistedInject constructor(
             showLoading(true)
             when (val result = mMovieRepository.getMovieTrailers(movieId)) {
                 is Result.Success -> _trailers.value = result.data
+                is Result.Error -> _error.value = result.error
+            }
+        }
+    }
+
+    fun getReviews() {
+        viewModelScope.launch {
+            showLoading(true)
+            when (val result = mMovieRepository.getMovieReviews(movieId)) {
+                is Result.Success -> _reviews.value = result.data
                 is Result.Error -> _error.value = result.error
             }
         }
