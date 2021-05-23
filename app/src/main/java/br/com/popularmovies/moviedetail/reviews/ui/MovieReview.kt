@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.entities.movie.MovieReview
@@ -24,8 +25,9 @@ fun MovieReview(movieReview: MovieReview) {
             movieReview.author,
             modifier = Modifier
                 .padding(start = 16.dp, top = 16.dp),
-            style = OpensSansTypography.h2,
-            color = MaterialTheme.colors.onPrimary
+            style = OpensSansTypography.h4,
+            color = MaterialTheme.colors.onPrimary,
+        fontWeight = FontWeight.W500
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
