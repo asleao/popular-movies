@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +54,7 @@ fun MovieDetail(movie: Movie) {
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier
+                .alpha(.70f)
                 .fillMaxWidth()
         ) {
             Text(

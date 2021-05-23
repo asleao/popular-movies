@@ -2,19 +2,19 @@ package br.com.popularmovies.moviedetail.trailers.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.R
@@ -27,9 +27,9 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
         shape = MaterialTheme.shapes.small,
         elevation = 2.dp,
         modifier = Modifier
-            .fillMaxWidth()
+            .width(200.dp)
+            .alpha(.70f)
             .clickable(onClick = onClick)
-
     ) {
         Column {
             Image(
@@ -43,13 +43,15 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
             Text(
                 movieTrailer.name,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min) // TODO Check how to define min lines
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.subtitle1,
                 color = MaterialTheme.colors.onPrimary,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W500,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2
             )
         }
     }
