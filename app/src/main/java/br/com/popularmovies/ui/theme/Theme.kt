@@ -29,7 +29,7 @@ private val LightColorPalette = lightColors(
     onPrimary = grey900,
     background = white100,
     onBackground = black,
-    surface = white100,
+    surface = white50,
     onSurface = black
 )
 
