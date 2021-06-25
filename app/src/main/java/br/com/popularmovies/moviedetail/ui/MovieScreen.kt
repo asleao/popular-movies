@@ -35,48 +35,52 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
         }
         trailers?.let { trailers ->
             //TODO checkout stickyHeaders
-            item {
-                Text(
-                    "Trailers",
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 24.dp),
-                    style = MaterialTheme.typography.h3,
-                    color = MaterialTheme.colors.onPrimary
-                )
-                LazyRow(
-                    state = rememberLazyListState(),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(trailers) { movieTrailer ->
-                        MovieTrailerCard(
-                            movieTrailer,
-                            onClick = {}
-                        )
+            if (trailers.isNotEmpty()) {
+                item {
+                    Text(
+                        "Trailers",
+                        modifier = Modifier
+                            .padding(start = 16.dp, top = 24.dp),
+                        style = MaterialTheme.typography.h3,
+                        color = MaterialTheme.colors.onPrimary
+                    )
+                    LazyRow(
+                        state = rememberLazyListState(),
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items(trailers) { movieTrailer ->
+                            MovieTrailerCard(
+                                movieTrailer,
+                                onClick = {}
+                            )
+                        }
                     }
                 }
             }
         }
         reviews?.let { reviews ->
-            item {
-                Text(
-                    "Reviews",
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 24.dp),
-                    style = MaterialTheme.typography.h3,
-                    color = MaterialTheme.colors.onPrimary
-                )
-            }
+            if (reviews.isNotEmpty()) {
+                item {
+                    Text(
+                        "Reviews",
+                        modifier = Modifier
+                            .padding(start = 16.dp, top = 24.dp),
+                        style = MaterialTheme.typography.h3,
+                        color = MaterialTheme.colors.onPrimary
+                    )
+                }
 //            LazyColumn(
 //                contentPadding = PaddingValues(16.dp),
 //                verticalArrangement = Arrangement.spacedBy(12.dp),
 //                modifier = Modifier.fillMaxWidth()
 //            ) {
-            items(reviews) { review ->
-                MovieReview(review)
-            }
+                items(reviews) { review ->
+                    MovieReview(review)
+                }
 //            }
+            }
         }
     }
 }
