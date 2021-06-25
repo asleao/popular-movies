@@ -71,15 +71,9 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                         color = MaterialTheme.colors.onPrimary
                     )
                 }
-//            LazyColumn(
-//                contentPadding = PaddingValues(16.dp),
-//                verticalArrangement = Arrangement.spacedBy(12.dp),
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
                 items(reviews) { review ->
                     MovieReview(review)
                 }
-//            }
             }
         }
     }
