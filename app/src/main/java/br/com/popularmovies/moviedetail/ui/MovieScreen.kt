@@ -24,6 +24,8 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
     val reviews by viewModel.reviews.observeAsState()
 
     LazyColumn(
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colors.background)
@@ -40,13 +42,13 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                     Text(
                         "Trailers",
                         modifier = Modifier
-                            .padding(start = 16.dp, top = 24.dp),
+                            .padding(top = 24.dp),
                         style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onPrimary
                     )
                     LazyRow(
                         state = rememberLazyListState(),
-                        contentPadding = PaddingValues(16.dp),
+                        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -66,13 +68,16 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                     Text(
                         "Reviews",
                         modifier = Modifier
-                            .padding(start = 16.dp, top = 24.dp),
+                            .padding(top = 24.dp),
                         style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onPrimary
                     )
                 }
                 items(reviews) { review ->
-                    MovieReview(review)
+                    MovieReview(
+                        movieReview = review,
+                        onClick = {}
+                    )
                 }
             }
         }
