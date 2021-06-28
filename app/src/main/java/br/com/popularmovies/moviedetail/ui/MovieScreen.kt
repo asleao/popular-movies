@@ -24,6 +24,7 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
     val reviews by viewModel.reviews.observeAsState()
 
     LazyColumn(
+        state = rememberLazyListState(),
         contentPadding = PaddingValues(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier
