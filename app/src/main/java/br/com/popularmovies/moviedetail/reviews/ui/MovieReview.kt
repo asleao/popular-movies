@@ -20,6 +20,7 @@ fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
         shape = MaterialTheme.shapes.small,
         elevation = 2.dp,
         modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth()
             .fillMaxHeight()
             .clickable(onClick = onClick)

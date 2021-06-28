@@ -38,7 +38,7 @@ fun MovieDetail(movie: Movie) {
         Text(
             movie.originalTitle,
             modifier = Modifier
-                .padding(top = 16.dp),
+                .padding(16.dp),
             style = MaterialTheme.typography.h2,
             color = MaterialTheme.colors.onPrimary
         )
@@ -47,7 +47,7 @@ fun MovieDetail(movie: Movie) {
             movie.overview,
             style = MaterialTheme.typography.body1,
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(start = 16.dp,end = 16.dp)
                 .fillMaxWidth(),
             color = MaterialTheme.colors.onPrimary
         )
@@ -55,6 +55,7 @@ fun MovieDetail(movie: Movie) {
         Row(
             modifier = Modifier
                 .alpha(.70f)
+                .padding(start = 16.dp,end = 16.dp)
                 .fillMaxWidth()
         ) {
             Text(
