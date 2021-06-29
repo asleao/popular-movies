@@ -44,6 +44,10 @@ class MovieDetailViewModel @AssistedInject constructor(
     val isMovieFavorite: LiveData<Boolean>
         get() = _isMovieFavorite
 
+    private val _playTrailer = MutableLiveData<String>()
+    val playTrailer: LiveData<String>
+        get() = _playTrailer
+
     init {
         getMovie()
         getTrailers()
@@ -106,4 +110,7 @@ class MovieDetailViewModel @AssistedInject constructor(
         getMovie()
     }
 
+    fun playTrailer(key: String) {
+        _playTrailer.value = key
+    }
 }

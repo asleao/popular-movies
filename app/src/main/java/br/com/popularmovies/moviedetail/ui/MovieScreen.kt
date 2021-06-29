@@ -56,7 +56,9 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                         items(trailers) { movieTrailer ->
                             MovieTrailerCard(
                                 movieTrailer,
-                                onClick = {}
+                                onClick = {
+                                    viewModel.playTrailer(movieTrailer.key)
+                                }
                             )
                         }
                     }

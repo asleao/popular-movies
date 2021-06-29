@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.ui.theme.AppTheme
+import br.com.popularmovies.utils.youtube
 
 class MovieDetailFragment : Fragment() {
 
@@ -26,6 +27,18 @@ class MovieDetailFragment : Fragment() {
         movieDetailComponent.inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.playTrailer.observe(this) { trailerKey ->
+            trailerKey?.let {
+                requireContext().youtube(trailerKey)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
