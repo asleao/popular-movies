@@ -39,17 +39,15 @@ fun MovieDetail(movie: Movie) {
             movie.originalTitle,
             modifier = Modifier
                 .padding(16.dp),
-            style = MaterialTheme.typography.h2,
-            color = MaterialTheme.colors.onPrimary
+            style = MaterialTheme.typography.h2
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             movie.overview,
-            style = MaterialTheme.typography.body1,
             modifier = Modifier
                 .padding(start = 16.dp,end = 16.dp)
                 .fillMaxWidth(),
-            color = MaterialTheme.colors.onPrimary
+            style = MaterialTheme.typography.body1
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
@@ -61,15 +59,13 @@ fun MovieDetail(movie: Movie) {
             Text(
                 movie.releaseDate.year.toString(),
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.onPrimary
+                style = MaterialTheme.typography.caption
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 "TMDb ${movie.voteAverage}",
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.caption,
-                color = MaterialTheme.colors.onPrimary
+                style = MaterialTheme.typography.caption
             )
         }
     }

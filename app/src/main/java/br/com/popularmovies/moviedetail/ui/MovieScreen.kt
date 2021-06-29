@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,67 +23,72 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
     val movie by viewModel.movie.observeAsState()
     val trailers by viewModel.trailers.observeAsState()
     val reviews by viewModel.reviews.observeAsState()
-
-    LazyColumn(
-        state = rememberLazyListState(),
-        contentPadding = PaddingValues(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colors.background)
+    Surface(
+        elevation = 2.dp,
+        color = MaterialTheme.colors.surface, // color will be adjusted for elevation
     ) {
-        movie?.let {
-            item {
-                MovieDetail(it)
-            }
-        }
-        trailers?.let { trailers ->
-            //TODO checkout stickyHeaders
-            if (trailers.isNotEmpty()) {
+        LazyColumn(
+            state = rememberLazyListState(),
+            contentPadding = PaddingValues(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colors.background)
+        ) {
+            movie?.let {
                 item {
-                    Text(
-                        "Trailers",
-                        modifier = Modifier
-                            .padding(top = 16.dp, start = 16.dp),
-                        style = MaterialTheme.typography.h3,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                    LazyRow(
-                        state = rememberLazyListState(),
-                        contentPadding = PaddingValues(top = 16.dp, start = 16.dp, end = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(trailers) { movieTrailer ->
-                            MovieTrailerCard(
-                                movieTrailer,
-                                onClick = {
-                                    viewModel.playTrailer(movieTrailer.key)
-                                }
-                            )
+                    MovieDetail(it)
+                }
+            }
+            trailers?.let { trailers ->
+                //TODO checkout stickyHeaders
+                if (trailers.isNotEmpty()) {
+                    item {
+                        Text(
+                            "Trailers",
+                            modifier = Modifier
+                                .padding(top = 16.dp, start = 16.dp),
+                            style = MaterialTheme.typography.h3,
+                            color = MaterialTheme.colors.onPrimary
+                        )
+                        LazyRow(
+                            state = rememberLazyListState(),
+                            contentPadding = PaddingValues(top = 16.dp, start = 16.dp, end = 16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            items(trailers) { movieTrailer ->
+                                MovieTrailerCard(
+                                    movieTrailer,
+                                    onClick = {
+                                        viewModel.playTrailer(movieTrailer.key)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        reviews?.let { reviews ->
-            if (reviews.isNotEmpty()) {
-                item {
-                    Text(
-                        "Reviews",
-                        modifier = Modifier
-                            .padding(top = 16.dp, start = 16.dp),
-                        style = MaterialTheme.typography.h3,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                }
-                items(reviews) { review ->
-                    MovieReview(
-                        movieReview = review,
-                        onClick = {}
-                    )
+            reviews?.let { reviews ->
+                if (reviews.isNotEmpty()) {
+                    item {
+                        Text(
+                            "Reviews",
+                            modifier = Modifier
+                                .padding(top = 16.dp, start = 16.dp),
+                            style = MaterialTheme.typography.h3,
+                            color = MaterialTheme.colors.onPrimary
+                        )
+                    }
+                    items(reviews) { review ->
+                        MovieReview(
+                            movieReview = review,
+                            onClick = {}
+                        )
+                    }
                 }
             }
         }
     }
+
 }
