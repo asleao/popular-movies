@@ -1,9 +1,10 @@
-apply plugin: "com.android.application"
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs"
-apply plugin: "de.mannodermaus.android-junit5"
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions' // TODO Change to kotlin-parcelize
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
 
 android {
     compileSdkVersion versions.sdk.compile
@@ -88,7 +89,8 @@ dependencies {
     implementation dependency.ui.navigation.ui
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
-    implementation dependency.ui.glide
+    implementation dependency.ui.glide.core
+    kapt dependency.ui.glide.compiler
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
