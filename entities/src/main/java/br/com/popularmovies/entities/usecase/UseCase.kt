@@ -1,4 +1,5 @@
 package br.com.popularmovies.entities.usecase
 
-class UseCase {
+abstract class UseCase<Param, Result> {
+    abstract suspend fun build(param: Param): Result
 }
