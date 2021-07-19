@@ -10,3 +10,7 @@ android {
         minSdkVersion versions.sdk.min
     }
 }
+
+dependencies {
+    implementation project(':entities')
+}
