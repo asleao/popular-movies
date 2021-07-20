@@ -1,5 +1,6 @@
 package br.com.popularmovies.usecases.movies
 
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieOrderType
 import br.com.popularmovies.entities.repository.MovieRepository
@@ -10,7 +11,7 @@ class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) : UseCase<GetMoviesUseCase.Params, List<Movie>>() {
 
-    override suspend fun build(param: Params): List<Movie> {
+    override suspend fun build(param: Params): Result<List<Movie>> {
         return movieRepository.getMovies(param.movieOrderType)
     }
 

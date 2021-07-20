@@ -1,5 +1,6 @@
 package br.com.popularmovies.usecases.movies.favorites
 
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.entities.usecase.UseCase
@@ -9,7 +10,7 @@ class SaveMovieToFavoritesUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) : UseCase<SaveMovieToFavoritesUseCase.Params, Unit>() {
 
-    override suspend fun build(param: Params) {
+    override suspend fun build(param: Params): Result<Unit> {
         return movieRepository.saveToFavorites(param.movie)
     }
 

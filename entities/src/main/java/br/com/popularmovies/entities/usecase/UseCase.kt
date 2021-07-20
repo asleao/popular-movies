@@ -1,5 +1,7 @@
 package br.com.popularmovies.entities.usecase
 
-abstract class UseCase<Param, Result> {
-    abstract suspend fun build(param: Param): Result
+import br.com.popularmovies.common.models.base.Result
+
+abstract class UseCase<Param, Type> {
+    abstract suspend fun build(param: Param): Result<Type>
 }
