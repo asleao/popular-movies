@@ -5,7 +5,6 @@ import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
-import br.com.popularmovies.repositories.movie.MovieRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

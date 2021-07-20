@@ -4,28 +4,31 @@ import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.entities.movie.MovieOrderType
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.entities.repository.MovieRepository
 
 import br.com.popularmovies.repositories.mappers.toDomain
+import br.com.popularmovies.repositories.mappers.toRequest
 import br.com.popularmovies.repositories.mappers.toTable
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class MovieRepositoryImpl @Inject constructor(
-        private val mMovieLocalDataSource: MovieLocalDataSource,
-        private val mMovieRemoteDataSource: MovieRemoteDataSource
+    private val mMovieLocalDataSource: MovieLocalDataSource,
+    private val mMovieRemoteDataSource: MovieRemoteDataSource
 ) : MovieRepository {
 
-    override suspend fun getMovies(orderBy: String): Result<List<Movie>> {
-        return if (orderBy == "favorites") { //TODO Create enum for the orderBy types
+    override suspend fun getMovies(orderBy: MovieOrderType): Result<List<Movie>> {
+        return if (orderBy == MovieOrderType.Favorites) { //TODO Create enum for the orderBy types
             when (val result = mMovieLocalDataSource.getFavoriteMovies(true)) {
                 is Result.Success -> Result.Success(result.data.map { it.toDomain() })
                 is Result.Error -> Result.Error(result.error)
             }
         } else {
-            when (val result = mMovieRemoteDataSource.getMovies(orderBy)) {
+            when (val result = mMovieRemoteDataSource.getMovies(orderBy.toRequest())) {
                 is Result.Success -> Result.Success(result.data.map { it.toDomain() })
                 is Result.Error -> Result.Error(result.error)
             }

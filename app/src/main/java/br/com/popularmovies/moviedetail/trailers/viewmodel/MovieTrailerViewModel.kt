@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieTrailer
-import br.com.popularmovies.repositories.movie.MovieRepository
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
