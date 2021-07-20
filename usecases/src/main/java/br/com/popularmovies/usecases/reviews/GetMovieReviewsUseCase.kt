@@ -1,6 +1,5 @@
 package br.com.popularmovies.usecases.reviews
 
-import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.entities.usecase.UseCase
@@ -11,10 +10,10 @@ class GetMovieReviewsUseCase @Inject constructor(
 ) : UseCase<GetMovieReviewsUseCase.Params, List<MovieReview>>() {
 
     override suspend fun build(param: Params): List<MovieReview> {
-        return movieRepository.getMovieReviews(param.movie)
+        return movieRepository.getMovieReviews(param.movieId)
     }
 
     data class Params(
-        val movie: Movie
+        val movieId: Int
     )
 }
