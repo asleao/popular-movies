@@ -1,4 +1,4 @@
-package br.com.popularmovies.usecases.reviews
+package br.com.popularmovies.usecases.movies.reviews
 
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.repository.MovieRepository

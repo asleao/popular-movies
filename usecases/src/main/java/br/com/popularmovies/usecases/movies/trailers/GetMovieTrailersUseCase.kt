@@ -1,4 +1,4 @@
-package br.com.popularmovies.usecases.trailers
+package br.com.popularmovies.usecases.movies.trailers
 
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.entities.repository.MovieRepository
