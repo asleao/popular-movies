@@ -71,7 +71,7 @@ dependencies {
 
     implementation project(':entities')
     implementation project(':common')
-    implementation project(':repositories')
+    implementation project(':usecases')
 
     implementation dependency.kotlin.stdlib
     implementation dependency.kotlin.reflect

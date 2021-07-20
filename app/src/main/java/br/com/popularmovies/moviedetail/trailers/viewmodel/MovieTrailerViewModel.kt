@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieTrailerViewModel @AssistedInject constructor(
-        private val mMovieRepository: MovieRepository,
-        @Assisted val movieId: Int
+    private val getMovieTrailersUseCase: GetMovieTrailersUseCase,
+    @Assisted val movieId: Int
 ) : ViewModel() {
 
     @AssistedInject.Factory
@@ -37,7 +38,9 @@ class MovieTrailerViewModel @AssistedInject constructor(
     private fun getTrailers() {
         viewModelScope.launch {
             showLoading(true)
-            when (val result = mMovieRepository.getMovieTrailers(movieId)) {
+            val params = GetMovieTrailersUseCase.Params(movieId)
+            when (val result =
+                getMovieTrailersUseCase.build(params)) {
                 is Result.Success -> _trailers.value = result.data
                 is Result.Error -> _error.value = result.error
             }

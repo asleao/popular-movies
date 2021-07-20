@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieReviewViewModel @AssistedInject constructor(
-        val mMovieRepository: MovieRepository,
-        @Assisted val movieId: Int
+    val getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    @Assisted val movieId: Int
 ) : ViewModel() {
     val loading = MutableLiveData<Boolean>()
 
@@ -31,7 +32,8 @@ class MovieReviewViewModel @AssistedInject constructor(
     fun getReviews() {
         viewModelScope.launch {
             showLoading(true)
-            when (val result = mMovieRepository.getMovieReviews(movieId)) {
+            val params = GetMovieReviewsUseCase.Params(movieId)
+            when (val result = getMovieReviewsUseCase.build(params)) {
                 is Result.Success -> _reviews.value = result.data
                 is Result.Error -> _error.value = result.error
             }

@@ -12,8 +12,10 @@ android {
 }
 
 dependencies {
-    implementation project(':entities')
     implementation project(':common')
+    implementation project(':entities')
+    api project(':repositories')
+
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler

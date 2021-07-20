@@ -4,13 +4,15 @@ import androidx.lifecycle.*
 import br.com.popularmovies.common.models.base.Error
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.entities.movie.MovieOrderType
 import br.com.popularmovies.movies.Constants
+import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class MovieViewModel @Inject constructor(
-        private val mMovieRepository: MovieRepository
+    private val getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
@@ -23,17 +25,18 @@ class MovieViewModel @Inject constructor(
     val movies: LiveData<List<Movie>>
         get() = _movies
 
-    private val mSortBy: MutableLiveData<String> = MutableLiveData()
+    private val mSortBy: MutableLiveData<MovieOrderType> = MutableLiveData()
     var selectedFilterIndex = 0
 
-    fun setMovieSortBy(sortBy: String) {
-        mSortBy.postValue(sortBy)
+    fun setMovieOrder(movieOrderType: MovieOrderType) {
+        mSortBy.postValue(movieOrderType)
     }
 
-    private fun getMoviesSortedBy(field: String) {
+    private fun getMoviesSortedBy(movieOrderType: MovieOrderType) {
         viewModelScope.launch {
             showLoading(true)
-            when (val result = mMovieRepository.getMovies(field)) {
+            val params = GetMoviesUseCase.Params(movieOrderType)
+            when (val result = getMoviesUseCase.build(params)) {
                 is Result.Success -> _movies.value = result.data
                 is Result.Error -> _error.value = result.error
             }
@@ -42,9 +45,9 @@ class MovieViewModel @Inject constructor(
 
     fun tryAgain() {
         if (selectedFilterIndex == Constants.INDEX_FILTER_MOST_POPULAR) {
-            getMoviesSortedBy(Constants.FILTER_MOST_POPULAR)
+            getMoviesSortedBy(MovieOrderType.MostPopular)
         } else {
-            getMoviesSortedBy(Constants.FILTER_HIGHEST_RATED)
+            getMoviesSortedBy(MovieOrderType.TopHated)
         }
     }
 
@@ -60,6 +63,6 @@ class MovieViewModel @Inject constructor(
         _movies.addSource(mSortBy) { sortQuery ->
             getMoviesSortedBy(sortQuery)
         }
-        getMoviesSortedBy(Constants.FILTER_MOST_POPULAR)
+        getMoviesSortedBy(MovieOrderType.MostPopular)
     }
 }

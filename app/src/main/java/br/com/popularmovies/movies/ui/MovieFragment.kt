@@ -16,6 +16,7 @@ import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
 import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.entities.movie.MovieOrderType
 import br.com.popularmovies.movies.Constants.*
 import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
@@ -34,7 +35,9 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        val movieComponent = (requireActivity().application as MovieApplication).appComponent.movieComponent().create()
+        val movieComponent =
+            (requireActivity().application as MovieApplication).appComponent.movieComponent()
+                .create()
         movieComponent.inject(this)
     }
 
@@ -48,7 +51,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.movies.observe(viewLifecycleOwner, Observer { movies ->
             mViewModel.showLoading(false)
             val mMovieAdapter =
-                    MovieAdapter(this)
+                MovieAdapter(this)
             mMovieAdapter.swapData(movies)
             binding.rvMovies.adapter = mMovieAdapter
 
@@ -98,10 +101,10 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showGenericError(message: String) {
         val sortDialog = AlertDialog.Builder(context)
-                .setTitle(GENERIC_MSG_ERROR_TITLE)
-                .setMessage(message)
-                .setPositiveButton(R.string.dialog_ok, null)
-                .create()
+            .setTitle(GENERIC_MSG_ERROR_TITLE)
+            .setMessage(message)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
 
         sortDialog.show()
     }
@@ -111,8 +114,8 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
         setHasOptionsMenu(true)
@@ -130,14 +133,14 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.m_sort) {
-            val values = arrayOf<CharSequence>("Most Popular", "Highest Rated", "Favorites")
+            val values = arrayOf<CharSequence>("Most Popular", "Top Rated", "Favorites")
             val sortDialog = AlertDialog.Builder(context)
-                    .setTitle(TITLE_DIALOG_FILTER)
-                    .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
-                        changeSortOrder(which)
-                        dialog.dismiss()
-                    }
-                    .create()
+                .setTitle(TITLE_DIALOG_FILTER)
+                .setSingleChoiceItems(values, mViewModel.selectedFilterIndex) { dialog, which ->
+                    changeSortOrder(which)
+                    dialog.dismiss()
+                }
+                .create()
 
             sortDialog.show()
         }
@@ -147,15 +150,15 @@ class MovieFragment : Fragment(), MovieClickListener {
     private fun changeSortOrder(item: Int) {
         when (item) {
             INDEX_FILTER_MOST_POPULAR -> {
-                mViewModel.setMovieSortBy(FILTER_MOST_POPULAR)
+                mViewModel.setMovieOrder(MovieOrderType.MostPopular)
                 mViewModel.selectedFilterIndex = 0
             }
-            INDEX_FILTER_HIGHEST_RATED -> {
-                mViewModel.setMovieSortBy(FILTER_HIGHEST_RATED)
+            INDEX_FILTER_TOP_RATED -> {
+                mViewModel.setMovieOrder(MovieOrderType.TopHated)
                 mViewModel.selectedFilterIndex = 1
             }
             INDEX_FILTER_FAVORITES -> {
-                mViewModel.setMovieSortBy(FILTER_FAVORITES)
+                mViewModel.setMovieOrder(MovieOrderType.Favorites)
                 mViewModel.selectedFilterIndex = 2
             }
         }
