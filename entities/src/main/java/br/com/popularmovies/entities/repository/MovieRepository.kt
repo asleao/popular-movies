@@ -11,7 +11,7 @@ interface MovieRepository {
 
     suspend fun getMovieReviews(movie: Movie): List<MovieReview>
 
-    suspend fun saveToFavorites(movie: Movie): Unit
+    suspend fun saveToFavorites(movie: Movie)
 
     suspend fun getMovieTrailers(movie: Movie): List<MovieTrailer>
 }
