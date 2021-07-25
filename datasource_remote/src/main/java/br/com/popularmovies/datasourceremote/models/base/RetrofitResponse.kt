@@ -15,12 +15,10 @@ import retrofit2.Response
 import java.io.EOFException
 import java.io.IOException
 
-class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
-        ApiResponse<T> {
+class RetrofitResponse<T> : ApiResponse<T> {
 
-    override suspend fun result(): Result<T> {
+    override suspend fun request(response: Response<T>): Result<T> {
         return try {
-            val response = request.invoke()
             val data = response.body()
             if (response.isSuccessful && data != null) {
                 success(data)
@@ -61,26 +59,26 @@ class RetrofitResponse<T>(private val request: suspend () -> Response<T>) :
             genericError()
         } else {
             Error(
-                    codErro = errorObject.codErro,
-                    title = errorObject.title,
-                    message = errorObject.message
+                codErro = errorObject.codErro,
+                title = errorObject.title,
+                message = errorObject.message
             )
         }
     }
 
     private fun connectionError(): Error {
         return Error(
-                codErro = NETWORK_ERROR_CODE,
-                title = NETWORK_ERROR_TITLE,
-                message = NETWORK_ERROR_MSG
+            codErro = NETWORK_ERROR_CODE,
+            title = NETWORK_ERROR_TITLE,
+            message = NETWORK_ERROR_MSG
         )
     }
 
     private fun genericError(): Error {
         return Error(
-                codErro = GENERIC_ERROR_CODE,
-                title = GENERIC_MSG_ERROR_TITLE,
-                message = GENERIC_MSG_ERROR_MESSAGE
+            codErro = GENERIC_ERROR_CODE,
+            title = GENERIC_MSG_ERROR_TITLE,
+            message = GENERIC_MSG_ERROR_MESSAGE
         )
     }
 }
