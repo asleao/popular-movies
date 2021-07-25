@@ -6,8 +6,8 @@ import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
-import br.com.popularmovies.datasourceremote.utils.mapNetworkResult
-import br.com.popularmovies.datasourceremote.utils.mapNetworkResults
+import br.com.popularmovies.datasourceremote.utils.mapApiResult
+import br.com.popularmovies.datasourceremote.utils.mapApiResults
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,24 +19,24 @@ class MovieRemoteDataSource @Inject constructor(retrofit: Retrofit) {
     suspend fun getMovies(orderBy: String): Result<List<MovieDto>> {
         return RetrofitResponse { mMovieService.getMovies(orderBy) }
             .result()
-            .mapNetworkResults()
+            .mapApiResults()
     }
 
     suspend fun getMovie(movieId: Int): Result<MovieDto> {
         return RetrofitResponse { mMovieService.getMovie(movieId) }
             .result()
-            .mapNetworkResult()
+            .mapApiResult()
     }
 
     suspend fun getMovieReviews(movieId: Int): Result<List<MovieReviewDto>> {
         return RetrofitResponse { mMovieService.getMovieReviews(movieId) }
             .result()
-            .mapNetworkResults()
+            .mapApiResults()
     }
 
     suspend fun getMovieTrailers(movieId: Int): Result<List<MovieTrailerDto>> {
         return RetrofitResponse { mMovieService.getMovieTrailers(movieId) }
             .result()
-            .mapNetworkResults()
+            .mapApiResults()
     }
 }
