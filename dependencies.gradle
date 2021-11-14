@@ -6,9 +6,9 @@ ext {
 
             //Sdk
             'sdk'        : [
-                    'compile': 29,
+                    'compile': 30,
                     'min'    : 24,
-                    'target' : 29
+                    'target' : 30
             ],
 
             'versionCode': 1,
@@ -55,7 +55,7 @@ ext {
 
             //Data
             'database'   : [
-                    'room': '2.3.0'
+                    'room': '2.4.0-alpha03'
             ],
             'network'    : [
                     'retrofit': '2.9.0',
