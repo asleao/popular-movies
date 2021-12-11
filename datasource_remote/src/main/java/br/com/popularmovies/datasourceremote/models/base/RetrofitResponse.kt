@@ -16,26 +16,28 @@ import java.io.EOFException
 import java.io.IOException
 import javax.inject.Inject
 
-class RetrofitResponse<T> @Inject constructor(val moshi: Moshi) : ApiResponse<T> {
+class RetrofitResponse @Inject constructor(val moshi: Moshi) : ApiResponse {
 
-    override suspend fun request(response: Response<T>): Result<T> {
+    override suspend fun <T> request(response: suspend () -> Response<T>): Result<T> {
         return try {
-            val data = response.body()
-            if (response.isSuccessful && data != null) {
-                success(data)
-            } else {
-                error(response.code(), response.errorBody())
+            with(response.invoke()) {
+                val data = body()
+                if (isSuccessful && data != null) {
+                    success(data)
+                } else {
+                    error(code(), errorBody())
+                }
             }
         } catch (exception: Exception) {
             failure(exception)
         }
     }
 
-    override fun success(data: T): Result.Success<T> {
+    override fun <T> success(data: T): Result.Success<T> {
         return Result.Success(data)
     }
 
-    override fun error(code: Int, errorBody: ResponseBody?): Result.Error<T> {
+    override fun <T> error(code: Int, errorBody: ResponseBody?): Result.Error<T> {
         val error = if (code == BUSINESS_LOGIC_ERROR_CODE && errorBody != null) {
             businessLogicError(errorBody)
         } else {
@@ -44,7 +46,7 @@ class RetrofitResponse<T> @Inject constructor(val moshi: Moshi) : ApiResponse<T>
         return Result.Error(error)
     }
 
-    override fun failure(exception: Exception): Result.Error<T> {
+    override fun <T> failure(exception: Exception): Result.Error<T> {
         return if (exception is IOException && exception !is EOFException) {
             Result.Error(connectionError())
         } else {

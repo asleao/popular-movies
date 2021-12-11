@@ -28,8 +28,9 @@ import java.io.IOException
 internal class RetrofitResponseTest {
     val response =
         mockk<Response<Boolean>>()
-
     val moshi: Moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+    val retrofitResponse = RetrofitResponse(moshi)
+
 
     @AfterEach
     fun init() {
@@ -43,10 +44,9 @@ internal class RetrofitResponseTest {
             every { response.isSuccessful } answers { true }
             every { response.body() } answers { true }
 
-            val retrofitResponse = runBlocking {
-                RetrofitResponse<Boolean>(moshi).request(response)
-            }
-            val result = retrofitResponse.mapApiResult() as Success<Boolean>
+            val request = runBlocking { retrofitResponse.request { response } }
+
+            val result = request.mapApiResult() as Success<Boolean>
 
             assertThat(result.data).isTrue
         }
@@ -56,11 +56,9 @@ internal class RetrofitResponseTest {
             every { response.isSuccessful } answers { true }
             every { response.body() } answers { null }
 
-            val retrofitResponse = runBlocking {
-                RetrofitResponse<Boolean>(moshi).request(response)
-            }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
@@ -76,10 +74,9 @@ internal class RetrofitResponseTest {
             every { response.errorBody() } answers {
                 "{}".toResponseBody("application/json".toMediaType())
             }
-            val retrofitResponse =
-                runBlocking { RetrofitResponse<Boolean>(moshi).request(response) }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
@@ -94,10 +91,9 @@ internal class RetrofitResponseTest {
             every { response.body() } answers { null }
             every { response.errorBody() } answers { null }
 
-            val retrofitResponse =
-                runBlocking { RetrofitResponse<Boolean>(moshi).request(response) }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
@@ -119,10 +115,9 @@ internal class RetrofitResponseTest {
                 content.toResponseBody("application/json".toMediaType())
             }
 
-            val retrofitResponse =
-                runBlocking { RetrofitResponse<Boolean>(moshi).request(response) }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(5)
@@ -139,10 +134,9 @@ internal class RetrofitResponseTest {
                 "".toResponseBody("application/json".toMediaType())
             }
 
-            val retrofitResponse =
-                runBlocking { RetrofitResponse<Boolean>(moshi).request(response) }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
@@ -152,13 +146,11 @@ internal class RetrofitResponseTest {
 
         @Test
         fun `when there is no connection, then result should return onFailure with a connectionError`() {
-            //TODO verificar como lançar o throws ao chamar o invoke()
             every { response.body() } throws IOException()
 
-            val retrofitResponse =
-                runBlocking { RetrofitResponse<Boolean>(moshi).request(response) }
+            val request = runBlocking { retrofitResponse.request { response } }
 
-            val result = retrofitResponse.mapApiResult() as Error<Boolean>
+            val result = request.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
             assertThat(result.error.code).isEqualTo(NETWORK_ERROR_CODE)
