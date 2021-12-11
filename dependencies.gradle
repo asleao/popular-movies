@@ -36,7 +36,7 @@ ext {
                             'spinKit': '1.4.0'
                     ],
                     'glide'           : [
-                            'core'       : '4.12.0'
+                            'core': '4.12.0'
 
                     ],
                     'recyclerView'    : '1.2.0',
@@ -72,7 +72,7 @@ ext {
             'jodatime'   : '2.10.10',
             'tests'      : [
                     'android'   : [
-                            'core'            : "1.3.0"
+                            'core': "1.3.0"
                     ],
                     'junit'     : [
                             'plugin'     : '1.5.1.0',
@@ -88,7 +88,7 @@ ext {
                     'assertJ'   : '3.20.2',
                     'expresso'  : '3.4.0',
                     'coroutines': '1.5.1',
-                    'mockk'     : '1.12.0'
+                    'mockk'     : '1.12.1'
             ]
     ]
 
@@ -121,8 +121,8 @@ ext {
                             'spinKit': "com.github.ybq:Android-SpinKit:${versions.ui.progressbar.spinKit}"
                     ],
                     'glide'           : [
-                            'core'       : "com.github.bumptech.glide:glide:${versions.ui.glide.core}",
-                            'compiler'   : "com.github.bumptech.glide:compiler:${versions.ui.glide.core}"
+                            'core'    : "com.github.bumptech.glide:glide:${versions.ui.glide.core}",
+                            'compiler': "com.github.bumptech.glide:compiler:${versions.ui.glide.core}"
                     ],
                     'recyclerView'    : "androidx.recyclerview:recyclerview:${versions.ui.recyclerView}",
                     'navigation'      : [
@@ -205,7 +205,8 @@ ext {
                     'coroutines': "org.jetbrains.kotlinx:kotlinx-coroutines-test:${versions.tests.coroutines}",
                     'mockk'     : [
                             'core'   : "io.mockk:mockk:${versions.tests.mockk}",
-                            'android': "io.mockk:mockk-android:${versions.tests.mockk}"
+                            'android': "io.mockk:mockk-android:${versions.tests.mockk}",
+                            'jvm'    : "io.mockk:mockk-agent-jvm:${versions.tests.mockk}"
                     ]
             ]
     ]

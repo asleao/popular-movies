@@ -52,6 +52,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
 
     packagingOptions {

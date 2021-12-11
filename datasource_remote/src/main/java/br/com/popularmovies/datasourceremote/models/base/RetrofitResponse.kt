@@ -14,8 +14,9 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.EOFException
 import java.io.IOException
+import javax.inject.Inject
 
-class RetrofitResponse<T> : ApiResponse<T> {
+class RetrofitResponse<T> @Inject constructor(val moshi: Moshi) : ApiResponse<T> {
 
     override suspend fun request(response: Response<T>): Result<T> {
         return try {
@@ -52,7 +53,6 @@ class RetrofitResponse<T> : ApiResponse<T> {
     }
 
     private fun businessLogicError(errorBody: ResponseBody): Error {
-        val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(Error::class.java)
         val errorObject = jsonAdapter.fromJson(errorBody.string())
         return if (errorObject == null || !errorObject.isValid()) {

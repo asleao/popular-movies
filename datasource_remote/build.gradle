@@ -20,6 +20,19 @@ android {
             buildConfigField "String", "MdbApiKey", props["MdbApiKey"]
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+        jvmArgs '--enable-preview'
+    }
 }
 
 dependencies {
@@ -39,5 +52,13 @@ dependencies {
     api dependency.network.paging
 
     testImplementation dependency.tests.junit.core
-    androidTestImplementation dependency.tests.junit.extensions
+    testImplementation dependency.tests.junit.extensions
+    testImplementation dependency.tests.junit.runner
+    testImplementation dependency.tests.junit.rules
+    testImplementation dependency.tests.junit.jupiter.api
+    testRuntimeOnly dependency.tests.junit.jupiter.engine
+    testImplementation dependency.tests.assertJ
+    testImplementation dependency.tests.coroutines
+    testImplementation dependency.tests.mockk.core
+    testImplementation dependency.tests.mockk.jvm
 }
