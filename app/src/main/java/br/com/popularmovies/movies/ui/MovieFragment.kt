@@ -74,7 +74,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == NETWORK_ERROR_CODE) {
+                if (error.code == NETWORK_ERROR_CODE) {
                     showNoConnection(error.message)
                     tryAgain()
                 } else {

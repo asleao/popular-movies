@@ -63,7 +63,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(GENERIC_ERROR_CODE)
+            assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
             assertThat(result.error.title).isEqualTo(GENERIC_MSG_ERROR_TITLE)
             assertThat(result.error.message).isEqualTo(GENERIC_MSG_ERROR_MESSAGE)
         }
@@ -82,7 +82,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(GENERIC_ERROR_CODE)
+            assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
             assertThat(result.error.title).isEqualTo(GENERIC_MSG_ERROR_TITLE)
             assertThat(result.error.message).isEqualTo(GENERIC_MSG_ERROR_MESSAGE)
         }
@@ -100,7 +100,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(GENERIC_ERROR_CODE)
+            assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
             assertThat(result.error.title).isEqualTo(GENERIC_MSG_ERROR_TITLE)
             assertThat(result.error.message).isEqualTo(GENERIC_MSG_ERROR_MESSAGE)
         }
@@ -112,7 +112,7 @@ internal class RetrofitResponseTest {
             every { response.body() } answers { null }
             every { response.errorBody() } answers {
                 val content = "{\n" +
-                        "   \"codErro\":5,\n" +
+                        "   \"code\":5,\n" +
                         "   \"title\":\"Error\",\n" +
                         "   \"message\":\"Something went wrong\"\n" +
                         "}"
@@ -125,7 +125,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(5)
+            assertThat(result.error.code).isEqualTo(5)
             assertThat(result.error.title).isEqualTo("Error")
             assertThat(result.error.message).isEqualTo("Something went wrong")
         }
@@ -145,7 +145,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(GENERIC_ERROR_CODE)
+            assertThat(result.error.code).isEqualTo(GENERIC_ERROR_CODE)
             assertThat(result.error.title).isEqualTo(GENERIC_MSG_ERROR_TITLE)
             assertThat(result.error.message).isEqualTo(GENERIC_MSG_ERROR_MESSAGE)
         }
@@ -161,7 +161,7 @@ internal class RetrofitResponseTest {
             val result = retrofitResponse.mapApiResult() as Error<Boolean>
 
             assertThat(result.error).isNotNull
-            assertThat(result.error.codErro).isEqualTo(NETWORK_ERROR_CODE)
+            assertThat(result.error.code).isEqualTo(NETWORK_ERROR_CODE)
             assertThat(result.error.title).isEqualTo(NETWORK_ERROR_TITLE)
             assertThat(result.error.message).isEqualTo(NETWORK_ERROR_MSG)
         }

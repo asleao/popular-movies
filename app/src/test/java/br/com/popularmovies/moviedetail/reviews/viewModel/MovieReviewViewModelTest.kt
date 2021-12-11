@@ -1,6 +1,7 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel
 
 import br.com.popularmovies.InstantExecutorExtension
+import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.repositories.movie.MovieRepositoryImpl
 import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
@@ -65,7 +66,7 @@ internal class MovieReviewViewModelTest {
         fun `when request is not sucessfull, then error should be filled`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
                 Result.Error(
-                    br.com.popularmovies.common.models.base.Error(
+                    NetworkError(
                         5,
                         "Error",
                         "Something went wrong"

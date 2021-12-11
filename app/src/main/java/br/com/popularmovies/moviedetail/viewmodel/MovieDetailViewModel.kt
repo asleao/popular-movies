@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.usecases.movies.GetMovieUseCase
@@ -26,8 +26,8 @@ class MovieDetailViewModel @AssistedInject constructor(
 
     val loading = MutableLiveData<Boolean>()
 
-    private val _error = MutableLiveData<Error>()
-    val error: LiveData<Error>
+    private val _error = MutableLiveData<NetworkError>()
+    val error: LiveData<NetworkError>
         get() = _error
 
     private val _movie = MutableLiveData<Movie>()

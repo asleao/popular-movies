@@ -5,7 +5,7 @@ import br.com.popularmovies.common.configs.ErrorCodes.GENERIC_ERROR_CODE
 import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
 import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_MESSAGE
 import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
-import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourceremote.config.NetworkConstants.NETWORK_ERROR_MSG
 import br.com.popularmovies.datasourceremote.config.NetworkConstants.NETWORK_ERROR_TITLE
@@ -52,31 +52,31 @@ class RetrofitResponse<T> @Inject constructor(val moshi: Moshi) : ApiResponse<T>
         }
     }
 
-    private fun businessLogicError(errorBody: ResponseBody): Error {
-        val jsonAdapter = moshi.adapter(Error::class.java)
+    private fun businessLogicError(errorBody: ResponseBody): NetworkError {
+        val jsonAdapter = moshi.adapter(NetworkError::class.java)
         val errorObject = jsonAdapter.fromJson(errorBody.string())
         return if (errorObject == null || !errorObject.isValid()) {
             genericError()
         } else {
-            Error(
-                codErro = errorObject.codErro,
+            NetworkError(
+                code = errorObject.code,
                 title = errorObject.title,
                 message = errorObject.message
             )
         }
     }
 
-    private fun connectionError(): Error {
-        return Error(
-            codErro = NETWORK_ERROR_CODE,
+    private fun connectionError(): NetworkError {
+        return NetworkError(
+            code = NETWORK_ERROR_CODE,
             title = NETWORK_ERROR_TITLE,
             message = NETWORK_ERROR_MSG
         )
     }
 
-    private fun genericError(): Error {
-        return Error(
-            codErro = GENERIC_ERROR_CODE,
+    private fun genericError(): NetworkError {
+        return NetworkError(
+            code = GENERIC_ERROR_CODE,
             title = GENERIC_MSG_ERROR_TITLE,
             message = GENERIC_MSG_ERROR_MESSAGE
         )
