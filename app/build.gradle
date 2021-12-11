@@ -62,8 +62,14 @@ android {
     androidExtensions {
         experimental = true
     }
+
     kapt {
         correctErrorTypes = true
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+        jvmArgs '--enable-preview'
     }
 }
 
@@ -107,8 +113,8 @@ dependencies {
     testRuntimeOnly dependency.tests.junit.jupiter.engine
     testImplementation dependency.tests.assertJ
     testImplementation dependency.tests.coroutines
-    testImplementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
-    implementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
+    testImplementation dependency.tests.mockk.core
+    implementation dependency.tests.mockk.core
     androidTestImplementation dependency.tests.mockk.android
     testImplementation dependency.tests.expresso.core
     androidTestImplementation dependency.tests.expresso.intents

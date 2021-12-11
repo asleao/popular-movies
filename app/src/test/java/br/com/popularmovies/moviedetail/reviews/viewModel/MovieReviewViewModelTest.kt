@@ -1,9 +1,9 @@
 package br.com.popularmovies.moviedetail.reviews.viewModel
 
 import br.com.popularmovies.InstantExecutorExtension
-import br.com.popularmovies.datasourceremote.config.Error
-import br.com.popularmovies.datasourceremote.config.Resource
+import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.repositories.movie.MovieRepositoryImpl
+import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -20,13 +20,14 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(InstantExecutorExtension::class)
-internal class MovieTableReviewViewModelTest {
+internal class MovieReviewViewModelTest {
 
     @ExperimentalCoroutinesApi
     private val testDispatcher = TestCoroutineDispatcher()
 
     lateinit var viewModel: MovieReviewViewModel
-    private val movieRepository = mockk<br.com.popularmovies.repositories.movie.MovieRepositoryImpl>()
+    private val movieRepository = mockk<MovieRepositoryImpl>()
+    private val getMovieReviewUseCase = GetMovieReviewsUseCase(movieRepository)
 
     @BeforeAll
     @ExperimentalCoroutinesApi
@@ -35,7 +36,7 @@ internal class MovieTableReviewViewModelTest {
     }
 
     private fun setupViewModel() {
-        viewModel = MovieReviewViewModel(movieRepository, 429203)
+        viewModel = MovieReviewViewModel(getMovieReviewUseCase, 429203)
     }
 
     @AfterAll
@@ -50,27 +51,33 @@ internal class MovieTableReviewViewModelTest {
         @Test
         fun `when request is sucessfull, then reviews should be filled`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datasourceremote.config.Resource.success(MovieReviews(emptyList()))
+                Result.Success(emptyList())
             }
             setupViewModel()
             viewModel.getReviews()
 
-            assertThat(viewModel.loading.value).isTrue()
-            assertThat(viewModel.reviews.value).isNotNull()
+            assertThat(viewModel.loading.value).isTrue
+            assertThat(viewModel.reviews.value).isNotNull
             assertThat(viewModel.error.value).isNull()
         }
 
         @Test
         fun `when request is not sucessfull, then error should be filled`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datasourceremote.config.Resource.error(br.com.popularmovies.datasourceremote.config.Error(5, "Error", "Something went wrong"))
+                Result.Error(
+                    br.com.popularmovies.common.models.base.Error(
+                        5,
+                        "Error",
+                        "Something went wrong"
+                    )
+                )
             }
             setupViewModel()
             viewModel.getReviews()
 
-            assertThat(viewModel.loading.value).isTrue()
+            assertThat(viewModel.loading.value).isTrue
             assertThat(viewModel.reviews.value).isNull()
-            assertThat(viewModel.error.value).isNotNull()
+            assertThat(viewModel.error.value).isNotNull
         }
     }
 
@@ -79,13 +86,13 @@ internal class MovieTableReviewViewModelTest {
         @Test
         fun `when tryAgain is called, then getReviews should be called as well`() {
             every { runBlocking { movieRepository.getMovieReviews(429203) } } answers {
-                br.com.popularmovies.datasourceremote.config.Resource.success(MovieReviews(emptyList()))
+                Result.Success(emptyList())
             }
             setupViewModel()
             viewModel.tryAgain()
 
-            assertThat(viewModel.loading.value).isTrue()
-            assertThat(viewModel.reviews.value).isNotNull()
+            assertThat(viewModel.loading.value).isTrue
+            assertThat(viewModel.reviews.value).isNotNull
             assertThat(viewModel.error.value).isNull()
         }
     }
