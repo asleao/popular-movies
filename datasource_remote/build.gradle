@@ -49,7 +49,7 @@ dependencies {
     api dependency.network.retrofit.converters.moshi
     api dependency.network.okhttp3.core
     api dependency.network.okhttp3.interceptors.logging
-    api dependency.network.paging
+    api dependency.network.paging.runtime
 
     testImplementation dependency.tests.junit.core
     testImplementation dependency.tests.junit.extensions

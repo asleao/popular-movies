@@ -60,7 +60,7 @@ ext {
             'network'    : [
                     'retrofit': '2.9.0',
                     'okhttp3' : '4.9.1',
-                    'paging'  : '3.0.0'
+                    'paging'  : '3.1.0'
             ],
 
             'moshi'      : [
@@ -167,7 +167,9 @@ ext {
                                     'logging': "com.squareup.okhttp3:logging-interceptor:${versions.network.okhttp3}"
                             ]
                     ],
-                    'paging'  : "androidx.paging:paging-rxjava2-ktx:${versions.network.paging}"
+                    'paging'  : [
+                            'runtime': "androidx.paging:paging-runtime:${versions.network.paging}"
+                    ]
             ],
 
             'moshi'   : [
