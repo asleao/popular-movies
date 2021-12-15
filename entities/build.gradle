@@ -11,7 +11,9 @@ android {
 }
 
 dependencies {
-    implementation dependency.jodatime
+    implementation project(':common')
+
+    implementation dependency.network.paging.common
 
     testImplementation dependency.tests.junit.core
     androidTestImplementation dependency.tests.junit.extensions

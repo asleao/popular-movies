@@ -9,18 +9,20 @@ import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.ui.MovieActivity
-import br.com.popularmovies.repositories.di.RepositoriesModule
+import br.com.popularmovies.usecases.di.UseCasesModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    RepositoriesModule::class,
-    AppSubcomponents::class,
-    ViewModelModule::class,
-    AssistedInjectModule::class
-])
+@Component(
+    modules = [
+        UseCasesModule::class,
+        AppSubcomponents::class,
+        ViewModelModule::class,
+        AssistedInjectModule::class
+    ]
+)
 interface AppComponent {
 
     @Component.Factory

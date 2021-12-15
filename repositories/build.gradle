@@ -17,6 +17,9 @@ dependencies {
     api project(':datasource_remote')
     implementation project(':entities')
 
+    implementation dependency.network.paging.runtime
+    implementation dependency.network.paging.common
+
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
 }

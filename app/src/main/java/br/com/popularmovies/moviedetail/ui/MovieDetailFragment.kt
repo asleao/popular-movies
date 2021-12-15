@@ -56,7 +56,7 @@ class MovieDetailFragment : Fragment(), IConection {
         mViewModel.error.observe(viewLifecycleOwner, Observer { error ->
             mViewModel.showLoading(false)
             if (error != null) {
-                if (error.codErro == NETWORK_ERROR_CODE) {
+                if (error.code == NETWORK_ERROR_CODE) {
                     showMovieDetails(args.movie)
                     setFavoritesImage(args.movie.isFavorite)
                 } else {

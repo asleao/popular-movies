@@ -4,17 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.common.models.base.Error
+import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.repositories.movie.MovieRepository
+import br.com.popularmovies.usecases.movies.GetMovieUseCase
+import br.com.popularmovies.usecases.movies.favorites.SaveMovieToFavoritesUseCase
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
-        private val mMovieRepository: MovieRepository,
-        @Assisted private val movieId: Int
+    private val getMovieUseCase: GetMovieUseCase,
+    private val saveMovieToFavoritesUseCase: SaveMovieToFavoritesUseCase,
+    @Assisted private val movieId: Int
 ) : ViewModel() {
 
     @AssistedInject.Factory
@@ -24,8 +26,8 @@ class MovieDetailViewModel @AssistedInject constructor(
 
     val loading = MutableLiveData<Boolean>()
 
-    private val _error = MutableLiveData<Error>()
-    val error: LiveData<Error>
+    private val _error = MutableLiveData<NetworkError>()
+    val error: LiveData<NetworkError>
         get() = _error
 
     private val _movie = MutableLiveData<Movie>()
@@ -43,7 +45,8 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getMovie() {
         viewModelScope.launch {
             showLoading(true)
-            when (val result = mMovieRepository.getMovie(movieId)) {
+            val params = GetMovieUseCase.Params(movieId)
+            when (val result = getMovieUseCase.build(params)) {
                 is Result.Success -> _movie.value = result.data
                 is Result.Error -> _error.value = result.error
             }
@@ -54,7 +57,9 @@ class MovieDetailViewModel @AssistedInject constructor(
         movie.value?.let { movie ->
             viewModelScope.launch {
                 //TODO Refactor
-                when (val result = mMovieRepository.saveToFavorites(movie.copy(isFavorite = !movie.isFavorite))) {
+                val params =
+                    SaveMovieToFavoritesUseCase.Params(movie.copy(isFavorite = !movie.isFavorite))
+                when (val result = saveMovieToFavoritesUseCase.build(params)) {
                     is Result.Success -> {
                         _isMovieFavorite.value = !movie.isFavorite
                         _movie.value = movie.copy(isFavorite = !movie.isFavorite)
