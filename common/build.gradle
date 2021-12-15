@@ -12,4 +12,5 @@ android {
 
 dependencies {
     api dependency.jodatime
+    api dependency.coroutines.core
 }

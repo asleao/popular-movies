@@ -16,6 +16,7 @@ dependencies {
     implementation project(':entities')
     api project(':repositories')
 
+    implementation dependency.network.paging.common
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler

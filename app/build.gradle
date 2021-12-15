@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion versions.sdk.compile
-    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "br.com.popularmovies"
@@ -51,6 +50,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
 
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
@@ -98,6 +98,8 @@ dependencies {
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide.core
     kapt dependency.ui.glide.compiler
+    implementation dependency.network.paging.runtime
+    implementation dependency.network.paging.common
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
@@ -112,9 +114,10 @@ dependencies {
     testImplementation dependency.tests.junit.jupiter.api
     testRuntimeOnly dependency.tests.junit.jupiter.engine
     testImplementation dependency.tests.assertJ
-    testImplementation dependency.tests.coroutines
+    testImplementation dependency.coroutines.test
     testImplementation dependency.tests.mockk.core
-    implementation dependency.tests.mockk.core
+    testImplementation dependency.tests.mockk.android
+    androidTestImplementation dependency.tests.mockk.core
     androidTestImplementation dependency.tests.mockk.android
     testImplementation dependency.tests.expresso.core
     androidTestImplementation dependency.tests.expresso.intents
