@@ -56,10 +56,6 @@ class PopularMoviesRemoteMediator(
                     val prevKey = if (page == START_INDEX) null else page - 1
                     val nextKey = if (endOfPaginationReached) null else page + 1
 
-                    // MovieDb api returns movie primary key with random values. If we use these ids
-                    // we lose the sort from the server and also cause a pagination loop inside this method.
-                    // The problem here is that we need to keep the same ids between remote_keys and movie
-                    // table.
                     val keys = result.data.map {
                         RemoteKeyTable(
                             movieId = it.id,
