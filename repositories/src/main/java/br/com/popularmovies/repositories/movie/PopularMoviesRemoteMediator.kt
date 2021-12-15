@@ -68,11 +68,9 @@ class PopularMoviesRemoteMediator(
                     }
                     remoteKeyLocalDataSource.insertAll(keys)
                     val keysIds = remoteKeyLocalDataSource.getAll().map { it.id }
-                    result.data.mapIndexed { index, movie ->
-                        movieLocalDataSource.insertMovie(
-                            movie.toTable(keysIds[index])
-                        )
-                    }
+                    movieLocalDataSource.insertAllMovies(result.data.mapIndexed { index, movie ->
+                        movie.toTable(keysIds[index])
+                    })
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
             }
