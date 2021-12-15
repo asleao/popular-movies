@@ -55,11 +55,7 @@ class PopularMoviesRemoteMediator(
                     }
                     val prevKey = if (page == START_INDEX) null else page - 1
                     val nextKey = if (endOfPaginationReached) null else page + 1
-                    // O problema com o mediator é que os ids remotos estão em ordens aleatorias,
-                    // dessa forma quando inserimos na tabela de chaves remotas, a ordem se altera e
-                    // não fica consistente com a ordem que recebemos no payload do endpoint.
-                    // O que preciso fazer é gerar ids iguais para ambas tabelas, para que consiga
-                    // buscar os elementos mantendo a ordem definida pelo servidor.
+
                     val keys = result.data.map {
                         RemoteKeyTable(
                             prevKey = prevKey,
@@ -67,7 +63,14 @@ class PopularMoviesRemoteMediator(
                         )
                     }
                     remoteKeyLocalDataSource.insertAll(keys)
-                    val keysIds = remoteKeyLocalDataSource.getAll().map { it.id }
+                    // MovieDb api returns movie primary key with random values. If we use these ids
+                    // we lose the sort from the server and also cause a pagination loop inside this method.
+                    // The problem here is that we need to keep the same ids between remote_keys and movie
+                    // table. For now, these logic works but would be nice to see if I can improve that.
+                    
+                    val keysIds = remoteKeyLocalDataSource.getAll()
+                        .filter { it.prevKey == prevKey && it.nextKey == nextKey }
+                        .map { it.id }
                     movieLocalDataSource.insertAllMovies(result.data.mapIndexed { index, movie ->
                         movie.toTable(keysIds[index])
                     })
