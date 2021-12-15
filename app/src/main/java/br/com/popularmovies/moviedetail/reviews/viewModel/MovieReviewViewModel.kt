@@ -14,8 +14,14 @@ import kotlinx.coroutines.launch
 
 class MovieReviewViewModel @AssistedInject constructor(
     val getMovieReviewsUseCase: GetMovieReviewsUseCase,
-    @Assisted val movieId: Int
+    @Assisted val movieId: Long
 ) : ViewModel() {
+
+    @AssistedInject.Factory
+    interface Factory {
+        fun create(movieId: Long): MovieReviewViewModel
+    }
+
     val loading = MutableLiveData<Boolean>()
 
     private val _error = MutableLiveData<NetworkError>()
@@ -46,10 +52,5 @@ class MovieReviewViewModel @AssistedInject constructor(
 
     fun tryAgain() {
         getReviews()
-    }
-
-    @AssistedInject.Factory
-    interface Factory {
-        fun create(movieId: Int): MovieReviewViewModel
     }
 }

@@ -8,7 +8,6 @@ import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
 import br.com.popularmovies.datasourceremote.utils.mapApiResult
 import br.com.popularmovies.datasourceremote.utils.mapApiResults
-import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,22 +23,27 @@ class MovieRemoteDataSource @Inject constructor(
         return retrofitResponse
             .request { mMovieService.getMovies(orderBy) }
             .mapApiResults()
-
     }
 
-    suspend fun getMovie(movieId: Int): Result<MovieDto> {
+    suspend fun getPopularMovies(page: Int): Result<List<MovieDto>> {
+        return retrofitResponse
+            .request { mMovieService.getPopularMovies(page) }
+            .mapApiResults()
+    }
+
+    suspend fun getMovie(movieId: Long): Result<MovieDto> {
         return retrofitResponse
             .request { mMovieService.getMovie(movieId) }
             .mapApiResult()
     }
 
-    suspend fun getMovieReviews(movieId: Int): Result<List<MovieReviewDto>> {
+    suspend fun getMovieReviews(movieId: Long): Result<List<MovieReviewDto>> {
         return retrofitResponse
             .request { mMovieService.getMovieReviews(movieId) }
             .mapApiResults()
     }
 
-    suspend fun getMovieTrailers(movieId: Int): Result<List<MovieTrailerDto>> {
+    suspend fun getMovieTrailers(movieId: Long): Result<List<MovieTrailerDto>> {
         return retrofitResponse
             .request { mMovieService.getMovieTrailers(movieId) }
             .mapApiResults()

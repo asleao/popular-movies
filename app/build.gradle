@@ -89,6 +89,7 @@ dependencies {
     implementation dependency.android.lifecycle.runtime
     implementation dependency.android.lifecycle.extensions
     implementation dependency.android.lifecycle.viewModel
+    implementation dependency.android.lifecycle.viewModel
 
     implementation dependency.ui.constraintlayout
     implementation dependency.ui.recyclerView

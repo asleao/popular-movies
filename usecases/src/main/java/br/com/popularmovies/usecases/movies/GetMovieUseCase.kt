@@ -15,6 +15,6 @@ class GetMovieUseCase @Inject constructor(
     }
 
     data class Params(
-        val movieId: Int
+        val movieId: Long
     )
 }

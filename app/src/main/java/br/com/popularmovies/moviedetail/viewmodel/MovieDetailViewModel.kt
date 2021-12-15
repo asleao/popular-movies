@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 class MovieDetailViewModel @AssistedInject constructor(
     private val getMovieUseCase: GetMovieUseCase,
     private val saveMovieToFavoritesUseCase: SaveMovieToFavoritesUseCase,
-    @Assisted private val movieId: Int
+    @Assisted private val movieId: Long
 ) : ViewModel() {
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(movieId: Int): MovieDetailViewModel
+        fun create(movieId: Long): MovieDetailViewModel
     }
 
     val loading = MutableLiveData<Boolean>()
