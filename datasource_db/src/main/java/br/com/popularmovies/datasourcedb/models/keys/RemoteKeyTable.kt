@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 data class RemoteKeyTable(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val movieId: Long,
     val prevKey: Int?,
     val nextKey: Int?
 )

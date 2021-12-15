@@ -23,8 +23,4 @@ class RemoteKeyLocalDataSource @Inject constructor(private val appDatabase: AppD
     suspend fun remoteKeyId(id: Long): RemoteKeyTable? {
         return dao.remoteKeyId(id)
     }
-
-    suspend fun getAll(): List<RemoteKeyTable> {
-        return dao.getAll()
-    }
 }

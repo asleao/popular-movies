@@ -24,12 +24,8 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
         message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    suspend fun getMovies(): Result<List<MovieTable>> {
-        return try {
-            Result.Success(mMovieDao.movies())
-        } catch (exception: Exception) {
-            Result.Error(error)
-        }
+    suspend fun getMovies(): List<MovieTable> {
+        return mMovieDao.movies()
     }
 
     fun getPopularMoviesPagingSourceFactory(): PagingSource<Int, MovieTable> {

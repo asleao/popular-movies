@@ -13,6 +13,7 @@ data class MovieTable(
     val votes: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
+    var remoteId: Long = 0,
     val voteAverage: BigDecimal,
     val originalTitle: String,
     val popularity: BigDecimal,

@@ -32,10 +32,10 @@ fun MovieDto.toDomain(): Movie {
     )
 }
 
-fun MovieDto.toTable(id: Long): MovieTable {
+fun MovieDto.toTable(): MovieTable {
     return MovieTable(
         votes = votes,
-        id = id,
+        remoteId = id,
         voteAverage = voteAverage,
         originalTitle = originalTitle,
         popularity = popularity,

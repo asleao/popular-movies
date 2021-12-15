@@ -56,23 +56,20 @@ class PopularMoviesRemoteMediator(
                     val prevKey = if (page == START_INDEX) null else page - 1
                     val nextKey = if (endOfPaginationReached) null else page + 1
 
+                    // MovieDb api returns movie primary key with random values. If we use these ids
+                    // we lose the sort from the server and also cause a pagination loop inside this method.
+                    // The problem here is that we need to keep the same ids between remote_keys and movie
+                    // table.
                     val keys = result.data.map {
                         RemoteKeyTable(
+                            movieId = it.id,
                             prevKey = prevKey,
                             nextKey = nextKey
                         )
                     }
                     remoteKeyLocalDataSource.insertAll(keys)
-                    // MovieDb api returns movie primary key with random values. If we use these ids
-                    // we lose the sort from the server and also cause a pagination loop inside this method.
-                    // The problem here is that we need to keep the same ids between remote_keys and movie
-                    // table. For now, these logic works but would be nice to see if I can improve that.
-                    
-                    val keysIds = remoteKeyLocalDataSource.getAll()
-                        .filter { it.prevKey == prevKey && it.nextKey == nextKey }
-                        .map { it.id }
-                    movieLocalDataSource.insertAllMovies(result.data.mapIndexed { index, movie ->
-                        movie.toTable(keysIds[index])
+                    movieLocalDataSource.insertAllMovies(result.data.map { movie ->
+                        movie.toTable()
                     })
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
@@ -90,7 +87,7 @@ class PopularMoviesRemoteMediator(
                 it.data.isNotEmpty()
             }?.data?.lastOrNull()
             ?.let { movie ->
-                remoteKeyLocalDataSource.remoteKeyId(movie.id)
+                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId)
             }
     }
 
@@ -100,7 +97,7 @@ class PopularMoviesRemoteMediator(
                 it.data.isNotEmpty()
             }?.data?.firstOrNull()
             ?.let { movie ->
-                remoteKeyLocalDataSource.remoteKeyId(movie.id)
+                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId)
             }
     }
 
@@ -108,7 +105,7 @@ class PopularMoviesRemoteMediator(
         state: PagingState<Int, MovieTable>
     ): RemoteKeyTable? {
         return state.anchorPosition?.let { position ->
-            state.closestItemToPosition(position)?.id?.let { id ->
+            state.closestItemToPosition(position)?.remoteId?.let { id ->
                 remoteKeyLocalDataSource.remoteKeyId(id)
             }
         }
