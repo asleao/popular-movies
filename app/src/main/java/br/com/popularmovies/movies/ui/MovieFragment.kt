@@ -15,8 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
-import br.com.popularmovies.common.configs.ErrorCodes.NETWORK_ERROR_CODE
-import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieOrderType
@@ -54,7 +52,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupMoviesPaging() {
-        val pagingAdapter = MoviePagingAdapter()
+        val pagingAdapter = MoviePagingAdapter(this)
         binding.rvMovies.adapter = pagingAdapter
 
         pagingAdapter.addLoadStateListener { loadState ->

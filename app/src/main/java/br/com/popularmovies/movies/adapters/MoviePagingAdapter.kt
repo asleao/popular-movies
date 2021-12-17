@@ -11,8 +11,10 @@ import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
-class MoviePagingAdapter : PagingDataAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
+class MoviePagingAdapter(private val clickListener: MovieClickListener) :
+    PagingDataAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
 
 
     override fun onCreateViewHolder(
@@ -30,8 +32,13 @@ class MoviePagingAdapter : PagingDataAdapter<Movie, MovieViewHolder>(MovieDiffCa
         Glide.with(holder.itemView.context)
             .load(Constants.IMAGE_URL + movie?.poster)
             .placeholder(R.drawable.loading)
+            .transition(DrawableTransitionOptions.withCrossFade(600))
             .error(R.drawable.no_photo)
             .into(holder.moviePoster)
+
+        holder.itemView.setOnClickListener {
+            clickListener.onMovieClick(movie)
+        }
     }
 
 
