@@ -3,6 +3,10 @@
     <string name="sort_by">Sort by</string>
     <string name="ok" tools:keep="@string/ok"><b>OK</b></string>
     <string name="try_again">Try again?</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="account">Account</string>
     <string name="movie_detail_text">Interstellar</string>
     <string name="movie_release_date_label">Released</string>
     <string name="movie_release_date">01 MAR 2014</string>
