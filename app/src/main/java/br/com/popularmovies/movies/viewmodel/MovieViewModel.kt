@@ -9,8 +9,8 @@ import androidx.paging.cachedIn
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.usecases.movies.GetInTheaterMoviesUseCase
+import br.com.popularmovies.usecases.movies.GetPopularMoviesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
     private val getInTheaterMoviesUseCase: GetInTheaterMoviesUseCase,
-    private val mMovieRepository: MovieRepository
+    getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
@@ -31,8 +31,8 @@ class MovieViewModel @Inject constructor(
     val inTheaterMovies: LiveData<List<Movie>>
         get() = _inTheaterMovies
 
-    val moviesFlow: Flow<PagingData<Movie>> =
-        mMovieRepository.getMovies().cachedIn(viewModelScope)
+    val popularMoviesFlow: Flow<PagingData<Movie>> =
+        getPopularMoviesUseCase.build(Unit).cachedIn(viewModelScope)
 
     init {
         getInTheaterMovies()

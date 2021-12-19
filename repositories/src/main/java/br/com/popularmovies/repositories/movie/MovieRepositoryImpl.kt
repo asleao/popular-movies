@@ -40,7 +40,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     @ExperimentalPagingApi
-    override fun getMovies(): Flow<PagingData<Movie>> {
+    override fun getPopularMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 50,

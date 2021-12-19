@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieRepository {
     suspend fun getMovies(orderBy: MovieOrderType): Result<List<Movie>>
 
-    fun getMovies(): Flow<PagingData<Movie>>
+    fun getPopularMovies(): Flow<PagingData<Movie>>
 
     suspend fun getMovie(movieId: Long): Result<Movie>
 

@@ -50,7 +50,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupObservers() {
-        setupMoviesPaging()
+        setupPopularMoviesFlow()
         setupInTheaterMoviesObserver()
         setupErrorObserver()
     }
@@ -73,7 +73,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun setupMoviesPaging() {
+    private fun setupPopularMoviesFlow() {
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvPopularMovies.adapter = pagingAdapter
 
@@ -85,7 +85,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            mViewModel.moviesFlow.collectLatest { pagingData ->
+            mViewModel.popularMoviesFlow.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }
