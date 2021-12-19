@@ -1,12 +1,12 @@
 package br.com.popularmovies.datasourcedb.models.keys
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
+import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 
-@Entity(tableName = "remote_keys")
+@Entity(tableName = "remote_keys", primaryKeys = ["movieId", "type"])
 data class RemoteKeyTable(
-    @PrimaryKey
     val movieId: Long,
+    val type: MovieTypeTable,
     val prevKey: Int?,
     val nextKey: Int?
 )

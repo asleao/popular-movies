@@ -5,6 +5,7 @@ import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
+import br.com.popularmovies.datasourceremote.models.movie.MovieTypeParam
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
 import br.com.popularmovies.datasourceremote.utils.mapApiResult
 import br.com.popularmovies.datasourceremote.utils.mapApiResults
@@ -19,15 +20,15 @@ class MovieRemoteDataSource @Inject constructor(
 ) {
     private val mMovieService: MovieService = retrofit.create(MovieService::class.java)
 
-    suspend fun getMovies(orderBy: String): Result<List<MovieDto>> {
+    suspend fun getMovies(page: Int, type: MovieTypeParam): Result<List<MovieDto>> {
         return retrofitResponse
-            .request { mMovieService.getMovies(orderBy) }
-            .mapApiResults()
-    }
-
-    suspend fun getPopularMovies(page: Int): Result<List<MovieDto>> {
-        return retrofitResponse
-            .request { mMovieService.getPopularMovies(page) }
+            .request {
+                when (type) {
+                    MovieTypeParam.TopRated -> mMovieService.getTopRatedMovies(page)
+                    MovieTypeParam.MostPopular -> mMovieService.getPopularMovies(page)
+                    MovieTypeParam.NowPlaying -> mMovieService.getNowPlayingMovies(page)
+                }
+            }
             .mapApiResults()
     }
 
@@ -49,9 +50,9 @@ class MovieRemoteDataSource @Inject constructor(
             .mapApiResults()
     }
 
-    suspend fun getNowPlayingMovies(): Result<List<MovieDto>> {
+    suspend fun getNowPlayingMovies(page: Int): Result<List<MovieDto>> {
         return retrofitResponse
-            .request { mMovieService.getNowPlayingMovies() }
+            .request { mMovieService.getNowPlayingMovies(page) }
             .mapApiResults()
     }
 }

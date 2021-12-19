@@ -25,7 +25,7 @@
     <string name="no_trailers">No trailers available :(</string>
 
     <string name="fg_movie_popular_title">Popular</string>
-    <string name="fg_movie_in_theater_title">Latest</string>
+    <string name="fg_movie_now_playing_title">Now Playing</string>
     <string name="fg_movie_top_hated_title">Top Hated</string>
 
 </resources>

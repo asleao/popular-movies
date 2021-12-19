@@ -9,13 +9,16 @@ import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSour
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
+import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
+import br.com.popularmovies.repositories.mappers.toParam
 import br.com.popularmovies.repositories.mappers.toTable
 import retrofit2.HttpException
 import java.io.IOException
 
 @ExperimentalPagingApi
-class PopularMoviesRemoteMediator(
+class MoviesRemoteMediator(
+    private val type: MovieTypeTable,
     private val remoteKeyLocalDataSource: RemoteKeyLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource
@@ -27,17 +30,17 @@ class PopularMoviesRemoteMediator(
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state, type)
                 remoteKeys?.nextKey?.minus(1) ?: START_INDEX
             }
             LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val remoteKeys = getRemoteKeyForFirstItem(state, type)
                 val prevKey = remoteKeys?.prevKey
                     ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 prevKey
             }
             LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
+                val remoteKeys = getRemoteKeyForLastItem(state, type)
                 val nextKey = remoteKeys?.nextKey
                     ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 nextKey
@@ -45,13 +48,13 @@ class PopularMoviesRemoteMediator(
         }
 
         try {
-            return when (val result = movieRemoteDataSource.getPopularMovies(page)) {
+            return when (val result = movieRemoteDataSource.getMovies(page, type.toParam())) {
                 is Result.Error -> MediatorResult.Error(Throwable("${result.error.code}-${result.error.message}"))
                 is Result.Success -> {
                     val endOfPaginationReached = result.data.isEmpty()
                     if (loadType == LoadType.REFRESH) {
                         remoteKeyLocalDataSource.clear()
-                        movieLocalDataSource.deleteAllMovies()
+                        movieLocalDataSource.deleteAllMovies(type)
                     }
                     val prevKey = if (page == START_INDEX) null else page - 1
                     val nextKey = if (endOfPaginationReached) null else page + 1
@@ -59,13 +62,14 @@ class PopularMoviesRemoteMediator(
                     val keys = result.data.map {
                         RemoteKeyTable(
                             movieId = it.id,
+                            type = type,
                             prevKey = prevKey,
                             nextKey = nextKey
                         )
                     }
                     remoteKeyLocalDataSource.insertAll(keys)
                     movieLocalDataSource.insertAllMovies(result.data.map { movie ->
-                        movie.toTable()
+                        movie.toTable(type)
                     })
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
@@ -77,32 +81,38 @@ class PopularMoviesRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, MovieTable>): RemoteKeyTable? {
+    private suspend fun getRemoteKeyForLastItem(
+        state: PagingState<Int, MovieTable>,
+        type: MovieTypeTable
+    ): RemoteKeyTable? {
         return state.pages
             .lastOrNull {
                 it.data.isNotEmpty()
             }?.data?.lastOrNull()
             ?.let { movie ->
-                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId)
+                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId, type)
             }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, MovieTable>): RemoteKeyTable? {
+    private suspend fun getRemoteKeyForFirstItem(
+        state: PagingState<Int, MovieTable>,
+        type: MovieTypeTable
+    ): RemoteKeyTable? {
         return state.pages
             .firstOrNull {
                 it.data.isNotEmpty()
             }?.data?.firstOrNull()
             ?.let { movie ->
-                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId)
+                remoteKeyLocalDataSource.remoteKeyId(movie.remoteId, type)
             }
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, MovieTable>
+        state: PagingState<Int, MovieTable>, type: MovieTypeTable
     ): RemoteKeyTable? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.remoteId?.let { id ->
-                remoteKeyLocalDataSource.remoteKeyId(id)
+                remoteKeyLocalDataSource.remoteKeyId(id, type)
             }
         }
     }

@@ -10,7 +10,6 @@ import java.math.BigDecimal
 @Entity(tableName = "movie")
 @Parcelize
 data class MovieTable(
-    val votes: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
     var remoteId: Long = 0,
@@ -20,5 +19,7 @@ data class MovieTable(
     val poster: String,
     val overview: String,
     val releaseDate: LocalDate,
-    var isFavorite: Boolean = false
+    val votes: Int,
+    var isFavorite: Boolean = false,
+    val type: MovieTypeTable
 ) : Parcelable

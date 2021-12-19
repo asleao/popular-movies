@@ -49,16 +49,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            android:paddingBottom="16dp"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <include
-                    android:id="@+id/i_base_layout"
-                    layout="@layout/base_layout_databinding"
-                    app:status="@{viewModel.loading}" />
 
                 <TextView
                     android:id="@+id/tv_in_theater_movies"
@@ -67,14 +63,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="@string/fg_movie_in_theater_title"
+                    android:text="@string/fg_movie_now_playing_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_in_theater_movies"
+                    android:id="@+id/rv_now_playing_movies"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -97,7 +93,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_in_theater_movies" />
+                    app:layout_constraintTop_toBottomOf="@+id/rv_now_playing_movies" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_popular_movies"
@@ -113,7 +109,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_popular_movies" />
 
                 <TextView
-                    android:id="@+id/tv_top_hated_movies"
+                    android:id="@+id/tv_top_rated_movies"
                     style="@style/Subtitle2Theme"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -126,7 +122,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/rv_popular_movies" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_top_hated_movies"
+                    android:id="@+id/rv_top_rated_movies"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -136,10 +132,15 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_top_hated_movies" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_top_rated_movies" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/i_base_layout"
+            layout="@layout/base_layout_databinding"
+            app:status="@{viewModel.loading}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

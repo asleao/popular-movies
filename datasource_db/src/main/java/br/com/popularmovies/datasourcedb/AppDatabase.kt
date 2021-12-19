@@ -9,9 +9,10 @@ import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.typeconverters.BigDecimalConverter
 import br.com.popularmovies.datasourcedb.typeconverters.LocalDateConverter
+import br.com.popularmovies.datasourcedb.typeconverters.MovieTypeConverters
 
 @Database(entities = [MovieTable::class, RemoteKeyTable::class], version = 1, exportSchema = false)
-@TypeConverters(LocalDateConverter::class, BigDecimalConverter::class)
+@TypeConverters(LocalDateConverter::class, BigDecimalConverter::class, MovieTypeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
     abstract fun remoteKeysDao(): RemoteKeysDao

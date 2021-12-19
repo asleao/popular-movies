@@ -21,7 +21,6 @@ import br.com.popularmovies.common.configs.ErrorMessages
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
-import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
@@ -51,13 +50,14 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun setupObservers() {
         setupPopularMoviesFlow()
-        setupInTheaterMoviesObserver()
+        setupNewestNowPlayingMovieObserver()
+        setupNowPlayingMoviesFlow()
+        setupTopHatedMoviesFlow()
         setupErrorObserver()
     }
 
-    private fun setupInTheaterMoviesObserver() {
-        mViewModel.inTheaterMovies.observe(viewLifecycleOwner) { movies ->
-            val movie = movies.first()
+    private fun setupNewestNowPlayingMovieObserver() {
+        mViewModel.newestNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
             Glide.with(requireContext())
                 .load(Constants.IMAGE_URL + movie.poster)
                 .transform(CenterCrop())
@@ -65,11 +65,6 @@ class MovieFragment : Fragment(), MovieClickListener {
                 .transition(DrawableTransitionOptions.withCrossFade(600))
                 .into(binding.ctHeaderImage)
             binding.tvHeaderTitle.text = movie.originalTitle
-            val movieAdapter = MovieAdapter(this)
-            binding.rvInTheaterMovies.adapter = movieAdapter
-
-            binding.rvTopHatedMovies.adapter = movieAdapter
-            movieAdapter.submitList(movies)
         }
     }
 
@@ -91,6 +86,44 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
+    private fun setupNowPlayingMoviesFlow() {
+        val pagingAdapter = MoviePagingAdapter(this)
+        binding.rvNowPlayingMovies.adapter = pagingAdapter
+
+        pagingAdapter.addLoadStateListener { loadState ->
+            binding.rvNowPlayingMovies.isVisible =
+                loadState.mediator?.refresh is LoadState.NotLoading
+            binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
+            binding.iBaseLayout.btTryAgain.isVisible =
+                loadState.mediator?.refresh is LoadState.Error
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            mViewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
+            }
+        }
+    }
+
+    private fun setupTopHatedMoviesFlow() {
+        val pagingAdapter = MoviePagingAdapter(this)
+        binding.rvTopRatedMovies.adapter = pagingAdapter
+
+        pagingAdapter.addLoadStateListener { loadState ->
+            binding.rvTopRatedMovies.isVisible =
+                loadState.mediator?.refresh is LoadState.NotLoading
+            binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
+            binding.iBaseLayout.btTryAgain.isVisible =
+                loadState.mediator?.refresh is LoadState.Error
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            mViewModel.topHatedMoviesFlow.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
+            }
+        }
+    }
+
     private fun setupErrorObserver() {
         mViewModel.error.observe(viewLifecycleOwner) { error ->
             if (error != null) {
@@ -105,7 +138,8 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun showNoConnection(message: String) {
         binding.rvPopularMovies.visibility = View.GONE
-        binding.rvInTheaterMovies.visibility = View.GONE
+        binding.rvNowPlayingMovies.visibility = View.GONE
+        binding.rvTopRatedMovies.visibility = View.GONE
         binding.iBaseLayout.tvNoConection.text = message
         binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
     }

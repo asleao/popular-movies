@@ -11,6 +11,7 @@ import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.config.DbConstants.ROOM_MSG_ERROR
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
+import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,20 +25,8 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
         message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    suspend fun getMovies(): List<MovieTable> {
-        return mMovieDao.movies()
-    }
-
-    fun getPopularMoviesPagingSourceFactory(): PagingSource<Int, MovieTable> {
-        return mMovieDao.getPopularMovies()
-    }
-
-    suspend fun getFavoriteMovies(isFavorite: Boolean): Result<List<MovieTable>> {
-        return try {
-            Result.Success(mMovieDao.getFavoriteMovies(isFavorite))
-        } catch (exception: Exception) {
-            Result.Error(error)
-        }
+    fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable> {
+        return mMovieDao.movies(type)
     }
 
     suspend fun getMovie(movieId: Long): Result<MovieTable> {
@@ -47,7 +36,6 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
             Result.Error(NetworkError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
-
 
     suspend fun saveToFavorites(movieTable: MovieTable): Result<Unit> {
         return try {
@@ -75,9 +63,9 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
         }
     }
 
-    suspend fun deleteAllMovies() {
+    suspend fun deleteAllMovies(type: MovieTypeTable) {
         appDatabase.withTransaction {
-            mMovieDao.deleteAllMovies()
+            mMovieDao.deleteAllMovies(type)
         }
     }
 

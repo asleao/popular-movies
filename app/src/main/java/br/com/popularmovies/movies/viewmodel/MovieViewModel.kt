@@ -9,16 +9,17 @@ import androidx.paging.cachedIn
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.usecases.movies.GetInTheaterMoviesUseCase
-import br.com.popularmovies.usecases.movies.GetPopularMoviesUseCase
+import br.com.popularmovies.entities.movie.MovieType
+import br.com.popularmovies.usecases.movies.GetMoviesUseCase
+import br.com.popularmovies.usecases.movies.GetNewestNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class MovieViewModel @Inject constructor(
-    private val getInTheaterMoviesUseCase: GetInTheaterMoviesUseCase,
-    getPopularMoviesUseCase: GetPopularMoviesUseCase
+    private val getNewestNowPlayingMovieUseCase: GetNewestNowPlayingMovieUseCase,
+    getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData<Boolean>()
@@ -27,20 +28,29 @@ class MovieViewModel @Inject constructor(
     val error: LiveData<NetworkError>
         get() = _error
 
-    private val _inTheaterMovies: MutableLiveData<List<Movie>> = MutableLiveData()
-    val inTheaterMovies: LiveData<List<Movie>>
-        get() = _inTheaterMovies
+    private val _newestNowPlayingMovie: MutableLiveData<Movie> = MutableLiveData()
+    val newestNowPlayingMovie: LiveData<Movie>
+        get() = _newestNowPlayingMovie
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =
-        getPopularMoviesUseCase.build(Unit).cachedIn(viewModelScope)
+        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.MostPopular))
+            .cachedIn(viewModelScope)
+
+    val nowPlayingMoviesFlow: Flow<PagingData<Movie>> =
+        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.NowPlaying))
+            .cachedIn(viewModelScope)
+
+    val topHatedMoviesFlow: Flow<PagingData<Movie>> =
+        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.TopRated))
+            .cachedIn(viewModelScope)
 
     init {
-        getInTheaterMovies()
+        getNewestNowPlayingMovie()
     }
 
-    private fun getInTheaterMovies() = viewModelScope.launch {
-        when (val result = getInTheaterMoviesUseCase.build(Unit)) {
-            is Result.Success -> _inTheaterMovies.value = result.data
+    private fun getNewestNowPlayingMovie() = viewModelScope.launch {
+        when (val result = getNewestNowPlayingMovieUseCase.build(Unit)) {
+            is Result.Success -> _newestNowPlayingMovie.value = result.data
             is Result.Error -> {
                 _error.value = result.error
             }
