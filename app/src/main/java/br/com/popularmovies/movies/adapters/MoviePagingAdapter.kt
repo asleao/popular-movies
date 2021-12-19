@@ -11,6 +11,8 @@ import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class MoviePagingAdapter(private val clickListener: MovieClickListener) :
@@ -31,9 +33,9 @@ class MoviePagingAdapter(private val clickListener: MovieClickListener) :
         val movie = getItem(position)
         Glide.with(holder.itemView.context)
             .load(Constants.IMAGE_URL + movie?.poster)
-            .placeholder(R.drawable.loading)
-            .transition(DrawableTransitionOptions.withCrossFade(600))
+            .transform(CenterCrop(), RoundedCorners(8)) //TODO Check why images cornes problem
             .error(R.drawable.no_photo)
+            .transition(DrawableTransitionOptions.withCrossFade(600))
             .into(holder.moviePoster)
 
         holder.itemView.setOnClickListener {
