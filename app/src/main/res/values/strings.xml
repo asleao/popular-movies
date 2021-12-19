@@ -26,5 +26,6 @@
 
     <string name="fg_movie_popular_title">Popular</string>
     <string name="fg_movie_in_theater_title">Latest</string>
+    <string name="fg_movie_top_hated_title">Top Hated</string>
 
 </resources>

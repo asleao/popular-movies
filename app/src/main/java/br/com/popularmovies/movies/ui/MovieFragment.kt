@@ -21,6 +21,7 @@ import br.com.popularmovies.common.configs.ErrorMessages
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
+import br.com.popularmovies.movies.adapters.MovieAdapter
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
@@ -64,6 +65,11 @@ class MovieFragment : Fragment(), MovieClickListener {
                 .transition(DrawableTransitionOptions.withCrossFade(600))
                 .into(binding.ctHeaderImage)
             binding.tvHeaderTitle.text = movie.originalTitle
+            val movieAdapter = MovieAdapter(this)
+            binding.rvInTheaterMovies.adapter = movieAdapter
+
+            binding.rvTopHatedMovies.adapter = movieAdapter
+            movieAdapter.submitList(movies)
         }
     }
 
