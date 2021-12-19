@@ -14,6 +14,9 @@ interface MovieService {
     @GET("movie/{sort_by}")
     suspend fun getMovies(@Path("sort_by") orderBy: String): Response<BaseDto<MovieDto>>
 
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(): Response<BaseDto<MovieDto>>
+
     @GET("movie/popular")
     suspend fun getPopularMovies(@Query("page") page: Int): Response<BaseDto<MovieDto>>
 

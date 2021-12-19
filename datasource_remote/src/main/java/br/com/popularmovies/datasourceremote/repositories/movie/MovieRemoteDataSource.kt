@@ -48,4 +48,10 @@ class MovieRemoteDataSource @Inject constructor(
             .request { mMovieService.getMovieTrailers(movieId) }
             .mapApiResults()
     }
+
+    suspend fun getNowPlayingMovies(): Result<List<MovieDto>> {
+        return retrofitResponse
+            .request { mMovieService.getNowPlayingMovies() }
+            .mapApiResults()
+    }
 }

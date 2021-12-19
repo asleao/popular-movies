@@ -111,4 +111,11 @@ class MovieRepositoryImpl @Inject constructor(
             is Result.Error -> Result.Error(result.error)
         }
     }
+
+    override suspend fun getNowPlayingMovies(): Result<List<Movie>> {
+        return when (val result = mMovieRemoteDataSource.getNowPlayingMovies()) {
+            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
+            is Result.Error -> Result.Error(result.error)
+        }
+    }
 }

@@ -20,4 +20,6 @@ interface MovieRepository {
     suspend fun saveToFavorites(movie: Movie): Result<Unit>
 
     suspend fun getMovieTrailers(movieId: Long): Result<List<MovieTrailer>>
+
+    suspend fun getNowPlayingMovies(): Result<List<Movie>>
 }
