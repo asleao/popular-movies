@@ -33,7 +33,7 @@ class MoviePagingAdapter(private val clickListener: MovieClickListener) :
         val movie = getItem(position)
         Glide.with(holder.itemView.context)
             .load(Constants.IMAGE_URL + movie?.poster)
-            .transform(CenterCrop(), RoundedCorners(8)) //TODO Check why images cornes problem
+            .transform(CenterCrop(), RoundedCorners(8)) 
             .error(R.drawable.no_photo)
             .transition(DrawableTransitionOptions.withCrossFade(600))
             .into(holder.moviePoster)

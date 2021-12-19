@@ -48,8 +48,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupMoviesPaging() {
-        val dividerItemDecoration = DividerItemDecoration(binding.rvMovies.context, HORIZONTAL)
-        binding.rvMovies.addItemDecoration(dividerItemDecoration)
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvMovies.adapter = pagingAdapter
 
