@@ -24,6 +24,8 @@ import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
+import br.com.popularmovies.utils.SpacingItemDecoration
+import br.com.popularmovies.utils.SpacingItemDecorationType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -49,10 +51,13 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupObservers() {
-        setupPopularMoviesFlow()
+        val spacingItemDecoration = resources.getDimensionPixelSize(
+            R.dimen.list_spacing_default
+        )
         setupNewestNowPlayingMovieObserver()
-        setupNowPlayingMoviesFlow()
-        setupTopHatedMoviesFlow()
+        setupPopularMoviesFlow(spacingItemDecoration)
+        setupNowPlayingMoviesFlow(spacingItemDecoration)
+        setupTopHatedMoviesFlow(spacingItemDecoration)
         setupErrorObserver()
     }
 
@@ -68,10 +73,14 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun setupPopularMoviesFlow() {
+    private fun setupPopularMoviesFlow(spacingItemDecoration: Int) {
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvPopularMovies.adapter = pagingAdapter
-
+        binding.rvPopularMovies.addItemDecoration(
+            SpacingItemDecoration(
+                SpacingItemDecorationType.Horizontal(spacingItemDecoration)
+            )
+        )
         pagingAdapter.addLoadStateListener { loadState ->
             binding.rvPopularMovies.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
             binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
@@ -86,9 +95,14 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun setupNowPlayingMoviesFlow() {
+    private fun setupNowPlayingMoviesFlow(spacingItemDecoration: Int) {
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvNowPlayingMovies.adapter = pagingAdapter
+        binding.rvNowPlayingMovies.addItemDecoration(
+            SpacingItemDecoration(
+                SpacingItemDecorationType.Horizontal(spacingItemDecoration)
+            )
+        )
 
         pagingAdapter.addLoadStateListener { loadState ->
             binding.rvNowPlayingMovies.isVisible =
@@ -105,9 +119,14 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
     }
 
-    private fun setupTopHatedMoviesFlow() {
+    private fun setupTopHatedMoviesFlow(spacingItemDecoration: Int) {
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvTopRatedMovies.adapter = pagingAdapter
+        binding.rvTopRatedMovies.addItemDecoration(
+            SpacingItemDecoration(
+                SpacingItemDecorationType.Horizontal(spacingItemDecoration)
+            )
+        )
 
         pagingAdapter.addLoadStateListener { loadState ->
             binding.rvTopRatedMovies.isVisible =
