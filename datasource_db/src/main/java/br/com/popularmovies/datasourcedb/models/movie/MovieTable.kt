@@ -1,14 +1,11 @@
 package br.com.popularmovies.datasourcedb.models.movie
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 
 @Entity(tableName = "movie")
-@Parcelize
 data class MovieTable(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
@@ -22,4 +19,4 @@ data class MovieTable(
     val votes: Int,
     var isFavorite: Boolean = false,
     val type: MovieTypeTable
-) : Parcelable
+)
