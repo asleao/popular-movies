@@ -48,4 +48,9 @@
         <item name="android:textColor">@color/onPrimary</item>
     </style>
 
+    <style name="CardShapeAppearance" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 </resources>

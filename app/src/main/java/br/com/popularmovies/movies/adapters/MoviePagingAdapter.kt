@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.view.marginEnd
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,8 +12,6 @@ import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class MoviePagingAdapter(private val clickListener: MovieClickListener) :
@@ -33,11 +32,9 @@ class MoviePagingAdapter(private val clickListener: MovieClickListener) :
         val movie = getItem(position)
         Glide.with(holder.itemView.context)
             .load(Constants.IMAGE_URL + movie?.poster)
-            .transform(CenterCrop(), RoundedCorners(8))
             .error(R.drawable.no_photo)
             .transition(DrawableTransitionOptions.withCrossFade(600))
             .into(holder.moviePoster)
-
         holder.itemView.setOnClickListener {
             clickListener.onMovieClick(movie)
         }
