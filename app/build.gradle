@@ -98,6 +98,7 @@ dependencies {
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide.core
+    implementation dependency.ui.shimmer
     kapt dependency.ui.glide.compiler
     implementation dependency.network.paging.runtime
     implementation dependency.network.paging.common
