@@ -11,7 +11,8 @@ import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.config.DbConstants.ROOM_MSG_ERROR
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import org.joda.time.LocalDate
+import java.math.BigDecimal
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,13 +26,27 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
         message = GENERIC_MSG_ERROR_MESSAGE
     )
 
-    fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable> {
-        return mMovieDao.movies(type)
+    fun getPopularMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.MostPopular> {
+        return mMovieDao.mostPopularMovies()
+    }
+
+    fun getTopRatedMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.TopRated> {
+        return mMovieDao.topRatedMovies()
+    }
+
+    fun getNowPlayingMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.NowPlaying> {
+        return mMovieDao.nowPlayingMovies()
     }
 
     suspend fun getMovie(movieId: Long): Result<MovieTable> {
         return try {
-            Result.Success(mMovieDao.getMovie(movieId))
+//            Result.Success(mMovieDao.getMovie(movieId)) ////TODO Check That
+            Result.Success(
+                MovieTable.MostPopular(
+                    1, 1, BigDecimal.ZERO, "", BigDecimal.ONE, "", "",
+                    LocalDate.now(), 1, false
+                )
+            )
         } catch (e: Exception) {
             Result.Error(NetworkError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
@@ -39,8 +54,8 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
 
     suspend fun saveToFavorites(movieTable: MovieTable): Result<Unit> {
         return try {
-            val updatedRowsCount = mMovieDao.saveFavorites(movieTable.id, movieTable.isFavorite)
-            Result.Success(updatedRowsCount)
+//            val updatedRowsCount = mMovieDao.saveFavorites(movieTable.id, movieTable.isFavorite) //TODO Check That
+            Result.Success(Unit)
 
         } catch (e: Exception) {
             Result.Error(NetworkError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
@@ -49,7 +64,8 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
 
     suspend fun insertMovie(movieTable: MovieTable): Result<Unit> {
         return try {
-            Result.Success(mMovieDao.insertMovie(movieTable))
+//            Result.Success(mMovieDao.insertMovie(movieTable)) //TODO Check That
+            Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error(NetworkError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
@@ -57,21 +73,46 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
 
     suspend fun isMovieExists(movieId: Long): Result<Boolean> {
         return try {
-            Result.Success(mMovieDao.isMovieExists(movieId))
+//            Result.Success(mMovieDao.isMovieExists(movieId)) //TODO Check That
+            Result.Success(false)
         } catch (e: Exception) {
             Result.Error(NetworkError(GENERIC_ERROR_CODE, ROOM_MSG_ERROR))
         }
     }
 
-    suspend fun deleteAllMovies(type: MovieTypeTable) {
+    suspend fun deleteAllMostPopularMovies() {
         appDatabase.withTransaction {
-            mMovieDao.deleteAllMovies(type)
+            mMovieDao.deleteAllMostPopularMovies()
         }
     }
 
-    suspend fun insertAllMovies(movies: List<MovieTable>) {
+    suspend fun deleteAllTopRatedMovies() {
         appDatabase.withTransaction {
-            mMovieDao.insertAllMovies(movies)
+            mMovieDao.deleteAllTopRatedMovies()
+        }
+    }
+
+    suspend fun deleteAllNowPlayingMovies() {
+        appDatabase.withTransaction {
+            mMovieDao.deleteAllNowPlayingMovies()
+        }
+    }
+
+    suspend fun insertAllMostPopularMovies(movies: List<MovieTable.MostPopular>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertAllMostPopularMovies(movies)
+        }
+    }
+
+    suspend fun insertAllTopRatedMovies(movies: List<MovieTable.TopRated>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertAllTopRatedMovies(movies)
+        }
+    }
+
+    suspend fun insertAllNowPlayingMovies(movies: List<MovieTable.NowPlaying>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertAllNowPlayingMovies(movies)
         }
     }
 }

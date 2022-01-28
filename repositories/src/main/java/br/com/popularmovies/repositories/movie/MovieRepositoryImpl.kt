@@ -12,7 +12,7 @@ import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.repositories.config.PaginationConfig
 import br.com.popularmovies.repositories.mappers.toDomain
-import br.com.popularmovies.repositories.mappers.toTable
+import br.com.popularmovies.repositories.mappers.toMostPopularTable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -33,16 +33,13 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
-            remoteMediator = MoviesRemoteMediator(
-                MovieTypeTable.NowPlaying,
+            remoteMediator = NowPlayingMoviesRemoteMediator(
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
             ),
             pagingSourceFactory = {
-                mMovieLocalDataSource.getMoviesPagingSourceFactory(
-                    MovieTypeTable.NowPlaying
-                )
+                mMovieLocalDataSource.getNowPlayingMoviesPagingSourceFactory()
             }
         )
             .flow
@@ -69,16 +66,13 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
-            remoteMediator = MoviesRemoteMediator(
-                MovieTypeTable.MostPopular,
+            remoteMediator = PopularMoviesRemoteMediator(
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
             ),
             pagingSourceFactory = {
-                mMovieLocalDataSource.getMoviesPagingSourceFactory(
-                    MovieTypeTable.MostPopular
-                )
+                mMovieLocalDataSource.getPopularMoviesPagingSourceFactory()
             }
         )
             .flow
@@ -97,16 +91,13 @@ class MovieRepositoryImpl @Inject constructor(
                 prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
-            remoteMediator = MoviesRemoteMediator(
-                MovieTypeTable.TopRated,
+            remoteMediator = TopRatedMoviesRemoteMediator(
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
             ),
             pagingSourceFactory = {
-                mMovieLocalDataSource.getMoviesPagingSourceFactory(
-                    MovieTypeTable.TopRated
-                )
+                mMovieLocalDataSource.getTopRatedMoviesPagingSourceFactory()
             }
         )
             .flow
@@ -147,13 +138,13 @@ class MovieRepositoryImpl @Inject constructor(
                 val isMovieExists = result.data
                 if (isMovieExists) {
                     when (val result =
-                        mMovieLocalDataSource.saveToFavorites(movie.toTable(MovieTypeTable.MostPopular))) {
+                        mMovieLocalDataSource.saveToFavorites(movie.toMostPopularTable())) { //Check That
                         is Result.Success -> Result.Success(Unit)
                         is Result.Error -> Result.Error(result.error)
                     }
                 } else {
                     when (val result =
-                        mMovieLocalDataSource.insertMovie(movie.toTable(MovieTypeTable.MostPopular))) {
+                        mMovieLocalDataSource.insertMovie(movie.toMostPopularTable())) { //Check That
                         is Result.Success -> Result.Success(Unit)
                         is Result.Error -> Result.Error(result.error)
                     }
