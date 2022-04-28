@@ -50,10 +50,10 @@ class MovieRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getMostRecentNowPlayingMovie(): Result<Movie> {
+    override suspend fun getRandomNowPlayingMovie(): Result<Movie> {
         return when (val result =
             mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
-            is Result.Success -> Result.Success(result.data.first().toDomain())
+            is Result.Success -> Result.Success(result.data.random().toDomain())
             is Result.Error -> Result.Error(result.error)
         }
     }

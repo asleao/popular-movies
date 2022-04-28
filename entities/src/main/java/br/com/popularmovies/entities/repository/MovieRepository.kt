@@ -11,7 +11,7 @@ interface MovieRepository {
 
     fun getNowPlayingMovies(): Flow<PagingData<Movie>>
 
-    suspend fun getMostRecentNowPlayingMovie(): Result<Movie>
+    suspend fun getRandomNowPlayingMovie(): Result<Movie>
 
     fun getPopularMovies(): Flow<PagingData<Movie>>
 

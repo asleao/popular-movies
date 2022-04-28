@@ -62,7 +62,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-        mViewModel.newestNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
+        mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
             Glide.with(requireContext())
                 .load(Constants.IMAGE_URL + movie.poster)
                 .transform(CenterCrop())

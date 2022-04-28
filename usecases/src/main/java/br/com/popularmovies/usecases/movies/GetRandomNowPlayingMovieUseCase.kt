@@ -6,11 +6,11 @@ import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.entities.usecase.UseCase
 import javax.inject.Inject
 
-class GetNewestNowPlayingMovieUseCase @Inject constructor(
+class GetRandomNowPlayingMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) : UseCase<Unit, Movie>() {
 
     override suspend fun build(param: Unit): Result<Movie> {
-        return movieRepository.getMostRecentNowPlayingMovie()
+        return movieRepository.getRandomNowPlayingMovie()
     }
 }

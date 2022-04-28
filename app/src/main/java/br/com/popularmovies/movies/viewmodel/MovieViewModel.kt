@@ -11,14 +11,14 @@ import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.usecases.movies.GetMoviesUseCase
-import br.com.popularmovies.usecases.movies.GetNewestNowPlayingMovieUseCase
+import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 class MovieViewModel @Inject constructor(
-    private val getNewestNowPlayingMovieUseCase: GetNewestNowPlayingMovieUseCase,
+    private val getRandomNowPlayingMovieUseCase: GetRandomNowPlayingMovieUseCase,
     getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
@@ -28,9 +28,9 @@ class MovieViewModel @Inject constructor(
     val error: LiveData<NetworkError>
         get() = _error
 
-    private val _newestNowPlayingMovie: MutableLiveData<Movie> = MutableLiveData()
-    val newestNowPlayingMovie: LiveData<Movie>
-        get() = _newestNowPlayingMovie
+    private val _randomNowPlayingMovie: MutableLiveData<Movie> = MutableLiveData()
+    val randomNowPlayingMovie: LiveData<Movie>
+        get() = _randomNowPlayingMovie
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.MostPopular))
@@ -49,8 +49,8 @@ class MovieViewModel @Inject constructor(
     }
 
     private fun getNewestNowPlayingMovie() = viewModelScope.launch {
-        when (val result = getNewestNowPlayingMovieUseCase.build(Unit)) {
-            is Result.Success -> _newestNowPlayingMovie.value = result.data
+        when (val result = getRandomNowPlayingMovieUseCase.build(Unit)) {
+            is Result.Success -> _randomNowPlayingMovie.value = result.data
             is Result.Error -> {
                 _error.value = result.error
             }
