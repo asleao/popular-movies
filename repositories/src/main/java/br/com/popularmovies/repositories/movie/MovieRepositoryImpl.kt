@@ -25,7 +25,7 @@ class MovieRepositoryImpl @Inject constructor(
     private val mMovieRemoteDataSource: MovieRemoteDataSource
 ) : MovieRepository {
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     override fun getNowPlayingMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
@@ -58,7 +58,7 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     override fun getPopularMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
@@ -83,7 +83,7 @@ class MovieRepositoryImpl @Inject constructor(
             }
     }
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     override fun getTopHatedMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
