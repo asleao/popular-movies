@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MainButtonTheme" parent="TextAppearance.MaterialComponents.Button">
+    <style name="MainButton" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">24dp</item>
@@ -23,7 +23,7 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
-    <style name="HeaderTheme" parent="TextAppearance.MaterialComponents.Headline6">
+    <style name="Header" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -38,12 +38,12 @@
         <item name="android:background">@color/colorSecondaryDark</item>
     </style>
 
-    <style name="Subtitle2Theme" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <style name="Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Body2Theme" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="Body2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/onPrimary</item>
     </style>
@@ -52,5 +52,4 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
-
 </resources>

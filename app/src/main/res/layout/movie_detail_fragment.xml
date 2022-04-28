@@ -25,7 +25,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_title"
-                style="@style/HeaderTheme"
+                style="@style/Header"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_release_date_label"
-                style="@style/Subtitle2Theme"
+                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -76,7 +76,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_release_date"
-                style="@style/Body2Theme"
+                style="@style/Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -93,7 +93,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_rating_label"
-                style="@style/Subtitle2Theme"
+                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -110,7 +110,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_rating"
-                style="@style/Body2Theme"
+                style="@style/Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -144,7 +144,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_overview_label"
-                style="@style/Subtitle2Theme"
+                style="@style/Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -163,7 +163,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_overview"
-                style="@style/Body2Theme"
+                style="@style/Body2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -181,7 +181,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_trailers_label"
-                style="@style/Subtitle2Theme"
+                style="@style/Subtitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -202,7 +202,7 @@
 
             <TextView
                 android:id="@+id/tv_movie_reviews_label"
-                style="@style/Subtitle2Theme"
+                style="@style/Subtitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
