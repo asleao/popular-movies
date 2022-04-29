@@ -62,6 +62,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
+        //TODO replace this with a viewpage2
         mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
             Glide.with(requireContext())
                 .load(Constants.IMAGE_URL + movie.poster)
