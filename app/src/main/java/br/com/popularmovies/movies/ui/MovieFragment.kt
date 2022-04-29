@@ -20,15 +20,12 @@ import br.com.popularmovies.common.configs.ErrorCodes
 import br.com.popularmovies.common.configs.ErrorMessages
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
+import br.com.popularmovies.movies.adapters.NowPlayingViewPagerAdapter
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
 import br.com.popularmovies.utils.SpacingItemDecoration
 import br.com.popularmovies.utils.SpacingItemDecorationType
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
@@ -62,15 +59,8 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-        //TODO replace this with a viewpage2
         mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
-            Glide.with(requireContext())
-                .load(Constants.IMAGE_URL + movie.poster)
-                .transform(CenterCrop())
-                .error(R.drawable.no_photo)
-                .transition(DrawableTransitionOptions.withCrossFade(600))
-                .into(binding.ctHeaderImage)
-            binding.tvHeaderTitle.text = movie.originalTitle
+            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, listOf(movie))
         }
     }
 

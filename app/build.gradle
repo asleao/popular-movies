@@ -67,6 +67,10 @@ android {
         correctErrorTypes = true
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     tasks.withType(Test) {
         useJUnitPlatform()
         jvmArgs '--enable-preview'
