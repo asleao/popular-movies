@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class GetRandomNowPlayingMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository
-) : UseCase<Unit, Movie>() {
+) : UseCase<Unit, List<Movie>>() {
 
-    override suspend fun build(param: Unit): Result<Movie> {
-        return movieRepository.getRandomNowPlayingMovie()
+    override suspend fun build(param: Unit): Result<List<Movie>> {
+        return movieRepository.getRandomNowPlayingMovies()
     }
 }

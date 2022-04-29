@@ -4,7 +4,6 @@ import androidx.paging.*
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
@@ -50,10 +49,10 @@ class MovieRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getRandomNowPlayingMovie(): Result<Movie> {
+    override suspend fun getRandomNowPlayingMovies(): Result<List<Movie>> {
         return when (val result =
             mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
-            is Result.Success -> Result.Success(result.data.random().toDomain())
+            is Result.Success -> Result.Success(result.data.take(5).map { it.toDomain() })
             is Result.Error -> Result.Error(result.error)
         }
     }

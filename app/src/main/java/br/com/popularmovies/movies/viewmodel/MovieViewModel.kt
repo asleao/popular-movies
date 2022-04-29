@@ -28,8 +28,8 @@ class MovieViewModel @Inject constructor(
     val error: LiveData<NetworkError>
         get() = _error
 
-    private val _randomNowPlayingMovie: MutableLiveData<Movie> = MutableLiveData()
-    val randomNowPlayingMovie: LiveData<Movie>
+    private val _randomNowPlayingMovie: MutableLiveData<List<Movie>> = MutableLiveData()
+    val randomNowPlayingMovie: LiveData<List<Movie>>
         get() = _randomNowPlayingMovie
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =

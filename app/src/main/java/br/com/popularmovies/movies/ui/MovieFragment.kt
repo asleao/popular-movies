@@ -59,8 +59,8 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-        mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movie ->
-            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, listOf(movie))
+        mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
+            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies)
         }
     }
 
