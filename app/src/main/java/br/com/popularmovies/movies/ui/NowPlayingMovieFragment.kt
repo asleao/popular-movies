@@ -26,7 +26,7 @@ class NowPlayingMovieFragment() : Fragment() {
         arguments?.let {
             val movieArg = it.getParcelable<Movie>(MOVIE_ARG)
             movieArg?.let { movie ->
-                binding.container.startShimmer()
+                binding.container.showShimmer(true)
 
                 Glide.with(requireContext())
                     .load(Constants.IMAGE_URL + movie.poster)
