@@ -29,7 +29,6 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
             remoteMediator = NowPlayingMoviesRemoteMediator(
@@ -62,7 +61,6 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
             remoteMediator = PopularMoviesRemoteMediator(
@@ -87,7 +85,6 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                prefetchDistance = PaginationConfig.prefechDistance,
                 enablePlaceholders = false
             ),
             remoteMediator = TopRatedMoviesRemoteMediator(

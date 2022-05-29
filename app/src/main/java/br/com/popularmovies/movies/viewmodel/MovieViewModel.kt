@@ -22,7 +22,7 @@ class MovieViewModel @Inject constructor(
     getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
-    val loading = MutableLiveData<Boolean>()
+    val loading = MutableLiveData(false)
 
     private val _error = MutableLiveData<NetworkError>()
     val error: LiveData<NetworkError>

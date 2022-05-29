@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -52,8 +51,8 @@ class MovieFragment : Fragment(), MovieClickListener {
             R.dimen.list_spacing_default
         )
         setupNewestNowPlayingMovieObserver()
-        setupPopularMoviesFlow(spacingItemDecoration)
         setupNowPlayingMoviesFlow(spacingItemDecoration)
+        setupPopularMoviesFlow(spacingItemDecoration)
         setupTopHatedMoviesFlow(spacingItemDecoration)
         setupErrorObserver()
     }
@@ -73,8 +72,6 @@ class MovieFragment : Fragment(), MovieClickListener {
             )
         )
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.rvPopularMovies.isVisible = loadState.mediator?.refresh is LoadState.NotLoading
-            binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
             binding.iBaseLayout.btTryAgain.isVisible =
                 loadState.mediator?.refresh is LoadState.Error
         }
@@ -96,9 +93,6 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.rvNowPlayingMovies.isVisible =
-                loadState.mediator?.refresh is LoadState.NotLoading
-            binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
             binding.iBaseLayout.btTryAgain.isVisible =
                 loadState.mediator?.refresh is LoadState.Error
         }
@@ -120,9 +114,6 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.rvTopRatedMovies.isVisible =
-                loadState.mediator?.refresh is LoadState.NotLoading
-            binding.iBaseLayout.pbBase.isVisible = loadState.mediator?.refresh is LoadState.Loading
             binding.iBaseLayout.btTryAgain.isVisible =
                 loadState.mediator?.refresh is LoadState.Error
         }
@@ -168,7 +159,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movie, container, false)
+        binding = FragmentMovieBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
