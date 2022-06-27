@@ -7,16 +7,25 @@ plugins {
 }
 
 android {
+
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/**/*']
+        }
+        resources {
+            excludes += ['META-INF/**/*']
+        }
+    }
     compileSdkVersion versions.sdk.compile
 
     defaultConfig {
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         applicationId "br.com.popularmovies"
         minSdkVersion versions.sdk.min
         targetSdkVersion versions.sdk.target
         versionCode versions.versionCode
         versionName versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         multiDexEnabled = true
     }
 
@@ -55,9 +64,6 @@ android {
 
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
 
-    packagingOptions {
-        exclude 'META-INF/**/*'
-    }
 
     androidExtensions {
         experimental = true
