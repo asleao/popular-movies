@@ -32,8 +32,6 @@ class MoviePagingAdapter(private val clickListener: MovieClickListener) :
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
 
-        holder.itemView.container.showShimmer(true)
-
         val movie = getItem(position)
         Glide.with(holder.itemView.context)
             .load(Constants.IMAGE_URL + movie?.poster)
