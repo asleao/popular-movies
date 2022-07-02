@@ -59,9 +59,8 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun setupNewestNowPlayingMovieObserver() {
         mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
-            //TODO Improve that
-            binding.shimmerContainer.stopShimmer()
             binding.shimmerContainer.setShimmer(null)
+            binding.shimmerContainer.background = null
             binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies)
         }
     }
