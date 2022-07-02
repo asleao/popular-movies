@@ -59,13 +59,16 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun setupNewestNowPlayingMovieObserver() {
         mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
-            binding.shimmerContainer.setShimmer(null)
-            binding.shimmerContainer.background = null
+            binding.viewPagerShimmer.setShimmer(null)
+            binding.viewPagerShimmer.background = null
             binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies)
         }
     }
 
     private fun setupPopularMoviesFlow(spacingItemDecoration: Int) {
+        binding.tvPopularMoviesShimmer.setShimmer(null)
+        binding.tvPopularMoviesShimmer.background = null
+        binding.tvPopularMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvPopularMovies.adapter = pagingAdapter
         binding.rvPopularMovies.addItemDecoration(
@@ -86,6 +89,9 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNowPlayingMoviesFlow(spacingItemDecoration: Int) {
+        binding.tvInTheaterMoviesShimmer.setShimmer(null)
+        binding.tvInTheaterMoviesShimmer.background = null
+        binding.tvInTheaterMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvNowPlayingMovies.adapter = pagingAdapter
         binding.rvNowPlayingMovies.addItemDecoration(
@@ -107,6 +113,9 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupTopHatedMoviesFlow(spacingItemDecoration: Int) {
+        binding.tvTopRatedMoviesShimmer.setShimmer(null)
+        binding.tvTopRatedMoviesShimmer.background = null
+        binding.tvTopRatedMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvTopRatedMovies.adapter = pagingAdapter
         binding.rvTopRatedMovies.addItemDecoration(
