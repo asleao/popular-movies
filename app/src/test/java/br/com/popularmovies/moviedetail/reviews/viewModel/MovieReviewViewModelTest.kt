@@ -1,3 +1,4 @@
+/*
 package br.com.popularmovies.moviedetail.reviews.viewModel
 
 import br.com.popularmovies.InstantExecutorExtension
@@ -97,4 +98,4 @@ internal class MovieReviewViewModelTest {
             assertThat(viewModel.error.value).isNull()
         }
     }
-}
+}*/
