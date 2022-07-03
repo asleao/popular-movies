@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion versions.sdk.compile
-    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "br.com.popularmovies"
@@ -52,7 +51,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion versions.ui.compose.core
+        kotlinCompilerVersion versions.ui.compose.core
+        kotlinCompilerExtensionVersion  versions.ui.compose.core
     }
 
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
@@ -120,7 +120,6 @@ dependencies {
     testImplementation dependency.tests.junit.jupiter.api
     testRuntimeOnly dependency.tests.junit.jupiter.engine
     testImplementation dependency.tests.assertJ
-    testImplementation dependency.tests.coroutines
     testImplementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
     implementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
     androidTestImplementation dependency.tests.mockk.android
