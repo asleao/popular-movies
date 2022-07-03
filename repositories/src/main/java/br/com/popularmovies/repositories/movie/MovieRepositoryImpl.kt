@@ -29,7 +29,7 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                enablePlaceholders = false
+                enablePlaceholders = true
             ),
             remoteMediator = NowPlayingMoviesRemoteMediator(
                 remoteKeyLocalDataSource,
@@ -61,7 +61,7 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                enablePlaceholders = false
+                enablePlaceholders = true
             ),
             remoteMediator = PopularMoviesRemoteMediator(
                 remoteKeyLocalDataSource,
@@ -85,7 +85,7 @@ class MovieRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = PaginationConfig.pageSize,
-                enablePlaceholders = false
+                enablePlaceholders = true
             ),
             remoteMediator = TopRatedMoviesRemoteMediator(
                 remoteKeyLocalDataSource,

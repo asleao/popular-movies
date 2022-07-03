@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.common.configs.ErrorCodes
@@ -77,8 +76,8 @@ class MovieFragment : Fragment(), MovieClickListener {
             )
         )
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.iBaseLayout.btTryAgain.isVisible =
-                loadState.mediator?.refresh is LoadState.Error
+//            binding.iBaseLayout.btTryAgain.isVisible =
+//                loadState.mediator?.refresh is LoadState.Error
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -101,8 +100,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.iBaseLayout.btTryAgain.isVisible =
-                loadState.mediator?.refresh is LoadState.Error
+//            binding.iBaseLayout.btTryAgain.isVisible =
+//                loadState.mediator?.refresh is LoadState.Error
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -125,8 +124,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-            binding.iBaseLayout.btTryAgain.isVisible =
-                loadState.mediator?.refresh is LoadState.Error
+//            binding.iBaseLayout.btTryAgain.isVisible =
+//                loadState.mediator?.refresh is LoadState.Error
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -152,8 +151,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.rvPopularMovies.visibility = View.GONE
         binding.rvNowPlayingMovies.visibility = View.GONE
         binding.rvTopRatedMovies.visibility = View.GONE
-        binding.iBaseLayout.tvNoConection.text = message
-        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
+//        binding.iBaseLayout.tvNoConection.text = message
+//        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
     }
 
     private fun showGenericError(message: String) {

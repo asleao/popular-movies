@@ -189,10 +189,5 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <include
-            android:id="@+id/i_base_layout"
-            layout="@layout/base_layout_databinding"
-            app:status="@{viewModel.loading}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
