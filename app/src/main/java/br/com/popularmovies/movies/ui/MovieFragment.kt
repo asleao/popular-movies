@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
 import br.com.popularmovies.common.configs.ErrorCodes
@@ -174,6 +175,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = mViewModel
         setupObservers()
+        binding.viewPager.setPageTransformer(MarginPageTransformer(44))//TODO add dimens here
         return binding.root
     }
 
