@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
@@ -66,9 +67,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupPopularMoviesFlow(spacingItemDecoration: Int) {
-        binding.tvPopularMoviesShimmer.setShimmer(null)
-        binding.tvPopularMoviesShimmer.background = null
-        binding.tvPopularMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvPopularMovies.adapter = pagingAdapter
         binding.rvPopularMovies.addItemDecoration(
@@ -77,8 +75,16 @@ class MovieFragment : Fragment(), MovieClickListener {
             )
         )
         pagingAdapter.addLoadStateListener { loadState ->
-//            binding.iBaseLayout.btTryAgain.isVisible =
-//                loadState.mediator?.refresh is LoadState.Error
+            val isRefreshSucceded =
+                loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
+            binding.tvPopularMovies.isVisible = isRefreshSucceded
+            binding.rvPopularMovies.isVisible = isRefreshSucceded
+            val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvPopularMoviesShimmer.showShimmer(isLoading)
+            if (!isLoading) {
+                binding.tvPopularMoviesShimmer.background = null
+                binding.tvPopularMoviesShimmer.hideShimmer()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -89,9 +95,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupNowPlayingMoviesFlow(spacingItemDecoration: Int) {
-        binding.tvInTheaterMoviesShimmer.setShimmer(null)
-        binding.tvInTheaterMoviesShimmer.background = null
-        binding.tvInTheaterMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvNowPlayingMovies.adapter = pagingAdapter
         binding.rvNowPlayingMovies.addItemDecoration(
@@ -101,8 +104,16 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-//            binding.iBaseLayout.btTryAgain.isVisible =
-//                loadState.mediator?.refresh is LoadState.Error
+            val isRefreshSucceded =
+                loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
+            binding.tvNowPlayingMovies.isVisible = isRefreshSucceded
+            binding.rvNowPlayingMovies.isVisible = isRefreshSucceded
+            val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvNowPlayingMoviesShimmer.showShimmer(isLoading)
+            if (!isLoading) {
+                binding.tvNowPlayingMoviesShimmer.background = null
+                binding.tvNowPlayingMoviesShimmer.hideShimmer()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -113,9 +124,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupTopHatedMoviesFlow(spacingItemDecoration: Int) {
-        binding.tvTopRatedMoviesShimmer.setShimmer(null)
-        binding.tvTopRatedMoviesShimmer.background = null
-        binding.tvTopRatedMovies.isVisible = true
         val pagingAdapter = MoviePagingAdapter(this)
         binding.rvTopRatedMovies.adapter = pagingAdapter
         binding.rvTopRatedMovies.addItemDecoration(
@@ -125,8 +133,16 @@ class MovieFragment : Fragment(), MovieClickListener {
         )
 
         pagingAdapter.addLoadStateListener { loadState ->
-//            binding.iBaseLayout.btTryAgain.isVisible =
-//                loadState.mediator?.refresh is LoadState.Error
+            val isRefreshSucceded =
+                loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
+            binding.tvTopRatedMovies.isVisible = isRefreshSucceded
+            binding.rvTopRatedMovies.isVisible = isRefreshSucceded
+            val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvTopRatedMoviesShimmer.showShimmer(isLoading)
+            if (!isLoading) {
+                binding.tvTopRatedMoviesShimmer.background = null
+                binding.tvTopRatedMoviesShimmer.hideShimmer()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
