@@ -14,8 +14,6 @@ import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.delayFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,12 +41,12 @@ class MovieViewModel @Inject constructor(
 
     val nowPlayingMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.NowPlaying))
-            .onStart { delay((2000)) } //TODO Remove this delay
+            .onStart { delay((3000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     val topHatedMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.TopRated))
-            .onStart { delay((2000)) } //TODO Remove this delay
+            .onStart { delay((6000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     init {
@@ -63,5 +61,4 @@ class MovieViewModel @Inject constructor(
             }
         }
     }
-
 }

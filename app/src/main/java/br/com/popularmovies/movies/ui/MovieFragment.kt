@@ -81,8 +81,9 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvPopularMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvPopularMoviesShimmer.showShimmer(isLoading)
+            binding.tvPopularMoviesShimmer.isVisible = isLoading
+
             if (!isLoading) {
-                binding.tvPopularMoviesShimmer.background = null
                 binding.tvPopularMoviesShimmer.hideShimmer()
             }
         }
@@ -110,8 +111,8 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvNowPlayingMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvNowPlayingMoviesShimmer.showShimmer(isLoading)
+            binding.tvNowPlayingMoviesShimmer.isVisible = isLoading
             if (!isLoading) {
-                binding.tvNowPlayingMoviesShimmer.background = null
                 binding.tvNowPlayingMoviesShimmer.hideShimmer()
             }
         }
@@ -139,8 +140,9 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvTopRatedMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvTopRatedMoviesShimmer.showShimmer(isLoading)
+            binding.tvTopRatedMoviesShimmer.isVisible = isLoading
+
             if (!isLoading) {
-                binding.tvTopRatedMoviesShimmer.background = null
                 binding.tvTopRatedMoviesShimmer.hideShimmer()
             }
         }
