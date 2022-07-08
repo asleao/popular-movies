@@ -7,7 +7,7 @@ import br.com.popularmovies.entities.movie.Movie
 fun MovieTable.toDomain(): Movie {
     return Movie(
         votes = votes,
-        id = id,
+        id = remoteId,
         voteAverage = voteAverage,
         originalTitle = originalTitle,
         popularity = popularity,
