@@ -28,6 +28,7 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getNowPlayingMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
+                prefetchDistance = PaginationConfig.prefechDistance,
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),
@@ -60,6 +61,7 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getPopularMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
+                prefetchDistance = PaginationConfig.prefechDistance,
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),
@@ -84,6 +86,7 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getTopHatedMovies(): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
+                prefetchDistance = PaginationConfig.prefechDistance,
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),

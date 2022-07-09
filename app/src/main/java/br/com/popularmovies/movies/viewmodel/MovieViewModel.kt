@@ -36,17 +36,17 @@ class MovieViewModel @Inject constructor(
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.MostPopular))
-            .onStart { delay((2000)) } //TODO Remove this delay
+//            .onStart { delay((2000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     val nowPlayingMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.NowPlaying))
-            .onStart { delay((3000)) } //TODO Remove this delay
+//            .onStart { delay((3000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     val topHatedMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.TopRated))
-            .onStart { delay((6000)) } //TODO Remove this delay
+//            .onStart { delay((6000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     init {
@@ -54,7 +54,7 @@ class MovieViewModel @Inject constructor(
     }
 
     private fun getNewestNowPlayingMovie() = viewModelScope.launch {
-        delay((2000))//TODO Remove this delay
+//        delay((2000))//TODO Remove this delay
         when (val result = getRandomNowPlayingMovieUseCase.build(Unit)) {
             is Result.Success -> _randomNowPlayingMovie.value = result.data
             is Result.Error -> {
