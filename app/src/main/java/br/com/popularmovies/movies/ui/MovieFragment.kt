@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -81,7 +82,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvPopularMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvPopularMoviesShimmer.showShimmer(isLoading)
-            binding.tvPopularMoviesShimmer.isVisible = isLoading
+            binding.tvPopularMoviesShimmer.isInvisible = !isLoading
 
             if (!isLoading) {
                 binding.tvPopularMoviesShimmer.hideShimmer()
@@ -111,7 +112,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvNowPlayingMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvNowPlayingMoviesShimmer.showShimmer(isLoading)
-            binding.tvNowPlayingMoviesShimmer.isVisible = isLoading
+            binding.tvNowPlayingMoviesShimmer.isInvisible = !isLoading
             if (!isLoading) {
                 binding.tvNowPlayingMoviesShimmer.hideShimmer()
             }
@@ -140,7 +141,7 @@ class MovieFragment : Fragment(), MovieClickListener {
             binding.rvTopRatedMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
             binding.tvTopRatedMoviesShimmer.showShimmer(isLoading)
-            binding.tvTopRatedMoviesShimmer.isVisible = isLoading
+            binding.tvTopRatedMoviesShimmer.isInvisible = !isLoading
 
             if (!isLoading) {
                 binding.tvTopRatedMoviesShimmer.hideShimmer()

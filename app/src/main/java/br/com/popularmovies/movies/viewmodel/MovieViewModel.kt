@@ -54,6 +54,7 @@ class MovieViewModel @Inject constructor(
     }
 
     private fun getNewestNowPlayingMovie() = viewModelScope.launch {
+        delay((2000))//TODO Remove this delay
         when (val result = getRandomNowPlayingMovieUseCase.build(Unit)) {
             is Result.Success -> _randomNowPlayingMovie.value = result.data
             is Result.Error -> {

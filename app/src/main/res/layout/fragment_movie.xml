@@ -62,16 +62,18 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/tv_now_playing_movies_shimmer"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@color/shimmer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shimmer_auto_start="true" />
+                    app:shimmer_auto_start="true">
+
+                    <include layout="@layout/movie_list_placeholder" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <TextView
                     android:id="@+id/tv_now_playing_movies"
@@ -104,16 +106,18 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/tv_popular_movies_shimmer"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@color/shimmer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_now_playing_movies"
-                    app:shimmer_auto_start="true" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_now_playing_movies_shimmer"
+                    app:shimmer_auto_start="true">
+
+                    <include layout="@layout/movie_list_placeholder" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <TextView
                     android:id="@+id/tv_popular_movies"
@@ -127,7 +131,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_now_playing_movies"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_now_playing_movies_shimmer"
                     tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -146,16 +150,18 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/tv_top_rated_movies_shimmer"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@color/shimmer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_popular_movies"
-                    app:shimmer_auto_start="true" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_popular_movies_shimmer"
+                    app:shimmer_auto_start="true">
+
+                    <include layout="@layout/movie_list_placeholder" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <TextView
                     android:id="@+id/tv_top_rated_movies"
@@ -169,7 +175,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_popular_movies"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_popular_movies_shimmer"
                     tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView
