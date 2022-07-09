@@ -78,9 +78,9 @@ class MovieFragment : Fragment(), MovieClickListener {
         pagingAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
-            binding.tvPopularMovies.isVisible = isRefreshSucceded
-            binding.rvPopularMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvPopularMovies.isVisible = isRefreshSucceded && !isLoading
+            binding.rvPopularMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvPopularMoviesShimmer.showShimmer(isLoading)
             binding.tvPopularMoviesShimmer.isInvisible = !isLoading
 
@@ -108,9 +108,9 @@ class MovieFragment : Fragment(), MovieClickListener {
         pagingAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
-            binding.tvNowPlayingMovies.isVisible = isRefreshSucceded
-            binding.rvNowPlayingMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvNowPlayingMovies.isVisible = isRefreshSucceded && !isLoading
+            binding.rvNowPlayingMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvNowPlayingMoviesShimmer.showShimmer(isLoading)
             binding.tvNowPlayingMoviesShimmer.isInvisible = !isLoading
             if (!isLoading) {
@@ -137,9 +137,9 @@ class MovieFragment : Fragment(), MovieClickListener {
         pagingAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
-            binding.tvTopRatedMovies.isVisible = isRefreshSucceded
-            binding.rvTopRatedMovies.isVisible = isRefreshSucceded
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            binding.tvTopRatedMovies.isVisible = isRefreshSucceded && !isLoading
+            binding.rvTopRatedMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvTopRatedMoviesShimmer.showShimmer(isLoading)
             binding.tvTopRatedMoviesShimmer.isInvisible = !isLoading
 
