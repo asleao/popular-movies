@@ -200,7 +200,7 @@ class MovieFragment : Fragment(), MovieClickListener {
 
     private fun setupErrorView() {
         binding.errorView.imageRes = R.drawable.ic_cloud_off
-        binding.errorView.buttonText = "Try again?"
+        binding.errorView.buttonText = resources.getString(R.string.try_again)
         binding.errorView.buttonClickListener = {
             binding.viewModel?.tryAgain()
         }

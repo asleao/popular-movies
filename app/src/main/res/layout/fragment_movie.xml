@@ -205,6 +205,7 @@
         <br.com.popularmovies.ui.components.ErrorView
             android:id="@+id/errorView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
