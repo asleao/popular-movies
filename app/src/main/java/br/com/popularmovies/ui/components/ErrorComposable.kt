@@ -2,12 +2,11 @@ package br.com.popularmovies.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,9 +26,10 @@ fun ErrorView(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         imageRes?.let { resource ->
             Image(
@@ -46,19 +46,17 @@ fun ErrorView(
                 text = desc,
                 color = MaterialTheme.colors.onPrimary
             )
-
         }
-
-        Button(
+        TextButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             onClick = { buttonClickListener?.invoke() }) {
             buttonText?.let { text ->
                 Text(
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.subtitle2,
                     text = text,
-                    color = MaterialTheme.colors.onPrimary
+                    color = MaterialTheme.colors.primary
                 )
             }
         }
