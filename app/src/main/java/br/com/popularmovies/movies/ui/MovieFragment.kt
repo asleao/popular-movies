@@ -168,11 +168,10 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun showNoConnection(message: String) {
-        binding.rvPopularMovies.visibility = View.GONE
-        binding.rvNowPlayingMovies.visibility = View.GONE
-        binding.rvTopRatedMovies.visibility = View.GONE
-//        binding.iBaseLayout.tvNoConection.text = message
-//        binding.iBaseLayout.groupNoConnection.visibility = View.VISIBLE
+        binding.appBar.isVisible = false
+        binding.container.isVisible = false
+        binding.errorView.isVisible = true
+        binding.errorView.description = message
     }
 
     private fun showGenericError(message: String) {
@@ -195,7 +194,16 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.viewModel = mViewModel
         setupObservers()
         binding.viewPager.setPageTransformer(MarginPageTransformer(44))//TODO add dimens here
+        setupErrorView()
         return binding.root
+    }
+
+    private fun setupErrorView() {
+        binding.errorView.imageRes = R.drawable.ic_cloud_off
+        binding.errorView.buttonText = "Try again"
+        binding.errorView.buttonClickListener = {
+            binding.viewModel?.tryAgain()
+        }
     }
 
     override fun onMovieClick(movie: Movie) {

@@ -12,9 +12,7 @@ import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,5 +59,9 @@ class MovieViewModel @Inject constructor(
                 _error.value = result.error
             }
         }
+    }
+
+    fun tryAgain() {
+        //TODO implement
     }
 }
