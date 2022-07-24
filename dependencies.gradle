@@ -21,9 +21,9 @@ ext {
                     'appcompat': '1.3.0-rc01',
                     'fragment' : '1.3.5',
                     'lifecycle': [
-                            'runtime'   : '2.3.1',
+                            'runtime'   : '2.5.0',
                             'extensions': '2.2.0',
-                            'viewmodel' : '2.3.1'
+                            'viewmodel' : '2.5.0'
                     ]
             ],
 
@@ -115,7 +115,7 @@ ext {
                     'appcompat': "androidx.appcompat:appcompat:${versions.android.appcompat}",
                     'fragment' : "androidx.fragment:fragment-ktx:${versions.android.fragment}",
                     'lifecycle': [
-                            'runtime'   : "androidx.lifecycle:lifecycle-runtime:${versions.android.lifecycle.runtime}",
+                            'runtime'   : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.android.lifecycle.runtime}",
                             'extensions': "androidx.lifecycle:lifecycle-extensions:${versions.android.lifecycle.extensions}",
                             'viewModel' : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.android.lifecycle.viewmodel}"
                     ],

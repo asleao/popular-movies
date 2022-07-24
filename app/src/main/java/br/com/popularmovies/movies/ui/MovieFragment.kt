@@ -10,8 +10,10 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -24,10 +26,12 @@ import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
 import br.com.popularmovies.movies.adapters.NowPlayingViewPagerAdapter
+import br.com.popularmovies.movies.viewmodel.MovieUiState
 import br.com.popularmovies.movies.viewmodel.MovieViewModel
 import br.com.popularmovies.utils.SpacingItemDecoration
 import br.com.popularmovies.utils.SpacingItemDecorationType
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieFragment : Fragment(), MovieClickListener {
@@ -35,10 +39,15 @@ class MovieFragment : Fragment(), MovieClickListener {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val mViewModel: MovieViewModel by viewModels {
+    private val viewModel: MovieViewModel by viewModels {
         viewModelFactory
     }
     private lateinit var binding: FragmentMovieBinding
+
+    private val pagingNowPlayingMoviesAdapter = MoviePagingAdapter(this)
+    private val pagingPopularMoviesAdapter = MoviePagingAdapter(this)
+    private val pagingTopHatedMoviesAdapter = MoviePagingAdapter(this)
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,15 +61,35 @@ class MovieFragment : Fragment(), MovieClickListener {
         val spacingItemDecoration = resources.getDimensionPixelSize(
             R.dimen.list_spacing_default
         )
+        setupUiStateObserver()
         setupNewestNowPlayingMovieObserver()
         setupNowPlayingMoviesFlow(spacingItemDecoration)
         setupPopularMoviesFlow(spacingItemDecoration)
         setupTopHatedMoviesFlow(spacingItemDecoration)
-        setupErrorObserver()
+    }
+
+    private fun setupUiStateObserver() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    binding.container.isVisible = state is MovieUiState.Success
+                    binding.errorView.isVisible = state is MovieUiState.Error
+                    if (state is MovieUiState.Error) {
+                        if (state.networkError != null) {
+                            if (state.networkError.code == ErrorCodes.NETWORK_ERROR_CODE) {
+                                showNoConnection(state.networkError.message)
+                            } else {
+                                showGenericError(state.networkError.message)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-        mViewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
+        viewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
             binding.viewPagerShimmer.setShimmer(null)
             binding.viewPagerShimmer.background = null
             binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies)
@@ -68,14 +97,13 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun setupPopularMoviesFlow(spacingItemDecoration: Int) {
-        val pagingAdapter = MoviePagingAdapter(this)
-        binding.rvPopularMovies.adapter = pagingAdapter
+        binding.rvPopularMovies.adapter = pagingPopularMoviesAdapter
         binding.rvPopularMovies.addItemDecoration(
             SpacingItemDecoration(
                 SpacingItemDecorationType.Horizontal(spacingItemDecoration)
             )
         )
-        pagingAdapter.addLoadStateListener { loadState ->
+        pagingPopularMoviesAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
@@ -90,22 +118,21 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            mViewModel.popularMoviesFlow.collectLatest { pagingData ->
-                pagingAdapter.submitData(pagingData)
+            viewModel.popularMoviesFlow.collectLatest { pagingData ->
+                pagingPopularMoviesAdapter.submitData(pagingData)
             }
         }
     }
 
     private fun setupNowPlayingMoviesFlow(spacingItemDecoration: Int) {
-        val pagingAdapter = MoviePagingAdapter(this)
-        binding.rvNowPlayingMovies.adapter = pagingAdapter
+        binding.rvNowPlayingMovies.adapter = pagingNowPlayingMoviesAdapter
         binding.rvNowPlayingMovies.addItemDecoration(
             SpacingItemDecoration(
                 SpacingItemDecorationType.Horizontal(spacingItemDecoration)
             )
         )
 
-        pagingAdapter.addLoadStateListener { loadState ->
+        pagingNowPlayingMoviesAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
@@ -119,22 +146,21 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            mViewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
-                pagingAdapter.submitData(pagingData)
+            viewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
+                pagingNowPlayingMoviesAdapter.submitData(pagingData)
             }
         }
     }
 
     private fun setupTopHatedMoviesFlow(spacingItemDecoration: Int) {
-        val pagingAdapter = MoviePagingAdapter(this)
-        binding.rvTopRatedMovies.adapter = pagingAdapter
+        binding.rvTopRatedMovies.adapter = pagingTopHatedMoviesAdapter
         binding.rvTopRatedMovies.addItemDecoration(
             SpacingItemDecoration(
                 SpacingItemDecorationType.Horizontal(spacingItemDecoration)
             )
         )
 
-        pagingAdapter.addLoadStateListener { loadState ->
+        pagingTopHatedMoviesAdapter.addLoadStateListener { loadState ->
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
@@ -149,27 +175,13 @@ class MovieFragment : Fragment(), MovieClickListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            mViewModel.topHatedMoviesFlow.collectLatest { pagingData ->
-                pagingAdapter.submitData(pagingData)
-            }
-        }
-    }
-
-    private fun setupErrorObserver() {
-        mViewModel.error.observe(viewLifecycleOwner) { error ->
-            if (error != null) {
-                if (error.code == ErrorCodes.NETWORK_ERROR_CODE) {
-                    showNoConnection(error.message)
-                } else {
-                    showGenericError(error.message)
-                }
+            viewModel.topHatedMoviesFlow.collectLatest { pagingData ->
+                pagingTopHatedMoviesAdapter.submitData(pagingData)
             }
         }
     }
 
     private fun showNoConnection(message: String) {
-        binding.container.isVisible = false
-        binding.errorView.isVisible = true
         binding.errorView.description = message
     }
 
@@ -190,7 +202,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding = FragmentMovieBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = mViewModel
+        binding.viewModel = viewModel
         setupObservers()
         binding.viewPager.setPageTransformer(MarginPageTransformer(44))//TODO add dimens here
         setupErrorView()
@@ -201,7 +213,8 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.errorView.imageRes = R.drawable.ic_cloud_off
         binding.errorView.buttonText = resources.getString(R.string.try_again)
         binding.errorView.buttonClickListener = {
-            binding.viewModel?.tryAgain()
+            pagingPopularMoviesAdapter.retry()
+            viewModel.tryAgain()
         }
     }
 

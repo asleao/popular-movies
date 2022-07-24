@@ -13,7 +13,9 @@ import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.retry
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +27,8 @@ class MovieViewModel @Inject constructor(
 
     val loading = MutableLiveData(false)
 
-    private val _error = MutableLiveData<NetworkError>()
-    val error: LiveData<NetworkError>
-        get() = _error
+    private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Success)
+    val uiState: StateFlow<MovieUiState> = _uiState
 
     private val _randomNowPlayingMovie: MutableLiveData<List<Movie>> = MutableLiveData()
     val randomNowPlayingMovie: LiveData<List<Movie>>
@@ -55,14 +56,22 @@ class MovieViewModel @Inject constructor(
     private fun getNewestNowPlayingMovie() = viewModelScope.launch {
 //        delay((2000))//TODO Remove this delay
         when (val result = getRandomNowPlayingMovieUseCase.build(Unit)) {
-            is Result.Success -> _randomNowPlayingMovie.value = result.data
+            is Result.Success -> {
+                _randomNowPlayingMovie.value = result.data
+                _uiState.value = MovieUiState.Success
+            }
             is Result.Error -> {
-                _error.value = result.error
+                _uiState.value = MovieUiState.Error(result.error)
             }
         }
     }
 
     fun tryAgain() {
-       //TODO To bem implemented
+        getNewestNowPlayingMovie()
     }
+}
+
+sealed class MovieUiState {
+    object Success : MovieUiState()
+    data class Error(val networkError: NetworkError?) : MovieUiState()
 }
