@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="br.com.popularmovies.movies.viewmodel.MovieViewModel" />
@@ -13,43 +12,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp">
-
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/viewPagerShimmer"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:background="@drawable/card_background"
-                        android:forceDarkAllowed="false"
-                        app:shimmer_auto_start="true" />
-
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/viewPager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_collapseMode="parallax"
-                        app:layout_collapseParallaxMultiplier="0.7" />
-                </FrameLayout>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/container"
@@ -63,6 +25,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <FrameLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/viewPagerShimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/card_background"
+                        android:forceDarkAllowed="false"
+                        app:shimmer_auto_start="true" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </FrameLayout>
+
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/tv_now_playing_movies_shimmer"
                     android:layout_width="match_parent"
@@ -73,7 +63,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/header"
                     app:shimmer_auto_start="true">
 
                     <include layout="@layout/movie_list_placeholder" />
@@ -91,7 +81,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/header"
                     tools:visibility="visible" />
 
                 <androidx.recyclerview.widget.RecyclerView

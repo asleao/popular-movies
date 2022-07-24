@@ -168,7 +168,6 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     private fun showNoConnection(message: String) {
-        binding.appBar.isVisible = false
         binding.container.isVisible = false
         binding.errorView.isVisible = true
         binding.errorView.description = message

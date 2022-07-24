@@ -13,6 +13,7 @@ import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,6 +63,6 @@ class MovieViewModel @Inject constructor(
     }
 
     fun tryAgain() {
-        //TODO implement
+       //TODO To bem implemented
     }
 }
