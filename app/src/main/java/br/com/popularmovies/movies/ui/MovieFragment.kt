@@ -98,7 +98,7 @@ class MovieFragment : Fragment(), MovieClickListener {
         viewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
             binding.viewPagerShimmer.setShimmer(null)
             binding.viewPagerShimmer.background = null
-            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies)
+            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies, ::onMovieClick)
         }
     }
 
