@@ -10,4 +10,6 @@
     <color name="colorSecondaryDark">#c25e00</color>
     <color name="colorSecondaryLight" tools:keep="@color/colorSecondaryLight">#ffbd45</color>
     <color name="onSecondary">#fff3e0</color>
+
+    <color name="shimmer">#D3D3D3</color>
 </resources>

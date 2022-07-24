@@ -3,6 +3,10 @@
     <string name="sort_by">Sort by</string>
     <string name="ok" tools:keep="@string/ok"><b>OK</b></string>
     <string name="try_again">Try again?</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="account">Account</string>
     <string name="movie_detail_text">Interstellar</string>
     <string name="movie_release_date_label">Released</string>
     <string name="movie_release_date">01 MAR 2014</string>
@@ -18,11 +22,14 @@
     <string name="movie_trailer_title">Trailer title</string>
 
 
-
     <string name="fg_movie_detail_tag">MOVIE_DETAIL_TAG</string>
     <string name="fg_movie_review_tag">MOVIE_REVIEW_TAG</string>
     <string name="fg_movie_trailer_tag">MOVIE_TRAILER_TAG</string>
     <string name="no_reviews">No reviews available :(</string>
     <string name="no_trailers">No trailers available :(</string>
+
+    <string name="fg_movie_popular_title">Popular</string>
+    <string name="fg_movie_now_playing_title">Now Playing</string>
+    <string name="fg_movie_top_hated_title">Top Hated</string>
 
 </resources>

@@ -2,7 +2,7 @@ ext {
     versions = [
             //Core
             'kotlin'     : '1.5.31',
-            'gradle'     : '4.2.2',
+            'gradle'     : '7.2.1',
 
             //Sdk
             'sdk'        : [
@@ -21,9 +21,9 @@ ext {
                     'appcompat': '1.3.0-rc01',
                     'fragment' : '1.3.5',
                     'lifecycle': [
-                            'runtime'   : '2.3.1',
+                            'runtime'   : '2.5.0',
                             'extensions': '2.2.0',
-                            'viewmodel' : '2.3.1'
+                            'viewmodel' : '2.5.0'
                     ]
             ],
 
@@ -37,13 +37,21 @@ ext {
                             'spinKit': '1.4.0'
                     ],
                     'glide'           : [
-                            'core': '4.12.0'
+                            'core'       : '4.13.2',
+                            'accompanist': '0.15.0'
 
                     ],
                     'recyclerView'    : '1.2.1',
                     'navigation'      : [
                             'core': '2.3.5',
-                    ]
+                    ],
+                    'compose'         : [
+                            'core'      : '1.0.5',
+                            'activity'  : '1.3.1',
+                            'viewModel' : '1.0.0-alpha07',
+                            'navigation': '1.0.0-alpha10'
+                    ],
+                    'shimmer'         : '0.5.0'
             ],
 
             //DI
@@ -56,7 +64,7 @@ ext {
 
             //Data
             'database'   : [
-                    'room': '2.4.0-rc01'
+                    'room': '2.4.2'
             ],
             'network'    : [
                     'retrofit': '2.9.0',
@@ -107,7 +115,7 @@ ext {
                     'appcompat': "androidx.appcompat:appcompat:${versions.android.appcompat}",
                     'fragment' : "androidx.fragment:fragment-ktx:${versions.android.fragment}",
                     'lifecycle': [
-                            'runtime'   : "androidx.lifecycle:lifecycle-runtime:${versions.android.lifecycle.runtime}",
+                            'runtime'   : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.android.lifecycle.runtime}",
                             'extensions': "androidx.lifecycle:lifecycle-extensions:${versions.android.lifecycle.extensions}",
                             'viewModel' : "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.android.lifecycle.viewmodel}"
                     ],
@@ -124,14 +132,34 @@ ext {
                             'spinKit': "com.github.ybq:Android-SpinKit:${versions.ui.progressbar.spinKit}"
                     ],
                     'glide'           : [
-                            'core'    : "com.github.bumptech.glide:glide:${versions.ui.glide.core}",
-                            'compiler': "com.github.bumptech.glide:compiler:${versions.ui.glide.core}"
+                            'core'       : "com.github.bumptech.glide:glide:${versions.ui.glide.core}",
+                            'compiler'   : "com.github.bumptech.glide:compiler:${versions.ui.glide.core}",
+                            'accompanist': "com.google.accompanist:accompanist-glide:${versions.ui.glide.accompanist}"
                     ],
                     'recyclerView'    : "androidx.recyclerview:recyclerview:${versions.ui.recyclerView}",
                     'navigation'      : [
                             'fragment': "androidx.navigation:navigation-fragment-ktx:${versions.ui.navigation.core}",
                             'ui'      : "androidx.navigation:navigation-ui-ktx:${versions.ui.navigation.core}"
-                    ]
+                    ],
+                    'compose'         : [
+                            'ui'        : "androidx.compose.ui:ui:${versions.ui.compose.core}",
+                            'uitooling' : "androidx.compose.ui:ui-tooling:${versions.ui.compose.core}",
+                            'material'  : [
+                                    'core' : "androidx.compose.material:material:${versions.ui.compose.core}",
+                                    'icons': [
+                                            'core'    : "androidx.compose.material:material-icons-core:${versions.ui.compose.core}",
+                                            'extended': "androidx.compose.material:material-icons-extended:${versions.ui.compose.core}"
+                                    ]
+
+                            ],
+                            'foundation': "androidx.compose.foundation:foundation:${versions.ui.compose.core}",
+                            'activity'  : "androidx.activity:activity-compose:${versions.ui.compose.activity}",
+                            'viewModel' : "androidx.lifecycle:lifecycle-viewmodel-compose:${versions.ui.compose.viewModel}",
+                            'navigation': "androidx.navigation:navigation-compose:${versions.ui.compose.navigation}",
+                            'runtime'   : "androidx.compose.runtime:runtime-livedata:${versions.ui.compose.core}",
+                            'compiler'  : "androidx.compose.compiler:compiler:${versions.ui.compose.core}"
+                    ],
+                    'shimmer':"com.facebook.shimmer:shimmer:${versions.ui.shimmer}"
             ],
 
 

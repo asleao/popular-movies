@@ -31,7 +31,7 @@
 
     <Button
         android:id="@+id/bt_try_again"
-        style="@style/MainButtonTheme"
+        style="@style/MainButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

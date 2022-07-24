@@ -7,16 +7,25 @@ plugins {
 }
 
 android {
+
+    packagingOptions {
+        jniLibs {
+            excludes += ['META-INF/**/*']
+        }
+        resources {
+            excludes += ['META-INF/**/*']
+        }
+    }
     compileSdkVersion versions.sdk.compile
 
     defaultConfig {
+        testInstrumentationRunnerArguments runnerBuilder: 'de.mannodermaus.junit5.AndroidJUnit5Builder'
         applicationId "br.com.popularmovies"
         minSdkVersion versions.sdk.min
         targetSdkVersion versions.sdk.target
         versionCode versions.versionCode
         versionName versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         multiDexEnabled = true
     }
 
@@ -36,11 +45,9 @@ android {
     }
 
     buildFeatures {
-
         dataBinding true
+        compose true
 
-        // for view binding:
-        // viewBinding true
     }
 
     compileOptions {
@@ -50,14 +57,16 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
-        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn", "-Xjvm-default=all"]
+    }
+
+    composeOptions {
+        kotlinCompilerVersion versions.ui.compose.core
+        kotlinCompilerExtensionVersion  versions.ui.compose.core
     }
 
     sourceSets.main.java.filter.exclude 'META-INF/**/*'
 
-    packagingOptions {
-        exclude 'META-INF/**/*'
-    }
 
     androidExtensions {
         experimental = true
@@ -65,6 +74,10 @@ android {
 
     kapt {
         correctErrorTypes = true
+    }
+
+    viewBinding {
+        enabled = true
     }
 
     tasks.withType(Test) {
@@ -89,6 +102,7 @@ dependencies {
     implementation dependency.android.lifecycle.runtime
     implementation dependency.android.lifecycle.extensions
     implementation dependency.android.lifecycle.viewModel
+    implementation dependency.android.lifecycle.viewModel
 
     implementation dependency.ui.constraintlayout
     implementation dependency.ui.recyclerView
@@ -97,9 +111,22 @@ dependencies {
     implementation dependency.ui.material
     implementation dependency.ui.progressbar.spinKit
     implementation dependency.ui.glide.core
+    implementation dependency.ui.shimmer
     kapt dependency.ui.glide.compiler
     implementation dependency.network.paging.runtime
     implementation dependency.network.paging.common
+    implementation dependency.ui.glide.accompanist
+    implementation dependency.ui.compose.ui
+    implementation dependency.ui.compose.uitooling
+    implementation dependency.ui.compose.foundation
+    implementation dependency.ui.compose.activity
+    implementation dependency.ui.compose.viewModel
+    implementation dependency.ui.compose.navigation
+    implementation dependency.ui.compose.runtime
+    implementation dependency.ui.compose.compiler
+    implementation dependency.ui.compose.material.core
+    implementation dependency.ui.compose.material.icons.core
+    implementation dependency.ui.compose.material.icons.extended
 
     implementation dependency.di.dagger.core
     kapt dependency.di.dagger.compiler
@@ -114,10 +141,8 @@ dependencies {
     testImplementation dependency.tests.junit.jupiter.api
     testRuntimeOnly dependency.tests.junit.jupiter.engine
     testImplementation dependency.tests.assertJ
-    testImplementation dependency.coroutines.test
-    testImplementation dependency.tests.mockk.core
-    testImplementation dependency.tests.mockk.android
-    androidTestImplementation dependency.tests.mockk.core
+    testImplementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
+    implementation(dependency.tests.mockk.core) { exclude module: 'objenesis' }
     androidTestImplementation dependency.tests.mockk.android
     testImplementation dependency.tests.expresso.core
     androidTestImplementation dependency.tests.expresso.intents

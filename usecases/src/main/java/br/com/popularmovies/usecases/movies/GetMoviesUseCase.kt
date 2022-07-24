@@ -1,21 +1,26 @@
 package br.com.popularmovies.usecases.movies
 
-import br.com.popularmovies.common.models.base.Result
+import androidx.paging.PagingData
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieOrderType
+import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.entities.repository.MovieRepository
-import br.com.popularmovies.entities.usecase.UseCase
+import br.com.popularmovies.entities.usecase.FlowUseCase
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository
-) : UseCase<GetMoviesUseCase.Params, List<Movie>>() {
+) : FlowUseCase<GetMoviesUseCase.Param, PagingData<Movie>>() {
 
-    override suspend fun build(param: Params): Result<List<Movie>> {
-        return movieRepository.getMovies(param.movieOrderType)
+    override fun build(param: Param): Flow<PagingData<Movie>> {
+        return when (param.movieType) {
+            MovieType.TopRated -> movieRepository.getTopHatedMovies()
+            MovieType.MostPopular -> movieRepository.getPopularMovies()
+            MovieType.NowPlaying -> movieRepository.getNowPlayingMovies()
+        }
     }
 
-    data class Params(
-        val movieOrderType: MovieOrderType
+    data class Param(
+        val movieType: MovieType
     )
 }
