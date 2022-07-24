@@ -19,8 +19,8 @@ import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.MovieApplication
 import br.com.popularmovies.R
-import br.com.popularmovies.common.configs.ErrorCodes
 import br.com.popularmovies.common.configs.ErrorMessages
+import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.databinding.FragmentMovieBinding
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.adapters.MovieClickListener
@@ -72,20 +72,26 @@ class MovieFragment : Fragment(), MovieClickListener {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collectLatest { state ->
-                    binding.container.isVisible = state is MovieUiState.Success
-                    binding.errorView.isVisible = state is MovieUiState.Error
-                    if (state is MovieUiState.Error) {
-                        if (state.networkError != null) {
-                            if (state.networkError.code == ErrorCodes.NETWORK_ERROR_CODE) {
-                                showNoConnection(state.networkError.message)
-                            } else {
-                                showGenericError(state.networkError.message)
-                            }
+                    when (state) {
+                        MovieUiState.Success -> {
+                            binding.errorView.isVisible = false
+                            binding.container.isVisible = true
+                        }
+                        is MovieUiState.Error -> {
+                            binding.errorView.isVisible = true
+                            binding.container.isVisible = false
+                            showError(state.networkError)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun showError(networkError: NetworkError?) {
+        networkError?.let {
+            showNoConnection(networkError.message)
+        } ?: showGenericError(networkError!!.message)
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
@@ -213,7 +219,9 @@ class MovieFragment : Fragment(), MovieClickListener {
         binding.errorView.imageRes = R.drawable.ic_cloud_off
         binding.errorView.buttonText = resources.getString(R.string.try_again)
         binding.errorView.buttonClickListener = {
+            pagingNowPlayingMoviesAdapter.retry()
             pagingPopularMoviesAdapter.retry()
+            pagingTopHatedMoviesAdapter.retry()
             viewModel.tryAgain()
         }
     }

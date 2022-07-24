@@ -15,10 +15,8 @@ import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class MovieViewModel @Inject constructor(
     private val getRandomNowPlayingMovieUseCase: GetRandomNowPlayingMovieUseCase,
@@ -36,17 +34,14 @@ class MovieViewModel @Inject constructor(
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.MostPopular))
-//            .onStart { delay((2000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     val nowPlayingMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.NowPlaying))
-//            .onStart { delay((3000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     val topHatedMoviesFlow: Flow<PagingData<Movie>> =
         getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.TopRated))
-//            .onStart { delay((6000)) } //TODO Remove this delay
             .cachedIn(viewModelScope)
 
     init {
@@ -54,7 +49,6 @@ class MovieViewModel @Inject constructor(
     }
 
     private fun getNewestNowPlayingMovie() = viewModelScope.launch {
-//        delay((2000))//TODO Remove this delay
         when (val result = getRandomNowPlayingMovieUseCase.build(Unit)) {
             is Result.Success -> {
                 _randomNowPlayingMovie.value = result.data
@@ -67,9 +61,12 @@ class MovieViewModel @Inject constructor(
     }
 
     fun tryAgain() {
+        //TODO For now, the getNewestNowPlayingMovie controls the visibility. Since the pagingData network error
+        // is catch on the LoadState listener. Check a nice approach to deal with that if the screen only has those flows types.
         getNewestNowPlayingMovie()
     }
 }
+
 
 sealed class MovieUiState {
     object Success : MovieUiState()
