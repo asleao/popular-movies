@@ -34,7 +34,8 @@ class MovieRepositoryImpl @Inject constructor(
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),
-            remoteMediator = NowPlayingMoviesRemoteMediator(
+            remoteMediator = MoviesRemoteMediator(
+                MovieTypeTable.NowPlaying,
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
@@ -68,7 +69,8 @@ class MovieRepositoryImpl @Inject constructor(
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),
-            remoteMediator = PopularMoviesRemoteMediator(
+            remoteMediator = MoviesRemoteMediator(
+                MovieTypeTable.MostPopular,
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
@@ -93,7 +95,8 @@ class MovieRepositoryImpl @Inject constructor(
                 pageSize = PaginationConfig.pageSize,
                 enablePlaceholders = true
             ),
-            remoteMediator = TopRatedMoviesRemoteMediator(
+            remoteMediator = MoviesRemoteMediator(
+                MovieTypeTable.TopRated,
                 remoteKeyLocalDataSource,
                 mMovieLocalDataSource,
                 mMovieRemoteDataSource
