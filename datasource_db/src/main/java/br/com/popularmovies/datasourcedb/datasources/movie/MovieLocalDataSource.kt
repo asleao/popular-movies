@@ -11,6 +11,7 @@ import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.config.DbConstants.ROOM_MSG_ERROR
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
+import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -20,30 +21,16 @@ import javax.inject.Singleton
 class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatabase) {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
-    private val error = NetworkError(
-        code = GENERIC_ERROR_CODE,
-        title = GENERIC_MSG_ERROR_TITLE,
-        message = GENERIC_MSG_ERROR_MESSAGE
-    )
-
-    fun getPopularMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.MostPopular> {
-        return mMovieDao.mostPopularMovies()
-    }
-
-    fun getTopRatedMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.TopRated> {
-        return mMovieDao.topRatedMovies()
-    }
-
-    fun getNowPlayingMoviesPagingSourceFactory(): PagingSource<Int, MovieTable.NowPlaying> {
-        return mMovieDao.nowPlayingMovies()
+    fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable> {
+        return mMovieDao.movies(type)
     }
 
     suspend fun getMovie(movieId: Long): Result<MovieTable> {
         return try {
 //            Result.Success(mMovieDao.getMovie(movieId)) ////TODO Check That
             Result.Success(
-                MovieTable.MostPopular(
-                    1, 1, BigDecimal.ZERO, "", BigDecimal.ONE, "", "",
+                MovieTable(
+                    1, MovieTypeTable.MostPopular, 1, BigDecimal.ZERO, "", BigDecimal.ONE, "", "",
                     LocalDate.now(), 1, false
                 )
             )
@@ -80,39 +67,15 @@ class MovieLocalDataSource @Inject constructor(private val appDatabase: AppDatab
         }
     }
 
-    suspend fun deleteAllMostPopularMovies() {
+    suspend fun deleteAllMovies(type: MovieTypeTable) {
         appDatabase.withTransaction {
-            mMovieDao.deleteAllMostPopularMovies()
+            mMovieDao.deleteAllMovies(type)
         }
     }
 
-    suspend fun deleteAllTopRatedMovies() {
+    suspend fun insertAllMovies(movies: List<MovieTable>) {
         appDatabase.withTransaction {
-            mMovieDao.deleteAllTopRatedMovies()
-        }
-    }
-
-    suspend fun deleteAllNowPlayingMovies() {
-        appDatabase.withTransaction {
-            mMovieDao.deleteAllNowPlayingMovies()
-        }
-    }
-
-    suspend fun insertAllMostPopularMovies(movies: List<MovieTable.MostPopular>) {
-        appDatabase.withTransaction {
-            mMovieDao.insertAllMostPopularMovies(movies)
-        }
-    }
-
-    suspend fun insertAllTopRatedMovies(movies: List<MovieTable.TopRated>) {
-        appDatabase.withTransaction {
-            mMovieDao.insertAllTopRatedMovies(movies)
-        }
-    }
-
-    suspend fun insertAllNowPlayingMovies(movies: List<MovieTable.NowPlaying>) {
-        appDatabase.withTransaction {
-            mMovieDao.insertAllNowPlayingMovies(movies)
+            mMovieDao.insertAllMovies(movies)
         }
     }
 }

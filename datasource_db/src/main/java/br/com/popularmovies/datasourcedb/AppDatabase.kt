@@ -12,9 +12,8 @@ import br.com.popularmovies.datasourcedb.typeconverters.LocalDateConverter
 import br.com.popularmovies.datasourcedb.typeconverters.MovieTypeConverters
 
 @Database(
-    entities = [MovieTable.MostPopular::class,
-        MovieTable.TopRated::class,
-        MovieTable.NowPlaying::class,
+    entities = [
+        MovieTable::class,
         RemoteKeyTable::class],
     version = 1,
     exportSchema = false

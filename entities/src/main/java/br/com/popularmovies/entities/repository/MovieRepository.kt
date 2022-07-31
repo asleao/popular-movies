@@ -15,7 +15,7 @@ interface MovieRepository {
 
     fun getPopularMovies(): Flow<PagingData<Movie>>
 
-    fun getTopHatedMovies(): Flow<PagingData<Movie>>
+    fun getTopRatedMovies(): Flow<PagingData<Movie>>
 
     suspend fun getMovie(movieId: Long): Result<Movie>
 

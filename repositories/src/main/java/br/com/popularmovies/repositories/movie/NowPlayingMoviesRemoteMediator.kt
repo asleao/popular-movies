@@ -12,7 +12,7 @@ import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.models.movie.MovieTypeParam
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import br.com.popularmovies.repositories.mappers.toNowPlayingTable
+import br.com.popularmovies.repositories.mappers.toTable
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -21,11 +21,11 @@ class NowPlayingMoviesRemoteMediator(
     private val remoteKeyLocalDataSource: RemoteKeyLocalDataSource,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource
-) : RemoteMediator<Int, MovieTable.NowPlaying>() {
+) : RemoteMediator<Int, MovieTable>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, MovieTable.NowPlaying>
+        state: PagingState<Int, MovieTable>
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.REFRESH -> {
@@ -55,7 +55,7 @@ class NowPlayingMoviesRemoteMediator(
                     val endOfPaginationReached = result.data.isEmpty()
                     if (loadType == LoadType.REFRESH) {
                         remoteKeyLocalDataSource.clear()
-                        movieLocalDataSource.deleteAllNowPlayingMovies()
+                        movieLocalDataSource.deleteAllMovies(MovieTypeTable.NowPlaying)
                     }
                     val prevKey = if (page == START_INDEX) null else page - 1
                     val nextKey = if (endOfPaginationReached) null else page + 1
@@ -69,8 +69,8 @@ class NowPlayingMoviesRemoteMediator(
                         )
                     }
                     remoteKeyLocalDataSource.insertAll(keys)
-                    movieLocalDataSource.insertAllNowPlayingMovies(result.data.map { movie ->
-                        movie.toNowPlayingTable()
+                    movieLocalDataSource.insertAllMovies(result.data.map { movie ->
+                        movie.toTable(MovieTypeTable.NowPlaying)
                     })
                     MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
@@ -83,7 +83,7 @@ class NowPlayingMoviesRemoteMediator(
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, MovieTable.NowPlaying>,
+        state: PagingState<Int, MovieTable>,
         type: MovieTypeTable
     ): RemoteKeyTable? {
         return state.pages
@@ -96,7 +96,7 @@ class NowPlayingMoviesRemoteMediator(
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, MovieTable.NowPlaying>,
+        state: PagingState<Int, MovieTable>,
         type: MovieTypeTable
     ): RemoteKeyTable? {
         return state.pages
@@ -109,7 +109,7 @@ class NowPlayingMoviesRemoteMediator(
     }
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, MovieTable.NowPlaying>, type: MovieTypeTable
+        state: PagingState<Int, MovieTable>, type: MovieTypeTable
     ): RemoteKeyTable? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.remoteId?.let { id ->

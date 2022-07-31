@@ -7,13 +7,14 @@ import java.math.BigDecimal
 
 @Parcelize
 data class Movie(
-        val votes: Int,
-        var id: Long,
-        val voteAverage: BigDecimal,
-        val originalTitle: String,
-        val popularity: BigDecimal,
-        val poster: String,
-        val overview: String,
-        val releaseDate: LocalDate,
-        var isFavorite: Boolean
+    val votes: Int,
+    var id: Long,
+    val type: MovieType,
+    val voteAverage: BigDecimal,
+    val originalTitle: String,
+    val popularity: BigDecimal,
+    val poster: String,
+    val overview: String,
+    val releaseDate: LocalDate,
+    var isFavorite: Boolean
 ) : Parcelable

@@ -13,9 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.ui.theme.AppTheme
-import br.com.popularmovies.ui.theme.OpensSansTypography
 import com.google.accompanist.glide.rememberGlidePainter
 import org.joda.time.LocalDate
 import java.math.BigDecimal
@@ -45,7 +45,7 @@ fun MovieDetail(movie: Movie) {
         Text(
             movie.overview,
             modifier = Modifier
-                .padding(start = 16.dp,end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
             style = MaterialTheme.typography.body1
         )
@@ -53,7 +53,7 @@ fun MovieDetail(movie: Movie) {
         Row(
             modifier = Modifier
                 .alpha(.70f)
-                .padding(start = 16.dp,end = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth()
         ) {
             Text(
@@ -80,6 +80,7 @@ private fun MockMovieDetail() {
                 originalTitle = "Teste",
                 votes = 1,
                 id = 1,
+                type = MovieType.MostPopular,
                 voteAverage = BigDecimal.TEN,
                 popularity = BigDecimal.ONE,
                 poster = "",
