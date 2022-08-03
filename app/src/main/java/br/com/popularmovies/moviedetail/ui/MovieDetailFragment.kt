@@ -18,7 +18,7 @@ class MovieDetailFragment : Fragment() {
     private val args by navArgs<MovieDetailFragmentArgs>()
 
     private val viewModel: MovieDetailViewModel by lazy {
-        appComponent.movieDetailViewModelFactory.create(args.movie)
+        appComponent.movieDetailViewModelFactory.create(args.movieId)
     }
 
     override fun onAttach(context: Context) {

@@ -227,7 +227,7 @@ class MovieFragment : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClick(movie: Movie) {
-        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie)
+        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie.id)
         findNavController().navigate(action)
     }
 }

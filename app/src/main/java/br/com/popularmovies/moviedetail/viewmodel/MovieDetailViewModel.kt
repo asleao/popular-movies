@@ -21,13 +21,12 @@ class MovieDetailViewModel @AssistedInject constructor(
     private val getMovieUseCase: GetMovieUseCase,
     private val getMovieTrailersUseCase: GetMovieTrailersUseCase,
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
-    private val saveMovieToFavoritesUseCase: SaveMovieToFavoritesUseCase,
-    @Assisted private val movieArg: Movie
+    @Assisted private val movieId: Long
 ) : ViewModel() {
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(movie: Movie): MovieDetailViewModel
+        fun create(movieId: Long): MovieDetailViewModel
     }
 
     val loading = MutableLiveData<Boolean>()
@@ -46,10 +45,6 @@ class MovieDetailViewModel @AssistedInject constructor(
     private val _reviews = MutableLiveData<List<MovieReview>>()
     val reviews: LiveData<List<MovieReview>> = _reviews
 
-    private val _isMovieFavorite = MutableLiveData<Boolean>()
-    val isMovieFavorite: LiveData<Boolean>
-        get() = _isMovieFavorite
-
     private val _playTrailer = MutableLiveData<String>()
     val playTrailer: LiveData<String>
         get() = _playTrailer
@@ -63,7 +58,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getMovie() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieUseCase.Params(movieArg.id)
+            val params = GetMovieUseCase.Params(movieId)
             when (val result = getMovieUseCase.build(params)) {
                 is Result.Success -> {
                     _movie.value = result.data
@@ -76,7 +71,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getTrailers() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieTrailersUseCase.Params(movieArg.id)
+            val params = GetMovieTrailersUseCase.Params(movieId)
             when (val result = getMovieTrailersUseCase.build(params)) {
                 is Result.Success -> _trailers.value = result.data
                 is Result.Error -> _error.value = result.error
@@ -84,10 +79,10 @@ class MovieDetailViewModel @AssistedInject constructor(
         }
     }
 
-    fun getReviews() {
+    private fun getReviews() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieReviewsUseCase.Params(movieArg.id)
+            val params = GetMovieReviewsUseCase.Params(movieId)
             when (val result = getMovieReviewsUseCase.build(params)) {
                 is Result.Success -> _reviews.value = result.data
                 is Result.Error -> _error.value = result.error
@@ -95,32 +90,8 @@ class MovieDetailViewModel @AssistedInject constructor(
         }
     }
 
-    fun updateMovie() {
-        movie.value?.let { movie ->
-            viewModelScope.launch {
-                //TODO Refactor
-                val params =
-                    SaveMovieToFavoritesUseCase.Params(movie.copy(isFavorite = !movie.isFavorite))
-                when (val result =
-                    saveMovieToFavoritesUseCase.build(params)) {
-                    is Result.Success -> {
-                        _isMovieFavorite.value = !movie.isFavorite
-                        _movie.value = movie.copy(isFavorite = !movie.isFavorite)
-                    }
-                    is Result.Error -> {
-                        _error.value = result.error
-                    }
-                }
-            }
-        }
-    }
-
     fun showLoading(value: Boolean) {
         loading.value = value
-    }
-
-    fun tryAgain() {
-        getMovie()
     }
 
     fun playTrailer(key: String) {
