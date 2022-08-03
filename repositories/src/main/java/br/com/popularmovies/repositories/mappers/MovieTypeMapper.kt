@@ -13,11 +13,11 @@ fun MovieTypeTable.toParam(): MovieTypeParam {
     }
 }
 
-fun MovieTypeTable.toDomain(): MovieType {
+fun MovieType.toTable(): MovieTypeTable {
     return when (this) {
-        MovieTypeTable.MostPopular -> MovieType.MostPopular
-        MovieTypeTable.TopRated -> MovieType.TopRated
-        MovieTypeTable.NowPlaying -> MovieType.NowPlaying
-        MovieTypeTable.Unknown -> MovieType.Unknown
+        MovieType.MostPopular -> MovieTypeTable.MostPopular
+        MovieType.TopRated -> MovieTypeTable.TopRated
+        MovieType.NowPlaying -> MovieTypeTable.NowPlaying
+        MovieType.Unknown -> MovieTypeTable.Unknown
     }
 }
