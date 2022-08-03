@@ -63,14 +63,13 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getMovie() {
         viewModelScope.launch {
             showLoading(true)
-//            val params = GetMovieUseCase.Params(movieId)
-//            when (val result = getMovieUseCase.build(params)) {
-//                is Result.Success -> {
-//                    _movie.value = result.data //TODO Check that
-            _movie.value = movieArg
-//                }
-//                is Result.Error -> _error.value = result.error
-//        }
+            val params = GetMovieUseCase.Params(movieArg.id)
+            when (val result = getMovieUseCase.build(params)) {
+                is Result.Success -> {
+                    _movie.value = result.data
+                }
+                is Result.Error -> _error.value = result.error
+            }
         }
     }
 

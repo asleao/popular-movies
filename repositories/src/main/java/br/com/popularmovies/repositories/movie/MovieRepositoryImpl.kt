@@ -114,20 +114,14 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMovie(movieId: Long): Result<Movie> {
-//        return when (val result = mMovieLocalDataSource.getMovie(movieId)) {
-//            is Result.Success -> {
-//                if (result.data == null) {
-//                    when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
-//                        is Result.Success -> Result.Success(result.data.toDomain())
-//                        is Result.Error -> Result.Error(result.error)
-//                    }
-//                } else {
-//                    Result.Success(result.data.toDomain())
-//                }
-//            }
-//            is Result.Error -> Result.Error(result.error)
-//        }
-        return Result.Error(NetworkError())
+        return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
+            is Result.Success -> {
+                Result.Success(result.data.toDomain())
+            }
+            is Result.Error -> {
+                Result.Error(result.error)
+            }
+        }
     }
 
     override suspend fun getMovieReviews(movieId: Long): Result<List<MovieReview>> {

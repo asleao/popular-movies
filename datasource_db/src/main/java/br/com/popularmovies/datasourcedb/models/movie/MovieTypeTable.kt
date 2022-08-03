@@ -3,7 +3,8 @@ package br.com.popularmovies.datasourcedb.models.movie
 enum class MovieTypeTable(val id: Int) {
     TopRated(0),
     MostPopular(1),
-    NowPlaying(2);
+    NowPlaying(2),
+    Unknown(3);
 
     companion object {
         fun forId(id: Int): MovieTypeTable {

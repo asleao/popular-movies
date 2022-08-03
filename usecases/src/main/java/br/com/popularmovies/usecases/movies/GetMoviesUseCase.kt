@@ -6,6 +6,7 @@ import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.entities.repository.MovieRepository
 import br.com.popularmovies.entities.usecase.FlowUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(
@@ -17,6 +18,7 @@ class GetMoviesUseCase @Inject constructor(
             MovieType.TopRated -> movieRepository.getTopRatedMovies()
             MovieType.MostPopular -> movieRepository.getPopularMovies()
             MovieType.NowPlaying -> movieRepository.getNowPlayingMovies()
+            else -> emptyFlow()
         }
     }
 

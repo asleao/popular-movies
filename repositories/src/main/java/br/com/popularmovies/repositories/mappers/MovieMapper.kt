@@ -21,7 +21,7 @@ fun MovieTable.toDomain(type: MovieType): Movie {
     )
 }
 
-fun MovieDto.toDomain(type: MovieType): Movie {
+fun MovieDto.toDomain(type: MovieType = MovieType.Unknown): Movie {
     return Movie(
         votes = votes,
         id = id,
@@ -36,7 +36,7 @@ fun MovieDto.toDomain(type: MovieType): Movie {
     )
 }
 
-fun MovieDto.toTable(type: MovieTypeTable): MovieTable {
+fun MovieDto.toTable(type: MovieTypeTable = MovieTypeTable.Unknown): MovieTable {
     return MovieTable(
         votes = votes,
         remoteId = id,
