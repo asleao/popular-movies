@@ -1,7 +1,6 @@
 package br.com.popularmovies.datasourceremote.repositories.movie
 
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.datasourceremote.models.base.BaseDto
 import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
@@ -10,8 +9,6 @@ import br.com.popularmovies.datasourceremote.models.movie.MovieTypeParam
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
 import br.com.popularmovies.datasourceremote.utils.mapApiResult
 import br.com.popularmovies.datasourceremote.utils.mapApiResults
-import kotlinx.coroutines.flow.emptyFlow
-import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,12 +23,7 @@ class MovieRemoteDataSource @Inject constructor(
     suspend fun getMovies(page: Int, type: MovieTypeParam): Result<List<MovieDto>> {
         return retrofitResponse
             .request {
-                when (type) {
-                    MovieTypeParam.TopRated -> mMovieService.getTopRatedMovies(page)
-                    MovieTypeParam.MostPopular -> mMovieService.getPopularMovies(page)
-                    MovieTypeParam.NowPlaying -> mMovieService.getNowPlayingMovies(page)
-                    MovieTypeParam.Unknown ->  mMovieService.getNowPlayingMovies(page) //TODO Check that
-                }
+                mMovieService.getMovies(type.path, page)
             }
             .mapApiResults()
     }
@@ -56,7 +48,7 @@ class MovieRemoteDataSource @Inject constructor(
 
     suspend fun getNowPlayingMovies(page: Int): Result<List<MovieDto>> {
         return retrofitResponse
-            .request { mMovieService.getNowPlayingMovies(page) }
+            .request { mMovieService.getMovies(MovieTypeParam.NowPlaying.path, page) }
             .mapApiResults()
     }
 }

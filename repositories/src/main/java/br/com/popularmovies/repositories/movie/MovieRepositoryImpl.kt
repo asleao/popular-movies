@@ -132,26 +132,7 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveToFavorites(movie: Movie): Result<Unit> {
-        // when caching is implemented this will only saveToFavorites
-//        return when (val result = mMovieLocalDataSource.isMovieExists(movie.id)) {
-//            is Result.Success -> {
-//                val isMovieExists = result.data
-//                if (isMovieExists) {
-//                    when (val result =
-//                        mMovieLocalDataSource.saveToFavorites(movie.toMostPopularTable())) { //Check That
-//                        is Result.Success -> Result.Success(Unit)
-//                        is Result.Error -> Result.Error(result.error)
-//                    }
-//                } else {
-//                    when (val result =
-//                        mMovieLocalDataSource.insertMovie(movie.toMostPopularTable())) { //Check That
-//                        is Result.Success -> Result.Success(Unit)
-//                        is Result.Error -> Result.Error(result.error)
-//                    }
-//                }
-//            }
-//            is Result.Error -> Result.Error(result.error)
-//        }
+        //TODO to be implemented
         return Result.Error(NetworkError())
     }
 
