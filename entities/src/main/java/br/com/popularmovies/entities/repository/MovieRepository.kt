@@ -5,17 +5,14 @@ import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.entities.movie.MovieType
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    fun getNowPlayingMovies(): Flow<PagingData<Movie>>
+    fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>
 
     suspend fun getRandomNowPlayingMovies(): Result<List<Movie>>
-
-    fun getPopularMovies(): Flow<PagingData<Movie>>
-
-    fun getTopHatedMovies(): Flow<PagingData<Movie>>
 
     suspend fun getMovie(movieId: Long): Result<Movie>
 

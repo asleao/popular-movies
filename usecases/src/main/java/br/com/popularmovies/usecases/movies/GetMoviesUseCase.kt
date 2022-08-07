@@ -13,11 +13,7 @@ class GetMoviesUseCase @Inject constructor(
 ) : FlowUseCase<GetMoviesUseCase.Param, PagingData<Movie>>() {
 
     override fun build(param: Param): Flow<PagingData<Movie>> {
-        return when (param.movieType) {
-            MovieType.TopRated -> movieRepository.getTopHatedMovies()
-            MovieType.MostPopular -> movieRepository.getPopularMovies()
-            MovieType.NowPlaying -> movieRepository.getNowPlayingMovies()
-        }
+        return movieRepository.getMovies(param.movieType)
     }
 
     data class Param(

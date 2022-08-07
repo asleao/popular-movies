@@ -23,11 +23,7 @@ class MovieRemoteDataSource @Inject constructor(
     suspend fun getMovies(page: Int, type: MovieTypeParam): Result<List<MovieDto>> {
         return retrofitResponse
             .request {
-                when (type) {
-                    MovieTypeParam.TopRated -> mMovieService.getTopRatedMovies(page)
-                    MovieTypeParam.MostPopular -> mMovieService.getPopularMovies(page)
-                    MovieTypeParam.NowPlaying -> mMovieService.getNowPlayingMovies(page)
-                }
+                mMovieService.getMovies(type.path, page)
             }
             .mapApiResults()
     }
@@ -52,7 +48,7 @@ class MovieRemoteDataSource @Inject constructor(
 
     suspend fun getNowPlayingMovies(page: Int): Result<List<MovieDto>> {
         return retrofitResponse
-            .request { mMovieService.getNowPlayingMovies(page) }
+            .request { mMovieService.getMovies(MovieTypeParam.NowPlaying.path, page) }
             .mapApiResults()
     }
 }

@@ -6,6 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/card_background"
+    android:forceDarkAllowed="false"
     android:minWidth="150dp"
     android:minHeight="200dp"
     app:shimmer_auto_start="false">

@@ -11,8 +11,8 @@
         android:label="Movie Details"
         tools:layout="@layout/movie_detail_fragment">
         <argument
-            android:name="movie"
-            app:argType="br.com.popularmovies.entities.movie.Movie" />
+            android:name="movieId"
+            app:argType="long" />
         <action
             android:id="@+id/action_movieDetailFragment_to_movieReviewFragment"
             app:destination="@id/movieReviewFragment" />
@@ -26,7 +26,7 @@
         android:id="@+id/movieFragment"
         android:name="br.com.popularmovies.movies.ui.MovieFragment"
         android:label="Popular Movies"
-        tools:layout="@layout/fragment_movie" >
+        tools:layout="@layout/fragment_movie">
         <action
             android:id="@+id/action_movieFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
@@ -35,7 +35,7 @@
         android:id="@+id/movieReviewFragment"
         android:name="br.com.popularmovies.moviedetail.reviews.ui.MovieReviewFragment"
         android:label="Movie Review"
-        tools:layout="@layout/movie_review_fragment" >
+        tools:layout="@layout/movie_review_fragment">
         <argument
             android:name="movieId"
             app:argType="long" />
@@ -44,7 +44,7 @@
         android:id="@+id/movieTrailerFragment"
         android:name="br.com.popularmovies.moviedetail.trailers.ui.MovieTrailerFragment"
         android:label="Movie Trailer"
-        tools:layout="@layout/movie_trailer_fragment" >
+        tools:layout="@layout/movie_trailer_fragment">
         <argument
             android:name="movieId"
             app:argType="long" />
