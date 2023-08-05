@@ -5,6 +5,7 @@ import java.util.Properties
 plugins {
     id("popularmovies.android.library")
     id("popularmovies.android.dagger")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -28,12 +29,11 @@ dependencies {
     implementation(project(":common"))
 
     implementation(libs.bundles.moshi)
-//    kapt(libs.moshi.kotlin.codegen)
+    ksp(libs.moshi.kotlin.codegen)
 
     api(libs.bundles.network)
 
     testImplementation(libs.bundles.unittests)
     testImplementation(libs.bundles.uitests)
     testRuntimeOnly(libs.jupiter.engine)
-
 }
