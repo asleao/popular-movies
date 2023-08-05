@@ -63,10 +63,10 @@ gradlePlugin {
 //            id = "popularmovies.android.feature"
 //            implementationClass = "AndroidFeatureConventionPlugin"
 //        }
-//        register("androidTest") {
-//            id = "popularmovies.android.test"
-//            implementationClass = "AndroidTestConventionPlugin"
-//        }
+        register("androidTest") {
+            id = "popularmovies.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
+        }
         register("androidDagger") {
             id = "popularmovies.android.dagger"
             implementationClass = "AndroidDaggerConventionPlugin"
