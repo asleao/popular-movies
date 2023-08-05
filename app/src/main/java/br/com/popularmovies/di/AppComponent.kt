@@ -1,7 +1,6 @@
 package br.com.popularmovies.di
 
 import android.content.Context
-import br.com.popularmovies.di.modules.AssistedInjectModule
 import br.com.popularmovies.di.modules.ViewModelModule
 import br.com.popularmovies.di.subcomponents.MovieComponent
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent
@@ -19,8 +18,7 @@ import javax.inject.Singleton
     modules = [
         UseCasesModule::class,
         AppSubcomponents::class,
-        ViewModelModule::class,
-        AssistedInjectModule::class
+        ViewModelModule::class
     ]
 )
 interface AppComponent {

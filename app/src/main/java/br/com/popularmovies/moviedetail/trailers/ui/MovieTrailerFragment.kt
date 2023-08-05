@@ -24,7 +24,6 @@ import br.com.popularmovies.moviedetail.trailers.Constants.YOUTUBE_URL
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerClickListener
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
-import kotlinx.android.synthetic.main.movie_trailer_fragment.*
 
 class MovieTrailerFragment : Fragment(), IConection, TrailerClickListener {
 

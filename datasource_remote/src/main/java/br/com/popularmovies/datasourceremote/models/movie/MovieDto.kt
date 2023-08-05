@@ -1,13 +1,10 @@
 package br.com.popularmovies.datasourceremote.models.movie
 
-import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 
-@Parcelize
 @JsonClass(generateAdapter = true)
 data class MovieDto(
     @Json(name = "vote_count")
@@ -27,4 +24,4 @@ data class MovieDto(
     @Json(name = "release_date")
     val releaseDate: LocalDate,
     var isFavorite: Boolean = false
-) : Parcelable
+)

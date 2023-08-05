@@ -18,7 +18,7 @@ class NowPlayingViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment = NowPlayingMovieFragment()
         fragment.arguments = Bundle().apply {
-            putParcelable(MOVIE_ARG, movies[position])
+//            putParcelable(MOVIE_ARG, movies[position])
         }
         return fragment
     }

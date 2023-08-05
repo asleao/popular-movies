@@ -2,9 +2,9 @@ package br.com.popularmovies.moviedetail.reviews.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,7 +18,7 @@ import br.com.popularmovies.ui.theme.OpensSansTypography
 fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
     Card(
         shape = MaterialTheme.shapes.small,
-        elevation = 2.dp,
+//        elevation = 2.dp,
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth()
@@ -30,18 +30,18 @@ fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
                 movieReview.author,
                 modifier = Modifier
                     .padding(start = 16.dp, top = 16.dp),
-                style = OpensSansTypography.h4,
-                color = MaterialTheme.colors.onPrimary,
+                style = OpensSansTypography.headlineSmall,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.W500
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 movieReview.content,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

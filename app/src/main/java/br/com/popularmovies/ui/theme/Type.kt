@@ -16,8 +16,7 @@ package br.com.popularmovies.ui.theme
  * limitations under the License.
  */
 
-import androidx.compose.material.Typography
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -34,67 +33,56 @@ private val OpenSans = FontFamily(
 )
 
 val OpensSansTypography = Typography(
-    h1 = TextStyle(
+    displaySmall = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W500,
         fontSize = 30.sp
     ),
-    h2 = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W500,
         fontSize = 24.sp
     ),
-    h3 = TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W500,
         fontSize = 20.sp
     ),
-    h4 = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 18.sp
     ),
-    h5 = TextStyle(
+    titleLarge = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 16.sp
     ),
-    h6 = TextStyle(
-        fontFamily = OpenSans,
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp
-    ),
-    subtitle1 = TextStyle(
+    titleMedium = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 16.sp
     ),
-    subtitle2 = TextStyle(
+    titleSmall = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 14.sp
     ),
-    body1 = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 16.sp
     ),
-    body2 = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = OpenSans,
         fontSize = 14.sp
     ),
-    button = TextStyle(
-        fontFamily = OpenSans,
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
-        color = Color.White
-    ),
-    caption = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
-    overline = TextStyle(
+    labelMedium = TextStyle(
         fontFamily = OpenSans,
         fontWeight = FontWeight.W400,
         fontSize = 12.sp
