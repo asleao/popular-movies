@@ -14,10 +14,8 @@
  *   limitations under the License.
  */
 
-import com.android.build.api.dsl.ApplicationExtension
-import br.com.popularmovies.configureGradleManagedDevices
-import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import br.com.popularmovies.configureKotlinAndroid
+import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -33,7 +31,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
-//                configureGradleManagedDevices(this)
             }
         }
     }

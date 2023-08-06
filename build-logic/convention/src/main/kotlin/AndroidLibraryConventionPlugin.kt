@@ -14,12 +14,10 @@
  *   limitations under the License.
  */
 
+import br.com.popularmovies.configureKotlinAndroid
+import br.com.popularmovies.libs
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
-import br.com.popularmovies.configureGradleManagedDevices
-import br.com.popularmovies.configureKotlinAndroid
-import br.com.popularmovies.disableUnnecessaryAndroidTests
-import br.com.popularmovies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -37,11 +35,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
-                configureGradleManagedDevices(this)
             }
-            extensions.configure<LibraryAndroidComponentsExtension> {
-                disableUnnecessaryAndroidTests(target)
-            }
+
             configurations.configureEach {
                 resolutionStrategy {
                     force(libs.findLibrary("junit4").get())

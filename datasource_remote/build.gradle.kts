@@ -1,28 +1,17 @@
-import java.io.FileInputStream
-import java.util.Properties
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("popularmovies.android.library")
     id("popularmovies.android.dagger")
     alias(libs.plugins.ksp)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
     namespace = Namespaces.datasourceRemote
+}
 
-    //TODO Check if its really needed
-    buildTypes {
-        val props = Properties().apply {
-            load(FileInputStream(File(rootProject.rootDir, "keys.properties")))
-        }
-        getByName("release") {
-            buildConfigField("String", "MdbApiKey", props.getProperty("MdbApiKey"))
-        }
-        getByName("debug") {
-            buildConfigField("String", "MdbApiKey", props.getProperty("MdbApiKey"))
-        }
-    }
+secrets {
+    defaultPropertiesFileName = "keys.properties"
 }
 
 dependencies {

@@ -15,7 +15,6 @@
  */
 
 import com.android.build.gradle.TestExtension
-import br.com.popularmovies.configureGradleManagedDevices
 import br.com.popularmovies.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -32,7 +31,6 @@ class AndroidTestConventionPlugin : Plugin<Project> {
             extensions.configure<TestExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
-                configureGradleManagedDevices(this)
             }
         }
     }

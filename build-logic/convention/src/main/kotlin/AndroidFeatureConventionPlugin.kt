@@ -15,13 +15,10 @@
  */
 
 import com.android.build.gradle.LibraryExtension
-import br.com.popularmovies.configureGradleManagedDevices
-import br.com.popularmovies.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
 
 class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -33,7 +30,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 defaultConfig {
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
-                configureGradleManagedDevices(this)
             }
 
             dependencies {
