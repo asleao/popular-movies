@@ -1,4 +1,4 @@
-package br.com.popularmovies.repositories.movie
+package br.com.popularmovies.data.movie
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -11,8 +11,8 @@ import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import br.com.popularmovies.repositories.mappers.toParam
-import br.com.popularmovies.repositories.mappers.toTable
+import br.com.popularmovies.data.mappers.toParam
+import br.com.popularmovies.data.mappers.toTable
 import retrofit2.HttpException
 import java.io.IOException
 

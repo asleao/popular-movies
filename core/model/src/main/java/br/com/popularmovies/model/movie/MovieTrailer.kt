@@ -1,4 +1,4 @@
-package br.com.popularmovies.entities.movie
+package br.com.popularmovies.model.movie
 
 data class MovieTrailer(
     val id: String,

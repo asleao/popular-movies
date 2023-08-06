@@ -1,4 +1,4 @@
-package br.com.popularmovies.entities.movie
+package br.com.popularmovies.model.movie
 
 import org.joda.time.LocalDate
 import java.math.BigDecimal

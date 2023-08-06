@@ -1,8 +1,8 @@
 package br.com.popularmovies.usecases.movies.favorites
 
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.repository.MovieRepository
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.repository.MovieRepository
 import br.com.popularmovies.usecases.UseCase
 import javax.inject.Inject
 

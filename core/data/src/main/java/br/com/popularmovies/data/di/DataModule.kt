@@ -1,12 +1,12 @@
-package br.com.popularmovies.repositories.di
+package br.com.popularmovies.data.di
 
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.di.DatabaseModule
 import br.com.popularmovies.datasourceremote.di.NetworkModule
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import br.com.popularmovies.entities.repository.MovieRepository
-import br.com.popularmovies.repositories.movie.MovieRepositoryImpl
+import br.com.popularmovies.data.movie.MovieRepositoryImpl
+import br.com.popularmovies.model.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 
@@ -16,7 +16,7 @@ import dagger.Provides
         DatabaseModule::class
     ]
 )
-object RepositoriesModule {
+object DataModule {
 
     @Provides
     fun movieRepository(

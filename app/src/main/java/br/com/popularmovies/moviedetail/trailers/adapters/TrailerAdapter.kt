@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
-import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.moviedetail.trailers.Constants
 import br.com.popularmovies.moviedetail.trailers.adapters.TrailerAdapter.TrailerViewHolder
 

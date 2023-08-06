@@ -22,7 +22,7 @@ import br.com.popularmovies.R
 import br.com.popularmovies.common.configs.ErrorMessages
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.databinding.FragmentMovieBinding
-import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.movies.adapters.MovieClickListener
 import br.com.popularmovies.movies.adapters.MoviePagingAdapter
 import br.com.popularmovies.movies.adapters.NowPlayingViewPagerAdapter

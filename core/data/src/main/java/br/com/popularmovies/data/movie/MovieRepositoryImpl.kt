@@ -1,19 +1,19 @@
-package br.com.popularmovies.repositories.movie
+package br.com.popularmovies.data.movie
 
 import androidx.paging.*
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.data.config.PaginationConfig
+import br.com.popularmovies.data.mappers.toDomain
+import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieReview
-import br.com.popularmovies.entities.movie.MovieTrailer
-import br.com.popularmovies.entities.movie.MovieType
-import br.com.popularmovies.entities.repository.MovieRepository
-import br.com.popularmovies.repositories.config.PaginationConfig
-import br.com.popularmovies.repositories.mappers.toDomain
-import br.com.popularmovies.repositories.mappers.toTable
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieTrailer
+import br.com.popularmovies.model.movie.MovieType
+import br.com.popularmovies.model.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -57,6 +57,7 @@ class MovieRepositoryImpl @Inject constructor(
             mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
             is Result.Success -> Result.Success(
                 result.data.take(5).map { it.toDomain(MovieType.NowPlaying) })
+
             is Result.Error -> Result.Error(result.error)
         }
     }
@@ -66,6 +67,7 @@ class MovieRepositoryImpl @Inject constructor(
             is Result.Success -> {
                 Result.Success(result.data.toDomain())
             }
+
             is Result.Error -> {
                 Result.Error(result.error)
             }

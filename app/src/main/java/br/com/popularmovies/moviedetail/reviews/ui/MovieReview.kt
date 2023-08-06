@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.ui.theme.AppTheme
 import br.com.popularmovies.ui.theme.OpensSansTypography
 

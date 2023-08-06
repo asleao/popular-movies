@@ -1,9 +1,9 @@
 package br.com.popularmovies.usecases.di
 
-import br.com.popularmovies.repositories.di.RepositoriesModule
+import br.com.popularmovies.data.di.DataModule
 import dagger.Module
 
 @Module(includes = [
-    RepositoriesModule::class
+    DataModule::class
 ])
 object UseCasesModule

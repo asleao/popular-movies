@@ -1,7 +1,7 @@
-package br.com.popularmovies.repositories.mappers
+package br.com.popularmovies.data.mappers
 
 import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
-import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.model.movie.MovieTrailer
 
 fun MovieTrailerDto.toDomain(): MovieTrailer {
     return MovieTrailer(

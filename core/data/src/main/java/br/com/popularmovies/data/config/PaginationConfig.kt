@@ -1,4 +1,4 @@
-package br.com.popularmovies.repositories.config
+package br.com.popularmovies.data.config
 
 object PaginationConfig {
     const val defaultPage = 1

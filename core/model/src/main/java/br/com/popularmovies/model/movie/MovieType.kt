@@ -1,4 +1,4 @@
-package br.com.popularmovies.entities.movie
+package br.com.popularmovies.model.movie
 
 enum class MovieType {
     TopRated,

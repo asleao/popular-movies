@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

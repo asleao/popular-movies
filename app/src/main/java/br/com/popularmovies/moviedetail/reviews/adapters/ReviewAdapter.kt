@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
-import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieReview
 
 class ReviewAdapter(private val movieReviews: List<MovieReview>) :
         RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {

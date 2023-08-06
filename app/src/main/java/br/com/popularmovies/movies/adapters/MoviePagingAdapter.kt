@@ -8,7 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
-import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.model.movie.Movie
 
 class MoviePagingAdapter(private val clickListener: MovieClickListener) :
     PagingDataAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {

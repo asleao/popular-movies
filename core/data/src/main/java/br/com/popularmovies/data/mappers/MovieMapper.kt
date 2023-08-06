@@ -1,10 +1,10 @@
-package br.com.popularmovies.repositories.mappers
+package br.com.popularmovies.data.mappers
 
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.models.movie.MovieDto
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieType
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieType
 
 fun MovieTable.toDomain(type: MovieType): Movie {
     return Movie(

@@ -1,11 +1,11 @@
-package br.com.popularmovies.entities.repository
+package br.com.popularmovies.model.repository
 
 import androidx.paging.PagingData
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieReview
-import br.com.popularmovies.entities.movie.MovieTrailer
-import br.com.popularmovies.entities.movie.MovieType
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieTrailer
+import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

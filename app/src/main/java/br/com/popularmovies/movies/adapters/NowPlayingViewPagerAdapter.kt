@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
-import br.com.popularmovies.entities.movie.Movie
+import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.movies.ui.NowPlayingMovieFragment
 
 class NowPlayingViewPagerAdapter(

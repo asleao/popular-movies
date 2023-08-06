@@ -1,7 +1,7 @@
-package br.com.popularmovies.repositories.mappers
+package br.com.popularmovies.data.mappers
 
 import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
-import br.com.popularmovies.entities.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieReview
 
 fun MovieReviewDto.toDomain(): MovieReview {
     return MovieReview(

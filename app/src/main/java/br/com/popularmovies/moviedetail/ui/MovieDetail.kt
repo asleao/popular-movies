@@ -9,8 +9,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieType
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieType
 import br.com.popularmovies.ui.theme.AppTheme
 import org.joda.time.LocalDate
 import java.math.BigDecimal

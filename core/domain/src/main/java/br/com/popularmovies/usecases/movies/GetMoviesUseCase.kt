@@ -1,9 +1,9 @@
 package br.com.popularmovies.usecases.movies
 
 import androidx.paging.PagingData
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieType
-import br.com.popularmovies.entities.repository.MovieRepository
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieType
+import br.com.popularmovies.model.repository.MovieRepository
 import br.com.popularmovies.usecases.FlowUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

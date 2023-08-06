@@ -8,8 +8,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieType
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieType
 import br.com.popularmovies.usecases.movies.GetMoviesUseCase
 import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow

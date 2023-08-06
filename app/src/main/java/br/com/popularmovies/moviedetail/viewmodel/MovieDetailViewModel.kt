@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
-import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.entities.movie.MovieReview
-import br.com.popularmovies.entities.movie.MovieTrailer
+import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieReview
+import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.usecases.movies.GetMovieUseCase
 import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
 import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
