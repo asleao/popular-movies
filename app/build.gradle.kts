@@ -52,7 +52,7 @@ android {
 dependencies {
     implementation(project(":entities"))
     implementation(project(":common"))
-    implementation(project(":usecases"))
+    implementation(project(":core:domain"))
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
