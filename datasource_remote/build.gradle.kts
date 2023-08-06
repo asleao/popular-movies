@@ -2,8 +2,8 @@
 plugins {
     id("popularmovies.android.library")
     id("popularmovies.android.dagger")
-    alias(libs.plugins.ksp)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    alias(libs.plugins.ksp)
 }
 
 android {

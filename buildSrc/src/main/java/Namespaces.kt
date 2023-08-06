@@ -6,5 +6,4 @@ object Namespaces {
     const val entities = "br.com.popularmovies.entities"
     const val repositories = "br.com.popularmovies.repositories"
     const val usecases = "br.com.popularmovies.usecases"
-
 }
