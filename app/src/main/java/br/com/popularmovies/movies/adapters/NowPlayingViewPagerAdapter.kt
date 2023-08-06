@@ -6,7 +6,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.ui.NowPlayingMovieFragment
-import br.com.popularmovies.movies.ui.NowPlayingMovieFragment.Companion.MOVIE_ARG
 
 class NowPlayingViewPagerAdapter(
     fragment: Fragment,

@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import br.com.popularmovies.R
 import br.com.popularmovies.databinding.FragmentNowPlayingMovieBinding
-import br.com.popularmovies.entities.movie.Movie
 
 class NowPlayingMovieFragment : Fragment() {
 

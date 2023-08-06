@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieAdapter.MovieViewHolder
 
 class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {

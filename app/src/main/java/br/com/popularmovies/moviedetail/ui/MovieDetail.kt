@@ -1,20 +1,16 @@
 package br.com.popularmovies.moviedetail.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieType
-import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.ui.theme.AppTheme
 import org.joda.time.LocalDate
 import java.math.BigDecimal
