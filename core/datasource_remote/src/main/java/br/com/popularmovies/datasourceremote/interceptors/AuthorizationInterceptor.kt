@@ -1,6 +1,6 @@
 package br.com.popularmovies.datasourceremote.interceptors
 
-import br.com.popularmovies.datasourceremote.BuildConfig
+import br.com.popularmovies.core.datasourceremote.BuildConfig
 import br.com.popularmovies.datasourceremote.config.NetworkConstants.API_KEY
 import okhttp3.Interceptor
 import okhttp3.Response

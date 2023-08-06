@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = Namespaces.datasourceDb
+    namespace = Namespaces.coreDatasourceDb
 }
 
 dependencies {

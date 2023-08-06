@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = Namespaces.datasourceRemote
+    namespace = Namespaces.coreDatasourceRemote
 }
 
 secrets {

@@ -5,7 +5,7 @@ plugins {
 
 
 android {
-    namespace = Namespaces.repositories
+    namespace = Namespaces.coreData
 }
 
 dependencies {

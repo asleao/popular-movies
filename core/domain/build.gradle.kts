@@ -5,7 +5,7 @@ plugins {
 
 
 android {
-    namespace = Namespaces.usecases
+    namespace = Namespaces.coreDomain
 }
 
 dependencies {

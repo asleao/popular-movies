@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = Namespaces.entities
+    namespace = Namespaces.coreModel
 }
 
 dependencies {

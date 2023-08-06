@@ -1,6 +1,6 @@
 package br.com.popularmovies.datasourceremote.di
 
-import br.com.popularmovies.datasourceremote.BuildConfig
+import br.com.popularmovies.core.datasourceremote.BuildConfig
 import br.com.popularmovies.datasourceremote.adapters.BigDecimalAdapter
 import br.com.popularmovies.datasourceremote.adapters.DateAdapter
 import br.com.popularmovies.datasourceremote.config.NetworkConstants.API_VERSION

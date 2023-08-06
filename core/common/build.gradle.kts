@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = Namespaces.common
+    namespace = Namespaces.coreCommon
 }
 
 dependencies {
