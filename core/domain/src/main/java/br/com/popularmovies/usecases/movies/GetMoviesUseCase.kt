@@ -4,7 +4,7 @@ import androidx.paging.PagingData
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieType
 import br.com.popularmovies.entities.repository.MovieRepository
-import br.com.popularmovies.entities.usecase.FlowUseCase
+import br.com.popularmovies.usecases.FlowUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package br.com.popularmovies.entities.usecase
+package br.com.popularmovies.usecases
 
 import br.com.popularmovies.common.models.base.Result
 
