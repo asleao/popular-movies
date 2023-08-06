@@ -2,11 +2,7 @@ package br.com.popularmovies.datasourcedb.datasources.movie
 
 import androidx.paging.PagingSource
 import androidx.room.withTransaction
-import br.com.popularmovies.common.configs.ErrorCodes.GENERIC_ERROR_CODE
-import br.com.popularmovies.common.models.base.NetworkError
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourcedb.AppDatabase
-import br.com.popularmovies.datasourcedb.config.DbConstants.ROOM_MSG_ERROR
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable

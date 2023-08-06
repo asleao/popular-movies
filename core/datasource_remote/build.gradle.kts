@@ -15,7 +15,7 @@ secrets {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":core:common"))
 
     implementation(libs.bundles.moshi)
     ksp(libs.moshi.kotlin.codegen)

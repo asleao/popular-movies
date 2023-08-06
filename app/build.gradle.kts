@@ -51,7 +51,7 @@ android {
 
 dependencies {
     implementation(project(":entities"))
-    implementation(project(":common"))
+    implementation(project(":core:common"))
     implementation(project(":core:domain"))
 
     implementation(libs.bundles.android.base)
