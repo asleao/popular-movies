@@ -10,7 +10,7 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    api(project(":datasource_db")) // TODO check if it is possible to use implementation
+    api(project(":core:datasource_db")) // TODO check if it is possible to use implementation
     api(project(":datasource_remote"))
     implementation(project(":entities"))
 

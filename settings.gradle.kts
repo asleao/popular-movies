@@ -18,7 +18,7 @@ pluginManagement {
 
 include(":app")
 include(":common")
-include(":datasource_db")
+include(":core:datasource_db")
 include(":datasource_remote")
 include(":entities")
 include(":repositories")
