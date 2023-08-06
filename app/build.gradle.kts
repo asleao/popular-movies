@@ -44,7 +44,7 @@ android {
         }
     }
 
-    tasks.withType<Test>() {
+    tasks.withType<Test> {
         useJUnitPlatform()
     }
 }
@@ -56,7 +56,6 @@ dependencies {
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
-//    implementation(libs.bundles.network)
     implementation(libs.bundles.paging)
 
 //    //Testing
