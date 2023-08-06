@@ -11,7 +11,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":entities"))
-    api(project(":repositories"))
+    api(project(":core:data"))
 
     implementation(libs.bundles.paging)
 }

@@ -18,8 +18,8 @@ pluginManagement {
 
 include(":app")
 include(":common")
+include(":core:data")
 include(":core:datasource_db")
 include(":core:datasource_remote")
 include(":entities")
-include(":repositories")
 include(":usecases")
