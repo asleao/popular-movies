@@ -11,10 +11,6 @@ import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.movies.adapters.MovieAdapter.MovieViewHolder
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : ListAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
 
@@ -26,12 +22,12 @@ class MovieAdapter(private val mOnMovieClickListener: MovieClickListener) : List
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
-        Glide.with(holder.itemView.context)
-            .load(Constants.IMAGE_URL + movie?.poster)
-            .transform(CenterCrop(), RoundedCorners(8))
-            .error(R.drawable.no_photo)
-            .transition(DrawableTransitionOptions.withCrossFade(600))
-            .into(holder.moviePoster)
+//        Glide.with(holder.itemView.context)
+//            .load(Constants.IMAGE_URL + movie?.poster)
+//            .transform(CenterCrop(), RoundedCorners(8))
+//            .error(R.drawable.no_photo)
+//            .transition(DrawableTransitionOptions.withCrossFade(600))
+//            .into(holder.moviePoster)
     }
 
     fun swapData(data: List<Movie>) {

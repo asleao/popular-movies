@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test
 import retrofit2.Response
 import java.io.IOException
 
+//TODO Check why is not working
 internal class RetrofitResponseTest {
     val response =
         mockk<Response<Boolean>>()

@@ -3,9 +3,9 @@ package br.com.popularmovies.moviedetail.trailers.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +23,7 @@ import br.com.popularmovies.ui.theme.AppTheme
 fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
     Card(
         shape = MaterialTheme.shapes.small,
-        elevation = 2.dp,
+//        elevation = 2.dp,
         modifier = Modifier
             .width(200.dp)
             .height(150.dp)
@@ -46,8 +46,8 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
                     .align(Alignment.CenterHorizontally)
                     .padding(16.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.subtitle1,
-                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.W500,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2

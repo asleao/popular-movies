@@ -10,11 +10,11 @@ import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.entities.movie.MovieReview
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.usecases.movies.GetMovieUseCase
-import br.com.popularmovies.usecases.movies.favorites.SaveMovieToFavoritesUseCase
 import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
 import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
@@ -24,7 +24,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     @Assisted private val movieId: Long
 ) : ViewModel() {
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(movieId: Long): MovieDetailViewModel
     }
@@ -63,6 +63,7 @@ class MovieDetailViewModel @AssistedInject constructor(
                 is Result.Success -> {
                     _movie.value = result.data
                 }
+
                 is Result.Error -> _error.value = result.error
             }
         }

@@ -11,10 +11,6 @@ import br.com.popularmovies.R
 import br.com.popularmovies.entities.movie.Movie
 import br.com.popularmovies.movies.Constants
 import br.com.popularmovies.utils.shimmerDrawable
-import br.com.popularmovies.utils.shimmerRequestListener
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import kotlinx.android.synthetic.main.movie_item.view.*
 
 class MoviePagingAdapter(private val clickListener: MovieClickListener) :
     PagingDataAdapter<Movie, MovieViewHolder>(MovieDiffCallback()) {
@@ -33,13 +29,13 @@ class MoviePagingAdapter(private val clickListener: MovieClickListener) :
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
 
         val movie = getItem(position)
-        Glide.with(holder.itemView.context)
-            .load(Constants.IMAGE_URL + movie?.poster)
-            .placeholder(shimmerDrawable())
-            .error(R.drawable.no_photo)
-            .listener(shimmerRequestListener(holder.itemView.container))
-            .transition(DrawableTransitionOptions.withCrossFade(600))
-            .into(holder.moviePoster)
+//        Glide.with(holder.itemView.context)
+//            .load(Constants.IMAGE_URL + movie?.poster)
+//            .placeholder(shimmerDrawable())
+//            .error(R.drawable.no_photo)
+//            .listener(shimmerRequestListener(holder.itemView.container))
+//            .transition(DrawableTransitionOptions.withCrossFade(600))
+//            .into(holder.moviePoster)
         holder.itemView.setOnClickListener {
             clickListener.onMovieClick(movie)
         }

@@ -8,9 +8,6 @@ import androidx.fragment.app.Fragment
 import br.com.popularmovies.R
 import br.com.popularmovies.databinding.FragmentNowPlayingMovieBinding
 import br.com.popularmovies.entities.movie.Movie
-import br.com.popularmovies.movies.Constants
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 
 class NowPlayingMovieFragment : Fragment() {
 
@@ -21,17 +18,17 @@ class NowPlayingMovieFragment : Fragment() {
     ): View {
         val binding = FragmentNowPlayingMovieBinding.inflate(inflater, container, false)
         arguments?.let {
-            val movieArg = it.getParcelable<Movie>(MOVIE_ARG)
-            movieArg?.let { movie ->
+//            val movieArg = it.getParcelable<Movie>(MOVIE_ARG)
+//            movieArg?.let { movie ->
 
-                Glide.with(requireContext())
-                    .load(Constants.IMAGE_URL + movie.poster)
-                    .transform(CenterCrop())
-                    .error(R.drawable.no_photo)
-                    .into(binding.ctHeaderImage)
-                binding.tvHeaderTitle.text = movie.originalTitle
+//                Glide.with(requireContext())
+//                    .load(Constants.IMAGE_URL + movie.poster)
+//                    .transform(CenterCrop())
+//                    .error(R.drawable.no_photo)
+//                    .into(binding.ctHeaderImage)
+//                binding.tvHeaderTitle.text = movie.originalTitle
             }
-        }
+//        }
         return binding.root
     }
 

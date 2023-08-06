@@ -6,9 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,8 +24,8 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
     val trailers by viewModel.trailers.observeAsState()
     val reviews by viewModel.reviews.observeAsState()
     Surface(
-        elevation = 2.dp,
-        color = MaterialTheme.colors.surface, // color will be adjusted for elevation
+//        elevation = 2.dp,
+        color = MaterialTheme.colorScheme.surface, // color will be adjusted for elevation
     ) {
         LazyColumn(
             state = rememberLazyListState(),
@@ -33,7 +33,7 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colors.background)
+                .background(color = MaterialTheme.colorScheme.background)
         ) {
             movie?.let {
                 item {
@@ -48,8 +48,8 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                             "Trailers",
                             modifier = Modifier
                                 .padding(top = 16.dp, start = 16.dp),
-                            style = MaterialTheme.typography.h3,
-                            color = MaterialTheme.colors.onPrimary
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                         LazyRow(
                             state = rememberLazyListState(),
@@ -76,8 +76,8 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                             "Reviews",
                             modifier = Modifier
                                 .padding(top = 16.dp, start = 16.dp),
-                            style = MaterialTheme.typography.h3,
-                            color = MaterialTheme.colors.onPrimary
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                     items(reviews) { review ->

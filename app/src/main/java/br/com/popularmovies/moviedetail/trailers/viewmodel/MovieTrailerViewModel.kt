@@ -8,8 +8,9 @@ import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.entities.movie.MovieTrailer
 import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieTrailerViewModel @AssistedInject constructor(
@@ -17,7 +18,7 @@ class MovieTrailerViewModel @AssistedInject constructor(
     @Assisted val movieId: Long
 ) : ViewModel() {
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(movieId: Long): MovieTrailerViewModel
     }
