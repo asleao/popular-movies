@@ -41,8 +41,6 @@
                         android:id="@+id/viewPagerShimmer"
                         android:layout_width="match_parent"
                         android:layout_height="220dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="16dp"
                         android:background="@drawable/card_background"
                         android:forceDarkAllowed="false"
                         app:shimmer_auto_start="true" />
