@@ -20,21 +20,21 @@ class NowPlayingMovieFragment : Fragment() {
     ): View {
         val binding = FragmentNowPlayingMovieBinding.inflate(inflater, container, false)
         arguments?.let {
-//            val movieArg = it.getParcelable<Movie>(MOVIE_ARG)
-//            movieArg?.let { movie ->
-//            binding.ctHeaderImage.load(Constants.IMAGE_URL + movie.poster) {
-//                val shimmerDrawable = shimmerDrawable()
-//                crossfade(true)
-//                placeholder(shimmerDrawable)
-//                error(R.drawable.no_photo)
-//            }
-//            binding.tvHeaderTitle.text = movie.originalTitle
+            val movieTitleArg = it.getString(MOVIE_TITLE_ARG)
+            val moviePosterArg = it.getString(MOVIE_POSTER_ARG)
+            binding.ctHeaderImage.load(Constants.IMAGE_URL + moviePosterArg) {
+                val shimmerDrawable = shimmerDrawable()
+                crossfade(true)
+                placeholder(shimmerDrawable)
+                error(R.drawable.no_photo)
+            }
+            binding.tvHeaderTitle.text = movieTitleArg
         }
-//        }
         return binding.root
     }
 
     companion object {
-        const val MOVIE_ARG = "movie_arg"
+        const val MOVIE_TITLE_ARG = "movie_title_arg"
+        const val MOVIE_POSTER_ARG = "movie_poster_arg"
     }
 }

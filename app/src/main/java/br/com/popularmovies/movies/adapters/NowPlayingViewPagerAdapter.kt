@@ -17,7 +17,8 @@ class NowPlayingViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         val fragment = NowPlayingMovieFragment()
         fragment.arguments = Bundle().apply {
-//            putParcelable(MOVIE_ARG, movies[position])
+            putString(MOVIE_TITLE_ARG, movies[position].originalTitle)
+            putString(MOVIE_POSTER_ARG, movies[position].poster)
         }
         return fragment
     }
@@ -31,5 +32,10 @@ class NowPlayingViewPagerAdapter(
             onMovieClick(movies[position])
         }
         super.onBindViewHolder(holder, position, payloads)
+    }
+
+    companion object {
+        const val MOVIE_TITLE_ARG = "movie_title_arg"
+        const val MOVIE_POSTER_ARG = "movie_poster_arg"
     }
 }
