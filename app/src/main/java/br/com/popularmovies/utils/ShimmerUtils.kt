@@ -18,30 +18,3 @@ private val shimmer =
 fun shimmerDrawable() = ShimmerDrawable().apply {
     setShimmer(shimmer)
 }
-//
-//fun shimmerRequestListener(shimmerFrameLayout: ShimmerFrameLayout) =
-//    object : RequestListener<Drawable> {
-//        override fun onLoadFailed(
-//            e: GlideException?,
-//            model: Any?,
-//            target: Target<Drawable>?,
-//            isFirstResource: Boolean
-//        ): Boolean {
-//            shimmerFrameLayout.setShimmer(null)
-//            shimmerFrameLayout.stopShimmer()
-//            return false
-//        }
-//
-//        override fun onResourceReady(
-//            resource: Drawable?,
-//            model: Any?,
-//            target: Target<Drawable>?,
-//            dataSource: DataSource?,
-//            isFirstResource: Boolean
-//        ): Boolean {
-//            shimmerFrameLayout.setShimmer(null)
-//            shimmerFrameLayout.stopShimmer()
-//            return false
-//        }
-//
-//    }

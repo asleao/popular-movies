@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import br.com.popularmovies.R
 import br.com.popularmovies.databinding.FragmentNowPlayingMovieBinding
+import br.com.popularmovies.movies.Constants
+import br.com.popularmovies.utils.shimmerDrawable
+import coil.load
 
 class NowPlayingMovieFragment : Fragment() {
 
@@ -18,14 +22,14 @@ class NowPlayingMovieFragment : Fragment() {
         arguments?.let {
 //            val movieArg = it.getParcelable<Movie>(MOVIE_ARG)
 //            movieArg?.let { movie ->
-
-//                Glide.with(requireContext())
-//                    .load(Constants.IMAGE_URL + movie.poster)
-//                    .transform(CenterCrop())
-//                    .error(R.drawable.no_photo)
-//                    .into(binding.ctHeaderImage)
-//                binding.tvHeaderTitle.text = movie.originalTitle
-            }
+//            binding.ctHeaderImage.load(Constants.IMAGE_URL + movie.poster) {
+//                val shimmerDrawable = shimmerDrawable()
+//                crossfade(true)
+//                placeholder(shimmerDrawable)
+//                error(R.drawable.no_photo)
+//            }
+//            binding.tvHeaderTitle.text = movie.originalTitle
+        }
 //        }
         return binding.root
     }
