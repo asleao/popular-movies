@@ -13,7 +13,6 @@ import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
-import br.com.popularmovies.model.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

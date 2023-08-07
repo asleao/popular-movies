@@ -6,7 +6,7 @@ import br.com.popularmovies.datasourcedb.di.DatabaseModule
 import br.com.popularmovies.datasourceremote.di.NetworkModule
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.data.movie.MovieRepositoryImpl
-import br.com.popularmovies.model.repository.MovieRepository
+import br.com.popularmovies.data.movie.MovieRepository
 import dagger.Module
 import dagger.Provides
 

@@ -1,4 +1,4 @@
-package br.com.popularmovies.model.repository
+package br.com.popularmovies.data.movie
 
 import androidx.paging.PagingData
 import br.com.popularmovies.common.models.base.Result
@@ -7,7 +7,7 @@ import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
-//TODO Move this to domain module?
+
 interface MovieRepository {
 
     fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>
