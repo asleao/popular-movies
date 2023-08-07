@@ -1,9 +1,9 @@
-package br.com.popularmovies.usecases.movies.trailers
+package br.com.popularmovies.domain.usecases.movies.trailers
 
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.repository.MovieRepository
-import br.com.popularmovies.usecases.UseCase
+import br.com.popularmovies.domain.usecases.UseCase
 import javax.inject.Inject
 
 class GetMovieTrailersUseCase @Inject constructor(

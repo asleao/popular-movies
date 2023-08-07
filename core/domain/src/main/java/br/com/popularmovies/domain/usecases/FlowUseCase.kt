@@ -1,4 +1,4 @@
-package br.com.popularmovies.usecases
+package br.com.popularmovies.domain.usecases
 
 import kotlinx.coroutines.flow.Flow
 

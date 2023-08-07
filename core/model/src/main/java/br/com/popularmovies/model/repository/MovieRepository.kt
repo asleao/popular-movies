@@ -7,7 +7,7 @@ import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
-
+//TODO Move this to domain module?
 interface MovieRepository {
 
     fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>

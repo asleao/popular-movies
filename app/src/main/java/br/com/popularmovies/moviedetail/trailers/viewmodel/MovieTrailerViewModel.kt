@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.model.movie.MovieTrailer
-import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
+import br.com.popularmovies.domain.usecases.movies.trailers.GetMovieTrailersUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

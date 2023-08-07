@@ -1,10 +1,10 @@
-package br.com.popularmovies.usecases.movies
+package br.com.popularmovies.domain.usecases.movies
 
 import androidx.paging.PagingData
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
 import br.com.popularmovies.model.repository.MovieRepository
-import br.com.popularmovies.usecases.FlowUseCase
+import br.com.popularmovies.domain.usecases.FlowUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -9,9 +9,9 @@ import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
-import br.com.popularmovies.usecases.movies.GetMovieUseCase
-import br.com.popularmovies.usecases.movies.reviews.GetMovieReviewsUseCase
-import br.com.popularmovies.usecases.movies.trailers.GetMovieTrailersUseCase
+import br.com.popularmovies.domain.usecases.movies.GetMovieUseCase
+import br.com.popularmovies.domain.usecases.movies.reviews.GetMovieReviewsUseCase
+import br.com.popularmovies.domain.usecases.movies.trailers.GetMovieTrailersUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

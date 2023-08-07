@@ -10,8 +10,8 @@ import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
-import br.com.popularmovies.usecases.movies.GetMoviesUseCase
-import br.com.popularmovies.usecases.movies.GetRandomNowPlayingMovieUseCase
+import br.com.popularmovies.domain.usecases.movies.GetMoviesUseCase
+import br.com.popularmovies.domain.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

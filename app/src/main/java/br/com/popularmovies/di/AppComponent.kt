@@ -8,7 +8,7 @@ import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.movies.ui.MovieActivity
-import br.com.popularmovies.usecases.di.UseCasesModule
+import br.com.popularmovies.domain.di.DomainModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -16,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        UseCasesModule::class,
+        DomainModule::class,
         AppSubcomponents::class,
         ViewModelModule::class
     ]
