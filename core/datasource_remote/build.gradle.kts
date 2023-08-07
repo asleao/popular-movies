@@ -8,6 +8,9 @@ plugins {
 
 android {
     namespace = Namespaces.coreDatasourceRemote
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 secrets {
