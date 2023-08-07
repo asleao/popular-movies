@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:ui"))
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)

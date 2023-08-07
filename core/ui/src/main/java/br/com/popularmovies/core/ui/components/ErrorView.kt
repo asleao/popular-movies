@@ -1,4 +1,4 @@
-package br.com.popularmovies.ui.components
+package br.com.popularmovies.core.ui.components
 
 import android.content.Context
 import android.util.AttributeSet
@@ -22,7 +22,7 @@ class ErrorView @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        br.com.popularmovies.core.designsystem.AppTheme {
+        AppTheme {
             ErrorView(
                 imageRes = imageRes,
                 description = description,
