@@ -4,10 +4,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-//        classpath(Build.androidBuildToolsPlugin)
-//        classpath(Build.kotlinGradlePlugin)
-//        classpath(Build.navigationSafeArgsGradlePlugin)
-//        classpath(Build.jUnit5GradlePlugin)
         classpath(libs.navigation.safe.args.gradle.plugin) //TODO Move to plugin somehow
     }
 
