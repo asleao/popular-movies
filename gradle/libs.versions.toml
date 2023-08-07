@@ -211,7 +211,10 @@ compose = [
     "androidx-lifecycle-viewModelCompose",
     "androidx-lifecycle-runtimeCompose",
     "androidx-compose-ui-util",
-    "androidx-compose-material3-windowSizeClass"
+    "androidx-compose-material3-windowSizeClass",
+    "coil-kt",
+    "coil-kt-compose",
+    "coil-kt-svg"
 ]
 
 di = [

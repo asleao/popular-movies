@@ -1,35 +1,48 @@
 package br.com.popularmovies.moviedetail.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.popularmovies.R
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
+import br.com.popularmovies.movies.Constants.IMAGE_URL
 import br.com.popularmovies.ui.theme.AppTheme
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 
 @Composable
 fun MovieDetail(movie: Movie) {
     Column {
-//        Image(
-//            painter = rememberGlidePainter(
-//                request = IMAGE_URL + movie.poster,
-//                previewPlaceholder = R.drawable.loading,
-//                fadeIn = true
-//            ),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .height(370.dp)
-//                .fillMaxWidth(),
-//            contentScale = ContentScale.Crop,
-//        )
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(IMAGE_URL + movie.poster)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(R.drawable.loading),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(370.dp)
+                .fillMaxWidth()
+        )
         Text(
             movie.originalTitle,
             modifier = Modifier
