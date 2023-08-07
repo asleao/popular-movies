@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.AbstractComposeView
-import br.com.popularmovies.ui.theme.AppTheme
+import br.com.popularmovies.core.designsystem.AppTheme
 
 class ErrorView @JvmOverloads constructor(
     context: Context,
@@ -22,7 +22,7 @@ class ErrorView @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        AppTheme {
+        br.com.popularmovies.core.designsystem.AppTheme {
             ErrorView(
                 imageRes = imageRes,
                 description = description,

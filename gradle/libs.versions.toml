@@ -66,6 +66,8 @@ dagger = "2.46"
 
 # Annotations procesing
 ksp = "1.8.10-1.0.9"
+org-jetbrains-kotlin-android = "1.8.10"
+junit = "1.1.5"
 
 [libraries]
 
@@ -164,6 +166,7 @@ kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-p
 navigation-safe-args-gradle-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigationSafeArgsGradlePlugin" }
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -173,6 +176,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsPlugin" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 
 [bundles]
 android-base = [
@@ -191,14 +195,12 @@ ui = [
     "androidx-recyclerview",
     "androidx-navigation-ui-ktx",
     "androidx-navigation-fragment-ktx",
-    "shimmer",
-    #    "material2"
+    "shimmer"
 ]
 
 compose = [
     "androidx-navigation-compose",
     "androidx-activity-compose",
-    #    "androidx-compose-bom",
     "androidx-compose-material-iconsExtended",
     "androidx-compose-foundation",
     "androidx-compose-foundation-layout",

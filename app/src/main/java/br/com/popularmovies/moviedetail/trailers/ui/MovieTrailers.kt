@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.R
 import br.com.popularmovies.model.movie.MovieTrailer
-import br.com.popularmovies.ui.theme.AppTheme
+import br.com.popularmovies.core.designsystem.AppTheme
 
 @Composable
 fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
@@ -59,7 +59,7 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun MockMovieTrailers() {
-    AppTheme {
+    br.com.popularmovies.core.designsystem.AppTheme {
         MovieTrailerCard(
             movieTrailer =
             MovieTrailer(

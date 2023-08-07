@@ -1,4 +1,4 @@
-package br.com.popularmovies.ui.theme
+package br.com.popularmovies.core.designsystem
 
 /*
  * Copyright 2021 The Android Open Source Project

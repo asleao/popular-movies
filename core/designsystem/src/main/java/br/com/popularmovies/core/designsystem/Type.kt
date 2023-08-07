@@ -1,4 +1,4 @@
-package br.com.popularmovies.ui.theme
+package br.com.popularmovies.core.designsystem
 
 /*
  * Copyright 2021 The Android Open Source Project
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import br.com.popularmovies.R
 
 
 private val OpenSans = FontFamily(

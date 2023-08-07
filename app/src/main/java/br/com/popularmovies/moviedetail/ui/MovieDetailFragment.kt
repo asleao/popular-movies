@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.appComponent
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
-import br.com.popularmovies.ui.theme.AppTheme
+import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.utils.youtube
 
 class MovieDetailFragment : Fragment() {
@@ -46,7 +46,7 @@ class MovieDetailFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                AppTheme {
+                br.com.popularmovies.core.designsystem.AppTheme {
                     MovieScreen(viewModel = viewModel)
                 }
             }

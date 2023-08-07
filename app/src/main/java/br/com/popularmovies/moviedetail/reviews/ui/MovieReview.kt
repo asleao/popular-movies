@@ -11,8 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.popularmovies.model.movie.MovieReview
-import br.com.popularmovies.ui.theme.AppTheme
-import br.com.popularmovies.ui.theme.OpensSansTypography
+import br.com.popularmovies.core.designsystem.AppTheme
+import br.com.popularmovies.core.designsystem.OpensSansTypography
 
 @Composable
 fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {

@@ -5,5 +5,6 @@ object Namespaces {
     const val coreDatasourceRemote = "br.com.popularmovies.core.datasourceremote"
     const val coreModel = "br.com.popularmovies.core.model"
     const val coreData = "br.com.popularmovies.core.data"
+    const val coreDesignSystem = "br.com.popularmovies.core.designsystem"
     const val coreDomain = "br.com.popularmovies.core.domain"
 }
