@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.dp
 import br.com.popularmovies.R
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
-import br.com.popularmovies.movies.Constants.IMAGE_URL
-import br.com.popularmovies.core.designsystem.AppTheme
+import br.com.popularmovies.home.Constants.IMAGE_URL
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.joda.time.LocalDate

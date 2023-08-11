@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/movieFragment"
-        android:name="br.com.popularmovies.movies.ui.MovieFragment"
+        android:name="br.com.popularmovies.home.ui.MovieFragment"
         android:label="Popular Movies"
         tools:layout="@layout/fragment_movie">
         <action

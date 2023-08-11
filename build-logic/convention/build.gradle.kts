@@ -59,10 +59,10 @@ gradlePlugin {
             id = "popularmovies.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-//        register("androidFeature") {
-//            id = "popularmovies.android.feature"
-//            implementationClass = "AndroidFeatureConventionPlugin"
-//        }
+        register("androidFeature") {
+            id = "popularmovies.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("androidTest") {
             id = "popularmovies.android.test"
             implementationClass = "AndroidTestConventionPlugin"

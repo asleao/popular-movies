@@ -5,14 +5,14 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.data.mappers.toParam
+import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import br.com.popularmovies.data.mappers.toParam
-import br.com.popularmovies.data.mappers.toTable
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -34,12 +34,14 @@ class MoviesRemoteMediator(
                     getRemoteKeyClosestToCurrentPosition(state, movieType)
                 remoteKeys?.nextKey?.minus(1) ?: START_INDEX
             }
+
             LoadType.PREPEND -> {
                 val remoteKeys = getRemoteKeyForFirstItem(state, movieType)
                 val prevKey = remoteKeys?.prevKey
                     ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                 prevKey
             }
+
             LoadType.APPEND -> {
                 val remoteKeys = getRemoteKeyForLastItem(state, movieType)
                 val nextKey = remoteKeys?.nextKey

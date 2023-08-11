@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.popularmovies.di.ViewModelFactory
 import br.com.popularmovies.di.ViewModelKey
-import br.com.popularmovies.movies.viewmodel.MovieViewModel
+import br.com.popularmovies.home.viewmodel.MovieViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

@@ -1,27 +1,10 @@
 package br.com.popularmovies.datasourcedb.datasources.keys
 
-import androidx.room.withTransaction
-import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
-import javax.inject.Inject
 
-class RemoteKeyLocalDataSource @Inject constructor(private val appDatabase: AppDatabase) {
-    private val dao = appDatabase.remoteKeysDao()
-
-    suspend fun clear() {
-        appDatabase.withTransaction {
-            dao.clearRemoteKeys()
-        }
-    }
-
-    suspend fun insertAll(keys: List<RemoteKeyTable>) {
-        appDatabase.withTransaction {
-            dao.insertAll(keys)
-        }
-    }
-
-    suspend fun remoteKeyId(id: Long, type: MovieTypeTable): RemoteKeyTable? {
-        return dao.remoteKeyId(id, type)
-    }
+interface RemoteKeyLocalDataSource {
+    suspend fun clear()
+    suspend fun insertAll(keys: List<RemoteKeyTable>)
+    suspend fun remoteKeyId(id: Long, type: MovieTypeTable): RemoteKeyTable?
 }

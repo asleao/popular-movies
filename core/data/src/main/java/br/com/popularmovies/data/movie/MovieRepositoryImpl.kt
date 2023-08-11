@@ -16,9 +16,7 @@ import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class MovieRepositoryImpl @Inject constructor(
     private val remoteKeyLocalDataSource: RemoteKeyLocalDataSource,
     private val mMovieLocalDataSource: MovieLocalDataSource,

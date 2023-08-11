@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:home"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
@@ -58,7 +59,7 @@ dependencies {
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
-    implementation(libs.bundles.paging)
+
 
 //    //Testing
 //    androidTestImplementation(libs.bundles.uitests)

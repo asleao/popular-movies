@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">PopularMovies</string>
+    <string name="sort_by">Sort by</string>
+    <string name="ok" tools:keep="@string/ok"><b>OK</b></string>
+    <string name="try_again">Try again?</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="account">Account</string>
+    <string name="movie_release_date_label">Released</string>
+    <string name="movie_release_date">01 MAR 2014</string>
+    <string name="movie_rating_label">Rating</string>
+    <string name="movie_rating">8.2/10</string>
+    <string name="movie_overview">Interstellar chronicles the adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar…</string>
+    <string name="movie_overview_label">Overview</string>
+    <string name="movie_poster_content_description">Movie poster</string>
+    <string name="dialog_ok"><b>OK</b></string>
+    <string name="movie_review_label">Reviews</string>
+    <string name="movie_trailer_label">Trailers</string>
+    <string name="tv_comment_author_label" tools:keep="@string/tv_comment_author_label">Author:</string>
+
+    <string name="fg_movie_popular_title">Popular</string>
+    <string name="fg_movie_now_playing_title">Now Playing</string>
+    <string name="fg_movie_top_hated_title">Top Hated</string>
+
+</resources>

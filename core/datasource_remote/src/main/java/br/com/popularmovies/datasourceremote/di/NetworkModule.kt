@@ -22,61 +22,62 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-    @Singleton
+//    @Singleton
     fun providesMoshi(): Moshi {
         return Moshi.Builder()
-                .add(BigDecimalAdapter())
-                .add(DateAdapter())
-                .add(KotlinJsonAdapterFactory())
-                .build()
+            .add(BigDecimalAdapter())
+            .add(DateAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     fun providesOkHttpClientBuilder(log: HttpLoggingInterceptor): OkHttpClient.Builder {
         val interceptors = OkHttpClient.Builder()
-                .addInterceptor(AuthorizationInterceptor())
+            .addInterceptor(AuthorizationInterceptor())
         return if (BuildConfig.DEBUG) {
             interceptors
-                    .addInterceptor(log)
+                .addInterceptor(log)
         } else {
             interceptors
         }
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     fun providesOhHttpClient(okHttpClientBuilder: OkHttpClient.Builder): OkHttpClient {
         return okHttpClientBuilder.build()
 
     }
 
     @Provides
-    @Singleton
+//    @Singleton
     fun providesLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY)
+            .setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
     @Provides
     fun providesBaseUrl(): HttpUrl {
         return HttpUrl.Builder()
-                .scheme(SCHEME)
-                .host(HOST)
-                .addPathSegments(API_VERSION)
-                .build()
+            .scheme(SCHEME)
+            .host(HOST)
+            .addPathSegments(API_VERSION)
+            .build()
     }
 
     @Provides
-    @Singleton
-    fun providesRetrofit(okHttpClient: OkHttpClient,
-                         baseUrl: HttpUrl,
-                         moshi: Moshi): Retrofit {
+//    @Singleton
+    fun providesRetrofit(
+        okHttpClient: OkHttpClient,
+        baseUrl: HttpUrl,
+        moshi: Moshi
+    ): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(MoshiConverterFactory.create(moshi))
-                .client(okHttpClient)
-                .build()
-
+            .baseUrl(baseUrl)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient)
+            .build()
     }
 }

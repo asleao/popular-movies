@@ -1,5 +1,6 @@
 plugins {
     id("popularmovies.android.library")
+    id("popularmovies.android.dagger")
 }
 
 android {
