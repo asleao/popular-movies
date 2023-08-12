@@ -1,7 +1,5 @@
 package br.com.popularmovies.data.di
 
-import br.com.popularmovies.common.di.FeatureScope
-import br.com.popularmovies.data.movie.MovieRepository
 import br.com.popularmovies.datasourcedb.di.DatabaseComponent
 import br.com.popularmovies.datasourceremote.di.NetworkComponent
 import dagger.Component
@@ -15,7 +13,7 @@ import javax.inject.Singleton
     modules = [DataModule::class]
 )
 //@Singleton
-interface DataComponent {
+interface DataComponent : DataComponentProvider {
     @Component.Factory
     interface Factory {
         fun create(
@@ -23,6 +21,4 @@ interface DataComponent {
             networkComponent: NetworkComponent
         ): DataComponent
     }
-
-    val movieRepository: MovieRepository
 }
