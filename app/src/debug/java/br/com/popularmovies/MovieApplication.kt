@@ -26,14 +26,13 @@ class MovieApplication : Application(), ImageLoaderFactory {
         DaggerDomainComponent.factory().create(dataComponent)
     }
     val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory()
-            .create(
-                applicationContext,
-                dataComponent,
-                databaseComponent,
-                networkComponent,
-                domainComponent
-            )
+        DaggerAppComponent
+            .builder()
+            .dataComponentProvider(dataComponent)
+            .databaseComponentProvider(databaseComponent)
+            .networkComponentProvider(networkComponent)
+            .domainComponentProvider(domainComponent)
+            .build()
     }
 
     override fun newImageLoader(): ImageLoader {
