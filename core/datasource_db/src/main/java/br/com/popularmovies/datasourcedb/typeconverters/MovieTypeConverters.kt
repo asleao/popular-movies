@@ -1,7 +1,7 @@
 package br.com.popularmovies.datasourcedb.typeconverters
 
 import androidx.room.TypeConverter
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 
 class MovieTypeConverters {
 

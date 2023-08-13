@@ -2,8 +2,8 @@ package br.com.popularmovies.di
 
 import android.content.Context
 import br.com.popularmovies.MovieActivity
+import br.com.popularmovies.core.api.DatabaseComponentProvider
 import br.com.popularmovies.data.di.DataComponentProvider
-import br.com.popularmovies.datasourcedb.di.DatabaseComponentProvider
 import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
 import br.com.popularmovies.di.modules.ViewModelModule
 import br.com.popularmovies.di.subcomponents.MovieDetailComponent

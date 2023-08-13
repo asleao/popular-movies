@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import br.com.popularmovies.datasourcedb.models.movie.MovieTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 
 @Dao
 interface MovieDao {

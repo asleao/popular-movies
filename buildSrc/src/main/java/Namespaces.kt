@@ -3,6 +3,7 @@ object Namespaces {
     const val featureHome = "br.com.popularmovies.feature.home"
     const val coreCommon = "br.com.popularmovies.core.common"
     const val coreDatasourceDb = "br.com.popularmovies.core.datasource_db"
+    const val coreDatasourceDbApi = "br.com.popularmovies.core.datasource.db.api"
     const val coreDatasourceRemote = "br.com.popularmovies.core.datasourceremote"
     const val coreDatasourceRemoteApi = "br.com.popularmovies.core.datasourceremote.api"
     const val coreModel = "br.com.popularmovies.core.model"

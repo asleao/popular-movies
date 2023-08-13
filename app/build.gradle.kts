@@ -58,6 +58,8 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:datasource_remote")) //Check here
     implementation(project(":core:datasource_remote_api")) //Check here
+    implementation(project(":core:datasource_db")) //Check here
+    implementation(project(":core:datasource_db_api")) //Check here
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)

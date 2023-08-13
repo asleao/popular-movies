@@ -2,13 +2,15 @@ package br.com.popularmovies.datasourcedb.datasources.movie
 
 import androidx.paging.PagingSource
 import androidx.room.withTransaction
+import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
-import br.com.popularmovies.datasourcedb.models.movie.MovieTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import javax.inject.Inject
 
-class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase):MovieLocalDataSource {
+class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase):
+    MovieLocalDataSource {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
     override fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable> {

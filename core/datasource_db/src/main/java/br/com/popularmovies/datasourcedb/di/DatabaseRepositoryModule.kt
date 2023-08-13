@@ -1,12 +1,11 @@
 package br.com.popularmovies.datasourcedb.di
 
-import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
+import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSourceImpl
-import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
+import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSourceImpl
 import dagger.Binds
 import dagger.Module
-import javax.inject.Singleton
 
 @Module
 interface DatabaseRepositoryModule {

@@ -1,12 +1,12 @@
 package br.com.popularmovies.data.di
 
-import br.com.popularmovies.datasourcedb.di.DatabaseComponent
+import br.com.popularmovies.core.api.DatabaseComponentProvider
 import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
 import dagger.Component
 
 @Component(
     dependencies = [
-        DatabaseComponent::class,
+        DatabaseComponentProvider::class,
         NetworkComponentProvider::class
     ],
     modules = [DataModule::class]
@@ -16,7 +16,7 @@ interface DataComponent : DataComponentProvider {
     @Component.Factory
     interface Factory {
         fun create(
-            databaseComponent: DatabaseComponent,
+            databaseComponent: DatabaseComponentProvider,
             networkComponentProvider: NetworkComponentProvider
         ): DataComponent
     }

@@ -1,4 +1,4 @@
-package br.com.popularmovies.datasourcedb.models.movie
+package br.com.popularmovies.core.api.models.movie
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

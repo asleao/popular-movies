@@ -1,4 +1,4 @@
-package br.com.popularmovies.datasourcedb.models.movie
+package br.com.popularmovies.core.api.models.movie
 
 enum class MovieTypeTable(val id: Int) {
     TopRated(0),

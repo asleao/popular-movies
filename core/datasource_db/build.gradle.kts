@@ -10,4 +10,5 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+    implementation(project(":core:datasource_db_api"))
 }

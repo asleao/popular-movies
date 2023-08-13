@@ -3,11 +3,11 @@ package br.com.popularmovies.data.movie
 import androidx.paging.*
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.core.api.MovieLocalDataSource
+import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
 import br.com.popularmovies.data.mappers.toTable
-import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
-import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview

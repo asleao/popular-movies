@@ -1,9 +1,10 @@
 package br.com.popularmovies.datasourcedb.datasources.keys
 
 import androidx.room.withTransaction
+import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.AppDatabase
-import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.keys.RemoteKeyTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import javax.inject.Inject
 
 class RemoteKeyLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase) :

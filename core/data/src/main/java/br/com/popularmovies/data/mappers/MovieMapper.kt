@@ -1,7 +1,7 @@
 package br.com.popularmovies.data.mappers
 
-import br.com.popularmovies.datasourcedb.models.movie.MovieTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieDto
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType

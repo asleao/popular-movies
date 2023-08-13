@@ -1,19 +1,19 @@
 package br.com.popularmovies.data.movie
 
+//import retrofit2.HttpException
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.core.api.MovieLocalDataSource
+import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
+import br.com.popularmovies.core.api.models.keys.RemoteKeyTable
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import br.com.popularmovies.data.mappers.toParam
 import br.com.popularmovies.data.mappers.toTable
-import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
-import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
-import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTable
-import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
-//import retrofit2.HttpException
 import java.io.IOException
 
 @ExperimentalPagingApi
