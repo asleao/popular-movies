@@ -8,9 +8,4 @@ import javax.inject.Singleton
     modules = [NetworkModule::class, NetworkRepositoryModule::class]
 )
 @Singleton
-interface NetworkComponent : NetworkComponentProvider {
-    @Component.Factory
-    interface Factory {
-        fun create(): NetworkComponent
-    }
-}
+interface NetworkComponent : NetworkComponentProvider

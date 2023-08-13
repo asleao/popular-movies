@@ -12,12 +12,4 @@ import dagger.Component
     modules = [DataModule::class]
 )
 //@Singleton
-interface DataComponent : DataComponentProvider {
-    @Component.Factory
-    interface Factory {
-        fun create(
-            databaseComponent: DatabaseComponentProvider,
-            networkComponentProvider: NetworkComponentProvider
-        ): DataComponent
-    }
-}
+interface DataComponent : DataComponentProvider

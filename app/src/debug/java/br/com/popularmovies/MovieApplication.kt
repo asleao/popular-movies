@@ -18,12 +18,16 @@ class MovieApplication : Application(), ImageLoaderFactory {
     val databaseComponent by lazy {
         DaggerDatabaseComponent.factory().create(applicationContext)
     }
-    val networkComponent = DaggerNetworkComponent.factory().create()
+    val networkComponent = DaggerNetworkComponent.builder().build()
     val dataComponent: DataComponent by lazy {
-        DaggerDataComponent.factory().create(databaseComponent, networkComponent)
+        DaggerDataComponent
+            .builder()
+            .databaseComponentProvider(databaseComponent)
+            .networkComponentProvider(networkComponent)
+            .build()
     }
     val domainComponent: DomainComponent by lazy {
-        DaggerDomainComponent.factory().create(dataComponent)
+        DaggerDomainComponent.builder().dataComponent(dataComponent).build()
     }
     val appComponent: AppComponent by lazy {
         DaggerAppComponent

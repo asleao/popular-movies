@@ -6,9 +6,4 @@ import dagger.Component
 @Component(
     dependencies = [DataComponent::class]
 )
-interface DomainComponent : DomainComponentProvider {
-    @Component.Factory
-    interface Factory {
-        fun create(dataComponent: DataComponent): DomainComponent
-    }
-}
+interface DomainComponent : DomainComponentProvider
