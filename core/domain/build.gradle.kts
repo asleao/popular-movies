@@ -11,6 +11,7 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:datasource_remote_api")) //TODO check this
     api(project(":core:data"))
 
     implementation(libs.bundles.paging)

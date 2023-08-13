@@ -56,6 +56,8 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
+    implementation(project(":core:datasource_remote")) //Check here
+    implementation(project(":core:datasource_remote_api")) //Check here
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)

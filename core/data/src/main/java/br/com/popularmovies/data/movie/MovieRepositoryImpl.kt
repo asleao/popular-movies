@@ -8,7 +8,7 @@ import br.com.popularmovies.data.mappers.toDomain
 import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourcedb.datasources.keys.RemoteKeyLocalDataSource
 import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
-import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
+import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer

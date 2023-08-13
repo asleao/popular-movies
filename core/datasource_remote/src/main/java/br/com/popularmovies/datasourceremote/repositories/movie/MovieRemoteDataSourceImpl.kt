@@ -2,13 +2,14 @@ package br.com.popularmovies.datasourceremote.repositories.movie
 
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.datasourceremote.models.base.RetrofitResponse
-import br.com.popularmovies.datasourceremote.models.movie.MovieDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieTypeParam
 import br.com.popularmovies.datasourceremote.services.movie.MovieService
 import br.com.popularmovies.datasourceremote.utils.mapApiResult
 import br.com.popularmovies.datasourceremote.utils.mapApiResults
+import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTypeParam
 import retrofit2.Retrofit
 import javax.inject.Inject
 

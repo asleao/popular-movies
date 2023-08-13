@@ -1,4 +1,4 @@
-package br.com.popularmovies.datasourceremote.models.movie
+package br.com.popularmovies.datasourceremoteapi.models.movie
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

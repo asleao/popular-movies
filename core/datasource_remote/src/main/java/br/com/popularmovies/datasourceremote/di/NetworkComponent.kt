@@ -1,5 +1,6 @@
 package br.com.popularmovies.datasourceremote.di
 
+import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
 import dagger.Component
 
 //@Singleton

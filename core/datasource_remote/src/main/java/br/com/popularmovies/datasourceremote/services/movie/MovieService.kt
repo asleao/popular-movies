@@ -1,9 +1,9 @@
 package br.com.popularmovies.datasourceremote.services.movie
 
 import br.com.popularmovies.datasourceremote.models.base.BaseDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieReviewDto
-import br.com.popularmovies.datasourceremote.models.movie.MovieTrailerDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

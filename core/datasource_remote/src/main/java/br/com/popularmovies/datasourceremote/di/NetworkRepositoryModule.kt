@@ -1,7 +1,7 @@
 package br.com.popularmovies.datasourceremote.di
 
-import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
 import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSourceImpl
+import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import dagger.Binds
 import dagger.Module
 

@@ -12,8 +12,8 @@ import br.com.popularmovies.datasourcedb.datasources.movie.MovieLocalDataSource
 import br.com.popularmovies.datasourcedb.models.keys.RemoteKeyTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTable
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
-import br.com.popularmovies.datasourceremote.repositories.movie.MovieRemoteDataSource
-import retrofit2.HttpException
+import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
+//import retrofit2.HttpException
 import java.io.IOException
 
 @ExperimentalPagingApi
@@ -80,9 +80,10 @@ class MoviesRemoteMediator(
             }
         } catch (exception: IOException) {
             return MediatorResult.Error(exception)
-        } catch (exception: HttpException) {
-            return MediatorResult.Error(exception)
         }
+//        catch (exception: HttpException) {
+//            return MediatorResult.Error(exception)
+//        }
     }
 
     private suspend fun getRemoteKeyForLastItem(

@@ -1,7 +1,7 @@
 package br.com.popularmovies.data.mappers
 
 import br.com.popularmovies.datasourcedb.models.movie.MovieTypeTable
-import br.com.popularmovies.datasourceremote.models.movie.MovieTypeParam
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTypeParam
 import br.com.popularmovies.model.movie.MovieType
 
 fun MovieTypeTable.toParam(): MovieTypeParam {

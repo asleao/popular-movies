@@ -1,4 +1,4 @@
-package br.com.popularmovies.datasourceremote.models.movie
+package br.com.popularmovies.datasourceremoteapi.models.movie
 
 enum class MovieTypeParam(val path: String) {
     TopRated("top_rated"),
