@@ -22,7 +22,7 @@ import javax.inject.Singleton
 object NetworkModule {
 
     @Provides
-//    @Singleton
+    @Singleton
     fun providesMoshi(): Moshi {
         return Moshi.Builder()
             .add(BigDecimalAdapter())
@@ -32,7 +32,7 @@ object NetworkModule {
     }
 
     @Provides
-//    @Singleton
+    @Singleton
     fun providesOkHttpClientBuilder(log: HttpLoggingInterceptor): OkHttpClient.Builder {
         val interceptors = OkHttpClient.Builder()
             .addInterceptor(AuthorizationInterceptor())
@@ -45,14 +45,14 @@ object NetworkModule {
     }
 
     @Provides
-//    @Singleton
+    @Singleton
     fun providesOhHttpClient(okHttpClientBuilder: OkHttpClient.Builder): OkHttpClient {
         return okHttpClientBuilder.build()
 
     }
 
     @Provides
-//    @Singleton
+    @Singleton
     fun providesLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -68,7 +68,7 @@ object NetworkModule {
     }
 
     @Provides
-//    @Singleton
+    @Singleton
     fun providesRetrofit(
         okHttpClient: OkHttpClient,
         baseUrl: HttpUrl,
