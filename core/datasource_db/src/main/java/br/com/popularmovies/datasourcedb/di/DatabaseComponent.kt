@@ -4,11 +4,12 @@ import android.content.Context
 import br.com.popularmovies.core.api.DatabaseComponentProvider
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
     modules = [DatabaseModule::class, DatabaseRepositoryModule::class]
 )
-//@Singleton
+@Singleton
 interface DatabaseComponent : DatabaseComponentProvider {
     @Component.Factory
     interface Factory {
