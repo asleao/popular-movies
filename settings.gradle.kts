@@ -17,6 +17,9 @@ pluginManagement {
 }
 
 include(":app")
+include(":feature:home")
+include(":feature:home_api")
+include(":feature:movie_details")
 include(":core:common")
 include(":core:data")
 include(":core:datasource_db")
@@ -25,8 +28,6 @@ include(":core:domain")
 include(":core:designsystem")
 include(":core:model")
 include(":core:ui")
-include(":feature:home")
-include(":feature:home_api")
 include(":core:datasource_remote_api")
 include(":core:domain_api")
 include(":core:datasource_db_api")

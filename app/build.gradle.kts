@@ -60,6 +60,7 @@ android {
 dependencies {
     implementation(project(":feature:home"))//Check here
     implementation(project(":feature:home_api"))//Check here
+    implementation(project(":feature:movie_details"))//Check here
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))

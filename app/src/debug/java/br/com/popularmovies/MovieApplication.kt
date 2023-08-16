@@ -15,6 +15,8 @@ import br.com.popularmovies.domain.di.DaggerDomainComponent
 import br.com.popularmovies.domain.di.DomainComponent
 import br.com.popularmovies.home.di.DaggerHomeComponent
 import br.com.popularmovies.home.di.HomeComponent
+import br.com.popularmovies.movie.details.di.DaggerMovieDetailsComponent
+import br.com.popularmovies.movie.details.di.MovieDetailsComponent
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 
@@ -47,6 +49,14 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .commonProvider(commonComponent)
             .build()
     }
+
+    val movieDetailsComponent: MovieDetailsComponent by lazy {
+        DaggerMovieDetailsComponent
+            .builder()
+            .domainComponent(domainComponent)
+            .commonProvider(commonComponent)
+            .build()
+    }
     val appComponent: AppComponent by lazy {
         DaggerAppComponent
             .builder()
@@ -56,6 +66,7 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .networkComponentProvider(networkComponent)
             .domainComponentProvider(domainComponent)
             .homeFeatureProvider(homeComponent)
+            .movieDetailsFeatureProvider(movieDetailsComponent)
             .build()
     }
 

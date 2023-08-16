@@ -10,6 +10,8 @@ import br.com.popularmovies.domain.di.DomainComponentProvider
 import br.com.popularmovies.home.api.HomeFeatureProvider
 import br.com.popularmovies.home.di.HomeFragmentModule
 import br.com.popularmovies.home.di.HomeViewModelModule
+import br.com.popularmovies.movie.details.di.MovieDetailsComponent
+import br.com.popularmovies.movie.details.di.MovieDetailsFeatureProvider
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
 import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
 import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
@@ -24,6 +26,7 @@ import javax.inject.Singleton
         DatabaseComponentProvider::class,
         NetworkComponentProvider::class,
         HomeFeatureProvider::class,
+        MovieDetailsFeatureProvider::class
     ],
     modules = [
         AppSubcomponents::class,
