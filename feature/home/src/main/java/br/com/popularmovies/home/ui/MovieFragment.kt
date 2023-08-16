@@ -1,7 +1,6 @@
 package br.com.popularmovies.home.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -34,32 +32,18 @@ import javax.inject.Provider
 
 class MovieFragment @Inject constructor(
     val viewModelFactory: Provider<MovieViewModel>
-//    getMoviesUseCase: GetMoviesUseCase
 ) : Fragment(),
     MovieClickListener {
-//    @Inject
-//    lateinit var viewModelFactory: ViewModelFactory
 
     private val viewModel: MovieViewModel by lazy {
         viewModelFactory.get()
     }
-//    viewModels {
-//        viewModelFactory.get()
-//    }
 
     private lateinit var binding: FragmentMovieBinding
 
     private val pagingNowPlayingMoviesAdapter = MoviePagingAdapter(this)
     private val pagingPopularMoviesAdapter = MoviePagingAdapter(this)
     private val pagingTopHatedMoviesAdapter = MoviePagingAdapter(this)
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-
-//        movieComponent.inject(this)
-    }
 
     private fun setupObservers() {
         val spacingItemDecoration = resources.getDimensionPixelSize(
