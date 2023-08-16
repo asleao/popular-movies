@@ -14,42 +14,42 @@ import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.utils.youtube
 
 class MovieDetailFragment : Fragment() {
-
-    private val args by navArgs<MovieDetailFragmentArgs>()
-
-    private val viewModel: MovieDetailViewModel by lazy {
-        appComponent.movieDetailViewModelFactory.create(args.movieId)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val movieDetailComponent = appComponent.movieDetailComponent().create()
-        movieDetailComponent.inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-        viewModel.playTrailer.observe(this) { trailerKey ->
-            trailerKey?.let {
-                requireContext().youtube(trailerKey)
-            }
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                br.com.popularmovies.core.designsystem.AppTheme {
-                    MovieScreen(viewModel = viewModel)
-                }
-            }
-        }
-    }
+//
+//    private val args by navArgs<MovieDetailFragmentArgs>()
+//
+//    private val viewModel: MovieDetailViewModel by lazy {
+//        appComponent.movieDetailViewModelFactory.create(args.movieId)
+//    }
+//
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        val movieDetailComponent = appComponent.movieDetailComponent().create()
+//        movieDetailComponent.inject(this)
+//    }
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setupObservers()
+//    }
+//
+//    private fun setupObservers() {
+//        viewModel.playTrailer.observe(this) { trailerKey ->
+//            trailerKey?.let {
+//                requireContext().youtube(trailerKey)
+//            }
+//        }
+//    }
+//
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        return ComposeView(requireContext()).apply {
+//            setContent {
+//                br.com.popularmovies.core.designsystem.AppTheme {
+//                    MovieScreen(viewModel = viewModel)
+//                }
+//            }
+//        }
+//    }
 }

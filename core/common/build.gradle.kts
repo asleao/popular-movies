@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
-    api(libs.jodatime)
-    api(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation(libs.androidx.lifecycle.extensions)
 }

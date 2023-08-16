@@ -8,10 +8,4 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class HomeViewModelModule {
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MovieViewModel::class)
-    abstract fun bindMovieViewModel(movieViewModel: MovieViewModel): ViewModel
-}
+abstract class HomeApiModule

@@ -14,6 +14,8 @@ dependencies {
     implementation(project(":core:datasource_db_api"))
     implementation(project(":core:model"))
 
+    implementation(libs.jodatime)
+
     implementation(libs.bundles.paging)
 
 }

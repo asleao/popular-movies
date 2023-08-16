@@ -4,6 +4,7 @@ plugins {
     id("popularmovies.android.application.compose")
     id("popularmovies.android.dagger")
     id("androidx.navigation.safeargs.kotlin")
+    id("scabbard.gradle")
 }
 
 android {
@@ -47,10 +48,18 @@ android {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    scabbard {
+        fullBindingGraphValidation = true
+        enabled = true
+        qualifiedNames = false
+        outputFormat = "svg"
+    }
 }
 
 dependencies {
-    implementation(project(":feature:home"))
+    implementation(project(":feature:home"))//Check here
+    implementation(project(":feature:home_api"))//Check here
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
@@ -63,6 +72,7 @@ dependencies {
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
+    implementation(libs.jodatime) //TODO remove after all feature module's creation
 
 
 //    //Testing

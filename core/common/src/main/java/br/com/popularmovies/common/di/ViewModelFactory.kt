@@ -1,4 +1,4 @@
-package br.com.popularmovies.di
+package br.com.popularmovies.common.di
 
 /*
  * Copyright (C) 2018 The Android Open Source Project
@@ -25,13 +25,14 @@ import javax.inject.Singleton
 
 @Singleton
 class ViewModelFactory @Inject constructor(
-        private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+    private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val creator = creators[modelClass] ?: creators.entries.firstOrNull {
             modelClass.isAssignableFrom(it.key)
         }?.value ?: throw IllegalArgumentException("unknown model class $modelClass")
         @Suppress("UNCHECKED_CAST")
+
         return creator.get() as T
     }
 }

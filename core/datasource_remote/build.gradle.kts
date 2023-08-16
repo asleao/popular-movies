@@ -21,6 +21,8 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:datasource_remote_api"))
 
+    implementation(libs.jodatime)
+
     implementation(libs.bundles.moshi)
     ksp(libs.moshi.kotlin.codegen)
 

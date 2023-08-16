@@ -7,6 +7,7 @@ androidDesugarJdkLibs = "2.0.3"
 androidGradlePlugin = "8.1.0"
 navigationSafeArgsGradlePlugin = "2.5.3"
 secretsPlugin = "2.0.1"
+scabbardPlugin = "0.5.0"
 
 # Android
 androidxCore = "1.10.1"
@@ -69,6 +70,7 @@ ksp = "1.8.10-1.0.9"
 org-jetbrains-kotlin-android = "1.8.10"
 junit = "1.1.5"
 material = "1.9.0"
+com-google-android-material-material = "1.9.0"
 
 [libraries]
 
@@ -85,6 +87,7 @@ androidx-window-manager = { module = "androidx.window:window", version.ref = "an
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-savedstate = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "androidxLifecycle" }
 androidx-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "androidxLifecycleExtensions" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -168,6 +171,7 @@ navigation-safe-args-gradle-plugin = { group = "androidx.navigation", name = "na
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+scabbard-processor = { group = "gradle.plugin.dev.arunkumar", name = "scabbard-gradle-plugin", version.ref = "scabbardPlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -188,6 +192,7 @@ android-base = [
     "androidx-lifecycle-runtime-ktx",
     "androidx-lifecycle-runtimeCompose",
     "androidx-lifecycle-viewmodel-ktx",
+    "androidx-lifecycle-viewmodel-savedstate",
     "androidx-window-manager"
 ]
 ui = [

@@ -1,4 +1,4 @@
-package br.com.popularmovies.di
+package br.com.popularmovies.common.di
 
 /*
  * Copyright (C) 2018 The Android Open Source Project

@@ -1,12 +1,11 @@
-import org.gradle.internal.impldep.org.fusesource.jansi.AnsiRenderer.test
-
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath(libs.navigation.safe.args.gradle.plugin) //TODO Move to plugin somehow
+        classpath(libs.navigation.safe.args.gradle.plugin)
+        classpath(libs.scabbard.processor)
     }
 
 }

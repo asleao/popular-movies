@@ -9,6 +9,8 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
+
+    implementation(libs.jodatime)
     implementation(libs.bundles.moshi)
     ksp(libs.moshi.kotlin.codegen)
 }
