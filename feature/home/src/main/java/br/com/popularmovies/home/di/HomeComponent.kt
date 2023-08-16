@@ -8,7 +8,6 @@ import dagger.Component
 
 @Component(
     dependencies = [DomainComponent::class, CommonProvider::class],
-    modules = [HomeApiModule::class, HomeViewModelModule::class]
 )
 @FeatureScope
 interface HomeComponent : HomeFeatureProvider

@@ -10,8 +10,9 @@ import br.com.popularmovies.feature.home.databinding.FragmentNowPlayingMovieBind
 import br.com.popularmovies.home.Constants
 import br.com.popularmovies.home.utils.shimmerDrawable
 import coil.load
+import javax.inject.Inject
 
-class NowPlayingMovieFragment : Fragment() {
+class NowPlayingMovieFragment @Inject constructor() : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

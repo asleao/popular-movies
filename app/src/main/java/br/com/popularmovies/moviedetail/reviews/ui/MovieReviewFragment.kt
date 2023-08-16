@@ -19,8 +19,9 @@ import br.com.popularmovies.common.configs.ErrorMessages.GENERIC_MSG_ERROR_TITLE
 import br.com.popularmovies.databinding.MovieReviewFragmentBinding
 import br.com.popularmovies.moviedetail.reviews.adapters.ReviewAdapter
 import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
+import javax.inject.Inject
 
-class MovieReviewFragment : Fragment()
+class MovieReviewFragment @Inject constructor(): Fragment()
 //    ,IConection
 {
 //

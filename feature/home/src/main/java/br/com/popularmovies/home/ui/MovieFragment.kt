@@ -16,28 +16,36 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.common.configs.ErrorMessages
-import br.com.popularmovies.common.di.ViewModelFactory
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.feature.home.R
 import br.com.popularmovies.feature.home.databinding.FragmentMovieBinding
 import br.com.popularmovies.home.adapters.MovieClickListener
 import br.com.popularmovies.home.adapters.MoviePagingAdapter
+import br.com.popularmovies.home.adapters.NowPlayingViewPagerAdapter
 import br.com.popularmovies.home.utils.SpacingItemDecoration
 import br.com.popularmovies.home.utils.SpacingItemDecorationType
+import br.com.popularmovies.home.viewmodel.MovieUiState
 import br.com.popularmovies.home.viewmodel.MovieViewModel
 import br.com.popularmovies.model.movie.Movie
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Provider
 
-class MovieFragment : Fragment(),
+class MovieFragment @Inject constructor(
+    val viewModelFactory: Provider<MovieViewModel>
+//    getMoviesUseCase: GetMoviesUseCase
+) : Fragment(),
     MovieClickListener {
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val viewModel: MovieViewModel by viewModels {
-        viewModelFactory
+    private val viewModel: MovieViewModel by lazy {
+        viewModelFactory.get()
     }
+//    viewModels {
+//        viewModelFactory.get()
+//    }
 
     private lateinit var binding: FragmentMovieBinding
 
@@ -67,20 +75,20 @@ class MovieFragment : Fragment(),
     private fun setupUiStateObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.uiState.collectLatest { state ->
-//                    when (state) {
-//                        MovieUiState.Success -> {
-//                            binding.errorView.isVisible = false
-//                            binding.container.isVisible = true
-//                        }
-//
-//                        is MovieUiState.Error -> {
-//                            binding.errorView.isVisible = true
-//                            binding.container.isVisible = false
-//                            showError(state.networkError)
-//                        }
-//                    }
-//                }
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
+                        MovieUiState.Success -> {
+                            binding.errorView.isVisible = false
+                            binding.container.isVisible = true
+                        }
+
+                        is MovieUiState.Error -> {
+                            binding.errorView.isVisible = true
+                            binding.container.isVisible = false
+                            showError(state.networkError)
+                        }
+                    }
+                }
             }
         }
     }
@@ -92,11 +100,11 @@ class MovieFragment : Fragment(),
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-//        viewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
-//            binding.viewPagerShimmer.setShimmer(null)
-//            binding.viewPagerShimmer.background = null
-//            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies, ::onMovieClick)
-//        }
+        viewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
+            binding.viewPagerShimmer.setShimmer(null)
+            binding.viewPagerShimmer.background = null
+            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies, ::onMovieClick)
+        }
     }
 
     private fun setupPopularMoviesFlow(spacingItemDecoration: Int) {
@@ -121,9 +129,9 @@ class MovieFragment : Fragment(),
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-//            viewModel.popularMoviesFlow.collectLatest { pagingData ->
-//                pagingPopularMoviesAdapter.submitData(pagingData)
-//            }
+            viewModel.popularMoviesFlow.collectLatest { pagingData ->
+                pagingPopularMoviesAdapter.submitData(pagingData)
+            }
         }
     }
 
@@ -149,9 +157,9 @@ class MovieFragment : Fragment(),
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-//            viewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
-//                pagingNowPlayingMoviesAdapter.submitData(pagingData)
-//            }
+            viewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
+                pagingNowPlayingMoviesAdapter.submitData(pagingData)
+            }
         }
     }
 
@@ -178,9 +186,9 @@ class MovieFragment : Fragment(),
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-//            viewModel.topHatedMoviesFlow.collectLatest { pagingData ->
-//                pagingTopHatedMoviesAdapter.submitData(pagingData)
-//            }
+            viewModel.topHatedMoviesFlow.collectLatest { pagingData ->
+                pagingTopHatedMoviesAdapter.submitData(pagingData)
+            }
         }
     }
 

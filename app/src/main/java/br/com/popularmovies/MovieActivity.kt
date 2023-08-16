@@ -3,18 +3,24 @@ package br.com.popularmovies
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentFactory
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import javax.inject.Inject
 
 
-class MovieActivity : AppCompatActivity() {
+class MovieActivity @Inject constructor() : AppCompatActivity() {
+
+    @Inject
+    lateinit var fragmentFactory: FragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MovieApplication).appComponent.inject(this)
+        appComponent.inject(this)
+        supportFragmentManager.fragmentFactory = fragmentFactory
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie)
         val host: NavHostFragment = supportFragmentManager
