@@ -1,4 +1,4 @@
-package br.com.popularmovies.di.modules
+package br.com.popularmovies.common.di
 
 /*
  * Copyright (C) 2018 The Android Open Source Project
@@ -20,7 +20,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
-
 
 class ViewModelFactory @Inject constructor(
     private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>

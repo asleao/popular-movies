@@ -1,4 +1,4 @@
-package br.com.popularmovies.di.modules
+package br.com.popularmovies.common.di
 
 
 import androidx.fragment.app.Fragment
@@ -7,7 +7,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
-@Singleton
 class FragmentFactoryImpl @Inject constructor(
     private val fragmentProviders: Map<Class<out Fragment>,
             @JvmSuppressWildcards Provider<Fragment>>

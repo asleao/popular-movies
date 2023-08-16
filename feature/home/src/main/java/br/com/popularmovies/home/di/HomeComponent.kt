@@ -1,5 +1,6 @@
 package br.com.popularmovies.home.di
 
+import androidx.fragment.app.FragmentFactory
 import br.com.popularmovies.common.di.CommonProvider
 import br.com.popularmovies.common.di.FeatureScope
 import br.com.popularmovies.domain.di.DomainComponent
@@ -8,6 +9,10 @@ import dagger.Component
 
 @Component(
     dependencies = [DomainComponent::class, CommonProvider::class],
+    modules = [
+//        FragmentModule::class,
+//        ViewModelModule::class
+    ]
 )
 @FeatureScope
 interface HomeComponent : HomeFeatureProvider

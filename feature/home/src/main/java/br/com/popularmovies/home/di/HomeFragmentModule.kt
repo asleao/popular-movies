@@ -1,7 +1,8 @@
-package br.com.popularmovies.di.modules
+package br.com.popularmovies.home.di
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import br.com.popularmovies.common.di.FragmentFactoryImpl
 import br.com.popularmovies.common.di.FragmentKey
 import br.com.popularmovies.home.ui.MovieFragment
 import br.com.popularmovies.home.ui.NowPlayingMovieFragment
@@ -10,7 +11,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class FragmentModule {
+abstract class HomeFragmentModule {
 
     @Binds
     abstract fun bindFragmentFactory(factory: FragmentFactoryImpl): FragmentFactory
