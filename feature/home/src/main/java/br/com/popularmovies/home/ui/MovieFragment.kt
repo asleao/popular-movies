@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.common.configs.ErrorMessages
@@ -213,12 +216,14 @@ class MovieFragment @Inject constructor(
             pagingNowPlayingMoviesAdapter.retry()
             pagingPopularMoviesAdapter.retry()
             pagingTopHatedMoviesAdapter.retry()
-//            viewModel.tryAgain()
+            viewModel.tryAgain()
         }
     }
 
     override fun onMovieClick(movie: Movie) {
-//        val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailFragment(movie.id)
-//        findNavController().navigate(action)
+        val request = NavDeepLinkRequest.Builder
+            .fromUri("popularmovies://movieDetailFragment/${movie.id}".toUri())
+            .build()
+        findNavController().navigate(request)
     }
 }

@@ -1,6 +1,7 @@
 plugins {
     id("popularmovies.android.feature")
     id("popularmovies.android.library.compose")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {

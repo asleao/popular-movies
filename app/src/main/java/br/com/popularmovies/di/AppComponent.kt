@@ -10,6 +10,8 @@ import br.com.popularmovies.home.api.HomeFeatureProvider
 import br.com.popularmovies.home.di.HomeFragmentModule
 import br.com.popularmovies.home.di.HomeViewModelModule
 import br.com.popularmovies.movie.details.di.MovieDetailsFeatureProvider
+import br.com.popularmovies.movie.details.di.MovieDetailsFragmentModule
+import br.com.popularmovies.movie.details.di.MovieDetailsViewModelModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -32,7 +34,9 @@ import javax.inject.Singleton
         *  if it's going to work when there's other feature modules.
         * */
         HomeFragmentModule::class,
-        HomeViewModelModule::class
+        HomeViewModelModule::class,
+        MovieDetailsFragmentModule::class,
+//        MovieDetailsViewModelModule::class
     ]
 )
 @Singleton

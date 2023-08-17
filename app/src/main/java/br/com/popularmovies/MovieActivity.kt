@@ -1,5 +1,6 @@
 package br.com.popularmovies
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ class MovieActivity @Inject constructor() : AppCompatActivity() {
     @Inject
     lateinit var fragmentFactory: FragmentFactory
 
+    private var navController: NavController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         supportFragmentManager.fragmentFactory = fragmentFactory
@@ -31,6 +33,11 @@ class MovieActivity @Inject constructor() : AppCompatActivity() {
 
         setupBottomNavMenu(navController)
     }
+
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//        navController?.handleDeepLink(intent)
+//    }
 
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.fg_movie_navhost).navigateUp()
