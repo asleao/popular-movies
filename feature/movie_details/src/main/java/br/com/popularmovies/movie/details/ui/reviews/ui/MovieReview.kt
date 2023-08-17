@@ -1,4 +1,4 @@
-package br.com.popularmovies.moviedetail.reviews.ui
+package br.com.popularmovies.movie.details.ui.reviews.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

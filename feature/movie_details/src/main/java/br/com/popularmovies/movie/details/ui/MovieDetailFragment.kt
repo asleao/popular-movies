@@ -1,4 +1,4 @@
-package br.com.popularmovies.moviedetail.ui
+package br.com.popularmovies.movie.details.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import br.com.popularmovies.appComponent
-import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
+import br.com.popularmovies.movie.details.viewmodel.MovieDetailViewModel
 import br.com.popularmovies.core.designsystem.AppTheme
-import br.com.popularmovies.utils.youtube
+import javax.inject.Inject
 
-class MovieDetailFragment : Fragment() {
+class MovieDetailFragment @Inject constructor() : Fragment() {
 //
 //    private val args by navArgs<MovieDetailFragmentArgs>()
 //

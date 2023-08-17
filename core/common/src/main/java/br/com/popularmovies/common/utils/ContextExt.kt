@@ -1,10 +1,10 @@
-package br.com.popularmovies.utils
+package br.com.popularmovies.common.utils
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import br.com.popularmovies.moviedetail.trailers.Constants
+import br.com.popularmovies.common.Constants
 
 fun Context.youtube(key: String) {
     val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:$key"))

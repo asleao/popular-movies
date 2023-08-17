@@ -1,4 +1,4 @@
-package br.com.popularmovies.moviedetail.trailers.ui
+package br.com.popularmovies.movie.details.ui.trailers.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -10,12 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import br.com.popularmovies.core.ui.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.R
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.core.designsystem.AppTheme
 
@@ -59,7 +59,7 @@ fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
 @Preview
 @Composable
 private fun MockMovieTrailers() {
-    br.com.popularmovies.core.designsystem.AppTheme {
+    AppTheme {
         MovieTrailerCard(
             movieTrailer =
             MovieTrailer(

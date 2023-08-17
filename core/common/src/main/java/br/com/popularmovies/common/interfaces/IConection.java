@@ -1,4 +1,4 @@
-package br.com.popularmovies.base.interfaces;
+package br.com.popularmovies.common.interfaces;
 
 public interface IConection {
     void showLoading();

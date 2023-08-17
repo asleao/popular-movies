@@ -5,8 +5,14 @@ plugins {
 
 android {
     namespace = Namespaces.coreUi
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {
     implementation(project(":core:designsystem"))
+    implementation(libs.bundles.ui)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 }

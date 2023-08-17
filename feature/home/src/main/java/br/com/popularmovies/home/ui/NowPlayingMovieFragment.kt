@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.popularmovies.feature.home.R
 import br.com.popularmovies.feature.home.databinding.FragmentNowPlayingMovieBinding
-import br.com.popularmovies.home.Constants
+import br.com.popularmovies.common.Constants
 import br.com.popularmovies.home.utils.shimmerDrawable
 import coil.load
 import javax.inject.Inject

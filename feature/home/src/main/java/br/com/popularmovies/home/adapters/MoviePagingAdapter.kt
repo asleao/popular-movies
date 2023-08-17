@@ -8,7 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.popularmovies.feature.home.R
-import br.com.popularmovies.home.Constants
+import br.com.popularmovies.common.Constants
 import br.com.popularmovies.home.utils.shimmerDrawable
 import br.com.popularmovies.model.movie.Movie
 import coil.load

@@ -1,4 +1,4 @@
-package br.com.popularmovies.moviedetail.ui
+package br.com.popularmovies.movie.details.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.R
+import br.com.popularmovies.common.Constants.IMAGE_URL
+import br.com.popularmovies.core.ui.R
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
-import br.com.popularmovies.home.Constants.IMAGE_URL
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import org.joda.time.LocalDate

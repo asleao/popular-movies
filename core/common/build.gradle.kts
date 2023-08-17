@@ -5,6 +5,10 @@ plugins {
 
 android {
     namespace = Namespaces.coreCommon
+
+    buildFeatures {
+        dataBinding = true
+    }
 }
 
 dependencies {

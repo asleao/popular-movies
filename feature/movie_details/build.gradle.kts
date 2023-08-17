@@ -1,5 +1,6 @@
 plugins {
     id("popularmovies.android.feature")
+    id("popularmovies.android.library.compose")
 }
 
 android {
@@ -13,6 +14,6 @@ android {
 dependencies {
     implementation(project(":core:datasource_db_api")) //TODO check this
     implementation(project(":core:datasource_remote_api")) //TODO check this
-
-//    implementation(libs.androidx.lifecycle.extensions)
+    implementation(project(":core:ui"))
+    implementation(libs.jodatime)
 }

@@ -36,7 +36,7 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        dataBinding = true //TODO check if it really needed
     }
 
     packaging {
@@ -74,13 +74,4 @@ dependencies {
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
     implementation(libs.jodatime) //TODO remove after all feature module's creation
-
-
-//    //Testing
-//    androidTestImplementation(libs.bundles.uitests)
-//    testImplementation(libs.bundles.unittests)
-//    testRuntimeOnly(libs.jupiter.engine)
-
-//    debugImplementation(dependency.tests.android.core)
-//    debugImplementation(dependency.tests.android.fragment)
 }
