@@ -61,6 +61,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:home_api"))
     implementation(project(":feature:movie_details"))
+    implementation(project(":feature:movie_details_api"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:domain_api"))
@@ -76,5 +77,4 @@ dependencies {
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
-    implementation(libs.jodatime) //TODO remove after all feature module's creation
 }

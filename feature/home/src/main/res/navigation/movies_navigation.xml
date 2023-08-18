@@ -10,9 +10,8 @@
         android:name="br.com.popularmovies.home.ui.MovieFragment"
         android:label="Popular Movies"
         tools:layout="@layout/fragment_movie">
-        <action
-            android:id="@+id/action_movieFragment_to_movieDetailFragment"
-            app:destination="@id/movie_details_nav_graph" />
+
+        <deepLink app:uri="popularmovies://movieFragment" />
     </fragment>
 </navigation>
 

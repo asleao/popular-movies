@@ -1,3 +1,5 @@
 package br.com.popularmovies.home.api
 
-interface HomeFeatureProvider
+interface HomeFeatureProvider {
+    val homeFeatureApi: HomeFeatureApi
+}

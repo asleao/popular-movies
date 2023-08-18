@@ -19,6 +19,7 @@ import br.com.popularmovies.common.configs.ErrorMessages
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.feature.home.R
 import br.com.popularmovies.feature.home.databinding.FragmentMovieBinding
+import br.com.popularmovies.feature.moviedetails.api.MovieDetailsFeatureApi
 import br.com.popularmovies.home.adapters.MovieClickListener
 import br.com.popularmovies.home.adapters.MoviePagingAdapter
 import br.com.popularmovies.home.adapters.NowPlayingViewPagerAdapter
@@ -35,7 +36,7 @@ import javax.inject.Provider
 
 class MovieFragment @Inject constructor(
     val viewModelFactory: Provider<MovieViewModel>,
-    val movieDetailsFeatureApi: FeatureApi
+    val movieDetailsFeatureApi: MovieDetailsFeatureApi
 ) : Fragment(),
     MovieClickListener {
 

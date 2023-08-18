@@ -7,7 +7,8 @@ import br.com.popularmovies.home.api.HomeFeatureProvider
 import dagger.Component
 
 @Component(
-    dependencies = [br.com.popularmovies.domain.api.DomainComponentProvider::class, CommonProvider::class],
+    dependencies = [DomainComponentProvider::class, CommonProvider::class],
+    modules = [HomeApiModule::class]
 )
 @FeatureScope
 interface HomeComponent : HomeFeatureProvider
