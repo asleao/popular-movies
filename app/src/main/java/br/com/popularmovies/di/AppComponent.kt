@@ -5,7 +5,7 @@ import br.com.popularmovies.common.di.CommonProvider
 import br.com.popularmovies.core.api.DatabaseComponentProvider
 import br.com.popularmovies.core.data.api.DataComponentProvider
 import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
-import br.com.popularmovies.domain.di.DomainComponentProvider
+import br.com.popularmovies.domain.api.DomainComponentProvider
 import br.com.popularmovies.home.api.HomeFeatureProvider
 import br.com.popularmovies.home.di.HomeFragmentModule
 import br.com.popularmovies.home.di.HomeViewModelModule

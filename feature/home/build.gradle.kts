@@ -13,7 +13,7 @@ android {
 dependencies {
     implementation(project(":feature:home_api"))
     implementation(project(":core:ui"))
-    implementation(project(":core:domain")) //TODO check this
+    implementation(project(":core:domain_api"))
 
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.bundles.paging)

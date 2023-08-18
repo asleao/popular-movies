@@ -6,19 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCase
+import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCaseParams
+import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
+import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCaseParams
+import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
+import br.com.popularmovies.domain.api.usecases.GetMovieUseCaseParams
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
-import br.com.popularmovies.domain.usecases.movies.GetMovieUseCase
-import br.com.popularmovies.domain.usecases.movies.reviews.GetMovieReviewsUseCase
-import br.com.popularmovies.domain.usecases.movies.trailers.GetMovieTrailersUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
-    private val getMovieUseCase: GetMovieUseCase,
+    private val getMovieUseCaseImpl: GetMovieUseCase,
     private val getMovieTrailersUseCase: GetMovieTrailersUseCase,
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     @Assisted private val movieId: Long
@@ -58,8 +61,8 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getMovie() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieUseCase.Params(movieId)
-            when (val result = getMovieUseCase.build(params)) {
+            val params = GetMovieUseCaseParams(movieId)
+            when (val result = getMovieUseCaseImpl.build(params)) {
                 is Result.Success -> {
                     _movie.value = result.data
                 }
@@ -72,7 +75,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getTrailers() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieTrailersUseCase.Params(movieId)
+            val params = GetMovieTrailersUseCaseParams(movieId)
             when (val result = getMovieTrailersUseCase.build(params)) {
                 is Result.Success -> _trailers.value = result.data
                 is Result.Error -> _error.value = result.error
@@ -83,7 +86,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     private fun getReviews() {
         viewModelScope.launch {
             showLoading(true)
-            val params = GetMovieReviewsUseCase.Params(movieId)
+            val params = GetMovieReviewsUseCaseParams(movieId)
             when (val result = getMovieReviewsUseCase.build(params)) {
                 is Result.Success -> _reviews.value = result.data
                 is Result.Error -> _error.value = result.error

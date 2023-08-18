@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:domain")) //TODO check this
+    implementation(project(":core:domain_api"))
     implementation(project(":core:ui"))
     implementation(libs.jodatime)
 }

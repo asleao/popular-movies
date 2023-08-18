@@ -8,10 +8,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
+import br.com.popularmovies.domain.api.usecases.GetMoviesUseCase
+import br.com.popularmovies.domain.api.usecases.GetMoviesUseCaseParams
+import br.com.popularmovies.domain.api.usecases.GetRandomNowPlayingMovieUseCase
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
-import br.com.popularmovies.domain.usecases.movies.GetMoviesUseCase
-import br.com.popularmovies.domain.usecases.movies.GetRandomNowPlayingMovieUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 class MovieViewModel @Inject constructor(
     private val getRandomNowPlayingMovieUseCase: GetRandomNowPlayingMovieUseCase,
-    getMoviesUseCase: GetMoviesUseCase
+    getMoviesUseCaseImpl: GetMoviesUseCase
 ) : ViewModel() {
 
     val loading = MutableLiveData(false)
@@ -33,15 +34,15 @@ class MovieViewModel @Inject constructor(
         get() = _randomNowPlayingMovie
 
     val popularMoviesFlow: Flow<PagingData<Movie>> =
-        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.MostPopular))
+        getMoviesUseCaseImpl.build(GetMoviesUseCaseParams(MovieType.MostPopular))
             .cachedIn(viewModelScope)
 
     val nowPlayingMoviesFlow: Flow<PagingData<Movie>> =
-        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.NowPlaying))
+        getMoviesUseCaseImpl.build(GetMoviesUseCaseParams(MovieType.NowPlaying))
             .cachedIn(viewModelScope)
 
     val topHatedMoviesFlow: Flow<PagingData<Movie>> =
-        getMoviesUseCase.build(GetMoviesUseCase.Param(MovieType.TopRated))
+        getMoviesUseCaseImpl.build(GetMoviesUseCaseParams(MovieType.TopRated))
             .cachedIn(viewModelScope)
 
     init {
@@ -54,6 +55,7 @@ class MovieViewModel @Inject constructor(
                 _randomNowPlayingMovie.value = result.data
                 _uiState.value = MovieUiState.Success
             }
+
             is Result.Error -> {
                 _uiState.value = MovieUiState.Error(result.error)
             }

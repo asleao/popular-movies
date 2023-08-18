@@ -7,5 +7,8 @@ android {
 }
 
 dependencies {
-    api(libs.jodatime)
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+
+    implementation(libs.bundles.paging)
 }

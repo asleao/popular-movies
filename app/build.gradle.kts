@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":feature:movie_details"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:domain_api"))
     implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
