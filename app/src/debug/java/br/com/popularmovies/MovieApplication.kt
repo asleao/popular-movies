@@ -3,10 +3,14 @@ package br.com.popularmovies
 import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
+import br.com.popularmovies.common.di.CommonComponent
 import br.com.popularmovies.common.di.DaggerCommonComponent
 import br.com.popularmovies.data.di.DaggerDataComponent
+import br.com.popularmovies.data.di.DataComponent
 import br.com.popularmovies.datasourcedb.di.DaggerDatabaseComponent
+import br.com.popularmovies.datasourcedb.di.DatabaseComponent
 import br.com.popularmovies.datasourceremote.di.DaggerNetworkComponent
+import br.com.popularmovies.datasourceremote.di.NetworkComponent
 import br.com.popularmovies.di.AppComponent
 import br.com.popularmovies.di.AppProvider
 import br.com.popularmovies.di.DaggerAppComponent
@@ -21,16 +25,16 @@ import coil.ImageLoaderFactory
 
 class MovieApplication : Application(), ImageLoaderFactory {
 
-    val commonComponent by lazy {
+    val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent.factory().create(
             applicationContext
         )
     }
-    val databaseComponent by lazy {
+    val databaseComponent: DatabaseComponent by lazy {
         DaggerDatabaseComponent.factory().create(applicationContext)
     }
-    val networkComponent = DaggerNetworkComponent.builder().build()
-    val dataComponent by lazy {
+    val networkComponent: NetworkComponent = DaggerNetworkComponent.builder().build()
+    val dataComponent: DataComponent by lazy {
         DaggerDataComponent
             .builder()
             .databaseComponentProvider(databaseComponent)
