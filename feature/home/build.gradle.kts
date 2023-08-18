@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation(project(":feature:home_api"))
+    implementation(project(":feature:movie_details_api"))
     implementation(project(":core:ui"))
     implementation(project(":core:domain_api"))
 

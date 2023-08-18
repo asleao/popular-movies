@@ -13,7 +13,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:movie_details_api"))
     implementation(project(":core:domain_api"))
     implementation(project(":core:ui"))
     implementation(libs.jodatime)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

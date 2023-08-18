@@ -9,8 +9,8 @@ import br.com.popularmovies.domain.api.DomainComponentProvider
 import br.com.popularmovies.home.api.HomeFeatureProvider
 import br.com.popularmovies.home.di.HomeFragmentModule
 import br.com.popularmovies.home.di.HomeViewModelModule
-import br.com.popularmovies.movie.details.di.MovieDetailsFeatureProvider
-import br.com.popularmovies.movie.details.di.MovieDetailsFragmentModule
+import br.com.popularmovies.moviedetails.di.MovieDetailsFeatureProvider
+import br.com.popularmovies.moviedetails.di.MovieDetailsFragmentModule
 import dagger.Component
 import javax.inject.Singleton
 

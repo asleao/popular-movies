@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,6 +26,7 @@ import br.com.popularmovies.home.utils.SpacingItemDecoration
 import br.com.popularmovies.home.utils.SpacingItemDecorationType
 import br.com.popularmovies.home.viewmodel.MovieUiState
 import br.com.popularmovies.home.viewmodel.MovieViewModel
+import br.com.popularmovies.model.feature.FeatureApi
 import br.com.popularmovies.model.movie.Movie
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,7 +34,8 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MovieFragment @Inject constructor(
-    val viewModelFactory: Provider<MovieViewModel>
+    val viewModelFactory: Provider<MovieViewModel>,
+    val movieDetailsFeatureApi: FeatureApi
 ) : Fragment(),
     MovieClickListener {
 
@@ -222,7 +223,7 @@ class MovieFragment @Inject constructor(
 
     override fun onMovieClick(movie: Movie) {
         val request = NavDeepLinkRequest.Builder
-            .fromUri("popularmovies://movieDetailFragment/${movie.id}".toUri())
+            .fromUri(movieDetailsFeatureApi.deeplink(movie.id.toString()))
             .build()
         findNavController().navigate(request)
     }

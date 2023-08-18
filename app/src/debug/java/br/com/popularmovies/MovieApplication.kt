@@ -18,8 +18,8 @@ import br.com.popularmovies.domain.di.DaggerDomainComponent
 import br.com.popularmovies.domain.di.DomainComponent
 import br.com.popularmovies.home.di.DaggerHomeComponent
 import br.com.popularmovies.home.di.HomeComponent
-import br.com.popularmovies.movie.details.di.DaggerMovieDetailsComponent
-import br.com.popularmovies.movie.details.di.MovieDetailsComponent
+import br.com.popularmovies.moviedetails.di.DaggerMovieDetailsComponent
+import br.com.popularmovies.moviedetails.di.MovieDetailsComponent
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 

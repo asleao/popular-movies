@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/movieDetailFragment"
-        android:name="br.com.popularmovies.movie.details.ui.MovieDetailFragment"
+        android:name="br.com.popularmovies.moviedetails.ui.MovieDetailFragment"
         android:label="Movie Details">
         <argument
             android:name="movieId"

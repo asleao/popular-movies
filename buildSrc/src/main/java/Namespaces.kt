@@ -2,7 +2,8 @@ object Namespaces {
     const val app = ProjectConfig.applicationId
     const val featureHome = "br.com.popularmovies.feature.home"
     const val featureHomeApi = "br.com.popularmovies.feature.home.api"
-    const val featureMovieDetails = "br.com.popularmovies.feature.movie.details"
+    const val featureMovieDetails = "br.com.popularmovies.feature.moviedetails"
+    const val featureMovieDetailsApi = "br.com.popularmovies.feature.moviedetails.api"
     const val coreCommon = "br.com.popularmovies.core.common"
     const val coreDatasourceDb = "br.com.popularmovies.core.datasource_db"
     const val coreDatasourceDbApi = "br.com.popularmovies.core.datasource.db.api"
