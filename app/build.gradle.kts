@@ -58,18 +58,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:home"))//Check here
-    implementation(project(":feature:home_api"))//Check here
-    implementation(project(":feature:movie_details"))//Check here
+    implementation(project(":feature:home"))
+    implementation(project(":feature:home_api"))
+    implementation(project(":feature:movie_details"))
     implementation(project(":core:model"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:ui"))
-    implementation(project(":core:datasource_remote")) //Check here
-    implementation(project(":core:datasource_remote_api")) //Check here
-    implementation(project(":core:datasource_db")) //Check here
-    implementation(project(":core:datasource_db_api")) //Check here
+    implementation(project(":core:data_api"))
+    implementation(project(":core:data"))
+    implementation(project(":core:datasource_remote"))
+    implementation(project(":core:datasource_remote_api"))
+    implementation(project(":core:datasource_db"))
+    implementation(project(":core:datasource_db_api"))
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)

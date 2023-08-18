@@ -5,6 +5,7 @@ import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
+import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
 import br.com.popularmovies.data.mappers.toTable

@@ -10,6 +10,7 @@ object Namespaces {
     const val coreDatasourceRemoteApi = "br.com.popularmovies.core.datasourceremote.api"
     const val coreModel = "br.com.popularmovies.core.model"
     const val coreData = "br.com.popularmovies.core.data"
+    const val coreDataApi = "br.com.popularmovies.core.data.api"
     const val coreDesignSystem = "br.com.popularmovies.core.designsystem"
     const val coreDomain = "br.com.popularmovies.core.domain"
     const val coreDomainApi = "br.com.popularmovies.core.domain.api"

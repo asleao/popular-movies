@@ -5,7 +5,6 @@ import android.app.Application
 import androidx.fragment.app.Fragment
 import br.com.popularmovies.common.di.DaggerCommonComponent
 import br.com.popularmovies.data.di.DaggerDataComponent
-import br.com.popularmovies.data.di.DataComponent
 import br.com.popularmovies.datasourcedb.di.DaggerDatabaseComponent
 import br.com.popularmovies.datasourceremote.di.DaggerNetworkComponent
 import br.com.popularmovies.di.AppComponent
@@ -31,7 +30,7 @@ class MovieApplication : Application(), ImageLoaderFactory {
         DaggerDatabaseComponent.factory().create(applicationContext)
     }
     val networkComponent = DaggerNetworkComponent.builder().build()
-    val dataComponent: DataComponent by lazy {
+    val dataComponent by lazy {
         DaggerDataComponent
             .builder()
             .databaseComponentProvider(databaseComponent)
@@ -39,13 +38,13 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .build()
     }
     val domainComponent: DomainComponent by lazy {
-        DaggerDomainComponent.builder().dataComponent(dataComponent).build()
+        DaggerDomainComponent.builder().dataComponentProvider(dataComponent).build()
     }
 
     val homeComponent: HomeComponent by lazy {
         DaggerHomeComponent
             .builder()
-            .domainComponent(domainComponent)
+            .domainComponentProvider(domainComponent)
             .commonProvider(commonComponent)
             .build()
     }
@@ -53,7 +52,7 @@ class MovieApplication : Application(), ImageLoaderFactory {
     val movieDetailsComponent: MovieDetailsComponent by lazy {
         DaggerMovieDetailsComponent
             .builder()
-            .domainComponent(domainComponent)
+            .domainComponentProvider(domainComponent)
             .commonProvider(commonComponent)
             .build()
     }

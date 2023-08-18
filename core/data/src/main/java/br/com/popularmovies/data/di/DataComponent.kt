@@ -1,8 +1,10 @@
 package br.com.popularmovies.data.di
 
 import br.com.popularmovies.core.api.DatabaseComponentProvider
+import br.com.popularmovies.core.data.api.DataComponentProvider
 import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
     dependencies = [
@@ -11,5 +13,5 @@ import dagger.Component
     ],
     modules = [DataModule::class]
 )
-//@Singleton
+@Singleton
 interface DataComponent : DataComponentProvider

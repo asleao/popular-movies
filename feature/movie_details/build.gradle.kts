@@ -13,8 +13,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:datasource_db_api")) //TODO check this
-    implementation(project(":core:datasource_remote_api")) //TODO check this
+    implementation(project(":core:domain")) //TODO check this
     implementation(project(":core:ui"))
     implementation(libs.jodatime)
 }

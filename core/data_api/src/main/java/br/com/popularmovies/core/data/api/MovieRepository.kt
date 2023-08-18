@@ -1,4 +1,4 @@
-package br.com.popularmovies.data.movie
+package br.com.popularmovies.core.data.api
 
 import androidx.paging.PagingData
 import br.com.popularmovies.common.models.base.Result
