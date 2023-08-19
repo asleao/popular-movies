@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movie_details_nav_graph"
+    app:startDestination="@id/movieDetailFragment">
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="br.com.popularmovies.moviedetails.ui.MovieDetailFragment"
+        android:label="Movie Details">
+        <argument
+            android:name="movieId"
+            app:argType="long" />
+        <deepLink app:uri="popularmovies://movieDetailFragment/{movieId}" />
+    </fragment>
+</navigation>
+
+
+

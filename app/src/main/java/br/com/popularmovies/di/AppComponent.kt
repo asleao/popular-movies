@@ -1,41 +1,44 @@
 package br.com.popularmovies.di
 
-import android.content.Context
-import br.com.popularmovies.di.modules.AssistedInjectModule
-import br.com.popularmovies.di.modules.ViewModelModule
-import br.com.popularmovies.di.subcomponents.MovieComponent
-import br.com.popularmovies.di.subcomponents.MovieDetailComponent
-import br.com.popularmovies.moviedetail.reviews.viewModel.MovieReviewViewModel
-import br.com.popularmovies.moviedetail.trailers.viewmodel.MovieTrailerViewModel
-import br.com.popularmovies.moviedetail.viewmodel.MovieDetailViewModel
-import br.com.popularmovies.movies.ui.MovieActivity
-import br.com.popularmovies.usecases.di.UseCasesModule
-import dagger.BindsInstance
+import br.com.popularmovies.MovieActivity
+import br.com.popularmovies.common.di.CommonProvider
+import br.com.popularmovies.core.api.DatabaseComponentProvider
+import br.com.popularmovies.core.data.api.DataComponentProvider
+import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
+import br.com.popularmovies.domain.api.DomainComponentProvider
+import br.com.popularmovies.home.api.HomeFeatureProvider
+import br.com.popularmovies.home.di.HomeFragmentModule
+import br.com.popularmovies.home.di.HomeViewModelModule
+import br.com.popularmovies.moviedetails.di.MovieDetailsFeatureProvider
+import br.com.popularmovies.moviedetails.di.MovieDetailsFragmentModule
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton
 @Component(
+    dependencies = [
+        CommonProvider::class,
+        DomainComponentProvider::class,
+        DataComponentProvider::class,
+        DatabaseComponentProvider::class,
+        NetworkComponentProvider::class,
+        HomeFeatureProvider::class,
+        MovieDetailsFeatureProvider::class
+    ],
     modules = [
-        UseCasesModule::class,
-        AppSubcomponents::class,
-        ViewModelModule::class,
-        AssistedInjectModule::class
+        /*
+        * TODO
+        *  FragmentFactory and ViewModelFactory only generate map providers when there
+        *  is at least one bind of fragment or viewmodel. So factory instance is only created
+        *  in those circumstances. Still need to check if there's a way around this problem and
+        *  if it's going to work when there's other feature modules.
+        * */
+        HomeFragmentModule::class,
+        HomeViewModelModule::class,
+        MovieDetailsFragmentModule::class,
     ]
 )
-interface AppComponent {
+@Singleton
+interface AppComponent : AppProvider {
 
-    @Component.Factory
-    interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
-    }
-
-    val movieDetailViewModelFactory: MovieDetailViewModel.Factory
-    val movieReviewViewModelFactory: MovieReviewViewModel.Factory
-    val movieTrailerViewModelFactory: MovieTrailerViewModel.Factory
-
-    fun movieComponent(): MovieComponent.Factory
-    fun movieDetailComponent(): MovieDetailComponent.Factory
     fun inject(movieActivity: MovieActivity)
-
 }
