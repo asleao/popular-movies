@@ -21,3 +21,12 @@ fun MovieType.toTable(): MovieTypeTable {
         MovieType.Unknown -> MovieTypeTable.Unknown
     }
 }
+
+fun MovieTypeTable.toDomain(): MovieType {
+    return when (this) {
+        MovieTypeTable.MostPopular -> MovieType.MostPopular
+        MovieTypeTable.TopRated -> MovieType.TopRated
+        MovieTypeTable.NowPlaying -> MovieType.NowPlaying
+        MovieTypeTable.Unknown -> MovieType.Unknown
+    }
+}

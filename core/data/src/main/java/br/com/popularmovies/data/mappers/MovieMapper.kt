@@ -6,11 +6,11 @@ import br.com.popularmovies.datasourceremoteapi.models.movie.MovieDto
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
 
-fun MovieTable.toDomain(type: MovieType): Movie {
+fun MovieTable.toDomain(): Movie {
     return Movie(
         votes = votes,
         id = remoteId,
-        type = type,
+        type = type.toDomain(),
         voteAverage = voteAverage,
         originalTitle = originalTitle,
         popularity = popularity,
@@ -21,11 +21,11 @@ fun MovieTable.toDomain(type: MovieType): Movie {
     )
 }
 
-fun MovieDto.toDomain(type: MovieType = MovieType.Unknown): Movie {
+fun MovieDto.toDomain(): Movie { //TODO this will be removed
     return Movie(
         votes = votes,
         id = id,
-        type = type,
+        type = MovieType.Unknown,
         voteAverage = voteAverage,
         originalTitle = originalTitle,
         popularity = popularity,

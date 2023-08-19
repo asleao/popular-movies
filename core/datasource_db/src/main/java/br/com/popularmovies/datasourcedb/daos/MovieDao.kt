@@ -15,7 +15,7 @@ interface MovieDao {
     fun movies(type: MovieTypeTable): PagingSource<Int, MovieTable>
 
     @Query("SELECT DISTINCT * FROM movies WHERE remoteId = :movieId")
-    suspend fun getMovie(movieId: Long): MovieTable
+    suspend fun getMovie(movieId: Long): MovieTable?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllMovies(movieTables: List<MovieTable>)

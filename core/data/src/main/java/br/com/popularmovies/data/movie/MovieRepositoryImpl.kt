@@ -45,7 +45,7 @@ class MovieRepositoryImpl @Inject constructor(
             .flow
             .map { data ->
                 data.map { movieTable ->
-                    movieTable.toDomain(movieType)
+                    movieTable.toDomain()
                 }
             }
     }
@@ -54,13 +54,27 @@ class MovieRepositoryImpl @Inject constructor(
         return when (val result =
             mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
             is Result.Success -> Result.Success(
-                result.data.take(5).map { it.toDomain(MovieType.NowPlaying) })
+                result.data
+                    .take(5)
+                    .map { it.toDomain() }
+            )
 
             is Result.Error -> Result.Error(result.error)
         }
     }
 
     override suspend fun getMovie(movieId: Long): Result<Movie> {
+        mMovieLocalDataSource.getMovie(movieId)
+            .let { movie ->
+                return if (movie == null) {
+                    getMovieFromNetwork(movieId)
+                } else {
+                    Result.Success(movie.toDomain())
+                }
+            }
+    }
+
+    private suspend fun getMovieFromNetwork(movieId: Long): Result<Movie> {
         return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
             is Result.Success -> {
                 Result.Success(result.data.toDomain())

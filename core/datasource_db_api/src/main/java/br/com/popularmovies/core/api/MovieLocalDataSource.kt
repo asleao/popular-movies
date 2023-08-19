@@ -8,4 +8,5 @@ interface MovieLocalDataSource {
     fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable>
     suspend fun deleteAllMovies(type: MovieTypeTable)
     suspend fun insertAllMovies(movies: List<MovieTable>)
+    suspend fun getMovie(movieId: Long): MovieTable?
 }

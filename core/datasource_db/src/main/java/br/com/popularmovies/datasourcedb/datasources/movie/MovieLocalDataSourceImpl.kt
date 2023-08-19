@@ -3,13 +3,13 @@ package br.com.popularmovies.datasourcedb.datasources.movie
 import androidx.paging.PagingSource
 import androidx.room.withTransaction
 import br.com.popularmovies.core.api.MovieLocalDataSource
-import br.com.popularmovies.datasourcedb.AppDatabase
-import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.datasourcedb.AppDatabase
+import br.com.popularmovies.datasourcedb.daos.MovieDao
 import javax.inject.Inject
 
-class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase):
+class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase) :
     MovieLocalDataSource {
     private val mMovieDao: MovieDao = appDatabase.movieDao()
 
@@ -26,6 +26,12 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
     override suspend fun insertAllMovies(movies: List<MovieTable>) {
         appDatabase.withTransaction {
             mMovieDao.insertAllMovies(movies)
+        }
+    }
+
+    override suspend fun getMovie(movieId: Long): MovieTable? {
+        return appDatabase.withTransaction {
+            mMovieDao.getMovie(movieId)
         }
     }
 }
