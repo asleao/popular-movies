@@ -82,7 +82,6 @@ class MovieDetailViewModel @AssistedInject constructor(
     }
 }
 
-//TODO move this to ui module
 sealed interface MovieUiState {
     object Loading : MovieUiState
     object Error : MovieUiState
