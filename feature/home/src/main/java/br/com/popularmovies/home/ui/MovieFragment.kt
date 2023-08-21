@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -61,19 +60,17 @@ class MovieFragment @Inject constructor(
 
     private fun setupUiStateObserver() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest { state ->
-                    when (state) {
-                        MovieUiState.Success -> {
-                            binding.errorView.isVisible = false
-                            binding.container.isVisible = true
-                        }
+            viewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { state ->
+                when (state) {
+                    MovieUiState.Success -> {
+                        binding.errorView.isVisible = false
+                        binding.container.isVisible = true
+                    }
 
-                        is MovieUiState.Error -> {
-                            binding.errorView.isVisible = true
-                            binding.container.isVisible = false
-                            state.networkError?.let { showError(state.networkError) }
-                        }
+                    is MovieUiState.Error -> {
+                        binding.errorView.isVisible = true
+                        binding.container.isVisible = false
+                        state.networkError?.let { showError(state.networkError) }
                     }
                 }
             }
@@ -89,7 +86,9 @@ class MovieFragment @Inject constructor(
 
     private fun setupNewestNowPlayingMovieObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.randomNowPlayingMovie
+            viewModel
+                .randomNowPlayingMovie
+                .flowWithLifecycle(lifecycle)
                 .collectLatest { movies ->
                     binding.viewPagerShimmer.setShimmer(null)
                     binding.viewPagerShimmer.background = null
@@ -124,8 +123,8 @@ class MovieFragment @Inject constructor(
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.popularMoviesFlow.collectLatest { pagingData ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.popularMoviesFlow.flowWithLifecycle(lifecycle).collectLatest { pagingData ->
                 pagingPopularMoviesAdapter.submitData(pagingData)
             }
         }
@@ -152,8 +151,8 @@ class MovieFragment @Inject constructor(
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.nowPlayingMoviesFlow.collectLatest { pagingData ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.nowPlayingMoviesFlow.flowWithLifecycle(lifecycle).collectLatest { pagingData ->
                 pagingNowPlayingMoviesAdapter.submitData(pagingData)
             }
         }
@@ -181,8 +180,8 @@ class MovieFragment @Inject constructor(
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.topHatedMoviesFlow.collectLatest { pagingData ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.topHatedMoviesFlow.flowWithLifecycle(lifecycle).collectLatest { pagingData ->
                 pagingTopHatedMoviesAdapter.submitData(pagingData)
             }
         }
