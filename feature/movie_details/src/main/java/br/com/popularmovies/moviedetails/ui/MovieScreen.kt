@@ -46,11 +46,16 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                 MovieUiState.Loading -> {
 
                 }
+
                 is MovieUiState.Success -> {
                     val movie = (movieState as MovieUiState.Success).movie
                     item {
                         MovieDetail(movie)
                     }
+                }
+
+                MovieUiState.Error -> {
+
                 }
             }
 
@@ -58,6 +63,7 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                 TrailerUiState.Loading -> {
 
                 }
+
                 is TrailerUiState.Success -> {
                     val trailers = (trailersState as TrailerUiState.Success).trailers
                     //TODO checkout stickyHeaders
@@ -92,12 +98,17 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                         }
                     }
                 }
+
+                TrailerUiState.Error -> {
+
+                }
             }
 
             when (reviewsState) {
                 ReviewUiState.Loading -> {
 
                 }
+
                 is ReviewUiState.Success -> {
                     val reviews = (reviewsState as ReviewUiState.Success).reviews
                     if (reviews.isNotEmpty()) {
@@ -117,6 +128,10 @@ fun MovieScreen(viewModel: MovieDetailViewModel) {
                             )
                         }
                     }
+                }
+
+                ReviewUiState.Error -> {
+
                 }
             }
         }

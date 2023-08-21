@@ -18,7 +18,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
 class MovieDetailViewModel @AssistedInject constructor(
@@ -34,15 +36,24 @@ class MovieDetailViewModel @AssistedInject constructor(
     }
 
     val movieUiState: Flow<MovieUiState> = getMovieUseCase.build(GetMovieUseCaseParams(movieId))
-        .map(MovieUiState::Success)
+        .map<Movie, MovieUiState>(MovieUiState::Success)
+        .onStart { emit(MovieUiState.Loading) }
+        .catch { exception ->
+            emit(MovieUiState.Error)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = MovieUiState.Loading
         )
 
+
     val trailersUiState = getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId))
-        .map(TrailerUiState::Success)
+        .map<List<MovieTrailer>, TrailerUiState>(TrailerUiState::Success)
+        .onStart { emit(TrailerUiState.Loading) }
+        .catch { exception ->
+            emit(TrailerUiState.Error)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -50,7 +61,11 @@ class MovieDetailViewModel @AssistedInject constructor(
         )
 
     val reviewsUiState = getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
-        .map(ReviewUiState::Success)
+        .map<List<MovieReview>, ReviewUiState>(ReviewUiState::Success)
+        .onStart { emit(ReviewUiState.Loading) }
+        .catch { exception ->
+            emit(ReviewUiState.Error)
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -70,6 +85,7 @@ class MovieDetailViewModel @AssistedInject constructor(
 //TODO move this to ui module
 sealed interface MovieUiState {
     object Loading : MovieUiState
+    object Error : MovieUiState
 
     data class Success(val movie: Movie) : MovieUiState
 }
@@ -78,12 +94,16 @@ sealed interface MovieUiState {
 sealed interface ReviewUiState {
     object Loading : ReviewUiState
 
+    object Error : ReviewUiState
+
     data class Success(val reviews: List<MovieReview>) : ReviewUiState
 }
 
 
 sealed interface TrailerUiState {
     object Loading : TrailerUiState
+
+    object Error : TrailerUiState
 
     data class Success(val trailers: List<MovieTrailer>) : TrailerUiState
 }
