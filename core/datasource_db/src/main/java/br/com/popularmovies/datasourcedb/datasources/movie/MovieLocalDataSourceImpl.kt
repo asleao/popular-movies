@@ -7,6 +7,7 @@ import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase) :
@@ -15,6 +16,10 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
 
     override fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable> {
         return mMovieDao.movies(type)
+    }
+
+    override fun getMovies(type: MovieTypeTable): Flow<List<MovieTable>> {
+        return mMovieDao.moviesList(type)
     }
 
     override suspend fun deleteAllMovies(type: MovieTypeTable) {

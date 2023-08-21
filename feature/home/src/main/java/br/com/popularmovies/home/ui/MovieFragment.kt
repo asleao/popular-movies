@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.viewpager2.widget.MarginPageTransformer
 import br.com.popularmovies.common.configs.ErrorMessages
-import br.com.popularmovies.common.models.base.NetworkError
 import br.com.popularmovies.feature.home.R
 import br.com.popularmovies.feature.home.databinding.FragmentMovieBinding
 import br.com.popularmovies.feature.moviedetails.api.MovieDetailsFeatureApi
@@ -27,7 +26,6 @@ import br.com.popularmovies.home.utils.SpacingItemDecoration
 import br.com.popularmovies.home.utils.SpacingItemDecorationType
 import br.com.popularmovies.home.viewmodel.MovieUiState
 import br.com.popularmovies.home.viewmodel.MovieViewModel
-import br.com.popularmovies.model.feature.FeatureApi
 import br.com.popularmovies.model.movie.Movie
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -74,7 +72,7 @@ class MovieFragment @Inject constructor(
                         is MovieUiState.Error -> {
                             binding.errorView.isVisible = true
                             binding.container.isVisible = false
-                            showError(state.networkError)
+                            state.networkError?.let { showError(state.networkError) }
                         }
                     }
                 }
@@ -82,17 +80,26 @@ class MovieFragment @Inject constructor(
         }
     }
 
-    private fun showError(networkError: NetworkError?) {
-        networkError?.let {
-            showNoConnection(networkError.message)
-        } ?: showGenericError(networkError!!.message)
+    private fun showError(networkError: Throwable) {
+//        networkError?.let {
+//            showNoConnection(networkError.message!!)
+//        } ?: showGenericError(networkError!!.message)
+        showGenericError(networkError.message!!)
     }
 
     private fun setupNewestNowPlayingMovieObserver() {
-        viewModel.randomNowPlayingMovie.observe(viewLifecycleOwner) { movies ->
-            binding.viewPagerShimmer.setShimmer(null)
-            binding.viewPagerShimmer.background = null
-            binding.viewPager.adapter = NowPlayingViewPagerAdapter(this, movies, ::onMovieClick)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.randomNowPlayingMovie
+                .collectLatest { movies ->
+                    binding.viewPagerShimmer.setShimmer(null)
+                    binding.viewPagerShimmer.background = null
+                    binding.viewPager.adapter =
+                        NowPlayingViewPagerAdapter(
+                            this@MovieFragment,
+                            movies,
+                            ::onMovieClick
+                        )
+                }
         }
     }
 

@@ -1,15 +1,17 @@
 package br.com.popularmovies.data.movie
 
 import androidx.paging.*
-import br.com.popularmovies.common.models.base.NetworkError
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
 import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
@@ -50,58 +52,32 @@ class MovieRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun getRandomNowPlayingMovies(): Result<List<Movie>> {
-        return when (val result =
-            mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
-            is Result.Success -> Result.Success(
-                result.data
-                    .take(5)
-                    .map { it.toDomain() }
-            )
+    override fun getRandomNowPlayingMovies(): Flow<List<Movie>> {
+        return mMovieLocalDataSource.getMovies(MovieTypeTable.NowPlaying)
+            .map { it.map(MovieTable::toDomain) }
+    }
 
-            is Result.Error -> Result.Error(result.error)
+    override fun getMovie(movieId: Long): Flow<Movie> {
+//        mMovieLocalDataSource.getMovie(movieId)
+//            .let { movie ->
+//                return movie?.toDomain() ?: getMovieFromNetwork(movieId)
+//            }
+        return mMovieRemoteDataSource.getMovie(movieId).map { it.toDomain() }
+    }
+
+    override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
+        return mMovieRemoteDataSource.getMovieReviews(movieId).map {
+            it.map(MovieReviewDto::toDomain)
         }
     }
 
-    override suspend fun getMovie(movieId: Long): Result<Movie> {
-        mMovieLocalDataSource.getMovie(movieId)
-            .let { movie ->
-                return if (movie == null) {
-                    getMovieFromNetwork(movieId)
-                } else {
-                    Result.Success(movie.toDomain())
-                }
-            }
-    }
-
-    private suspend fun getMovieFromNetwork(movieId: Long): Result<Movie> {
-        return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
-            is Result.Success -> {
-                Result.Success(result.data.toDomain())
-            }
-
-            is Result.Error -> {
-                Result.Error(result.error)
-            }
-        }
-    }
-
-    override suspend fun getMovieReviews(movieId: Long): Result<List<MovieReview>> {
-        return when (val result = mMovieRemoteDataSource.getMovieReviews(movieId)) {
-            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.error)
-        }
-    }
-
-    override suspend fun saveToFavorites(movie: Movie): Result<Unit> {
+    override fun saveToFavorites(movie: Movie) {
         //TODO to be implemented
-        return Result.Error(NetworkError())
     }
 
-    override suspend fun getMovieTrailers(movieId: Long): Result<List<MovieTrailer>> {
-        return when (val result = mMovieRemoteDataSource.getMovieTrailers(movieId)) {
-            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.error)
-        }
+    override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {
+        return mMovieRemoteDataSource
+            .getMovieTrailers(movieId)
+            .map { it.map(MovieTrailerDto::toDomain) }
     }
 }

@@ -10,7 +10,7 @@ class SaveMovieToFavoritesUseCaseImpl @Inject constructor(
     private val movieRepository: MovieRepository
 ) : SaveMovieToFavoritesUseCase {
 
-    override suspend fun build(params: SaveMovieToFavoritesUseCaseParams): Result<Unit> {
+    override suspend fun build(params: SaveMovieToFavoritesUseCaseParams): Unit {
         return movieRepository.saveToFavorites(params.movie)
     }
 }

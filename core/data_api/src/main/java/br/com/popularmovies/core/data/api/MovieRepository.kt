@@ -1,7 +1,6 @@
 package br.com.popularmovies.core.data.api
 
 import androidx.paging.PagingData
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
@@ -12,13 +11,13 @@ interface MovieRepository {
 
     fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>
 
-    suspend fun getRandomNowPlayingMovies(): Result<List<Movie>>
+    fun getRandomNowPlayingMovies(): Flow<List<Movie>>
 
-    suspend fun getMovie(movieId: Long): Result<Movie>
+    fun getMovie(movieId: Long): Flow<Movie>
 
-    suspend fun getMovieReviews(movieId: Long): Result<List<MovieReview>>
+    fun getMovieReviews(movieId: Long): Flow<List<MovieReview>>
 
-    suspend fun saveToFavorites(movie: Movie): Result<Unit>
+    fun saveToFavorites(movie: Movie)
 
-    suspend fun getMovieTrailers(movieId: Long): Result<List<MovieTrailer>>
+    fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>>
 }

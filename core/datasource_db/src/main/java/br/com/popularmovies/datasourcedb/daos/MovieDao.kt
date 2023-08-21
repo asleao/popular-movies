@@ -7,12 +7,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE type = :type")
     fun movies(type: MovieTypeTable): PagingSource<Int, MovieTable>
+
+    @Query("SELECT * FROM movies WHERE type = :type")
+    fun moviesList(type: MovieTypeTable): Flow<List<MovieTable>>
 
     @Query("SELECT DISTINCT * FROM movies WHERE remoteId = :movieId")
     suspend fun getMovie(movieId: Long): MovieTable?
