@@ -19,11 +19,17 @@ interface MovieDao {
     fun moviesList(type: MovieTypeTable): Flow<List<MovieTable>>
 
     @Query("SELECT DISTINCT * FROM movies WHERE remoteId = :movieId")
-    suspend fun getMovie(movieId: Long): MovieTable?
+    fun getMovie(movieId: Long): MovieTable?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllMovies(movieTables: List<MovieTable>)
 
     @Query("DELETE FROM movies WHERE type = :type")
     suspend fun deleteAllMovies(type: MovieTypeTable)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovie(movieTable: MovieTable)
+
+    @Query("DELETE FROM movies WHERE id = :movieId")
+    suspend fun deleteMovie(movieId: Long)
 }

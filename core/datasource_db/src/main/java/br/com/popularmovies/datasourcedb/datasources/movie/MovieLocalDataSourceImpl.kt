@@ -28,15 +28,25 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
         }
     }
 
-    override suspend fun insertAllMovies(movies: List<MovieTable>) {
+    override suspend fun getMovie(movieId: Long): MovieTable? {
+        return appDatabase.withTransaction { mMovieDao.getMovie(movieId) }
+    }
+
+    override suspend fun deleteMovie(movieId: Long) {
         appDatabase.withTransaction {
-            mMovieDao.insertAllMovies(movies)
+            mMovieDao.deleteMovie(movieId)
         }
     }
 
-    override suspend fun getMovie(movieId: Long): MovieTable? {
-        return appDatabase.withTransaction {
-            mMovieDao.getMovie(movieId)
+    override suspend fun insertMovie(movie: MovieTable) {
+        appDatabase.withTransaction {
+            mMovieDao.insertMovie(movie)
+        }
+    }
+
+    override suspend fun insertAllMovies(movies: List<MovieTable>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertAllMovies(movies)
         }
     }
 }

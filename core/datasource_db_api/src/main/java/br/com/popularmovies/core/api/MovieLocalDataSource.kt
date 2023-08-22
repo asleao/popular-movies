@@ -11,6 +11,8 @@ interface MovieLocalDataSource {
     fun getMovies(type: MovieTypeTable): Flow<List<MovieTable>>
 
     suspend fun deleteAllMovies(type: MovieTypeTable)
+    suspend fun deleteMovie(movieId: Long)
+    suspend fun insertMovie(movie: MovieTable)
     suspend fun insertAllMovies(movies: List<MovieTable>)
     suspend fun getMovie(movieId: Long): MovieTable?
 }

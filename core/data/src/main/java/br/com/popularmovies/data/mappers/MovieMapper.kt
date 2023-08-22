@@ -21,7 +21,7 @@ fun MovieTable.toDomain(): Movie {
     )
 }
 
-fun MovieDto.toDomain(): Movie { //TODO this will be removed
+fun MovieDto.toDomain(): Movie {
     return Movie(
         votes = votes,
         id = id,

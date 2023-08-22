@@ -18,9 +18,10 @@ import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onErrorReturn
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -61,11 +62,25 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override fun getMovie(movieId: Long): Flow<Movie> {
-//        mMovieLocalDataSource.getMovie(movieId)
-//            .let { movie ->
-//                return movie?.toDomain() ?: getMovieFromNetwork(movieId)
-//            }
-        return mMovieRemoteDataSource.getMovie(movieId).map { it.toDomain() }
+        return flow {
+            emit(getMovieFromNetwork(movieId))
+        }.onStart {
+            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
+                emit(movie.toDomain())
+            }
+        }.catch { exception ->
+            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
+                emit(movie.toDomain())
+            } ?: throw exception
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun getMovieFromNetwork(movieId: Long): Movie {
+        val movieDto = mMovieRemoteDataSource.getMovie(movieId)
+        mMovieLocalDataSource.deleteMovie(movieId)
+        mMovieLocalDataSource.insertMovie(movieDto.toTable())
+        return movieDto.toDomain()
+
     }
 
     override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
