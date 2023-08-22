@@ -5,6 +5,7 @@ import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.reviews.ReviewTable
 import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
@@ -80,13 +81,27 @@ class MovieRepositoryImpl @Inject constructor(
         mMovieLocalDataSource.deleteMovie(movieId)
         mMovieLocalDataSource.insertMovie(movieDto.toTable())
         return movieDto.toDomain()
-
     }
 
     override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
-        return mMovieRemoteDataSource.getMovieReviews(movieId).map {
-            it.map(MovieReviewDto::toDomain)
-        }
+        return flow {
+            emit(getMovieReviewsFromNetwork(movieId))
+        }.onStart {
+            val movieReviews =
+                mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)
+            movieReviews?.let { emit(it) }
+        }.catch { exception ->
+            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)
+                ?: throw exception
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun getMovieReviewsFromNetwork(movieId: Long): List<MovieReview> {
+        val movieReviewsDto = mMovieRemoteDataSource.getMovieReviews(movieId)
+        mMovieLocalDataSource.deleteMovieReviews(movieId)
+        mMovieLocalDataSource.insertMovieReviews(movieReviewsDto.map { it.toTable(movieId) })
+
+        return movieReviewsDto.map(MovieReviewDto::toDomain)
     }
 
     override fun saveToFavorites(movie: Movie) {

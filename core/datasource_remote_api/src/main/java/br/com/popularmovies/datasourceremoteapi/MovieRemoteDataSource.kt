@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieRemoteDataSource {
     suspend fun getMovies(page: Int, type: MovieTypeParam): List<MovieDto>
     suspend fun getMovie(movieId: Long): MovieDto
-    fun getMovieReviews(movieId: Long): Flow<List<MovieReviewDto>>
+    suspend fun getMovieReviews(movieId: Long): List<MovieReviewDto>
     fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailerDto>>
     fun getNowPlayingMovies(page: Int): Flow<List<MovieDto>>
 }

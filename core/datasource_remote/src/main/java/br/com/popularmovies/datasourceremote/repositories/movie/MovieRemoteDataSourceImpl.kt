@@ -27,10 +27,8 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         return mMovieService.getMovie(movieId).mapApiResult()
     }
 
-    override fun getMovieReviews(movieId: Long): Flow<List<MovieReviewDto>> {
-        return networkRequest {
-            mMovieService.getMovieReviews(movieId)
-        }.mapApiResults()
+    override suspend fun getMovieReviews(movieId: Long): List<MovieReviewDto> {
+        return mMovieService.getMovieReviews(movieId).mapApiResults()
     }
 
     override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailerDto>> {

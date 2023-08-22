@@ -5,6 +5,7 @@ import androidx.room.withTransaction
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.reviews.ReviewTable
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import kotlinx.coroutines.flow.Flow
@@ -47,6 +48,24 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
     override suspend fun insertAllMovies(movies: List<MovieTable>) {
         appDatabase.withTransaction {
             mMovieDao.insertAllMovies(movies)
+        }
+    }
+
+    override suspend fun getMovieReviews(movieId: Long): List<ReviewTable> {
+        return appDatabase.withTransaction {
+            mMovieDao.getMovieReviews(movieId).reviews
+        }
+    }
+
+    override suspend fun insertMovieReviews(reviews: List<ReviewTable>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertReviews(reviews)
+        }
+    }
+
+    override suspend fun deleteMovieReviews(movieId: Long) {
+        appDatabase.withTransaction {
+            mMovieDao.deleteMovieReviews(movieId)
         }
     }
 }
