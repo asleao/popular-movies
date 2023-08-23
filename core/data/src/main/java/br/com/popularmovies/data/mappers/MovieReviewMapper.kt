@@ -1,6 +1,6 @@
 package br.com.popularmovies.data.mappers
 
-import br.com.popularmovies.core.api.models.reviews.ReviewTable
+import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
 import br.com.popularmovies.model.movie.MovieReview
 

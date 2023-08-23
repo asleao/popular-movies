@@ -3,10 +3,10 @@ package br.com.popularmovies.core.api.models.relations
 import androidx.room.Embedded
 import androidx.room.Relation
 import br.com.popularmovies.core.api.models.movie.MovieTable
-import br.com.popularmovies.core.api.models.reviews.ReviewTable
+import br.com.popularmovies.core.api.models.trailer.TrailerTable
 
-data class MovieReviewsRelation(
+data class MovieWithTrailersRelation(
     @Embedded val movie: MovieTable,
     @Relation(parentColumn = "remoteId", entityColumn = "movieId")
-    val reviews: List<ReviewTable> = emptyList()
+    val trailers: List<TrailerTable>
 )

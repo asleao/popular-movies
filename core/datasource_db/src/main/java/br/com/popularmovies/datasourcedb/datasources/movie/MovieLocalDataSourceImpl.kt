@@ -5,7 +5,8 @@ import androidx.room.withTransaction
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
-import br.com.popularmovies.core.api.models.reviews.ReviewTable
+import br.com.popularmovies.core.api.models.review.ReviewTable
+import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
 import kotlinx.coroutines.flow.Flow
@@ -29,8 +30,10 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
         }
     }
 
-    override suspend fun getMovie(movieId: Long): MovieTable? {
-        return appDatabase.withTransaction { mMovieDao.getMovie(movieId) }
+    override suspend fun getMovie(movieId: Long): MovieTable {
+        return appDatabase.withTransaction {
+            mMovieDao.getMovie(movieId)
+        }
     }
 
     override suspend fun deleteMovie(movieId: Long) {
@@ -66,6 +69,24 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
     override suspend fun deleteMovieReviews(movieId: Long) {
         appDatabase.withTransaction {
             mMovieDao.deleteMovieReviews(movieId)
+        }
+    }
+
+    override suspend fun getMovieTrailers(movieId: Long): List<TrailerTable> {
+        return appDatabase.withTransaction {
+            mMovieDao.getMovieTrailers(movieId).trailers
+        }
+    }
+
+    override suspend fun insertMovieTrailers(reviews: List<TrailerTable>) {
+        appDatabase.withTransaction {
+            mMovieDao.insertTrailers(reviews)
+        }
+    }
+
+    override suspend fun deleteMovieTrailers(movieId: Long) {
+        appDatabase.withTransaction {
+            mMovieDao.deleteMovieTrailers(movieId)
         }
     }
 }

@@ -5,7 +5,8 @@ import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
-import br.com.popularmovies.core.api.models.reviews.ReviewTable
+import br.com.popularmovies.core.api.models.review.ReviewTable
+import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
@@ -18,7 +19,6 @@ import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -65,17 +65,9 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getMovie(movieId: Long): Flow<Movie> {
         return flow {
             fetchMovieFromNetwork(movieId)
-            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
-                emit(movie.toDomain())
-            }
+            emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
         }.onStart {
-            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
-                emit(movie.toDomain())
-            }
-        }.catch { exception ->
-            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
-                emit(movie.toDomain())
-            } ?: throw exception
+            emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
         }.distinctUntilChanged()
     }
 
@@ -89,17 +81,9 @@ class MovieRepositoryImpl @Inject constructor(
     override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
         return flow {
             getMovieReviewsFromNetwork(movieId)
-            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
-                emit(it)
-            }
+            emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
         }.onStart {
-            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
-                emit(it)
-            }
-        }.catch { exception ->
-            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
-                emit(it)
-            } ?: throw exception
+            emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
         }.distinctUntilChanged()
     }
 
@@ -116,8 +100,24 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {
-        return mMovieRemoteDataSource
-            .getMovieTrailers(movieId)
-            .map { it.map(MovieTrailerDto::toDomain) }
+        return flow {
+            fetchMovieTrailersFromNetwork(movieId)
+            emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.onStart {
+            emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun fetchMovieTrailersFromNetwork(movieId: Long): List<MovieTrailer> {
+        val movieTrailersDto = mMovieRemoteDataSource.getMovieTrailers(movieId)
+        mMovieLocalDataSource.deleteMovieTrailers(movieId)
+        mMovieLocalDataSource.insertMovieTrailers(movieTrailersDto.map { trailer ->
+            trailer.toTable(
+                trailer.id,
+                movieId
+            )
+        })
+
+        return movieTrailersDto.map(MovieTrailerDto::toDomain)
     }
 }

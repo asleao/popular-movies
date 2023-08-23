@@ -10,6 +10,6 @@ interface MovieRemoteDataSource {
     suspend fun getMovies(page: Int, type: MovieTypeParam): List<MovieDto>
     suspend fun getMovie(movieId: Long): MovieDto
     suspend fun getMovieReviews(movieId: Long): List<MovieReviewDto>
-    fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailerDto>>
+    suspend fun getMovieTrailers(movieId: Long): List<MovieTrailerDto>
     fun getNowPlayingMovies(page: Int): Flow<List<MovieDto>>
 }

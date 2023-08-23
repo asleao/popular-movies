@@ -53,6 +53,7 @@ class MovieDetailViewModel @AssistedInject constructor(
         .onStart { emit(TrailerUiState.Loading) }
         .catch { exception ->
             emit(TrailerUiState.Error)
+            exception.cause
         }
         .stateIn(
             scope = viewModelScope,
