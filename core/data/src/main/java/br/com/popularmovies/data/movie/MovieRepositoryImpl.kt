@@ -64,7 +64,10 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getMovie(movieId: Long): Flow<Movie> {
         return flow {
-            emit(getMovieFromNetwork(movieId))
+            fetchMovieFromNetwork(movieId)
+            mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
+                emit(movie.toDomain())
+            }
         }.onStart {
             mMovieLocalDataSource.getMovie(movieId)?.let { movie ->
                 emit(movie.toDomain())
@@ -76,7 +79,7 @@ class MovieRepositoryImpl @Inject constructor(
         }.distinctUntilChanged()
     }
 
-    private suspend fun getMovieFromNetwork(movieId: Long): Movie {
+    private suspend fun fetchMovieFromNetwork(movieId: Long): Movie {
         val movieDto = mMovieRemoteDataSource.getMovie(movieId)
         mMovieLocalDataSource.deleteMovie(movieId)
         mMovieLocalDataSource.insertMovie(movieDto.toTable())
