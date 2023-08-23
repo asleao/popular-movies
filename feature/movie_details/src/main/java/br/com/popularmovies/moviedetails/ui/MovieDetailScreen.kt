@@ -3,8 +3,10 @@ package br.com.popularmovies.moviedetails.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -65,23 +67,21 @@ fun MovieDetailScreen(viewModel: MovieDetailViewModel) {
 
                 is TrailerUiState.Success -> {
                     val trailers = (trailersState as TrailerUiState.Success).trailers
-                    //TODO checkout stickyHeaders
                     if (trailers.isNotEmpty()) {
                         item {
                             Text(
-                                "Trailers",
                                 modifier = Modifier
-                                    .padding(top = 16.dp, start = 16.dp),
+                                    .padding(horizontal = 16.dp),
+                                text = "Trailers",
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
                             LazyRow(
                                 state = rememberLazyListState(),
-                                contentPadding = PaddingValues(
-                                    top = 16.dp,
-                                    start = 16.dp,
-                                    end = 16.dp
-                                ),
+                                contentPadding = PaddingValues(horizontal = 16.dp),
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                                 modifier = Modifier.fillMaxWidth()
                             ) {
@@ -112,14 +112,18 @@ fun MovieDetailScreen(viewModel: MovieDetailViewModel) {
                     val reviews = (reviewsState as ReviewUiState.Success).reviews
                     if (reviews.isNotEmpty()) {
                         item {
+                            Spacer(modifier = Modifier.height(8.dp))
+
                             Text(
-                                "Reviews",
                                 modifier = Modifier
-                                    .padding(top = 16.dp, start = 16.dp),
+                                    .padding(horizontal = 16.dp),
+                                text = "Reviews",
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
+                            Spacer(modifier = Modifier.height(8.dp))
                         }
+
                         items(reviews) { review ->
                             MovieReview(
                                 movieReview = review,
