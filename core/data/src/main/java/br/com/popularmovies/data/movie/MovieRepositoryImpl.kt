@@ -88,14 +88,18 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
         return flow {
-            emit(getMovieReviewsFromNetwork(movieId))
+            getMovieReviewsFromNetwork(movieId)
+            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
+                emit(it)
+            }
         }.onStart {
-            val movieReviews =
-                mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)
-            movieReviews?.let { emit(it) }
+            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
+                emit(it)
+            }
         }.catch { exception ->
-            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)
-                ?: throw exception
+            mMovieLocalDataSource.getMovieReviews(movieId)?.map(ReviewTable::toDomain)?.let {
+                emit(it)
+            } ?: throw exception
         }.distinctUntilChanged()
     }
 
