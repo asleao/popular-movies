@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.popularmovies.common.models.base.NetworkError
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCaseParams
 import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
@@ -18,12 +16,17 @@ import br.com.popularmovies.model.movie.MovieTrailer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 
 class MovieDetailViewModel @AssistedInject constructor(
-    private val getMovieUseCaseImpl: GetMovieUseCase,
-    private val getMovieTrailersUseCase: GetMovieTrailersUseCase,
-    private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    getMovieUseCase: GetMovieUseCase,
+    getMovieTrailersUseCase: GetMovieTrailersUseCase,
+    getMovieReviewsUseCase: GetMovieReviewsUseCase,
     @Assisted private val movieId: Long
 ) : ViewModel() {
 
@@ -32,73 +35,75 @@ class MovieDetailViewModel @AssistedInject constructor(
         fun create(movieId: Long): MovieDetailViewModel
     }
 
-    val loading = MutableLiveData<Boolean>()
+    val movieUiState: Flow<MovieUiState> = getMovieUseCase.build(GetMovieUseCaseParams(movieId))
+        .map<Movie, MovieUiState>(MovieUiState::Success)
+        .onStart { emit(MovieUiState.Loading) }
+        .catch { exception ->
+            emit(MovieUiState.Error)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = MovieUiState.Loading
+        )
 
-    private val _error = MutableLiveData<NetworkError>()
-    val error: LiveData<NetworkError>
-        get() = _error
 
-    private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie>
-        get() = _movie
+    val trailersUiState = getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId))
+        .map<List<MovieTrailer>, TrailerUiState>(TrailerUiState::Success)
+        .onStart { emit(TrailerUiState.Loading) }
+        .catch { exception ->
+            emit(TrailerUiState.Error)
+            exception.cause
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = TrailerUiState.Loading
+        )
 
-    private val _trailers = MutableLiveData<List<MovieTrailer>>()
-    val trailers: LiveData<List<MovieTrailer>> = _trailers
-
-    private val _reviews = MutableLiveData<List<MovieReview>>()
-    val reviews: LiveData<List<MovieReview>> = _reviews
+    val reviewsUiState = getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
+        .map<List<MovieReview>, ReviewUiState>(ReviewUiState::Success)
+        .onStart { emit(ReviewUiState.Loading) }
+        .catch { exception ->
+            emit(ReviewUiState.Error)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ReviewUiState.Loading
+        )
 
     private val _playTrailer = MutableLiveData<String>()
     val playTrailer: LiveData<String>
         get() = _playTrailer
 
-    init {
-        getMovie()
-        getTrailers()
-        getReviews()
-    }
-
-    private fun getMovie() {
-        viewModelScope.launch {
-            showLoading(true)
-            val params = GetMovieUseCaseParams(movieId)
-            when (val result = getMovieUseCaseImpl.build(params)) {
-                is Result.Success -> {
-                    _movie.value = result.data
-                }
-
-                is Result.Error -> _error.value = result.error
-            }
-        }
-    }
-
-    private fun getTrailers() {
-        viewModelScope.launch {
-            showLoading(true)
-            val params = GetMovieTrailersUseCaseParams(movieId)
-            when (val result = getMovieTrailersUseCase.build(params)) {
-                is Result.Success -> _trailers.value = result.data
-                is Result.Error -> _error.value = result.error
-            }
-        }
-    }
-
-    private fun getReviews() {
-        viewModelScope.launch {
-            showLoading(true)
-            val params = GetMovieReviewsUseCaseParams(movieId)
-            when (val result = getMovieReviewsUseCase.build(params)) {
-                is Result.Success -> _reviews.value = result.data
-                is Result.Error -> _error.value = result.error
-            }
-        }
-    }
-
-    fun showLoading(value: Boolean) {
-        loading.value = value
-    }
 
     fun playTrailer(key: String) {
         _playTrailer.value = key
     }
+}
+
+sealed interface MovieUiState {
+    object Loading : MovieUiState
+    object Error : MovieUiState
+
+    data class Success(val movie: Movie) : MovieUiState
+}
+
+
+sealed interface ReviewUiState {
+    object Loading : ReviewUiState
+
+    object Error : ReviewUiState
+
+    data class Success(val reviews: List<MovieReview>) : ReviewUiState
+}
+
+
+sealed interface TrailerUiState {
+    object Loading : TrailerUiState
+
+    object Error : TrailerUiState
+
+    data class Success(val trailers: List<MovieTrailer>) : TrailerUiState
 }

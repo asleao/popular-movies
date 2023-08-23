@@ -2,7 +2,12 @@ package br.com.popularmovies.moviedetails.ui.trailers.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import br.com.popularmovies.core.ui.R
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.core.designsystem.AppTheme
+import br.com.popularmovies.core.ui.R
+import br.com.popularmovies.model.movie.MovieTrailer
 
 @Composable
 fun MovieTrailerCard(movieTrailer: MovieTrailer, onClick: () -> Unit) {
@@ -64,13 +69,8 @@ private fun MockMovieTrailers() {
             movieTrailer =
             MovieTrailer(
                 id = "1",
-                iso6391 = "",
-                iso31661 = "",
                 key = "",
-                name = "Movie Trailer",
-                site = "https://",
-                size = "",
-                type = ""
+                name = "Movie Trailer"
             ),
             onClick = {}
         )

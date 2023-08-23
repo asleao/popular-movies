@@ -1,21 +1,28 @@
 package br.com.popularmovies.data.movie
 
 import androidx.paging.*
-import br.com.popularmovies.common.models.base.NetworkError
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
+import br.com.popularmovies.core.api.models.movie.MovieTable
+import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.review.ReviewTable
+import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
 import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
+import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -45,49 +52,72 @@ class MovieRepositoryImpl @Inject constructor(
             .flow
             .map { data ->
                 data.map { movieTable ->
-                    movieTable.toDomain(movieType)
+                    movieTable.toDomain()
                 }
             }
     }
 
-    override suspend fun getRandomNowPlayingMovies(): Result<List<Movie>> {
-        return when (val result =
-            mMovieRemoteDataSource.getNowPlayingMovies(PaginationConfig.defaultPage)) {
-            is Result.Success -> Result.Success(
-                result.data.take(5).map { it.toDomain(MovieType.NowPlaying) })
-
-            is Result.Error -> Result.Error(result.error)
-        }
+    override fun getRandomNowPlayingMovies(): Flow<List<Movie>> {
+        return mMovieLocalDataSource.getMovies(MovieTypeTable.NowPlaying)
+            .map { it.map(MovieTable::toDomain) }
     }
 
-    override suspend fun getMovie(movieId: Long): Result<Movie> {
-        return when (val result = mMovieRemoteDataSource.getMovie(movieId)) {
-            is Result.Success -> {
-                Result.Success(result.data.toDomain())
-            }
-
-            is Result.Error -> {
-                Result.Error(result.error)
-            }
-        }
+    override fun getMovie(movieId: Long): Flow<Movie> {
+        return flow {
+            fetchMovieFromNetwork(movieId)
+            emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+        }.onStart {
+            emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+        }.distinctUntilChanged()
     }
 
-    override suspend fun getMovieReviews(movieId: Long): Result<List<MovieReview>> {
-        return when (val result = mMovieRemoteDataSource.getMovieReviews(movieId)) {
-            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.error)
-        }
+    private suspend fun fetchMovieFromNetwork(movieId: Long): Movie {
+        val movieDto = mMovieRemoteDataSource.getMovie(movieId)
+        mMovieLocalDataSource.deleteMovie(movieId)
+        mMovieLocalDataSource.insertMovie(movieDto.toTable())
+        return movieDto.toDomain()
     }
 
-    override suspend fun saveToFavorites(movie: Movie): Result<Unit> {
+    override fun getMovieReviews(movieId: Long): Flow<List<MovieReview>> {
+        return flow {
+            getMovieReviewsFromNetwork(movieId)
+            emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+        }.onStart {
+            emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun getMovieReviewsFromNetwork(movieId: Long): List<MovieReview> {
+        val movieReviewsDto = mMovieRemoteDataSource.getMovieReviews(movieId)
+        mMovieLocalDataSource.deleteMovieReviews(movieId)
+        mMovieLocalDataSource.insertMovieReviews(movieReviewsDto.map { it.toTable(movieId) })
+
+        return movieReviewsDto.map(MovieReviewDto::toDomain)
+    }
+
+    override fun saveToFavorites(movie: Movie) {
         //TODO to be implemented
-        return Result.Error(NetworkError())
     }
 
-    override suspend fun getMovieTrailers(movieId: Long): Result<List<MovieTrailer>> {
-        return when (val result = mMovieRemoteDataSource.getMovieTrailers(movieId)) {
-            is Result.Success -> Result.Success(result.data.map { it.toDomain() })
-            is Result.Error -> Result.Error(result.error)
-        }
+    override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {
+        return flow {
+            fetchMovieTrailersFromNetwork(movieId)
+            emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.onStart {
+            emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun fetchMovieTrailersFromNetwork(movieId: Long): List<MovieTrailer> {
+        val movieTrailersDto = mMovieRemoteDataSource.getMovieTrailers(movieId)
+        mMovieLocalDataSource.deleteMovieTrailers(movieId)
+        mMovieLocalDataSource.insertMovieTrailers(movieTrailersDto.map { trailer ->
+            trailer.toTable(
+                trailer.id,
+                movieId
+            )
+        })
+
+        return movieTrailersDto.map(MovieTrailerDto::toDomain)
     }
 }

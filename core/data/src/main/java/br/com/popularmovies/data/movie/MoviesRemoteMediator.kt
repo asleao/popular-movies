@@ -51,32 +51,30 @@ class MoviesRemoteMediator(
         }
 
         try {
-            return when (val result =
-                movieRemoteDataSource.getMovies(page, movieType.toParam())) {
-                is Result.Error -> MediatorResult.Error(Throwable("${result.error.code}-${result.error.message}"))
-                is Result.Success -> {
-                    val endOfPaginationReached = result.data.isEmpty()
-                    if (loadType == LoadType.REFRESH) {
-                        remoteKeyLocalDataSource.clear()
-                        movieLocalDataSource.deleteAllMovies(movieType)
-                    }
-                    val prevKey = if (page == START_INDEX) null else page - 1
-                    val nextKey = if (endOfPaginationReached) null else page + 1
+           return movieRemoteDataSource.getMovies(page, movieType.toParam()).let { data ->
 
-                    val keys = result.data.map {
-                        RemoteKeyTable(
-                            movieId = it.id,
-                            type = movieType,
-                            prevKey = prevKey,
-                            nextKey = nextKey
-                        )
-                    }
-                    remoteKeyLocalDataSource.insertAll(keys)
-                    movieLocalDataSource.insertAllMovies(result.data.map { movie ->
-                        movie.toTable(movieType)
-                    })
-                    MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+//                is Result.Error -> MediatorResult.Error(Throwable("${result.error.code}-${result.error.message}"))
+                val endOfPaginationReached = data.isEmpty()
+                if (loadType == LoadType.REFRESH) {
+                    remoteKeyLocalDataSource.clear()
+                    movieLocalDataSource.deleteAllMovies(movieType)
                 }
+                val prevKey = if (page == START_INDEX) null else page - 1
+                val nextKey = if (endOfPaginationReached) null else page + 1
+
+                val keys = data.map {
+                    RemoteKeyTable(
+                        movieId = it.id,
+                        type = movieType,
+                        prevKey = prevKey,
+                        nextKey = nextKey
+                    )
+                }
+                remoteKeyLocalDataSource.insertAll(keys)
+                movieLocalDataSource.insertAllMovies(data.map { movie ->
+                    movie.toTable(movieType)
+                })
+                MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
             }
         } catch (exception: IOException) {
             return MediatorResult.Error(exception)

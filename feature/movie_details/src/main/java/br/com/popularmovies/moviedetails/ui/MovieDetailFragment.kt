@@ -30,7 +30,7 @@ class MovieDetailFragment @Inject constructor(
     private fun setupObservers() {
         viewModel.playTrailer.observe(this) { trailerKey ->
             trailerKey?.let {
-                requireContext().youtube(trailerKey)
+                requireContext().youtube(trailerKey) //TODO Move this to MovieScreen with a lamba parameter
             }
         }
     }
