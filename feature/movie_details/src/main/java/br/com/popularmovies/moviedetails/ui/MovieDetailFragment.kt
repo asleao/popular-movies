@@ -42,7 +42,7 @@ class MovieDetailFragment @Inject constructor(
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    MovieScreen(viewModel = viewModel)
+                    MovieDetailScreen(viewModel = viewModel)
                 }
             }
         }

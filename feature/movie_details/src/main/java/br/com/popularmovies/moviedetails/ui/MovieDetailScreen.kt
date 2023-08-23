@@ -26,13 +26,12 @@ import br.com.popularmovies.moviedetails.viewmodel.ReviewUiState
 import br.com.popularmovies.moviedetails.viewmodel.TrailerUiState
 
 @Composable
-fun MovieScreen(viewModel: MovieDetailViewModel) {
+fun MovieDetailScreen(viewModel: MovieDetailViewModel) {
     val movieState by viewModel.movieUiState.collectAsStateWithLifecycle(MovieUiState.Loading)
     val trailersState by viewModel.trailersUiState.collectAsStateWithLifecycle(TrailerUiState.Loading)
     val reviewsState by viewModel.reviewsUiState.collectAsStateWithLifecycle(ReviewUiState.Loading)
     Surface(
-//        elevation = 2.dp,
-        color = MaterialTheme.colorScheme.surface, // color will be adjusted for elevation
+        color = MaterialTheme.colorScheme.surface,
     ) {
         LazyColumn(
             state = rememberLazyListState(),
