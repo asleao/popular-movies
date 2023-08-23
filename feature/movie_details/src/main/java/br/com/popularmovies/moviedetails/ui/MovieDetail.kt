@@ -77,8 +77,8 @@ fun MovieDetail(movie: Movie) {
             AssistChip(
                 onClick = { /* Do something! */ },
                 colors = AssistChipDefaults.assistChipColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    labelColor = MaterialTheme.colorScheme.onSecondary
+                    containerColor = MaterialTheme.colorScheme.background,
+                    labelColor = MaterialTheme.colorScheme.onBackground
                 ),
                 label = {
                     Text(
@@ -94,8 +94,8 @@ fun MovieDetail(movie: Movie) {
             AssistChip(
                 onClick = { /* Do something! */ },
                 colors = AssistChipDefaults.assistChipColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    labelColor = MaterialTheme.colorScheme.onSecondary
+                    containerColor = MaterialTheme.colorScheme.background,
+                    labelColor = MaterialTheme.colorScheme.onBackground
                 ),
                 label = {
                     Text(
