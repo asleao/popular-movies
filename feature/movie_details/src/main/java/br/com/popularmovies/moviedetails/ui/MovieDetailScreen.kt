@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.popularmovies.core.ui.components.ErrorView
 import br.com.popularmovies.moviedetails.ui.reviews.ui.MovieReview
 import br.com.popularmovies.moviedetails.ui.trailers.ui.MovieTrailerCard
 import br.com.popularmovies.moviedetails.viewmodel.MovieDetailViewModel
@@ -35,108 +36,111 @@ fun MovieDetailScreen(viewModel: MovieDetailViewModel) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
     ) {
-        LazyColumn(
-            state = rememberLazyListState(),
-            contentPadding = PaddingValues(bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background)
-        ) {
-            when (movieState) {
-                MovieUiState.Loading -> {
+        if (movieState == MovieUiState.Error) {
+            //TODO Add String resource
+            ErrorView(
+                imageRes = br.com.popularmovies.core.ui.R.drawable.ic_cloud_off,
+                description = "Ocorreu um erro",
+                buttonText = "Tentar novamente",
+                buttonClickListener = {}
+            )
+        } else {
+            LazyColumn(
+                state = rememberLazyListState(),
+                contentPadding = PaddingValues(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = MaterialTheme.colorScheme.background)
+            ) {
+                when (movieState) {
+                    MovieUiState.Loading -> {
 
-                }
+                    }
 
-                is MovieUiState.Success -> {
-                    val movie = (movieState as MovieUiState.Success).movie
-                    item {
-                        MovieDetail(movie)
+                    is MovieUiState.Success -> {
+                        val movie = (movieState as MovieUiState.Success).movie
+                        item {
+                            MovieDetail(movie)
+                        }
+                    }
+
+                    MovieUiState.Error -> {
+                        // Do nothing
                     }
                 }
 
-                MovieUiState.Error -> {
+                when (trailersState) {
+                    TrailerUiState.Loading -> {
 
-                }
-            }
+                    }
 
-            when (trailersState) {
-                TrailerUiState.Loading -> {
+                    is TrailerUiState.Success -> {
+                        val trailers = (trailersState as TrailerUiState.Success).trailers
+                        if (trailers.isNotEmpty()) {
+                            item {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp),
+                                    text = "Trailers",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
 
-                }
+                                Spacer(modifier = Modifier.height(16.dp))
 
-                is TrailerUiState.Success -> {
-                    val trailers = (trailersState as TrailerUiState.Success).trailers
-                    if (trailers.isNotEmpty()) {
-                        item {
-                            Text(
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
-                                text = "Trailers",
-                                style = MaterialTheme.typography.headlineMedium,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            LazyRow(
-                                state = rememberLazyListState(),
-                                contentPadding = PaddingValues(horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                items(trailers) { movieTrailer ->
-                                    MovieTrailerCard(
-                                        movieTrailer,
-                                        onClick = {
-                                            viewModel.playTrailer(movieTrailer.key)
-                                        }
-                                    )
+                                LazyRow(
+                                    state = rememberLazyListState(),
+                                    contentPadding = PaddingValues(horizontal = 16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    items(trailers) { movieTrailer ->
+                                        MovieTrailerCard(
+                                            movieTrailer,
+                                            onClick = {
+                                                viewModel.playTrailer(movieTrailer.key)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                TrailerUiState.Error -> {
+                when (reviewsState) {
+                    ReviewUiState.Loading -> {
 
-                }
-            }
+                    }
 
-            when (reviewsState) {
-                ReviewUiState.Loading -> {
+                    is ReviewUiState.Success -> {
+                        val reviews = (reviewsState as ReviewUiState.Success).reviews
+                        if (reviews.isNotEmpty()) {
+                            item {
+                                Spacer(modifier = Modifier.height(8.dp))
 
-                }
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp),
+                                    text = "Reviews",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
 
-                is ReviewUiState.Success -> {
-                    val reviews = (reviewsState as ReviewUiState.Success).reviews
-                    if (reviews.isNotEmpty()) {
-                        item {
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            Text(
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
-                                text = "Reviews",
-                                style = MaterialTheme.typography.headlineMedium,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-
-                        items(reviews) { review ->
-                            MovieReview(
-                                movieReview = review,
-                                onClick = {}
-                            )
+                            items(reviews) { review ->
+                                MovieReview(
+                                    movieReview = review,
+                                    onClick = {}
+                                )
+                            }
                         }
                     }
                 }
-
-                ReviewUiState.Error -> {
-
-                }
             }
         }
+
     }
 }

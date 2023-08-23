@@ -51,10 +51,6 @@ class MovieDetailViewModel @AssistedInject constructor(
     val trailersUiState = getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId))
         .map<List<MovieTrailer>, TrailerUiState>(TrailerUiState::Success)
         .onStart { emit(TrailerUiState.Loading) }
-        .catch { exception ->
-            emit(TrailerUiState.Error)
-            exception.cause
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -64,9 +60,6 @@ class MovieDetailViewModel @AssistedInject constructor(
     val reviewsUiState = getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
         .map<List<MovieReview>, ReviewUiState>(ReviewUiState::Success)
         .onStart { emit(ReviewUiState.Loading) }
-        .catch { exception ->
-            emit(ReviewUiState.Error)
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -94,16 +87,12 @@ sealed interface MovieUiState {
 sealed interface ReviewUiState {
     object Loading : ReviewUiState
 
-    object Error : ReviewUiState
-
     data class Success(val reviews: List<MovieReview>) : ReviewUiState
 }
 
 
 sealed interface TrailerUiState {
     object Loading : TrailerUiState
-
-    object Error : TrailerUiState
 
     data class Success(val trailers: List<MovieTrailer>) : TrailerUiState
 }
