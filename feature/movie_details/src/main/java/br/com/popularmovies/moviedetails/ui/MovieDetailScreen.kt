@@ -38,7 +38,8 @@ import br.com.popularmovies.moviedetails.viewmodel.TrailerUiState
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieDetailViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onTrailerClick: (String) -> Unit
 ) {
     val movieState by viewModel.movieUiState.collectAsStateWithLifecycle(MovieUiState.Loading)
     val trailersState by viewModel.trailersUiState.collectAsStateWithLifecycle(TrailerUiState.Loading)
@@ -128,7 +129,7 @@ fun MovieDetailScreen(
                                             MovieTrailerCard(
                                                 movieTrailer,
                                                 onClick = {
-                                                    viewModel.playTrailer(movieTrailer.key)
+                                                    onTrailerClick(movieTrailer.key)
                                                 }
                                             )
                                         }

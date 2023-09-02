@@ -65,15 +65,6 @@ class MovieDetailViewModel @AssistedInject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewUiState.Loading
         )
-
-    private val _playTrailer = MutableLiveData<String>()
-    val playTrailer: LiveData<String>
-        get() = _playTrailer
-
-
-    fun playTrailer(key: String) {
-        _playTrailer.value = key
-    }
 }
 
 sealed interface MovieUiState {

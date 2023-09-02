@@ -23,19 +23,6 @@ class MovieDetailFragment @Inject constructor(
         viewModelFactory.create(args.movieId)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-        viewModel.playTrailer.observe(this) { trailerKey ->
-            trailerKey?.let {
-                requireContext().youtube(trailerKey) //TODO Move this to MovieScreen with a lamba parameter
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +34,9 @@ class MovieDetailFragment @Inject constructor(
                         viewModel = viewModel,
                         onBack = {
                             findNavController().navigateUp()
+                        },
+                        onTrailerClick = { key ->
+                            requireContext().youtube(key)
                         }
                     )
                 }
