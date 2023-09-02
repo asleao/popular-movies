@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.common.utils.youtube
 import br.com.popularmovies.core.designsystem.AppTheme
@@ -42,7 +43,12 @@ class MovieDetailFragment @Inject constructor(
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    MovieDetailScreen(viewModel = viewModel)
+                    MovieDetailScreen(
+                        viewModel = viewModel,
+                        onBack = {
+                            findNavController().navigateUp()
+                        }
+                    )
                 }
             }
         }
