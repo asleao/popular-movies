@@ -19,6 +19,7 @@ import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -68,6 +69,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
         }.onStart {
             emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 
@@ -84,6 +91,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
         }.onStart {
             emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 
@@ -105,6 +118,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
         }.onStart {
             emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 
