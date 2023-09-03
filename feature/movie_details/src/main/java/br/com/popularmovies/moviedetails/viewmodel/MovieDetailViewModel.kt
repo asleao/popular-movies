@@ -1,7 +1,8 @@
 package br.com.popularmovies.moviedetails.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCase
@@ -16,12 +17,15 @@ import br.com.popularmovies.model.movie.MovieTrailer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
     getMovieUseCase: GetMovieUseCase,
@@ -35,55 +39,48 @@ class MovieDetailViewModel @AssistedInject constructor(
         fun create(movieId: Long): MovieDetailViewModel
     }
 
-    val movieUiState: Flow<MovieUiState> = getMovieUseCase.build(GetMovieUseCaseParams(movieId))
-        .map<Movie, MovieUiState>(MovieUiState::Success)
-        .onStart { emit(MovieUiState.Loading) }
-        .catch { exception ->
-            emit(MovieUiState.Error)
+    // https://github.com/Kotlin/kotlinx.coroutines/issues/3594
+    private val isRefresh =
+        MutableSharedFlow<Boolean>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+            .apply { tryEmit(false) }
+
+    var uiState by mutableStateOf<MovieDetailUiState>(MovieDetailUiState.Loading)
+        private set
+
+    init {
+        viewModelScope.launch {
+            isRefresh
+                .flatMapLatest {
+                    combine(
+                        getMovieUseCase.build(GetMovieUseCaseParams(movieId)),
+                        getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId)),
+                        getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
+                    ) { movie, reviews, trailers ->
+                        uiState = MovieDetailUiState.Success(movie, trailers, reviews)
+                    }.catch {
+                        uiState = MovieDetailUiState.Error
+                    }
+                        .stateIn(
+                            scope = viewModelScope,
+                            started = SharingStarted.WhileSubscribed(5_000),
+                            initialValue = MovieDetailUiState.Loading
+                        )
+                }.collect()
         }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MovieUiState.Loading
-        )
+    }
 
-
-    val trailersUiState = getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId))
-        .map<List<MovieTrailer>, TrailerUiState>(TrailerUiState::Success)
-        .onStart { emit(TrailerUiState.Loading) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = TrailerUiState.Loading
-        )
-
-    val reviewsUiState = getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
-        .map<List<MovieReview>, ReviewUiState>(ReviewUiState::Success)
-        .onStart { emit(ReviewUiState.Loading) }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewUiState.Loading
-        )
+    fun tryAgain() {
+        isRefresh.tryEmit(true)
+    }
 }
 
-sealed interface MovieUiState {
-    object Loading : MovieUiState
-    object Error : MovieUiState
+sealed interface MovieDetailUiState {
+    object Loading : MovieDetailUiState
+    object Error : MovieDetailUiState
 
-    data class Success(val movie: Movie) : MovieUiState
-}
-
-
-sealed interface ReviewUiState {
-    object Loading : ReviewUiState
-
-    data class Success(val reviews: List<MovieReview>) : ReviewUiState
-}
-
-
-sealed interface TrailerUiState {
-    object Loading : TrailerUiState
-
-    data class Success(val trailers: List<MovieTrailer>) : TrailerUiState
+    data class Success(
+        val movie: Movie,
+        val reviews: List<MovieReview>,
+        val trailers: List<MovieTrailer>
+    ) : MovieDetailUiState
 }

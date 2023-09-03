@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.common.utils.youtube
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.moviedetails.viewmodel.MovieDetailViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class MovieDetailFragment @Inject constructor(
@@ -34,6 +35,9 @@ class MovieDetailFragment @Inject constructor(
                         viewModel = viewModel,
                         onBack = {
                             findNavController().navigateUp()
+                        },
+                        onTryAgainClick = {
+                            viewModel.tryAgain()
                         },
                         onTrailerClick = { key ->
                             requireContext().youtube(key)

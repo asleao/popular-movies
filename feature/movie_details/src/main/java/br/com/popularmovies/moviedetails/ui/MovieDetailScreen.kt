@@ -22,28 +22,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.popularmovies.core.ui.components.ErrorView
 import br.com.popularmovies.moviedetails.ui.reviews.ui.MovieReview
 import br.com.popularmovies.moviedetails.ui.trailers.ui.MovieTrailerCard
+import br.com.popularmovies.moviedetails.viewmodel.MovieDetailUiState
 import br.com.popularmovies.moviedetails.viewmodel.MovieDetailViewModel
-import br.com.popularmovies.moviedetails.viewmodel.MovieUiState
-import br.com.popularmovies.moviedetails.viewmodel.ReviewUiState
-import br.com.popularmovies.moviedetails.viewmodel.TrailerUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieDetailViewModel,
     onBack: () -> Unit,
+    onTryAgainClick: () -> Unit,
     onTrailerClick: (String) -> Unit
 ) {
-    val movieState by viewModel.movieUiState.collectAsStateWithLifecycle(MovieUiState.Loading)
-    val trailersState by viewModel.trailersUiState.collectAsStateWithLifecycle(TrailerUiState.Loading)
-    val reviewsState by viewModel.reviewsUiState.collectAsStateWithLifecycle(ReviewUiState.Loading)
+    val movieState = viewModel.uiState
 
     Scaffold(
         topBar = {
@@ -66,13 +61,15 @@ fun MovieDetailScreen(
             )
         },
         content = { innerPadding ->
-            if (movieState == MovieUiState.Error) {
+            if (movieState == MovieDetailUiState.Error) {
                 //TODO Add String resource
                 ErrorView(
                     imageRes = br.com.popularmovies.core.ui.R.drawable.ic_cloud_off,
                     description = "Ocorreu um erro",
                     buttonText = "Tentar novamente",
-                    buttonClickListener = {}
+                    buttonClickListener = {
+                        onTryAgainClick()
+                    }
                 )
             } else {
                 LazyColumn(
@@ -84,29 +81,17 @@ fun MovieDetailScreen(
                         .background(color = MaterialTheme.colorScheme.background)
                 ) {
                     when (movieState) {
-                        MovieUiState.Loading -> {
+                        MovieDetailUiState.Loading -> {
 
                         }
 
-                        is MovieUiState.Success -> {
-                            val movie = (movieState as MovieUiState.Success).movie
+                        is MovieDetailUiState.Success -> {
+                            val movie = movieState.movie
                             item {
                                 MovieDetail(movie)
                             }
-                        }
 
-                        MovieUiState.Error -> {
-                            // Do nothing
-                        }
-                    }
-
-                    when (trailersState) {
-                        TrailerUiState.Loading -> {
-
-                        }
-
-                        is TrailerUiState.Success -> {
-                            val trailers = (trailersState as TrailerUiState.Success).trailers
+                            val trailers = movieState.trailers
                             if (trailers.isNotEmpty()) {
                                 item {
                                     Text(
@@ -136,16 +121,8 @@ fun MovieDetailScreen(
                                     }
                                 }
                             }
-                        }
-                    }
 
-                    when (reviewsState) {
-                        ReviewUiState.Loading -> {
-
-                        }
-
-                        is ReviewUiState.Success -> {
-                            val reviews = (reviewsState as ReviewUiState.Success).reviews
+                            val reviews = movieState.reviews
                             if (reviews.isNotEmpty()) {
                                 item {
                                     Spacer(modifier = Modifier.height(8.dp))
@@ -167,6 +144,10 @@ fun MovieDetailScreen(
                                     )
                                 }
                             }
+                        }
+
+                        MovieDetailUiState.Error -> {
+                            // Do nothing
                         }
                     }
                 }
