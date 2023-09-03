@@ -61,93 +61,88 @@ fun MovieDetailScreen(
             )
         },
         content = { innerPadding ->
-            if (movieState == MovieDetailUiState.Error) {
-                //TODO Add String resource
-                ErrorView(
-                    imageRes = br.com.popularmovies.core.ui.R.drawable.ic_cloud_off,
-                    description = "Ocorreu um erro",
-                    buttonText = "Tentar novamente",
-                    buttonClickListener = {
-                        onTryAgainClick()
-                    }
-                )
-            } else {
-                LazyColumn(
-                    state = rememberLazyListState(),
-                    contentPadding = innerPadding,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.background)
-                ) {
-                    when (movieState) {
-                        MovieDetailUiState.Loading -> {
+            when (movieState) {
+                MovieDetailUiState.Error -> {
+                    ErrorView(
+                        imageRes = br.com.popularmovies.core.ui.R.drawable.ic_cloud_off,
+                        description = "Ocorreu um erro",
+                        buttonText = "Tentar novamente",
+                        buttonClickListener = {
+                            onTryAgainClick()
+                        }
+                    )
+                }
 
+                MovieDetailUiState.Loading -> {
+                    // Do nothing for now
+                }
+                is MovieDetailUiState.Success -> {
+                    LazyColumn(
+                        state = rememberLazyListState(),
+                        contentPadding = innerPadding,
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.background)
+                    ) {
+
+                        val movie = movieState.movie
+                        item {
+                            MovieDetail(movie)
                         }
 
-                        is MovieDetailUiState.Success -> {
-                            val movie = movieState.movie
+                        val trailers = movieState.trailers
+                        if (trailers.isNotEmpty()) {
                             item {
-                                MovieDetail(movie)
-                            }
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp),
+                                    text = "Trailers",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
 
-                            val trailers = movieState.trailers
-                            if (trailers.isNotEmpty()) {
-                                item {
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp),
-                                        text = "Trailers",
-                                        style = MaterialTheme.typography.headlineMedium,
-                                        color = MaterialTheme.colorScheme.onPrimary
-                                    )
+                                Spacer(modifier = Modifier.height(16.dp))
 
-                                    Spacer(modifier = Modifier.height(16.dp))
-
-                                    LazyRow(
-                                        state = rememberLazyListState(),
-                                        contentPadding = PaddingValues(horizontal = 16.dp),
-                                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        items(trailers) { movieTrailer ->
-                                            MovieTrailerCard(
-                                                movieTrailer,
-                                                onClick = {
-                                                    onTrailerClick(movieTrailer.key)
-                                                }
-                                            )
-                                        }
+                                LazyRow(
+                                    state = rememberLazyListState(),
+                                    contentPadding = PaddingValues(horizontal = 16.dp),
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    items(trailers) { movieTrailer ->
+                                        MovieTrailerCard(
+                                            movieTrailer,
+                                            onClick = {
+                                                onTrailerClick(movieTrailer.key)
+                                            }
+                                        )
                                     }
                                 }
                             }
-
-                            val reviews = movieState.reviews
-                            if (reviews.isNotEmpty()) {
-                                item {
-                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                    Text(
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp),
-                                        text = "Reviews",
-                                        style = MaterialTheme.typography.headlineMedium,
-                                        color = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                }
-
-                                items(reviews) { review ->
-                                    MovieReview(
-                                        movieReview = review,
-                                        onClick = {}
-                                    )
-                                }
-                            }
                         }
 
-                        MovieDetailUiState.Error -> {
-                            // Do nothing
+                        val reviews = movieState.reviews
+                        if (reviews.isNotEmpty()) {
+                            item {
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text(
+                                    modifier = Modifier
+                                        .padding(horizontal = 16.dp),
+                                    text = "Reviews",
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+
+                            items(reviews) { review ->
+                                MovieReview(
+                                    movieReview = review,
+                                    onClick = {}
+                                )
+                            }
                         }
                     }
                 }
