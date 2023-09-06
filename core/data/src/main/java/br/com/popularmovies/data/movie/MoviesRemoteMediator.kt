@@ -1,11 +1,9 @@
 package br.com.popularmovies.data.movie
 
-//import retrofit2.HttpException
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import br.com.popularmovies.common.models.base.Result
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.core.api.models.keys.RemoteKeyTable
@@ -14,7 +12,6 @@ import br.com.popularmovies.core.api.models.movie.MovieTypeTable
 import br.com.popularmovies.data.mappers.toParam
 import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
-import java.io.IOException
 
 @ExperimentalPagingApi
 class MoviesRemoteMediator(
@@ -51,9 +48,7 @@ class MoviesRemoteMediator(
         }
 
         try {
-           return movieRemoteDataSource.getMovies(page, movieType.toParam()).let { data ->
-
-//                is Result.Error -> MediatorResult.Error(Throwable("${result.error.code}-${result.error.message}"))
+            return movieRemoteDataSource.getMovies(page, movieType.toParam()).let { data ->
                 val endOfPaginationReached = data.isEmpty()
                 if (loadType == LoadType.REFRESH) {
                     remoteKeyLocalDataSource.clear()
@@ -76,12 +71,9 @@ class MoviesRemoteMediator(
                 })
                 MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
             }
-        } catch (exception: IOException) {
+        } catch (exception: Exception) {
             return MediatorResult.Error(exception)
         }
-//        catch (exception: HttpException) {
-//            return MediatorResult.Error(exception)
-//        }
     }
 
     private suspend fun getRemoteKeyForLastItem(
