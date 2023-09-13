@@ -199,6 +199,7 @@ class MovieFragment @Inject constructor(
                 binding.tvTopRatedMoviesShimmer.hideShimmer()
             }
 
+            //TODO Fix this logic to show error only when there is no data on the adapter
             if (isError) {
                 val state = loadState.mediator?.refresh as LoadState.Error
                 viewModel.showError(state.error)
@@ -210,6 +211,42 @@ class MovieFragment @Inject constructor(
                 pagingTopHatedMoviesAdapter.submitData(pagingData)
             }
         }
+
+        //      TODO: Try to use flow instead of listener
+//        val notLoading = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.NotLoading }
+//
+//        val loading = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.Loading }
+//
+//        val error = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.Error }
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            combine(
+//                notLoading,
+//                loading,
+//                error,
+//                ::Triple
+//            ).distinctUntilChanged()
+//                .collectLatest { (notLoading, loading, error) ->
+//                    binding.tvTopRatedMovies.isVisible = notLoading
+//                    binding.rvTopRatedMovies.isVisible = notLoading
+//                    binding.tvTopRatedMoviesShimmer.showShimmer(loading)
+//                    binding.tvTopRatedMoviesShimmer.isInvisible = notLoading
+//                    if (notLoading) {
+//                        binding.tvTopRatedMoviesShimmer.hideShimmer()
+//                    }
+//
+//                    if (error && pagingTopHatedMoviesAdapter.itemCount < 1) {
+////                    val state = loadState.mediator?.refresh as LoadState.Error
+////                    viewModel.showError(state.error)
+//                    }
+//                }
+//        }
     }
 
     private fun showNoConnection(message: String) {
