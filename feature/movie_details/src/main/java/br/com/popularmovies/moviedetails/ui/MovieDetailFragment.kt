@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import br.com.popularmovies.common.utils.youtube
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.moviedetails.viewmodel.MovieDetailViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class MovieDetailFragment @Inject constructor(
@@ -22,19 +24,6 @@ class MovieDetailFragment @Inject constructor(
         viewModelFactory.create(args.movieId)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupObservers()
-    }
-
-    private fun setupObservers() {
-        viewModel.playTrailer.observe(this) { trailerKey ->
-            trailerKey?.let {
-                requireContext().youtube(trailerKey) //TODO Move this to MovieScreen with a lamba parameter
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +31,18 @@ class MovieDetailFragment @Inject constructor(
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    MovieScreen(viewModel = viewModel)
+                    MovieDetailScreen(
+                        viewModel = viewModel,
+                        onBack = {
+                            findNavController().navigateUp()
+                        },
+                        onTryAgainClick = {
+                            viewModel.tryAgain()
+                        },
+                        onTrailerClick = { key ->
+                            requireContext().youtube(key)
+                        }
+                    )
                 }
             }
         }

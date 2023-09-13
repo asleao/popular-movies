@@ -48,11 +48,12 @@ class MovieFragment @Inject constructor(
     private val pagingTopHatedMoviesAdapter = MoviePagingAdapter(this)
 
     private fun setupObservers() {
+        setupUiStateObserver()
         val spacingItemDecoration = resources.getDimensionPixelSize(
             R.dimen.list_spacing_default
         )
         setupUiStateObserver()
-        setupNewestNowPlayingMovieObserver()
+        setupNewestNowPlayingMoviesObserver()
         setupNowPlayingMoviesFlow(spacingItemDecoration)
         setupPopularMoviesFlow(spacingItemDecoration)
         setupTopHatedMoviesFlow(spacingItemDecoration)
@@ -72,19 +73,23 @@ class MovieFragment @Inject constructor(
                         binding.container.isVisible = false
                         state.networkError?.let { showError(state.networkError) }
                     }
+
+                    MovieUiState.Loading -> {
+                        // Do nothing
+                    }
                 }
             }
         }
     }
 
     private fun showError(networkError: Throwable) {
-//        networkError?.let {
-//            showNoConnection(networkError.message!!)
-//        } ?: showGenericError(networkError!!.message)
-        showGenericError(networkError.message!!)
+        networkError?.let {
+            showNoConnection(networkError.message!!)
+        }
+//            ?: showGenericError(networkError.message!!)
     }
 
-    private fun setupNewestNowPlayingMovieObserver() {
+    private fun setupNewestNowPlayingMoviesObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel
                 .randomNowPlayingMovie
@@ -113,6 +118,7 @@ class MovieFragment @Inject constructor(
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            val isError = loadState.mediator?.refresh is LoadState.Error
             binding.tvPopularMovies.isVisible = isRefreshSucceded && !isLoading
             binding.rvPopularMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvPopularMoviesShimmer.showShimmer(isLoading)
@@ -120,6 +126,11 @@ class MovieFragment @Inject constructor(
 
             if (!isLoading) {
                 binding.tvPopularMoviesShimmer.hideShimmer()
+            }
+
+            if (isError) {
+                val state = loadState.mediator?.refresh as LoadState.Error
+                viewModel.showError(state.error)
             }
         }
 
@@ -142,6 +153,8 @@ class MovieFragment @Inject constructor(
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            val isError = loadState.mediator?.refresh is LoadState.Error
+
             binding.tvNowPlayingMovies.isVisible = isRefreshSucceded && !isLoading
             binding.rvNowPlayingMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvNowPlayingMoviesShimmer.showShimmer(isLoading)
@@ -149,12 +162,18 @@ class MovieFragment @Inject constructor(
             if (!isLoading) {
                 binding.tvNowPlayingMoviesShimmer.hideShimmer()
             }
+
+            if (isError) {
+                val state = loadState.mediator?.refresh as LoadState.Error
+                viewModel.showError(state.error)
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.nowPlayingMoviesFlow.flowWithLifecycle(lifecycle).collectLatest { pagingData ->
-                pagingNowPlayingMoviesAdapter.submitData(pagingData)
-            }
+            viewModel.nowPlayingMoviesFlow.flowWithLifecycle(lifecycle)
+                .collectLatest { pagingData ->
+                    pagingNowPlayingMoviesAdapter.submitData(pagingData)
+                }
         }
     }
 
@@ -170,6 +189,7 @@ class MovieFragment @Inject constructor(
             val isRefreshSucceded =
                 loadState.source.refresh is LoadState.NotLoading || loadState.mediator?.refresh is LoadState.NotLoading
             val isLoading = loadState.mediator?.refresh is LoadState.Loading
+            val isError = loadState.mediator?.refresh is LoadState.Error
             binding.tvTopRatedMovies.isVisible = isRefreshSucceded && !isLoading
             binding.rvTopRatedMovies.isVisible = isRefreshSucceded && !isLoading
             binding.tvTopRatedMoviesShimmer.showShimmer(isLoading)
@@ -178,6 +198,12 @@ class MovieFragment @Inject constructor(
             if (!isLoading) {
                 binding.tvTopRatedMoviesShimmer.hideShimmer()
             }
+
+            //TODO Fix this logic to show error only when there is no data on the adapter
+            if (isError) {
+                val state = loadState.mediator?.refresh as LoadState.Error
+                viewModel.showError(state.error)
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -185,6 +211,42 @@ class MovieFragment @Inject constructor(
                 pagingTopHatedMoviesAdapter.submitData(pagingData)
             }
         }
+
+        //      TODO: Try to use flow instead of listener
+//        val notLoading = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.NotLoading }
+//
+//        val loading = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.Loading }
+//
+//        val error = pagingTopHatedMoviesAdapter.loadStateFlow
+//            .distinctUntilChangedBy { it.source.refresh }
+//            .map { it.source.refresh is LoadState.Error }
+//
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            combine(
+//                notLoading,
+//                loading,
+//                error,
+//                ::Triple
+//            ).distinctUntilChanged()
+//                .collectLatest { (notLoading, loading, error) ->
+//                    binding.tvTopRatedMovies.isVisible = notLoading
+//                    binding.rvTopRatedMovies.isVisible = notLoading
+//                    binding.tvTopRatedMoviesShimmer.showShimmer(loading)
+//                    binding.tvTopRatedMoviesShimmer.isInvisible = notLoading
+//                    if (notLoading) {
+//                        binding.tvTopRatedMoviesShimmer.hideShimmer()
+//                    }
+//
+//                    if (error && pagingTopHatedMoviesAdapter.itemCount < 1) {
+////                    val state = loadState.mediator?.refresh as LoadState.Error
+////                    viewModel.showError(state.error)
+//                    }
+//                }
+//        }
     }
 
     private fun showNoConnection(message: String) {
@@ -209,7 +271,6 @@ class MovieFragment @Inject constructor(
         setHasOptionsMenu(true)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
         setupObservers()
         binding.viewPager.setPageTransformer(MarginPageTransformer(44))//TODO add dimens here
         setupErrorView()

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalDataSource {
     fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable>
-    fun getMovies(type: MovieTypeTable): Flow<List<MovieTable>>
+    suspend fun getMovies(type: MovieTypeTable): List<MovieTable>
     suspend fun insertAllMovies(movies: List<MovieTable>)
     suspend fun deleteAllMovies(type: MovieTypeTable)
     suspend fun getMovie(movieId: Long): MovieTable

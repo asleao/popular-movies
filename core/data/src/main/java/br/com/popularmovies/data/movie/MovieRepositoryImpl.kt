@@ -10,6 +10,7 @@ import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.core.data.api.MovieRepository
 import br.com.popularmovies.data.config.PaginationConfig
 import br.com.popularmovies.data.mappers.toDomain
+import br.com.popularmovies.data.mappers.toParam
 import br.com.popularmovies.data.mappers.toTable
 import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
@@ -19,6 +20,7 @@ import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -58,8 +60,37 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override fun getRandomNowPlayingMovies(): Flow<List<Movie>> {
-        return mMovieLocalDataSource.getMovies(MovieTypeTable.NowPlaying)
-            .map { it.map(MovieTable::toDomain) }
+        return flow {
+            fetchMoviesFromNetwork(1, MovieType.NowPlaying)
+            emit(
+                mMovieLocalDataSource
+                    .getMovies(MovieTypeTable.NowPlaying)
+                    .map(MovieTable::toDomain)
+            )
+        }.onStart {
+            emit(
+                mMovieLocalDataSource
+                    .getMovies(MovieTypeTable.NowPlaying)
+                    .map(MovieTable::toDomain)
+            )
+        }.catch {
+            try {
+                emit(
+                    mMovieLocalDataSource
+                        .getMovies(MovieTypeTable.NowPlaying)
+                        .map(MovieTable::toDomain)
+                )
+            } catch (exception: Exception) {
+                throw exception
+            }
+        }.distinctUntilChanged()
+    }
+
+    private suspend fun fetchMoviesFromNetwork(page: Int, movieType: MovieType): List<Movie> {
+        val moviesDto = mMovieRemoteDataSource.getMovies(page, movieType.toParam())
+        mMovieLocalDataSource.deleteAllMovies(movieType.toTable())
+        mMovieLocalDataSource.insertAllMovies(moviesDto.map { it.toTable(movieType.toTable()) })
+        return moviesDto.map { it.toDomain() }
     }
 
     override fun getMovie(movieId: Long): Flow<Movie> {
@@ -68,6 +99,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
         }.onStart {
             emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovie(movieId).toDomain())
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 
@@ -84,6 +121,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
         }.onStart {
             emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovieReviews(movieId).map(ReviewTable::toDomain))
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 
@@ -105,6 +148,12 @@ class MovieRepositoryImpl @Inject constructor(
             emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
         }.onStart {
             emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+        }.catch {
+            try {
+                emit(mMovieLocalDataSource.getMovieTrailers(movieId).map(TrailerTable::toDomain))
+            } catch (exception: Exception) {
+                throw exception
+            }
         }.distinctUntilChanged()
     }
 

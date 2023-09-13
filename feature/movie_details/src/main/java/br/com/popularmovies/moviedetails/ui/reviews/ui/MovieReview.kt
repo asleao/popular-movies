@@ -30,14 +30,14 @@ fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
                 movieReview.author,
                 modifier = Modifier
                     .padding(start = 16.dp, top = 16.dp),
-                style = OpensSansTypography.headlineSmall,
+                style = OpensSansTypography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.W500
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 movieReview.content,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),

@@ -13,6 +13,15 @@ fun MovieTypeTable.toParam(): MovieTypeParam {
     }
 }
 
+fun MovieType.toParam(): MovieTypeParam {
+    return when (this) {
+        MovieType.MostPopular -> MovieTypeParam.MostPopular
+        MovieType.TopRated -> MovieTypeParam.TopRated
+        MovieType.NowPlaying -> MovieTypeParam.NowPlaying
+        MovieType.Unknown -> MovieTypeParam.Unknown
+    }
+}
+
 fun MovieType.toTable(): MovieTypeTable {
     return when (this) {
         MovieType.MostPopular -> MovieTypeTable.MostPopular
