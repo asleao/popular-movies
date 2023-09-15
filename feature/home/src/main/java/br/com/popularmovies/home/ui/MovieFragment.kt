@@ -32,8 +32,8 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MovieFragment @Inject constructor(
-    val viewModelFactory: Provider<MovieViewModel>,
-    val movieDetailsFeatureApi: MovieDetailsFeatureApi
+    private val viewModelFactory: Provider<MovieViewModel>,
+    private val movieDetailsFeatureApi: MovieDetailsFeatureApi
 ) : Fragment(),
     MovieClickListener {
 
@@ -66,6 +66,8 @@ class MovieFragment @Inject constructor(
                     MovieUiState.Success -> {
                         binding.errorView.isVisible = false
                         binding.container.isVisible = true
+                        binding.viewPagerShimmer.setShimmer(null)
+                        binding.viewPagerShimmer.background = null
                     }
 
                     is MovieUiState.Error -> {
@@ -75,7 +77,7 @@ class MovieFragment @Inject constructor(
                     }
 
                     MovieUiState.Loading -> {
-                        // Do nothing
+                        binding.viewPagerShimmer.showShimmer(true)
                     }
                 }
             }
@@ -95,8 +97,6 @@ class MovieFragment @Inject constructor(
                 .randomNowPlayingMovie
                 .flowWithLifecycle(lifecycle)
                 .collectLatest { movies ->
-                    binding.viewPagerShimmer.setShimmer(null)
-                    binding.viewPagerShimmer.background = null
                     binding.viewPager.adapter =
                         NowPlayingViewPagerAdapter(
                             this@MovieFragment,

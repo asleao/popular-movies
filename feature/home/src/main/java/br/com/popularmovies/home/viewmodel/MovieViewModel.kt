@@ -17,9 +17,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -58,18 +60,26 @@ class MovieViewModel @Inject constructor(
         viewModelScope.launch {
             isRefresh
                 .flatMapLatest {
+                    getRandomNowPlayingMovieUseCase.build(Unit)
+                        .onStart { _uiState.value = MovieUiState.Loading }
+                        .catch { exception ->
+                            _uiState.value = MovieUiState.Error(exception)
+                        }
+                        .collectLatest {
+                            _randomNowPlayingMovie.value = it
+                        }
+
                     combine(
-                        getRandomNowPlayingMovieUseCase.build(Unit),
                         getMoviesUseCase.build(GetMoviesUseCaseParams(MovieType.MostPopular)),
                         getMoviesUseCase.build(GetMoviesUseCaseParams(MovieType.NowPlaying)),
                         getMoviesUseCase.build(GetMoviesUseCaseParams(MovieType.TopRated))
-                    ) { trendingMovies, mostPopularMovies, nowPlayingMovies, topRatedMovies ->
-                        _randomNowPlayingMovie.value = trendingMovies
+                    ) { mostPopularMovies, nowPlayingMovies, topRatedMovies ->
                         _popularMovies.value = mostPopularMovies
                         _nowPlayingMoviesFlow.value = nowPlayingMovies
                         _topHatedMoviesFlow.value = topRatedMovies
                         _uiState.value = MovieUiState.Success
                     }.distinctUntilChanged()
+                        .onStart { _uiState.value = MovieUiState.Loading }
                         .catch { exception ->
                             _uiState.value = MovieUiState.Error(exception)
                         }.stateIn(
