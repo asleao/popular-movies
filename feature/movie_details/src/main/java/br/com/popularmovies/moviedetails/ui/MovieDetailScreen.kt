@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -57,7 +58,15 @@ fun MovieDetailScreen(
                             contentDescription = "Navigate back"
                         )
                     }
-                }
+                },
+                actions = {
+                    IconButton(onClick = { /* do something */ }) {
+                        Icon(
+                            imageVector = Icons.Filled.FavoriteBorder,
+                            contentDescription = "Unsaved icon"
+                        )
+                    }
+                },
             )
         },
         content = { innerPadding ->
@@ -76,6 +85,7 @@ fun MovieDetailScreen(
                 MovieDetailUiState.Loading -> {
                     // Do nothing for now
                 }
+
                 is MovieDetailUiState.Success -> {
                     LazyColumn(
                         state = rememberLazyListState(),

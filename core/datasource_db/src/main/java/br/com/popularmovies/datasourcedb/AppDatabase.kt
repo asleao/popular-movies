@@ -3,6 +3,7 @@ package br.com.popularmovies.datasourcedb
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import br.com.popularmovies.core.api.models.favorites.FavoriteTable
 import br.com.popularmovies.core.api.models.keys.RemoteKeyTable
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.review.ReviewTable
@@ -18,7 +19,8 @@ import br.com.popularmovies.datasourcedb.typeconverters.MovieTypeConverters
         MovieTable::class,
         RemoteKeyTable::class,
         ReviewTable::class,
-        TrailerTable::class
+        TrailerTable::class,
+        FavoriteTable::class
     ],
     version = 1,
     exportSchema = false
