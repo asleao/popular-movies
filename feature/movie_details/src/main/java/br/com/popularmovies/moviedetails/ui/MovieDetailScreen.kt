@@ -37,7 +37,8 @@ fun MovieDetailScreen(
     viewModel: MovieDetailViewModel,
     onBack: () -> Unit,
     onTryAgainClick: () -> Unit,
-    onTrailerClick: (String) -> Unit
+    onTrailerClick: (String) -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     val movieState = viewModel.uiState
 
@@ -60,7 +61,7 @@ fun MovieDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { onFavoriteClick() }) {
                         Icon(
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = "Unsaved icon"

@@ -5,11 +5,11 @@ import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
 import br.com.popularmovies.domain.api.usecases.GetMoviesUseCase
 import br.com.popularmovies.domain.api.usecases.GetRandomNowPlayingMovieUseCase
-import br.com.popularmovies.domain.api.usecases.SaveMovieToFavoritesUseCase
+import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCase
 import br.com.popularmovies.domain.usecases.movies.GetMovieUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.GetMoviesUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.GetRandomNowPlayingMovieUseCaseImpl
-import br.com.popularmovies.domain.usecases.movies.favorites.SaveMovieToFavoritesUseCaseImpl
+import br.com.popularmovies.domain.usecases.movies.favorites.UpdateMovieFavoriteUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.reviews.GetMovieReviewsUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.trailers.GetMovieTrailersUseCaseImpl
 import dagger.Binds
@@ -27,7 +27,7 @@ interface DomainModule {
     fun bindsGetRandomNowPlayingMovieUseCase(getRandomNowPlayingMovieUseCase: GetRandomNowPlayingMovieUseCaseImpl): GetRandomNowPlayingMovieUseCase
 
     @Binds
-    fun bindsSaveMovieToFavoritesUseCase(saveMovieToFavoritesUseCase: SaveMovieToFavoritesUseCaseImpl): SaveMovieToFavoritesUseCase
+    fun bindsSaveMovieToFavoritesUseCase(saveMovieToFavoritesUseCase: UpdateMovieFavoriteUseCaseImpl): UpdateMovieFavoriteUseCase
 
     @Binds
     fun bindsGetMovieReviewsUseCase(getMovieReviewsUseCase: GetMovieReviewsUseCaseImpl): GetMovieReviewsUseCase

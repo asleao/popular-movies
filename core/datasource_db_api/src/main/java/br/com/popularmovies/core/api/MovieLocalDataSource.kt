@@ -3,9 +3,9 @@ package br.com.popularmovies.core.api
 import androidx.paging.PagingSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.relations.MovieAndFavorite
 import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.core.api.models.trailer.TrailerTable
-import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalDataSource {
     fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable>
@@ -21,4 +21,7 @@ interface MovieLocalDataSource {
     suspend fun getMovieTrailers(movieId: Long): List<TrailerTable>
     suspend fun insertMovieTrailers(reviews: List<TrailerTable>)
     suspend fun deleteMovieTrailers(movieId: Long)
+    suspend fun getMovieFavorite(movieId: Long): MovieAndFavorite
+    suspend fun updateMovieFavorite(movieId: Long, isFavorite: Boolean)
+    suspend fun insertMovieFavorite(movieId: Long, isFavorite: Boolean)
 }

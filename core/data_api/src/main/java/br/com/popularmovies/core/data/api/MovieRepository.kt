@@ -17,7 +17,7 @@ interface MovieRepository {
 
     fun getMovieReviews(movieId: Long): Flow<List<MovieReview>>
 
-    fun saveToFavorites(movie: Movie)
+    fun saveToFavorites(movie: Movie, isFavorite: Boolean): Flow<Unit>
 
     fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>>
 }

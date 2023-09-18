@@ -138,8 +138,14 @@ class MovieRepositoryImpl @Inject constructor(
         return movieReviewsDto.map(MovieReviewDto::toDomain)
     }
 
-    override fun saveToFavorites(movie: Movie) {
-        //TODO to be implemented
+    override fun saveToFavorites(movie: Movie, isFavorite: Boolean): Flow<Unit> {
+        return flow {
+            val movieFavorite = mMovieLocalDataSource.getMovieFavorite(movie.id)
+            movieFavorite.favoriteTable?.let {
+                mMovieLocalDataSource.updateMovieFavorite(movie.id, isFavorite)
+            } ?: mMovieLocalDataSource.insertMovieFavorite(movie.id, isFavorite)
+            emit(Unit)
+        }
     }
 
     override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {

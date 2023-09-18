@@ -12,6 +12,7 @@ import br.com.popularmovies.datasourcedb.daos.MovieDao
 import br.com.popularmovies.datasourcedb.daos.RemoteKeysDao
 import br.com.popularmovies.datasourcedb.typeconverters.BigDecimalConverter
 import br.com.popularmovies.datasourcedb.typeconverters.LocalDateConverter
+import br.com.popularmovies.datasourcedb.typeconverters.LocalDatetimeConverter
 import br.com.popularmovies.datasourcedb.typeconverters.MovieTypeConverters
 
 @Database(
@@ -25,7 +26,12 @@ import br.com.popularmovies.datasourcedb.typeconverters.MovieTypeConverters
     version = 1,
     exportSchema = false
 )
-@TypeConverters(LocalDateConverter::class, BigDecimalConverter::class, MovieTypeConverters::class)
+@TypeConverters(
+    LocalDateConverter::class,
+    LocalDatetimeConverter::class,
+    BigDecimalConverter::class,
+    MovieTypeConverters::class,
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
     abstract fun remoteKeysDao(): RemoteKeysDao

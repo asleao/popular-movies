@@ -11,6 +11,8 @@ import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCaseParams
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCaseParams
+import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCase
+import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCaseParams
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
@@ -31,6 +33,7 @@ class MovieDetailViewModel @AssistedInject constructor(
     getMovieUseCase: GetMovieUseCase,
     getMovieTrailersUseCase: GetMovieTrailersUseCase,
     getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    private val updateMovieFavoriteUseCase: UpdateMovieFavoriteUseCase,
     @Assisted private val movieId: Long
 ) : ViewModel() {
 
@@ -46,6 +49,7 @@ class MovieDetailViewModel @AssistedInject constructor(
 
     var uiState by mutableStateOf<MovieDetailUiState>(MovieDetailUiState.Loading)
         private set
+
 
     init {
         viewModelScope.launch {
@@ -71,6 +75,24 @@ class MovieDetailViewModel @AssistedInject constructor(
 
     fun tryAgain() {
         isRefresh.tryEmit(true)
+    }
+
+    fun saveToFavorites() {
+        viewModelScope.launch {
+            val movie = (uiState as? MovieDetailUiState.Success)?.movie ?: return@launch
+            updateMovieFavoriteUseCase.build(
+                UpdateMovieFavoriteUseCaseParams(
+                    movie,
+                    true
+                )
+            ).catch {
+                uiState = MovieDetailUiState.Error
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MovieDetailUiState.Loading
+            ).collect()
+        }
     }
 }
 

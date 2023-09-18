@@ -8,8 +8,8 @@ import br.com.popularmovies.core.api.models.movie.MovieTable
 data class MovieAndFavorite(
     @Embedded val movie: MovieTable,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "movieId"
+        parentColumn = "remoteId",
+        entityColumn = "movieRemoteId"
     )
-    val favoriteTable: FavoriteTable
+    val favoriteTable: FavoriteTable?
 )
