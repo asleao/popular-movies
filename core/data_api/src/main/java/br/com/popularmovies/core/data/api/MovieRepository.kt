@@ -2,6 +2,7 @@ package br.com.popularmovies.core.data.api
 
 import androidx.paging.PagingData
 import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieFavorite
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
@@ -17,7 +18,9 @@ interface MovieRepository {
 
     fun getMovieReviews(movieId: Long): Flow<List<MovieReview>>
 
-    fun saveToFavorites(movie: Movie, isFavorite: Boolean): Flow<Unit>
+    fun getMovieFavorite(movieId: Long): Flow<MovieFavorite>
+
+    suspend fun saveToFavorites(movie: Movie, isFavorite: Boolean): Unit
 
     fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>>
 }

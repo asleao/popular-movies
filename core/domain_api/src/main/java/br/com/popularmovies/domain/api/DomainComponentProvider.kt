@@ -1,5 +1,6 @@
 package br.com.popularmovies.domain.api
 
+import br.com.popularmovies.domain.api.usecases.GetMovieFavoriteUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
@@ -14,4 +15,5 @@ interface DomainComponentProvider {
     val updateMovieFavoriteUseCase: UpdateMovieFavoriteUseCase
     val getMovieReviewsUseCase: GetMovieReviewsUseCase
     val getMovieTrailersUseCase: GetMovieTrailersUseCase
+    val getMovieFavoriteUseCase: GetMovieFavoriteUseCase
 }

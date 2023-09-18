@@ -11,6 +11,7 @@ import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
+import kotlinx.coroutines.flow.Flow
 import org.joda.time.LocalDateTime
 import javax.inject.Inject
 
@@ -94,10 +95,8 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
         }
     }
 
-    override suspend fun getMovieFavorite(movieId: Long): MovieAndFavorite {
-        return appDatabase.withTransaction {
-            mMovieDao.getMovieFavorite(movieId)
-        }
+    override fun getMovieFavorite(movieId: Long): Flow<MovieAndFavorite> {
+        return mMovieDao.getMovieFavorite(movieId)
     }
 
     override suspend fun insertMovieFavorite(movieId: Long, isFavorite: Boolean) {

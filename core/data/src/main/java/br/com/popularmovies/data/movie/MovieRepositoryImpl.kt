@@ -16,12 +16,14 @@ import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
 import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieFavorite
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -138,14 +140,24 @@ class MovieRepositoryImpl @Inject constructor(
         return movieReviewsDto.map(MovieReviewDto::toDomain)
     }
 
-    override fun saveToFavorites(movie: Movie, isFavorite: Boolean): Flow<Unit> {
-        return flow {
-            val movieFavorite = mMovieLocalDataSource.getMovieFavorite(movie.id)
-            movieFavorite.favoriteTable?.let {
-                mMovieLocalDataSource.updateMovieFavorite(movie.id, isFavorite)
-            } ?: mMovieLocalDataSource.insertMovieFavorite(movie.id, isFavorite)
-            emit(Unit)
-        }
+    override fun getMovieFavorite(movieId: Long): Flow<MovieFavorite> {
+        return mMovieLocalDataSource
+            .getMovieFavorite(movieId)
+            .map {
+                it.toDomain()
+            }
+            .distinctUntilChanged()
+    }
+
+    override suspend fun saveToFavorites(movie: Movie, isFavorite: Boolean): Unit {
+        return mMovieLocalDataSource
+            .getMovieFavorite(movie.id)
+            .firstOrNull()
+            .let { movieFavorite ->
+                movieFavorite?.favoriteTable?.let {
+                    mMovieLocalDataSource.updateMovieFavorite(movie.id, isFavorite)
+                } ?: mMovieLocalDataSource.insertMovieFavorite(movie.id, isFavorite)
+            }
     }
 
     override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {

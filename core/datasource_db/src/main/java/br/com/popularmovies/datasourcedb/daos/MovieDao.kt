@@ -13,6 +13,7 @@ import br.com.popularmovies.core.api.models.relations.MovieWithReviewsRelation
 import br.com.popularmovies.core.api.models.relations.MovieWithTrailersRelation
 import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.core.api.models.trailer.TrailerTable
+import kotlinx.coroutines.flow.Flow
 import org.joda.time.LocalDateTime
 
 @Dao
@@ -58,7 +59,7 @@ interface MovieDao {
     suspend fun deleteMovieTrailers(movieId: Long)
 
     @Query("SELECT * FROM movies WHERE remoteId = :movieRemoteId")
-    suspend fun getMovieFavorite(movieRemoteId: Long): MovieAndFavorite
+    fun getMovieFavorite(movieRemoteId: Long): Flow<MovieAndFavorite>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovieFavorite(movieFavorite: FavoriteTable)

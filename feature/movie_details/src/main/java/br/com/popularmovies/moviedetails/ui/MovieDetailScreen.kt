@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +42,6 @@ fun MovieDetailScreen(
     onFavoriteClick: () -> Unit
 ) {
     val movieState = viewModel.uiState
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -61,10 +61,18 @@ fun MovieDetailScreen(
                     }
                 },
                 actions = {
+                    val isFavorite =
+                        (viewModel.uiState as? MovieDetailUiState.Success)?.isMovieFavorite
+                            ?: false
+
                     IconButton(onClick = { onFavoriteClick() }) {
                         Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
-                            contentDescription = "Unsaved icon"
+                            imageVector = if (isFavorite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Filled.FavoriteBorder
+                            },
+                            contentDescription = "Favorite icon"
                         )
                     }
                 },
