@@ -16,8 +16,7 @@ fun MovieTable.toDomain(): Movie {
         popularity = popularity,
         poster = poster,
         overview = overview,
-        releaseDate = releaseDate,
-        isFavorite = isFavorite
+        releaseDate = releaseDate
     )
 }
 
@@ -31,8 +30,7 @@ fun MovieDto.toDomain(): Movie {
         popularity = popularity,
         poster = poster,
         overview = overview,
-        releaseDate = releaseDate,
-        isFavorite = isFavorite
+        releaseDate = releaseDate
     )
 }
 
@@ -46,7 +44,6 @@ fun MovieDto.toTable(type: MovieTypeTable = MovieTypeTable.Unknown): MovieTable 
         poster = poster,
         overview = overview,
         releaseDate = releaseDate,
-        isFavorite = isFavorite,
         type = type
     )
 }

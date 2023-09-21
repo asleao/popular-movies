@@ -15,4 +15,5 @@ dependencies {
     implementation(libs.jodatime)
 
     implementation(libs.bundles.paging)
+    implementation(libs.bundles.worker)
 }

@@ -1,6 +1,7 @@
 package br.com.popularmovies.data.movie
 
 import androidx.paging.*
+import androidx.work.WorkManager
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
@@ -16,12 +17,15 @@ import br.com.popularmovies.datasourceremoteapi.MovieRemoteDataSource
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieReviewDto
 import br.com.popularmovies.datasourceremoteapi.models.movie.MovieTrailerDto
 import br.com.popularmovies.model.movie.Movie
+import br.com.popularmovies.model.movie.MovieFavorite
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
+import br.com.popularmovies.worker.api.UpdateMovieFavoriteWorkerRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -30,7 +34,9 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val remoteKeyLocalDataSource: RemoteKeyLocalDataSource,
     private val mMovieLocalDataSource: MovieLocalDataSource,
-    private val mMovieRemoteDataSource: MovieRemoteDataSource
+    private val mMovieRemoteDataSource: MovieRemoteDataSource,
+    private val workManager: WorkManager,
+    private val updateMovieFavoriteWorkerRequest: UpdateMovieFavoriteWorkerRequest
 ) : MovieRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -138,8 +144,30 @@ class MovieRepositoryImpl @Inject constructor(
         return movieReviewsDto.map(MovieReviewDto::toDomain)
     }
 
-    override fun saveToFavorites(movie: Movie) {
-        //TODO to be implemented
+    override fun getMovieFavorite(movieId: Long): Flow<MovieFavorite> {
+        return mMovieLocalDataSource
+            .getMovieFavorite(movieId)
+            .map {
+                it.toDomain()
+            }
+            .distinctUntilChanged()
+    }
+
+    override suspend fun saveToFavorites(movieId: Long, isFavorite: Boolean): Unit {
+        return mMovieLocalDataSource
+            .getMovieFavorite(movieId)
+            .firstOrNull()
+            .let { movieFavorite ->
+                movieFavorite?.favoriteTable?.let {
+                    mMovieLocalDataSource.updateMovieFavorite(movieId, isFavorite)
+                } ?: mMovieLocalDataSource.insertMovieFavorite(movieId, isFavorite)
+                workManager.enqueue(
+                    updateMovieFavoriteWorkerRequest.request(
+                        movieId,
+                        isFavorite
+                    )
+                )
+            }
     }
 
     override fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>> {

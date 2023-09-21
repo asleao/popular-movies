@@ -17,6 +17,5 @@ data class MovieTable(
     val poster: String,
     val overview: String,
     val releaseDate: LocalDate,
-    val votes: Int,
-    var isFavorite: Boolean = false
+    val votes: Int
 )

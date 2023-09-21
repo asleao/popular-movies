@@ -67,6 +67,8 @@ dependencies {
     implementation(project(":core:domain_api"))
     implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:worker"))
+    implementation(project(":core:worker_api"))
     implementation(project(":core:ui"))
     implementation(project(":core:data_api"))
     implementation(project(":core:data"))
@@ -77,4 +79,5 @@ dependencies {
 
     implementation(libs.bundles.android.base)
     implementation(libs.bundles.ui)
+    implementation(libs.bundles.worker)
 }

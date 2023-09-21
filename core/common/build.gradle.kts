@@ -13,4 +13,5 @@ android {
 
 dependencies {
     implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.bundles.worker)
 }

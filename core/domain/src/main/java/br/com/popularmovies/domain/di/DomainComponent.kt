@@ -6,7 +6,9 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    dependencies = [DataComponentProvider::class],
+    dependencies = [
+        DataComponentProvider::class,
+    ],
     modules = [DomainModule::class]
 )
 @Singleton

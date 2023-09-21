@@ -3,12 +3,16 @@ package br.com.popularmovies.datasourcedb.datasources.movie
 import androidx.paging.PagingSource
 import androidx.room.withTransaction
 import br.com.popularmovies.core.api.MovieLocalDataSource
+import br.com.popularmovies.core.api.models.favorites.FavoriteTable
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.relations.MovieAndFavorite
 import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.core.api.models.trailer.TrailerTable
 import br.com.popularmovies.datasourcedb.AppDatabase
 import br.com.popularmovies.datasourcedb.daos.MovieDao
+import kotlinx.coroutines.flow.Flow
+import org.joda.time.LocalDateTime
 import javax.inject.Inject
 
 class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppDatabase) :
@@ -88,6 +92,31 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
     override suspend fun deleteMovieTrailers(movieId: Long) {
         appDatabase.withTransaction {
             mMovieDao.deleteMovieTrailers(movieId)
+        }
+    }
+
+    override fun getMovieFavorite(movieId: Long): Flow<MovieAndFavorite> {
+        return mMovieDao.getMovieFavorite(movieId)
+    }
+
+    override suspend fun insertMovieFavorite(movieId: Long, isFavorite: Boolean) {
+        appDatabase.withTransaction {
+            mMovieDao.insertMovieFavorite(
+                FavoriteTable(
+                    movieRemoteId = movieId,
+                    isFavorite = isFavorite,
+                    updatedAt = LocalDateTime.now()
+                )
+            )
+        }
+    }
+
+    override suspend fun updateMovieFavorite(
+        movieId: Long,
+        isFavorite: Boolean
+    ) {
+        appDatabase.withTransaction {
+            mMovieDao.updateMovieFavorite(movieId, isFavorite, LocalDateTime.now())
         }
     }
 }

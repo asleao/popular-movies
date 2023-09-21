@@ -5,12 +5,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.popularmovies.domain.api.usecases.GetMovieFavoriteUseCase
+import br.com.popularmovies.domain.api.usecases.GetMovieFavoriteUseCaseParams
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieReviewsUseCaseParams
 import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCaseParams
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCaseParams
+import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCase
+import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCaseParams
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
@@ -29,8 +33,10 @@ import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @AssistedInject constructor(
     getMovieUseCase: GetMovieUseCase,
+    getMovieFavoriteUseCase: GetMovieFavoriteUseCase,
     getMovieTrailersUseCase: GetMovieTrailersUseCase,
     getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    private val updateMovieFavoriteUseCase: UpdateMovieFavoriteUseCase,
     @Assisted private val movieId: Long
 ) : ViewModel() {
 
@@ -47,16 +53,24 @@ class MovieDetailViewModel @AssistedInject constructor(
     var uiState by mutableStateOf<MovieDetailUiState>(MovieDetailUiState.Loading)
         private set
 
+
     init {
         viewModelScope.launch {
             isRefresh
                 .flatMapLatest {
                     combine(
                         getMovieUseCase.build(GetMovieUseCaseParams(movieId)),
+                        getMovieFavoriteUseCase.build(GetMovieFavoriteUseCaseParams(movieId)),
                         getMovieTrailersUseCase.build(GetMovieTrailersUseCaseParams(movieId)),
                         getMovieReviewsUseCase.build(GetMovieReviewsUseCaseParams(movieId))
-                    ) { movie, reviews, trailers ->
-                        uiState = MovieDetailUiState.Success(movie, trailers, reviews)
+                    ) { movie, movieFavorite, reviews, trailers ->
+                        uiState =
+                            MovieDetailUiState.Success(
+                                movie,
+                                movieFavorite.isFavorite,
+                                trailers,
+                                reviews
+                            )
                     }.catch {
                         uiState = MovieDetailUiState.Error
                     }
@@ -72,6 +86,23 @@ class MovieDetailViewModel @AssistedInject constructor(
     fun tryAgain() {
         isRefresh.tryEmit(true)
     }
+
+    fun saveToFavorites() {
+        viewModelScope.launch {
+            val state = uiState as? MovieDetailUiState.Success
+            val movie = state?.movie ?: return@launch
+            try {
+                updateMovieFavoriteUseCase.build(
+                    UpdateMovieFavoriteUseCaseParams(
+                        movie,
+                        !state.isMovieFavorite
+                    )
+                )
+            } catch (_: Exception) {
+                uiState = MovieDetailUiState.Error
+            }
+        }
+    }
 }
 
 sealed interface MovieDetailUiState {
@@ -80,6 +111,7 @@ sealed interface MovieDetailUiState {
 
     data class Success(
         val movie: Movie,
+        val isMovieFavorite: Boolean,
         val reviews: List<MovieReview>,
         val trailers: List<MovieTrailer>
     ) : MovieDetailUiState

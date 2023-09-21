@@ -3,6 +3,7 @@ package br.com.popularmovies
 import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
+import androidx.work.Configuration
 import br.com.popularmovies.common.di.CommonComponent
 import br.com.popularmovies.common.di.DaggerCommonComponent
 import br.com.popularmovies.data.di.DaggerDataComponent
@@ -20,10 +21,14 @@ import br.com.popularmovies.home.di.DaggerHomeComponent
 import br.com.popularmovies.home.di.HomeComponent
 import br.com.popularmovies.moviedetails.di.DaggerMovieDetailsComponent
 import br.com.popularmovies.moviedetails.di.MovieDetailsComponent
+import br.com.popularmovies.worker.di.DaggerWorkerComponent
+import br.com.popularmovies.worker.di.WorkerComponent
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import javax.inject.Inject
 
-class MovieApplication : Application(), ImageLoaderFactory {
+class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory,
+    Configuration.Provider {
 
     val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent.factory().create(
@@ -34,15 +39,23 @@ class MovieApplication : Application(), ImageLoaderFactory {
         DaggerDatabaseComponent.factory().create(applicationContext)
     }
     val networkComponent: NetworkComponent = DaggerNetworkComponent.builder().build()
-    val dataComponent: DataComponent by lazy {
-        DaggerDataComponent
-            .builder()
-            .databaseComponentProvider(databaseComponent)
-            .networkComponentProvider(networkComponent)
-            .build()
+
+    val workerComponent: WorkerComponent by lazy {
+        DaggerWorkerComponent
+            .factory()
+            .create(applicationContext, databaseComponent, networkComponent)
     }
+
+    val dataComponent: DataComponent by lazy {
+        DaggerDataComponent.factory()
+            .create(databaseComponent, networkComponent, workerComponent)
+    }
+
     val domainComponent: DomainComponent by lazy {
-        DaggerDomainComponent.builder().dataComponentProvider(dataComponent).build()
+        DaggerDomainComponent
+            .builder()
+            .dataComponentProvider(dataComponent)
+            .build()
     }
 
     val homeComponent: HomeComponent by lazy {
@@ -60,6 +73,7 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .commonProvider(commonComponent)
             .build()
     }
+
     val appComponent: AppComponent by lazy {
         DaggerAppComponent
             .builder()
@@ -70,6 +84,7 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .domainComponentProvider(domainComponent)
             .homeFeatureProvider(homeComponent)
             .movieDetailsFeatureProvider(movieDetailsComponent)
+            .workerComponentProvider(workerComponent)
             .build()
     }
 
@@ -82,6 +97,8 @@ class MovieApplication : Application(), ImageLoaderFactory {
             .crossfade(true)
             .build()
     }
+
+    override fun getWorkManagerConfiguration(): Configuration = workerComponent.configuration
 }
 
 val Activity.appComponent get() = (application as MovieApplication).appComponent

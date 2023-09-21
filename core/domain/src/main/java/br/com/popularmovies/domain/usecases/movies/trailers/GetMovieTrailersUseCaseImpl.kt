@@ -14,5 +14,4 @@ class GetMovieTrailersUseCaseImpl @Inject constructor(
     override fun build(param: GetMovieTrailersUseCaseParams): Flow<List<MovieTrailer>> {
         return movieRepository.getMovieTrailers(param.movieId)
     }
-
 }

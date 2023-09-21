@@ -7,12 +7,6 @@ import javax.inject.Singleton
 
 @Singleton
 @Component
-//    (
-//    modules = [
-//        br.com.popularmovies.di.modules.FragmentModule::class,
-//        br.com.popularmovies.di.modules.ViewModelModule::class
-//    ]
-//)
 interface CommonComponent : CommonProvider {
 
     @Component.Factory

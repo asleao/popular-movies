@@ -5,13 +5,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
+import br.com.popularmovies.core.api.models.favorites.FavoriteTable
 import br.com.popularmovies.core.api.models.movie.MovieTable
 import br.com.popularmovies.core.api.models.movie.MovieTypeTable
+import br.com.popularmovies.core.api.models.relations.MovieAndFavorite
 import br.com.popularmovies.core.api.models.relations.MovieWithReviewsRelation
 import br.com.popularmovies.core.api.models.relations.MovieWithTrailersRelation
 import br.com.popularmovies.core.api.models.review.ReviewTable
 import br.com.popularmovies.core.api.models.trailer.TrailerTable
+import kotlinx.coroutines.flow.Flow
+import org.joda.time.LocalDateTime
 
 @Dao
 interface MovieDao {
@@ -54,4 +57,17 @@ interface MovieDao {
 
     @Query("DELETE FROM trailers WHERE movieId = :movieId")
     suspend fun deleteMovieTrailers(movieId: Long)
+
+    @Query("SELECT * FROM movies WHERE remoteId = :movieRemoteId")
+    fun getMovieFavorite(movieRemoteId: Long): Flow<MovieAndFavorite>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovieFavorite(movieFavorite: FavoriteTable)
+
+    @Query("UPDATE favorite SET isFavorite=:isFavorite, updatedAt=:updatedAt WHERE movieRemoteId = :movieRemoteId")
+    suspend fun updateMovieFavorite(
+        movieRemoteId: Long,
+        isFavorite: Boolean,
+        updatedAt: LocalDateTime
+    )
 }

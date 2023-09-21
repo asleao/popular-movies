@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -36,10 +38,10 @@ fun MovieDetailScreen(
     viewModel: MovieDetailViewModel,
     onBack: () -> Unit,
     onTryAgainClick: () -> Unit,
-    onTrailerClick: (String) -> Unit
+    onTrailerClick: (String) -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     val movieState = viewModel.uiState
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -57,7 +59,23 @@ fun MovieDetailScreen(
                             contentDescription = "Navigate back"
                         )
                     }
-                }
+                },
+                actions = {
+                    val isFavorite =
+                        (viewModel.uiState as? MovieDetailUiState.Success)?.isMovieFavorite
+                            ?: false
+
+                    IconButton(onClick = { onFavoriteClick() }) {
+                        Icon(
+                            imageVector = if (isFavorite) {
+                                Icons.Filled.Favorite
+                            } else {
+                                Icons.Filled.FavoriteBorder
+                            },
+                            contentDescription = "Favorite icon"
+                        )
+                    }
+                },
             )
         },
         content = { innerPadding ->
@@ -76,6 +94,7 @@ fun MovieDetailScreen(
                 MovieDetailUiState.Loading -> {
                     // Do nothing for now
                 }
+
                 is MovieDetailUiState.Success -> {
                     LazyColumn(
                         state = rememberLazyListState(),
