@@ -21,6 +21,8 @@ import br.com.popularmovies.home.di.DaggerHomeComponent
 import br.com.popularmovies.home.di.HomeComponent
 import br.com.popularmovies.moviedetails.di.DaggerMovieDetailsComponent
 import br.com.popularmovies.moviedetails.di.MovieDetailsComponent
+import br.com.popularmovies.searchmovies.di.DaggerSearchMoviesComponent
+import br.com.popularmovies.searchmovies.di.SearchMoviesComponent
 import br.com.popularmovies.worker.di.DaggerWorkerComponent
 import br.com.popularmovies.worker.di.WorkerComponent
 import coil.ImageLoader
@@ -74,6 +76,14 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
             .build()
     }
 
+    val searchMoviesComponent: SearchMoviesComponent by lazy {
+        DaggerSearchMoviesComponent
+            .builder()
+            .commonProvider(commonComponent)
+            .domainComponentProvider(domainComponent)
+            .build()
+    }
+
     val appComponent: AppComponent by lazy {
         DaggerAppComponent
             .builder()
@@ -84,6 +94,7 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
             .domainComponentProvider(domainComponent)
             .homeFeatureProvider(homeComponent)
             .movieDetailsFeatureProvider(movieDetailsComponent)
+            .searchMoviesFeatureProvider(searchMoviesComponent)
             .workerComponentProvider(workerComponent)
             .build()
     }
