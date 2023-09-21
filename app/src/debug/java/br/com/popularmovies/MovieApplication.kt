@@ -30,9 +30,6 @@ import javax.inject.Inject
 class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory,
     Configuration.Provider {
 
-    @Inject
-    lateinit var configuration: Configuration
-
     val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent.factory().create(
             applicationContext
@@ -43,14 +40,20 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
     }
     val networkComponent: NetworkComponent = DaggerNetworkComponent.builder().build()
     val dataComponent: DataComponent by lazy {
-        DaggerDataComponent.factory()
-            .create(
-                databaseComponent,
-                networkComponent
-            )
+        DaggerDataComponent.builder()
+            .databaseComponentProvider(databaseComponent)
+            .networkComponentProvider(networkComponent)
+            .build()
     }
+
+    val workerComponent: WorkerComponent by lazy {
+        DaggerWorkerComponent
+            .factory()
+            .create(applicationContext, dataComponent)
+    }
+
     val domainComponent: DomainComponent by lazy {
-        DaggerDomainComponent.builder().dataComponentProvider(dataComponent).build()
+        DaggerDomainComponent.factory().create(dataComponent, workerComponent)
     }
 
     val homeComponent: HomeComponent by lazy {
@@ -67,12 +70,6 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
             .domainComponentProvider(domainComponent)
             .commonProvider(commonComponent)
             .build()
-    }
-
-    val workerComponent: WorkerComponent by lazy {
-        DaggerWorkerComponent
-            .factory()
-            .create(applicationContext, dataComponent)
     }
 
     val appComponent: AppComponent by lazy {
@@ -99,7 +96,7 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
             .build()
     }
 
-    override fun getWorkManagerConfiguration(): Configuration = configuration
+    override fun getWorkManagerConfiguration(): Configuration = workerComponent.configuration
 }
 
 val Activity.appComponent get() = (application as MovieApplication).appComponent

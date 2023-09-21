@@ -13,6 +13,7 @@ import javax.inject.Singleton
         WorkerBindingModule::class,
         WorkerFactoryBindingModule::class,
         WorkerProviderModule::class,
+        WorkerRequestBindingModule::class
     ]
 )
 @Singleton
