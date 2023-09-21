@@ -9,12 +9,12 @@ import javax.inject.Singleton
 @Module
 object WorkerProviderModule {
 
-    /*@Provides
+    @Provides
     @Singleton
     fun provideWorkManagerConfiguration(workerFactory: WorkerFactory): Configuration {
         return Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.INFO)
             .setWorkerFactory(workerFactory)
             .build()
-    }*/
+    }
 }

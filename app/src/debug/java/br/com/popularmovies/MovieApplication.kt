@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.work.Configuration
-import androidx.work.WorkerFactory
 import br.com.popularmovies.common.di.CommonComponent
 import br.com.popularmovies.common.di.DaggerCommonComponent
 import br.com.popularmovies.data.di.DaggerDataComponent
@@ -30,6 +29,9 @@ import javax.inject.Inject
 
 class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory,
     Configuration.Provider {
+
+    @Inject
+    lateinit var configuration: Configuration
 
     val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent.factory().create(
@@ -97,14 +99,7 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
             .build()
     }
 
-    @Inject
-    lateinit var workerFactory: WorkerFactory
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder()
-            .setMinimumLoggingLevel(android.util.Log.INFO)
-            .setWorkerFactory(workerFactory)
-            .build()
-    }
+    override fun getWorkManagerConfiguration(): Configuration = configuration
 }
 
 val Activity.appComponent get() = (application as MovieApplication).appComponent

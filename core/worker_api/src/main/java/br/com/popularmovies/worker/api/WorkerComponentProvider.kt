@@ -1,7 +1,7 @@
 package br.com.popularmovies.worker.api
 
-import androidx.work.WorkerFactory
+import androidx.work.Configuration
 
 interface WorkerComponentProvider {
-    val customWorkerFactory: WorkerFactory
+    val configuration: Configuration
 }
