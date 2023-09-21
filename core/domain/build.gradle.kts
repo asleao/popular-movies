@@ -13,8 +13,6 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:domain_api"))
     implementation(project(":core:data_api"))
-    implementation(project(":core:worker_api"))
 
     implementation(libs.bundles.paging)
-    implementation(libs.bundles.worker)
 }

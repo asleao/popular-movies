@@ -1,14 +1,18 @@
 package br.com.popularmovies.worker.di
 
 import android.content.Context
-import br.com.popularmovies.core.data.api.DataComponentProvider
+import br.com.popularmovies.core.api.DatabaseComponentProvider
+import br.com.popularmovies.datasourceremoteapi.NetworkComponentProvider
 import br.com.popularmovies.worker.api.WorkerComponentProvider
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Component(
-    dependencies = [DataComponentProvider::class],
+    dependencies = [
+        DatabaseComponentProvider::class,
+        NetworkComponentProvider::class
+    ],
     modules = [
         WorkerBindingModule::class,
         WorkerFactoryBindingModule::class,
@@ -22,7 +26,8 @@ interface WorkerComponent : WorkerComponentProvider {
     interface Factory {
         fun create(
             @BindsInstance context: Context,
-            dataComponentProvider: DataComponentProvider
+            databaseComponentProvider: DatabaseComponentProvider,
+            networkComponentProvider: NetworkComponentProvider
         ): WorkerComponent
     }
 }

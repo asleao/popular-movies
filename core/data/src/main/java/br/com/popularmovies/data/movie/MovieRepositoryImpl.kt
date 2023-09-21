@@ -1,6 +1,7 @@
 package br.com.popularmovies.data.movie
 
 import androidx.paging.*
+import androidx.work.WorkManager
 import br.com.popularmovies.core.api.MovieLocalDataSource
 import br.com.popularmovies.core.api.RemoteKeyLocalDataSource
 import br.com.popularmovies.core.api.models.movie.MovieTable
@@ -20,6 +21,7 @@ import br.com.popularmovies.model.movie.MovieFavorite
 import br.com.popularmovies.model.movie.MovieReview
 import br.com.popularmovies.model.movie.MovieTrailer
 import br.com.popularmovies.model.movie.MovieType
+import br.com.popularmovies.worker.api.UpdateMovieFavoriteWorkerRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -32,7 +34,9 @@ import javax.inject.Inject
 class MovieRepositoryImpl @Inject constructor(
     private val remoteKeyLocalDataSource: RemoteKeyLocalDataSource,
     private val mMovieLocalDataSource: MovieLocalDataSource,
-    private val mMovieRemoteDataSource: MovieRemoteDataSource
+    private val mMovieRemoteDataSource: MovieRemoteDataSource,
+    private val workManager: WorkManager,
+    private val updateMovieFavoriteWorkerRequest: UpdateMovieFavoriteWorkerRequest
 ) : MovieRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -157,6 +161,12 @@ class MovieRepositoryImpl @Inject constructor(
                 movieFavorite?.favoriteTable?.let {
                     mMovieLocalDataSource.updateMovieFavorite(movieId, isFavorite)
                 } ?: mMovieLocalDataSource.insertMovieFavorite(movieId, isFavorite)
+                workManager.enqueue(
+                    updateMovieFavoriteWorkerRequest.request(
+                        movieId,
+                        isFavorite
+                    )
+                )
             }
     }
 

@@ -39,21 +39,23 @@ class MovieApplication @Inject constructor() : Application(), ImageLoaderFactory
         DaggerDatabaseComponent.factory().create(applicationContext)
     }
     val networkComponent: NetworkComponent = DaggerNetworkComponent.builder().build()
-    val dataComponent: DataComponent by lazy {
-        DaggerDataComponent.builder()
-            .databaseComponentProvider(databaseComponent)
-            .networkComponentProvider(networkComponent)
-            .build()
-    }
 
     val workerComponent: WorkerComponent by lazy {
         DaggerWorkerComponent
             .factory()
-            .create(applicationContext, dataComponent)
+            .create(applicationContext, databaseComponent, networkComponent)
+    }
+
+    val dataComponent: DataComponent by lazy {
+        DaggerDataComponent.factory()
+            .create(databaseComponent, networkComponent, workerComponent)
     }
 
     val domainComponent: DomainComponent by lazy {
-        DaggerDomainComponent.factory().create(dataComponent, workerComponent)
+        DaggerDomainComponent
+            .builder()
+            .dataComponentProvider(dataComponent)
+            .build()
     }
 
     val homeComponent: HomeComponent by lazy {

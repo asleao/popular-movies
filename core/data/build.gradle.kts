@@ -13,9 +13,13 @@ dependencies {
     implementation(project(":core:datasource_remote_api"))
     implementation(project(":core:datasource_db_api"))
     implementation(project(":core:data_api"))
+    implementation(project(":core:worker_api"))
+    
     implementation(project(":core:model"))
 
     implementation(libs.jodatime)
 
     implementation(libs.bundles.paging)
+    implementation(libs.bundles.worker)
+
 }
