@@ -149,14 +149,14 @@ class MovieRepositoryImpl @Inject constructor(
             .distinctUntilChanged()
     }
 
-    override suspend fun saveToFavorites(movie: Movie, isFavorite: Boolean): Unit {
+    override suspend fun saveToFavorites(movieId: Long, isFavorite: Boolean): Unit {
         return mMovieLocalDataSource
-            .getMovieFavorite(movie.id)
+            .getMovieFavorite(movieId)
             .firstOrNull()
             .let { movieFavorite ->
                 movieFavorite?.favoriteTable?.let {
-                    mMovieLocalDataSource.updateMovieFavorite(movie.id, isFavorite)
-                } ?: mMovieLocalDataSource.insertMovieFavorite(movie.id, isFavorite)
+                    mMovieLocalDataSource.updateMovieFavorite(movieId, isFavorite)
+                } ?: mMovieLocalDataSource.insertMovieFavorite(movieId, isFavorite)
             }
     }
 

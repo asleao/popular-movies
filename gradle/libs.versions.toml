@@ -25,6 +25,7 @@ androidxComposeBom = "2023.06.01"
 androidxComposeCompiler = "1.4.3"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxPaging = "3.2.1"
+androidxWork = "2.8.1"
 
 # UI Tools
 accompanist = "0.28.0"
@@ -60,10 +61,10 @@ okhttp = "4.10.0"
 retrofit = "2.9.0"
 
 # Database
-room = "2.4.2"
+room = "2.5.2"
 
 # DI
-dagger = "2.46"
+dagger = "2.48"
 
 # Annotations procesing
 ksp = "1.8.10-1.0.9"
@@ -71,6 +72,7 @@ org-jetbrains-kotlin-android = "1.8.10"
 junit = "1.1.5"
 material = "1.9.0"
 com-google-android-material-material = "1.9.0"
+com-google-android-material-material180 = "1.8.0"
 
 [libraries]
 
@@ -110,6 +112,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
 paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "androidxPaging" }
+work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 
 # UI Tools
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -172,6 +175,7 @@ ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devt
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 scabbard-processor = { group = "gradle.plugin.dev.arunkumar", name = "scabbard-gradle-plugin", version.ref = "scabbardPlugin" }
+material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material180" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -265,9 +269,11 @@ paging = [
     "paging-common-ktx"
 ]
 
+worker = [
+    "work-runtime-ktx"
+]
+
 uitests = [
-    #    "androidx-compose-ui-test",
-    #    "androidx-compose-ui-testManifest",
     "androidx-navigation-testing",
     "androidx-test-espresso-core",
     "androidx-test-uiautomator"

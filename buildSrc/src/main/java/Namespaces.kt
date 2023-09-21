@@ -15,5 +15,7 @@ object Namespaces {
     const val coreDesignSystem = "br.com.popularmovies.core.designsystem"
     const val coreDomain = "br.com.popularmovies.core.domain"
     const val coreDomainApi = "br.com.popularmovies.core.domain.api"
+    const val coreWorker = "br.com.popularmovies.core.worker"
+    const val coreWorkerApi = "br.com.popularmovies.core.worker.api"
     const val coreUi = "br.com.popularmovies.core.ui"
 }

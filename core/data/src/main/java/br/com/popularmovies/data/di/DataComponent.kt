@@ -14,4 +14,12 @@ import javax.inject.Singleton
     modules = [DataModule::class]
 )
 @Singleton
-interface DataComponent : DataComponentProvider
+interface DataComponent : DataComponentProvider {
+    @Component.Factory
+    interface Factory {
+        fun create(
+            databaseComponentProvider: DatabaseComponentProvider,
+            networkComponentProvider: NetworkComponentProvider
+        ): DataComponent
+    }
+}

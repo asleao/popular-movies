@@ -20,7 +20,7 @@ interface MovieRepository {
 
     fun getMovieFavorite(movieId: Long): Flow<MovieFavorite>
 
-    suspend fun saveToFavorites(movie: Movie, isFavorite: Boolean): Unit
+    suspend fun saveToFavorites(movieId: Long, isFavorite: Boolean): Unit
 
     fun getMovieTrailers(movieId: Long): Flow<List<MovieTrailer>>
 }

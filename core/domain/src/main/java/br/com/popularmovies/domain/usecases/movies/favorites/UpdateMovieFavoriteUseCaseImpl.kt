@@ -9,6 +9,6 @@ class UpdateMovieFavoriteUseCaseImpl @Inject constructor(
     private val movieRepository: MovieRepository
 ) : UpdateMovieFavoriteUseCase {
     override suspend fun build(param: UpdateMovieFavoriteUseCaseParams): Unit {
-        return movieRepository.saveToFavorites(param.movie, param.isFavorite)
+        return movieRepository.saveToFavorites(param.movie.id, param.isFavorite)
     }
 }
