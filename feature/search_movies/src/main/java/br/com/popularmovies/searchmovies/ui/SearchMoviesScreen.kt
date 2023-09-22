@@ -101,7 +101,7 @@ data class SearchMoviesUiState(
 
 @ThemePreview
 @Composable
-fun roastsPreview() {
+fun searchMoviesPreview() {
     AppTheme {
         //SearchMoviesScreen()
     }
