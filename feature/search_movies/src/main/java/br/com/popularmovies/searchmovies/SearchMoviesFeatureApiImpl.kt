@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class SearchMoviesFeatureApiImpl @Inject constructor() : SearchMoviesFeatureApi {
 
-    override fun deeplink(argument: String): Uri =
+    override fun deeplink(argument: String?): Uri =
         "popularmovies://searchMoviesFragment".toUri()
 
 }

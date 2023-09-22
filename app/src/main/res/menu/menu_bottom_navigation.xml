@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_movies_nav_graph"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
 
     <item
-        android:id="@id/movieFragment"
+        android:id="@id/movies_nav_graph"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
 
