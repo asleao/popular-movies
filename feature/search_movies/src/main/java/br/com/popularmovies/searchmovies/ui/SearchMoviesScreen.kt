@@ -36,7 +36,7 @@ fun SearchMoviesScreen(viewModel: SearchMoviesViewModel) {
         viewModel.isSearchVisible,
         viewModel.query,
         viewModel::onQueryChanged,
-        viewModel.roasts
+        viewModel.movies
     )
 
     val isSearching by searchMoviesUiState.isSearchVisible.collectAsStateWithLifecycle(initialValue = false)

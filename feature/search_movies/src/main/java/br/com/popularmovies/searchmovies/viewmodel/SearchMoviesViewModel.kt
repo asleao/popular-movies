@@ -25,11 +25,11 @@ class SearchMoviesViewModel @Inject constructor(
     val isSearchVisible: StateFlow<Boolean>
         get() = _isSearchVisible
 
-    val _roasts = MutableStateFlow<List<Movie>>(emptyList())
-    val roasts = query
+    val _movies = MutableStateFlow<List<Movie>>(emptyList())
+    val movies = query
         .debounce(500L)
         .onEach { _isSearchVisible.update { true } }
-        .combine(_roasts) { query, movies ->
+        .combine(_movies) { query, movies ->
             if (query.isBlank()) {
                 movies
             } else {
@@ -43,7 +43,7 @@ class SearchMoviesViewModel @Inject constructor(
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            _roasts.value
+            _movies.value
         )
 
 
