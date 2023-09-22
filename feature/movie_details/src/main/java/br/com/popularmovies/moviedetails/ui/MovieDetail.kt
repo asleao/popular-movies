@@ -3,29 +3,23 @@ package br.com.popularmovies.moviedetails.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import br.com.popularmovies.common.Constants.IMAGE_URL
 import br.com.popularmovies.core.designsystem.AppTheme
+import br.com.popularmovies.core.ui.components.movie.MovieCard
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import org.joda.time.LocalDate
 import java.math.BigDecimal
 
@@ -34,21 +28,11 @@ fun MovieDetail(movie: Movie) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
 
-        Card(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(IMAGE_URL + movie.poster)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .aspectRatio(1.5f)
-            )
-        }
+        MovieCard(modifier = Modifier
+            .padding(horizontal = 16.dp),
+            movie = movie,
+            onMovieSelected = {}
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

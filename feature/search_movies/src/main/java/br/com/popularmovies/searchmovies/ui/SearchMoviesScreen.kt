@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.core.designsystem.previews.ThemePreview
+import br.com.popularmovies.core.ui.components.movie.Movies
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.searchmovies.viewmodel.SearchMoviesViewModel
 import kotlinx.coroutines.flow.Flow

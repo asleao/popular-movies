@@ -1,4 +1,4 @@
-package br.com.popularmovies.searchmovies.ui
+package br.com.popularmovies.core.ui.components.movie
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,7 +28,7 @@ fun Movies(
         contentPadding = PaddingValues(16.dp)
     ) {
         items(movies) { movie ->
-            MovieCard(movie, onMovieSelected)
+            MovieCard(Modifier, movie, onMovieSelected)
         }
     }
 }
