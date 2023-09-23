@@ -18,7 +18,7 @@ data class MovieDto(
     @Json(name = "popularity")
     val popularity: BigDecimal,
     @Json(name = "poster_path")
-    val poster: String,
+    val poster: String?,
     @Json(name = "overview")
     val overview: String,
     @Json(name = "release_date")

@@ -52,7 +52,7 @@ class SearchMoviesRemoteMediator(
 
                 if (loadType == LoadType.REFRESH) {
                     remoteKeyLocalDataSource.clear()
-                    movieLocalDataSource.deleteAllMovies(MovieTypeTable.Unknown)
+                    movieLocalDataSource.deleteAllMovies(MovieTypeTable.Search)
                 }
                 val prevKey = if (page == START_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
@@ -60,14 +60,14 @@ class SearchMoviesRemoteMediator(
                 val keys = data.map {
                     RemoteKeyTable(
                         movieId = it.id,
-                        type = MovieTypeTable.Unknown,
+                        type = MovieTypeTable.Search,
                         prevKey = prevKey,
                         nextKey = nextKey
                     )
                 }
                 remoteKeyLocalDataSource.insertAll(keys)
                 movieLocalDataSource.insertAllMovies(data.map { movie ->
-                    movie.toTable(MovieTypeTable.Unknown)
+                    movie.toTable(MovieTypeTable.Search)
                 })
                 MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
             }

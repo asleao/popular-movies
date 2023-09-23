@@ -28,7 +28,7 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun searchMovies(page: Int, query: String): List<MovieDto> {
-        return mMovieService.searchMovies(page,query).mapApiResults()
+        return mMovieService.searchMovies(page, query).mapApiResults()
     }
 
     override suspend fun getMovieReviews(movieId: Long): List<MovieReviewDto> {

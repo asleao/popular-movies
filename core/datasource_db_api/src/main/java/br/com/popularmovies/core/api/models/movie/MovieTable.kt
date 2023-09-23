@@ -14,7 +14,7 @@ data class MovieTable(
     val voteAverage: BigDecimal,
     val originalTitle: String,
     val popularity: BigDecimal,
-    val poster: String,
+    val poster: String?,
     val overview: String,
     val releaseDate: LocalDate?,
     val votes: Int
