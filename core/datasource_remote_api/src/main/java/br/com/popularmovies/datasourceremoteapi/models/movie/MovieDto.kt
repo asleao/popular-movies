@@ -22,5 +22,5 @@ data class MovieDto(
     @Json(name = "overview")
     val overview: String,
     @Json(name = "release_date")
-    val releaseDate: LocalDate
+    val releaseDate: LocalDate?
 )

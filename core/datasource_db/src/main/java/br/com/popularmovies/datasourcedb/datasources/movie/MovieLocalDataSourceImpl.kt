@@ -29,6 +29,10 @@ class MovieLocalDataSourceImpl @Inject constructor(private val appDatabase: AppD
         }
     }
 
+    override fun searchMoviesPagingSourceFactory(query: String): PagingSource<Int, MovieTable> {
+        return mMovieDao.searchMovies(MovieTypeTable.Search, query)
+    }
+
     override suspend fun deleteAllMovies(type: MovieTypeTable) {
         appDatabase.withTransaction {
             mMovieDao.deleteAllMovies(type)

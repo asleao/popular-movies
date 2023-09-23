@@ -1,13 +1,22 @@
 package br.com.popularmovies.core.ui.components.movie
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.core.designsystem.previews.ThemePreview
 import br.com.popularmovies.model.movie.Movie
@@ -18,17 +27,41 @@ import java.math.BigDecimal
 @Composable
 fun Movies(
     modifier: Modifier,
-    movies: List<Movie>,
+    movies: LazyPagingItems<Movie>,
     onMovieSelected: (Movie) -> Unit
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(movies) { movie ->
-            MovieCard(Modifier, movie, onMovieSelected)
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = movies.loadState) {
+        if (movies.loadState.refresh is LoadState.Error) {
+            val error = (movies.loadState.refresh as LoadState.Error).error
+            Toast.makeText(
+                context, "Error:${error.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (movies.loadState.refresh is LoadState.Loading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(
+                    count = movies.itemCount,
+                    key = movies.itemKey { movie ->
+                        movie.id
+                    }) { index ->
+                    val movie = movies[index]
+                    movie?.let {
+                        MovieCard(Modifier, movie, onMovieSelected)
+                    }
+                }
+            }
         }
     }
 }
@@ -48,9 +81,9 @@ fun MoviesPreview() {
             overview = "",
             releaseDate = LocalDate.now()
         )
-        Movies(
+        /*Movies(
             modifier = Modifier,
             movies = listOf(movie, movie)
-        ) {}
+        ) {}*/
     }
 }

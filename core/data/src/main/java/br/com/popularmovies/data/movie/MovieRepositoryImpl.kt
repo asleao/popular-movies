@@ -92,6 +92,32 @@ class MovieRepositoryImpl @Inject constructor(
         }.distinctUntilChanged()
     }
 
+    @OptIn(ExperimentalPagingApi::class)
+    override fun searchMovies(query: String): Flow<PagingData<Movie>> {
+        return Pager(
+            config = PagingConfig(
+                prefetchDistance = PaginationConfig.prefechDistance,
+                pageSize = PaginationConfig.pageSize,
+                enablePlaceholders = true
+            ),
+            remoteMediator = SearchMoviesRemoteMediator(
+                query,
+                remoteKeyLocalDataSource,
+                mMovieLocalDataSource,
+                mMovieRemoteDataSource
+            ),
+            pagingSourceFactory = {
+                mMovieLocalDataSource.searchMoviesPagingSourceFactory(query)
+            }
+        )
+            .flow
+            .map { data ->
+                data.map { movieTable ->
+                    movieTable.toDomain()
+                }
+            }
+    }
+
     private suspend fun fetchMoviesFromNetwork(page: Int, movieType: MovieType): List<Movie> {
         val moviesDto = mMovieRemoteDataSource.getMovies(page, movieType.toParam())
         mMovieLocalDataSource.deleteAllMovies(movieType.toTable())

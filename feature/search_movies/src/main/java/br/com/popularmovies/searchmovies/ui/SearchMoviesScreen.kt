@@ -1,14 +1,11 @@
 package br.com.popularmovies.searchmovies.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,10 +14,11 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.core.designsystem.previews.ThemePreview
 import br.com.popularmovies.core.ui.components.movie.Movies
@@ -41,7 +39,7 @@ fun SearchMoviesScreen(viewModel: SearchMoviesViewModel) {
 
     val isSearching by searchMoviesUiState.isSearchVisible.collectAsStateWithLifecycle(initialValue = false)
     val query by searchMoviesUiState.query.collectAsStateWithLifecycle(initialValue = "")
-    val searchMoviesState by searchMoviesUiState.movies.collectAsStateWithLifecycle(initialValue = emptyList())
+    val searchMoviesState = searchMoviesUiState.movies.collectAsLazyPagingItems()
 
     Scaffold(
         modifier = Modifier,
@@ -76,17 +74,11 @@ fun SearchMoviesScreen(viewModel: SearchMoviesViewModel) {
                         }
                     }
                 ) { }
-                if (isSearching && query.isNotEmpty()) {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                    }
-                } else {
-                    Movies(
-                        modifier = Modifier.padding(innerPadding),
-                        movies = searchMoviesState,
-                        onMovieSelected = {}
-                    )
-                }
+                Movies(
+                    modifier = Modifier.padding(innerPadding),
+                    movies = searchMoviesState,
+                    onMovieSelected = {}
+                )
             }
         }
     )
@@ -96,7 +88,7 @@ data class SearchMoviesUiState(
     val isSearchVisible: Flow<Boolean>,
     val query: Flow<String>,
     val onQueryChange: (String) -> Unit,
-    val movies: Flow<List<Movie>>
+    val movies: Flow<PagingData<Movie>>
 )
 
 @ThemePreview

@@ -25,9 +25,13 @@ interface MovieDao {
     @Query("SELECT * FROM movies WHERE type = :type")
     suspend fun moviesList(type: MovieTypeTable): List<MovieTable>
 
+    @Query("SELECT DISTINCT * FROM movies WHERE type = :type and originalTitle like '%'||:query||'%'")
+    fun searchMovies(type: MovieTypeTable, query: String): PagingSource<Int, MovieTable>
+
     @Query("SELECT DISTINCT * FROM movies WHERE remoteId = :movieId")
     fun getMovie(movieId: Long): MovieTable
 
+    //TODO Refactor to use Upsert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllMovies(movieTables: List<MovieTable>)
 

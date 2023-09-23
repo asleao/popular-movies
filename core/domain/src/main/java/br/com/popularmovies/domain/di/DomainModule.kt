@@ -6,11 +6,13 @@ import br.com.popularmovies.domain.api.usecases.GetMovieTrailersUseCase
 import br.com.popularmovies.domain.api.usecases.GetMovieUseCase
 import br.com.popularmovies.domain.api.usecases.GetMoviesUseCase
 import br.com.popularmovies.domain.api.usecases.GetRandomNowPlayingMovieUseCase
+import br.com.popularmovies.domain.api.usecases.SearchMoviesUseCase
 import br.com.popularmovies.domain.api.usecases.UpdateMovieFavoriteUseCase
 import br.com.popularmovies.domain.usecases.movies.GetMovieFavoriteUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.GetMovieUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.GetMoviesUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.GetRandomNowPlayingMovieUseCaseImpl
+import br.com.popularmovies.domain.usecases.movies.SearchMoviesUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.favorites.UpdateMovieFavoriteUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.reviews.GetMovieReviewsUseCaseImpl
 import br.com.popularmovies.domain.usecases.movies.trailers.GetMovieTrailersUseCaseImpl
@@ -24,6 +26,9 @@ interface DomainModule {
 
     @Binds
     fun bindsGetMoviesUseCase(getMoviesUseCase: GetMoviesUseCaseImpl): GetMoviesUseCase
+
+    @Binds
+    fun bindsSearchMoviesUseCase(searchMoviesUseCase: SearchMoviesUseCaseImpl): SearchMoviesUseCase
 
     @Binds
     fun bindsGetRandomNowPlayingMovieUseCase(getRandomNowPlayingMovieUseCase: GetRandomNowPlayingMovieUseCaseImpl): GetRandomNowPlayingMovieUseCase

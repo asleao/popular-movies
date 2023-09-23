@@ -12,5 +12,5 @@ data class Movie(
     val popularity: BigDecimal,
     val poster: String,
     val overview: String,
-    val releaseDate: LocalDate
+    val releaseDate: LocalDate?
 )

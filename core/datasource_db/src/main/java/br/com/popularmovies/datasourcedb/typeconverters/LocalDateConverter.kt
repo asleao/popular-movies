@@ -6,7 +6,7 @@ import org.joda.time.LocalDate
 class LocalDateConverter {
     @TypeConverter
     fun toLocalDate(date: String?): LocalDate? {
-        return date.let {
+        return date?.let {
             LocalDate.parse(date)
         } ?: run { null }
     }

@@ -4,5 +4,6 @@ enum class MovieType {
     TopRated,
     MostPopular,
     NowPlaying,
+    Search,
     Unknown
 }

@@ -18,4 +18,5 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(libs.jodatime)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.bundles.paging)
 }

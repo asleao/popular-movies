@@ -67,7 +67,7 @@ fun MovieDetail(movie: Movie) {
                 ),
                 label = {
                     Text(
-                        movie.releaseDate.year.toString(),
+                        movie.releaseDate?.year.toString(),
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodySmall
                     )

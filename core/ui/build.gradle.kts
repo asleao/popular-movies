@@ -18,5 +18,6 @@ dependencies {
 
     implementation(libs.jodatime)
     implementation(libs.bundles.ui)
+    implementation(libs.bundles.paging)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 }
