@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchMoviesScreen(viewModel: SearchMoviesViewModel) {
+fun SearchMoviesScreen(viewModel: SearchMoviesViewModel, onMovieClick: (Movie) -> Unit) {
 
     val searchMoviesUiState = SearchMoviesUiState(
         viewModel.isSearchVisible,
@@ -77,7 +77,9 @@ fun SearchMoviesScreen(viewModel: SearchMoviesViewModel) {
                 Movies(
                     modifier = Modifier.padding(innerPadding),
                     movies = searchMoviesState,
-                    onMovieSelected = {}
+                    onMovieSelected = { movie ->
+                        onMovieClick(movie)
+                    }
                 )
             }
         }

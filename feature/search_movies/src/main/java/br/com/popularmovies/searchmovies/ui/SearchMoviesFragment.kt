@@ -6,12 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import br.com.popularmovies.core.designsystem.AppTheme
+import br.com.popularmovies.feature.moviedetails.api.MovieDetailsFeatureApi
 import br.com.popularmovies.searchmovies.viewmodel.SearchMoviesViewModel
 import javax.inject.Inject
 import javax.inject.Provider
 
 class SearchMoviesFragment @Inject constructor(
+    private val movieDetailsFeatureApi: MovieDetailsFeatureApi,
     viewModelFactory: Provider<SearchMoviesViewModel>
 ) : Fragment() {
 
@@ -26,7 +30,12 @@ class SearchMoviesFragment @Inject constructor(
         return ComposeView(requireContext()).apply {
             setContent {
                 AppTheme {
-                    SearchMoviesScreen(viewModel)
+                    SearchMoviesScreen(viewModel) { movie ->
+                        val request = NavDeepLinkRequest.Builder
+                            .fromUri(movieDetailsFeatureApi.deeplink(movie.id.toString()))
+                            .build()
+                        findNavController().navigate(request)
+                    }
                 }
             }
         }
