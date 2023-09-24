@@ -47,30 +47,35 @@ class SearchMoviesRemoteMediator(
         }
 
         try {
-            return movieRemoteDataSource.searchMovies(page, query).let { data ->
-                val endOfPaginationReached = data.isEmpty()
+            return movieRemoteDataSource.searchMovies(page, query)
+                //.filter { it.poster != null }
+                .let { data ->
+                    val endOfPaginationReached = data.isEmpty()
 
-                if (loadType == LoadType.REFRESH) {
+                    if (loadType == LoadType.REFRESH) {
+                        remoteKeyLocalDataSource.clear()
+                        movieLocalDataSource.deleteAllMovies(MovieTypeTable.Search)
+                    }
+
                     remoteKeyLocalDataSource.clear()
-                    movieLocalDataSource.deleteAllMovies(MovieTypeTable.Search)
-                }
-                val prevKey = if (page == START_INDEX) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
 
-                val keys = data.map {
-                    RemoteKeyTable(
-                        movieId = it.id,
-                        type = MovieTypeTable.Search,
-                        prevKey = prevKey,
-                        nextKey = nextKey
-                    )
+                    val prevKey = if (page == START_INDEX) null else page - 1
+                    val nextKey = if (endOfPaginationReached) null else page + 1
+
+                    val keys = data.map {
+                        RemoteKeyTable(
+                            movieId = it.id,
+                            type = MovieTypeTable.Search,
+                            prevKey = prevKey,
+                            nextKey = nextKey
+                        )
+                    }
+                    remoteKeyLocalDataSource.insertAll(keys)
+                    movieLocalDataSource.insertAllMovies(data.map { movie ->
+                        movie.toTable(MovieTypeTable.Search)
+                    })
+                    MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
                 }
-                remoteKeyLocalDataSource.insertAll(keys)
-                movieLocalDataSource.insertAllMovies(data.map { movie ->
-                    movie.toTable(MovieTypeTable.Search)
-                })
-                MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
-            }
         } catch (exception: Exception) {
             return MediatorResult.Error(exception)
         }
