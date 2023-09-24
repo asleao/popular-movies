@@ -48,7 +48,7 @@ class SearchMoviesRemoteMediator(
 
         try {
             return movieRemoteDataSource.searchMovies(page, query)
-                //.filter { it.poster != null }
+                .filter { it.poster != null }
                 .let { data ->
                     val endOfPaginationReached = data.isEmpty()
 
