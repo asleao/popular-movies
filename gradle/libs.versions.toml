@@ -12,7 +12,7 @@ scabbardPlugin = "0.5.0"
 # Android
 androidxCore = "1.10.1"
 androidxCoreSplashscreen = "1.0.1"
-androidxLifecycle = "2.6.1"
+androidxLifecycle = "2.6.2"
 androidxLifecycleExtensions = "2.2.0"
 androidxNavigation = "2.6.0"
 androidxActivity = "1.7.2"
@@ -25,7 +25,6 @@ androidxComposeBom = "2023.06.01"
 androidxComposeCompiler = "1.4.3"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxPaging = "3.2.1"
-androidxPagingCompose = "1.0.0-alpha18"
 androidxWork = "2.8.1"
 
 # UI Tools
@@ -33,32 +32,32 @@ accompanist = "0.28.0"
 androidMaterial2 = "1.4.0"
 shimmer = "0.5.0"
 spinkit = "1.4.0"
-coil = "2.2.2"
+coil = "2.4.0"
 
 
 # Test
-androidxEspresso = "3.5.0"
+androidxEspresso = "3.5.1"
 androidxTestCore = "1.5.0"
-androidxTestExt = "1.1.4"
+androidxTestExt = "1.1.5"
 androidxTestRules = "1.5.0"
-androidxTestRunner = "1.5.1"
-jupiter = "5.8.0-M1"
+androidxTestRunner = "1.5.2"
+jupiter = "5.8.2"
 assertJ = "3.21.0"
-mockk = "1.12.1"
+mockk = "1.13.3"
 androidxUiAutomator = "2.2.0"
 junit4 = "4.13.2"
 junit5 = "1.2.2"
 
 # Multithreading
-kotlinxCoroutines = "1.6.4"
+kotlinxCoroutines = "1.7.3"
 
 # Date/Time
 kotlinxDatetime = "0.4.0"
 jodatime = "2.10.10"
 
 # Network & Serialization
-moshi = "1.13.0"
-okhttp = "4.10.0"
+moshi = "1.15.0"
+okhttp = "4.11.0"
 retrofit = "2.9.0"
 
 # Database
@@ -72,8 +71,6 @@ ksp = "1.8.10-1.0.9"
 org-jetbrains-kotlin-android = "1.8.10"
 junit = "1.1.5"
 material = "1.9.0"
-com-google-android-material-material = "1.9.0"
-com-google-android-material-material180 = "1.8.0"
 
 [libraries]
 
@@ -113,7 +110,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
 paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "androidxPaging" }
-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPagingCompose" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPaging" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 
 # UI Tools
@@ -177,7 +174,6 @@ ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devt
 android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 scabbard-processor = { group = "gradle.plugin.dev.arunkumar", name = "scabbard-gradle-plugin", version.ref = "scabbardPlugin" }
-material = { group = "com.google.android.material", name = "material", version.ref = "com-google-android-material-material180" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
