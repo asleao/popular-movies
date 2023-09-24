@@ -70,6 +70,7 @@ class SearchMoviesRemoteMediator(
                             nextKey = nextKey
                         )
                     }
+
                     remoteKeyLocalDataSource.insertAll(keys)
                     movieLocalDataSource.insertAllMovies(data.map { movie ->
                         movie.toTable(MovieTypeTable.Search)

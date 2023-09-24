@@ -117,8 +117,7 @@ fun MovieDetailScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp),
                                     text = "Trailers",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    style = MaterialTheme.typography.headlineMedium
                                 )
 
                                 Spacer(modifier = Modifier.height(16.dp))
@@ -150,8 +149,7 @@ fun MovieDetailScreen(
                                     modifier = Modifier
                                         .padding(horizontal = 16.dp),
                                     text = "Reviews",
-                                    style = MaterialTheme.typography.headlineMedium,
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    style = MaterialTheme.typography.headlineMedium
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                             }

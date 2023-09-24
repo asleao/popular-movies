@@ -18,7 +18,6 @@ import br.com.popularmovies.core.designsystem.OpensSansTypography
 fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
     Card(
         shape = MaterialTheme.shapes.small,
-//        elevation = 2.dp,
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth()
@@ -31,7 +30,6 @@ fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
                 modifier = Modifier
                     .padding(start = 16.dp, top = 16.dp),
                 style = OpensSansTypography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.W500
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -41,7 +39,6 @@ fun MovieReview(movieReview: MovieReview, onClick: () -> Unit) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
