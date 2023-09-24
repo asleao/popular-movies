@@ -27,7 +27,6 @@ class SearchMoviesViewModel @Inject constructor(
     val isSearchVisible: StateFlow<Boolean>
         get() = _isSearchVisible
 
-    val _movies = MutableStateFlow<List<Movie>>(emptyList())
     val movies: StateFlow<PagingData<Movie>> = query
         .debounce(500L)
         .onEach { _isSearchVisible.update { true } }

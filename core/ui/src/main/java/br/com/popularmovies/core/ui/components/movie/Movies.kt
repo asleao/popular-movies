@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +21,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
 import br.com.popularmovies.core.designsystem.AppTheme
 import br.com.popularmovies.core.designsystem.previews.ThemePreview
+import br.com.popularmovies.core.ui.components.EmptyView
 import br.com.popularmovies.model.movie.Movie
 import br.com.popularmovies.model.movie.MovieType
 import org.joda.time.LocalDate
@@ -42,23 +45,35 @@ fun Movies(
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        if (movies.loadState.refresh is LoadState.Loading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        } else {
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(
-                    count = movies.itemCount,
-                    key = movies.itemKey { movie ->
-                        movie.id
-                    }) { index ->
-                    val movie = movies[index]
-                    movie?.let {
-                        MovieCard(Modifier, movie, onMovieSelected)
+        when {
+            movies.loadState.refresh is LoadState.Loading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            movies.itemCount == 0 -> {
+                EmptyView(
+                    modifier = Modifier,
+                    message = "No movies",
+                    imageVector = Icons.Filled.List
+                )
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items(
+                        count = movies.itemCount,
+                        key = movies.itemKey { movie ->
+                            movie.id
+                        }) { index ->
+                        val movie = movies[index]
+                        movie?.let {
+                            MovieCard(Modifier, movie, onMovieSelected)
+                        }
                     }
                 }
             }
