@@ -17,9 +17,9 @@ class RemoteKeyLocalDataSourceImpl @Inject constructor(private val appDatabase: 
         }
     }
 
-    override suspend fun insertAll(keys: List<RemoteKeyTable>) {
+    override suspend fun upsertAll(keys: List<RemoteKeyTable>) {
         appDatabase.withTransaction {
-            dao.insertAll(keys)
+            dao.upsertAll(keys)
         }
     }
 

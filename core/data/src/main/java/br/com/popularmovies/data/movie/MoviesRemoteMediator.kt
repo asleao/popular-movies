@@ -65,7 +65,8 @@ class MoviesRemoteMediator(
                         nextKey = nextKey
                     )
                 }
-                remoteKeyLocalDataSource.insertAll(keys)
+                remoteKeyLocalDataSource.clear()
+                remoteKeyLocalDataSource.upsertAll(keys)
                 movieLocalDataSource.insertAllMovies(data.map { movie ->
                     movie.toTable(movieType)
                 })
