@@ -32,7 +32,7 @@ accompanist = "0.28.0"
 androidMaterial2 = "1.4.0"
 shimmer = "0.5.0"
 spinkit = "1.4.0"
-coil = "2.2.2"
+coil = "2.4.0"
 
 
 # Test
