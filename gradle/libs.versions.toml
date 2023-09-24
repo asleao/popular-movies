@@ -25,6 +25,7 @@ androidxComposeBom = "2023.06.01"
 androidxComposeCompiler = "1.4.3"
 androidxComposeRuntimeTracing = "1.0.0-alpha03"
 androidxPaging = "3.2.1"
+androidxPagingCompose = "1.0.0-alpha18"
 androidxWork = "2.8.1"
 
 # UI Tools
@@ -112,6 +113,7 @@ androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "u
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidxPaging" }
 paging-common-ktx = { group = "androidx.paging", name = "paging-common-ktx", version.ref = "androidxPaging" }
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidxPagingCompose" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 
 # UI Tools
@@ -266,7 +268,8 @@ room = [
 
 paging = [
     "paging-runtime",
-    "paging-common-ktx"
+    "paging-common-ktx",
+    "paging-compose"
 ]
 
 worker = [

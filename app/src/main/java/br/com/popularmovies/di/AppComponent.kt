@@ -11,6 +11,8 @@ import br.com.popularmovies.home.di.HomeFragmentModule
 import br.com.popularmovies.home.di.HomeViewModelModule
 import br.com.popularmovies.moviedetails.di.MovieDetailsFeatureProvider
 import br.com.popularmovies.moviedetails.di.MovieDetailsFragmentModule
+import br.com.popularmovies.searchmovies.di.SearchMoviesFeatureProvider
+import br.com.popularmovies.searchmovies.di.SearchMoviesFragmentModule
 import br.com.popularmovies.worker.api.WorkerComponentProvider
 import dagger.Component
 import javax.inject.Singleton
@@ -24,6 +26,7 @@ import javax.inject.Singleton
         NetworkComponentProvider::class,
         HomeFeatureProvider::class,
         MovieDetailsFeatureProvider::class,
+        SearchMoviesFeatureProvider::class,
         WorkerComponentProvider::class
     ],
     modules = [
@@ -36,7 +39,8 @@ import javax.inject.Singleton
         * */
         HomeFragmentModule::class,
         HomeViewModelModule::class,
-        MovieDetailsFragmentModule::class
+        MovieDetailsFragmentModule::class,
+        SearchMoviesFragmentModule::class
     ]
 )
 @Singleton

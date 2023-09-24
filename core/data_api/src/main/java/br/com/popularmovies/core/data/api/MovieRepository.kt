@@ -12,9 +12,11 @@ interface MovieRepository {
 
     fun getMovies(movieType: MovieType): Flow<PagingData<Movie>>
 
+    fun getMovie(movieId: Long): Flow<Movie>
+
     fun getRandomNowPlayingMovies(): Flow<List<Movie>>
 
-    fun getMovie(movieId: Long): Flow<Movie>
+    fun searchMovies(query: String): Flow<PagingData<Movie>>
 
     fun getMovieReviews(movieId: Long): Flow<List<MovieReview>>
 

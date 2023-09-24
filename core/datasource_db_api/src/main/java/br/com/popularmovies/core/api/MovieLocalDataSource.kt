@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieLocalDataSource {
     fun getMoviesPagingSourceFactory(type: MovieTypeTable): PagingSource<Int, MovieTable>
     suspend fun getMovies(type: MovieTypeTable): List<MovieTable>
+    fun searchMoviesPagingSourceFactory(query: String): PagingSource<Int, MovieTable>
     suspend fun insertAllMovies(movies: List<MovieTable>)
     suspend fun deleteAllMovies(type: MovieTypeTable)
     suspend fun getMovie(movieId: Long): MovieTable

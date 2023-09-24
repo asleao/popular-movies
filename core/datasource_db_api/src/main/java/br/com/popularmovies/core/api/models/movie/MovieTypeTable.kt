@@ -4,7 +4,8 @@ enum class MovieTypeTable(val id: Int) {
     TopRated(0),
     MostPopular(1),
     NowPlaying(2),
-    Unknown(3);
+    Search(3), //TODO Think in a better way to do this
+    Unknown(4);
 
     companion object {
         fun forId(id: Int): MovieTypeTable {
